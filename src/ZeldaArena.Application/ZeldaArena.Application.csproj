@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ZeldaArena.Application</RootNamespace>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Только Domain: ни EF Core, ни ASP.NET Core здесь быть не может (docs/SPEC.md §5.2, правило 2). -->
+  <ItemGroup>
+    <ProjectReference Include="..\ZeldaArena.Domain\ZeldaArena.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

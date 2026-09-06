@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <RootNamespace>ZeldaArena.Web</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    Ссылка на Infrastructure нужна единственно ради AddInfrastructure() в Program.cs
+    (docs/SPEC.md §5.2, правило 3) — остальной код Web о ней не знает.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\ZeldaArena.Application\ZeldaArena.Application.csproj" />
+    <ProjectReference Include="..\ZeldaArena.Infrastructure\ZeldaArena.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

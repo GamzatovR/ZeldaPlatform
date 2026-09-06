@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ZeldaArena.Domain</RootNamespace>
+    <!-- Ядро собирается без предупреждений (CLAUDE.md, «Стиль кода»). -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!--
+    Зависимостей нет и не будет: Domain использует только BCL (docs/SPEC.md §5.2, правило 1).
+    Нарушение ловится тестом DependencyRuleTests.
+  -->
+
+</Project>
