@@ -32,3 +32,9 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.Run();
+
+/// <summary>
+/// Точка входа объявлена явно, чтобы тестовые проекты видели сборку Web
+/// (архитектурные тесты сейчас, WebApplicationFactory в дальнейшем).
+/// </summary>
+public partial class Program;

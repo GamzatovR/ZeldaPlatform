@@ -1,5 +1,7 @@
 using System.Diagnostics;
+
 using Microsoft.AspNetCore.Mvc;
+
 using ZeldaArena.Web.Models;
 
 namespace ZeldaArena.Web.Controllers;
