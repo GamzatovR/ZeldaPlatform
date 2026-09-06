@@ -10,6 +10,10 @@ namespace ZeldaArena.Domain.ValueObjects;
 /// </summary>
 public sealed class ShippingAddress : ValueObject
 {
+    /// <summary>Конструктор для материализации из БД, см. <see cref="Money"/>.</summary>
+    private ShippingAddress() =>
+        Recipient = Phone = Country = City = Street = PostalCode = string.Empty;
+
     public ShippingAddress(
         string recipient,
         string phone,

@@ -17,6 +17,12 @@ public sealed class Money : ValueObject
     /// <summary>Столько знаков после запятой хранит <c>numeric(18,2)</c>.</summary>
     public const int Scale = 2;
 
+    /// <summary>
+    /// Конструктор для материализации из БД: EF заполняет поля напрямую, минуя проверки.
+    /// Данные, уже лежащие в базе, прошли валидацию при записи.
+    /// </summary>
+    private Money() => Currency = DefaultCurrency;
+
     public Money(decimal amount, string currency)
     {
         var normalizedCurrency = NormalizeCurrency(currency);

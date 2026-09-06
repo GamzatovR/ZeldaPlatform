@@ -1,5 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+using ZeldaArena.Infrastructure.Persistence.Ef;
+using ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 
 namespace ZeldaArena.Infrastructure;
 
@@ -15,6 +20,18 @@ public static class DependencyInjection
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
+
+        services.TryAddSingleton(TimeProvider.System);
+        services.AddScoped<AuditableEntityInterceptor>();
+
+        services.AddDbContext<AppDbContext>((provider, options) =>
+        {
+            options.UseNpgsql(
+                configuration.GetConnectionString("Postgres"),
+                npgsql => npgsql.MigrationsAssembly(typeof(AppDbContext).Assembly.GetName().Name));
+
+            options.AddInterceptors(provider.GetRequiredService<AuditableEntityInterceptor>());
+        });
 
         return services;
     }

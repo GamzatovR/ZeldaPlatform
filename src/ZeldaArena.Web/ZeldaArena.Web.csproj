@@ -13,4 +13,12 @@
     <ProjectReference Include="..\ZeldaArena.Infrastructure\ZeldaArena.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (CLAUDE.md, «Команды»). -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>
