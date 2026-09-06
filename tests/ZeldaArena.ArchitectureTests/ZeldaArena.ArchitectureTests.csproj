@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ZeldaArena.ArchitectureTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="NetArchTest.Rules" />
+  </ItemGroup>
+
+  <!-- Тесты видят все четыре слоя — иначе правило зависимостей не проверить. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ZeldaArena.Domain\ZeldaArena.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ZeldaArena.Application\ZeldaArena.Application.csproj" />
+    <ProjectReference Include="..\..\src\ZeldaArena.Infrastructure\ZeldaArena.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\ZeldaArena.Web\ZeldaArena.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Shouldly" />
+  </ItemGroup>
+
+</Project>
