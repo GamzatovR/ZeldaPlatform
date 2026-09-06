@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Версия SDK берётся из global.json — одна и та же локально и в CI.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Архитектурные тесты здесь же: нарушение правила зависимостей роняет CI,
+      # и PR с ним не мержится (docs/SPEC.md §5.2, §16).
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      - name: Verify formatting
+        run: dotnet format --verify-no-changes
