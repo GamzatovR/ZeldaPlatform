@@ -132,15 +132,12 @@ public class Match : BaseEntity, IAuditableEntity
             "match.score_exceeds_wins_required",
             $"В формате Bo{BestOf} команда не может выиграть больше {WinsRequired} карт.");
 
+        // Сумма отсекает и вторую победу подряд: при любом нечётном BestOf
+        // счёт, где обе команды набрали WinsRequired, выходит за формат серии.
         InvariantViolationException.ThrowIf(
             scoreA + scoreB > BestOf,
             "match.score_exceeds_best_of",
             $"Сумма счетов не может превышать {BestOf}.");
-
-        InvariantViolationException.ThrowIf(
-            scoreA == WinsRequired && scoreB == WinsRequired,
-            "match.two_winners",
-            "Обе команды не могут набрать победный счёт.");
 
         // Повторная отправка того же счёта не должна поднимать зрителям лишнее событие.
         if (scoreA == ScoreA && scoreB == ScoreB)
