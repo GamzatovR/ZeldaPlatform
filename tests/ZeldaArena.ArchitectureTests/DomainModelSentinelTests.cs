@@ -12,8 +12,8 @@ namespace ZeldaArena.ArchitectureTests;
 /// DomainAssemblyReference, и она прошла бы и на пустом домене. Поэтому считаются
 /// именно наследники BaseEntity и DomainEvent.
 ///
-/// Половина условия про IRequest в Application появится в Фазе 2 вместе с MediatR:
-/// сейчас такой тест был бы красным по замыслу, а таких в проекте не бывает (§18).
+/// Половина условия про слой сценариев живёт в <see cref="ApplicationModelSentinelTests"/>:
+/// она появилась в Фазе 2 вместе с MediatR.
 /// </summary>
 public class DomainModelSentinelTests
 {
