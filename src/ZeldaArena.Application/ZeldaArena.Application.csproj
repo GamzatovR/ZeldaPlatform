@@ -5,9 +5,28 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <!-- Только Domain: ни EF Core, ни ASP.NET Core здесь быть не может (docs/SPEC.md §5.2, правило 2). -->
+  <!-- РўРѕР»СЊРєРѕ Domain: РЅРё EF Core, РЅРё ASP.NET Core Р·РґРµСЃСЊ Р±С‹С‚СЊ РЅРµ РјРѕР¶РµС‚ (docs/SPEC.md В§5.2, РїСЂР°РІРёР»Рѕ 2). -->
   <ItemGroup>
     <ProjectReference Include="..\ZeldaArena.Domain\ZeldaArena.Domain.csproj" />
+  </ItemGroup>
+
+  <!--
+    Р¤Р°Р·Р° 2: CQRS, РІР°Р»РёРґР°С†РёСЏ, РјР°РїРїРёРЅРі (docs/SPEC.md В§18).
+    РќРё РѕРґРёРЅ РёР· СЌС‚РёС… РїР°РєРµС‚РѕРІ РЅРµ С‚СЏРЅРµС‚ Р·Р° СЃРѕР±РѕР№ ASP.NET Core РёР»Рё EF Core вЂ” СЌС‚Рѕ РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ
+    С‚РµСЃС‚РѕРј Application_assembly_should_not_reference_forbidden_packages, Р° РЅРµ РЅР° РіР»Р°Р·.
+  -->
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Mapster" />
+    <PackageReference Include="Mapster.DependencyInjection" />
+  </ItemGroup>
+
+  <!-- РђР±СЃС‚СЂР°РєС†РёРё РґР»СЏ AddApplication() Рё behaviors: СЃР°РјРё РїРѕ СЃРµР±Рµ С„СЂРµР№РјРІРѕСЂРєР° РЅРµ С‚СЏРЅСѓС‚. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
 </Project>
