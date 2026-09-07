@@ -1,9 +1,14 @@
+using ZeldaArena.Application;
 using ZeldaArena.Infrastructure;
 using ZeldaArena.Infrastructure.Persistence.Ef;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+// Сценарии и конвейер MediatR. Типы Application в Web разрешены:
+// правило 3 §5.2 закрывает только типы Infrastructure.
+builder.Services.AddApplication();
 
 // Единственное место во всём Web, где допустимы типы Infrastructure (docs/SPEC.md §5.2, правило 3).
 builder.Services.AddInfrastructure(builder.Configuration);
