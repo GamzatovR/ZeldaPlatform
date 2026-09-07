@@ -3,6 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using ZeldaArena.Application.Common.Interfaces;
+using ZeldaArena.Infrastructure.Common;
+using ZeldaArena.Infrastructure.Identity;
+using ZeldaArena.Infrastructure.Logging;
 using ZeldaArena.Infrastructure.Persistence.Ef;
 using ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
@@ -23,7 +27,10 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(configuration);
 
         services.TryAddSingleton(TimeProvider.System);
+        services.AddHttpContextAccessor();
+
         services.AddScoped<AuditableEntityInterceptor>();
+        services.AddScoped<DispatchDomainEventsInterceptor>();
 
         services.AddDbContext<AppDbContext>((provider, options) =>
         {
@@ -31,8 +38,25 @@ public static class DependencyInjection
                 configuration.GetConnectionString("Postgres"),
                 npgsql => npgsql.MigrationsAssembly(typeof(AppDbContext).Assembly.GetName().Name));
 
-            options.AddInterceptors(provider.GetRequiredService<AuditableEntityInterceptor>());
+            // Порядок важен: отметки времени проставляются до сохранения,
+            // доменные события рассылаются после него.
+            options.AddInterceptors(
+                provider.GetRequiredService<AuditableEntityInterceptor>(),
+                provider.GetRequiredService<DispatchDomainEventsInterceptor>());
         });
+
+        // Порты Application → реализации Infrastructure. Дальше о существовании
+        // этих классов не знает никто.
+        services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
+        services.AddSingleton<IQueryExecutor, EfQueryExecutor>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+        services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
+        services.AddScoped<INewsRepository, EfNewsRepository>();
+
+        // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
+        services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
 
         services.AddScoped<DatabaseSeeder>();
 

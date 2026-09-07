@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
@@ -10,15 +11,18 @@ namespace ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 ///
 /// Значения пишутся через метаданные EF, а не через сеттеры: у доменных сущностей
 /// публичных сеттеров нет, и появиться они не должны (docs/SPEC.md §5.2, правило 5).
-/// Время берётся из TimeProvider, чтобы поведение было проверяемым в тестах;
-/// в Фазе 2 сюда придёт порт IDateTimeProvider.
+/// Время берётся из порта <see cref="IDateTimeProvider"/> — единственного источника
+/// времени в приложении, чтобы поведение было проверяемым в тестах.
 /// </summary>
-public sealed class AuditableEntityInterceptor(TimeProvider timeProvider) : SaveChangesInterceptor
+public sealed class AuditableEntityInterceptor(IDateTimeProvider dateTimeProvider)
+    : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
+
         Stamp(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
@@ -28,6 +32,8 @@ public sealed class AuditableEntityInterceptor(TimeProvider timeProvider) : Save
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
+
         Stamp(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
@@ -39,7 +45,7 @@ public sealed class AuditableEntityInterceptor(TimeProvider timeProvider) : Save
             return;
         }
 
-        var now = timeProvider.GetUtcNow();
+        var now = dateTimeProvider.UtcNow;
 
         foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
         {
