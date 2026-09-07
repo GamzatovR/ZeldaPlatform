@@ -27,13 +27,19 @@ MediatR · FluentValidation · Serilog · Clean Architecture.
 docker compose -f deploy/docker-compose.yml up -d
 
 # 2. Сборка и тесты
+dotnet tool restore     # dotnet-ef из .config/dotnet-tools.json
 dotnet restore
 dotnet build
 dotnet test
 
-# 3. Запуск
+# 3. Запуск: миграции и сид применяются автоматически в среде Development
 dotnet run --project src/ZeldaArena.Web
 ```
+
+При первом запуске база создаётся миграцией и наполняется демонстрационными данными:
+12 команд, 60 игроков, 4 турнира, 40 матчей (два идут прямо сейчас), 24 товара и 3 тарифа.
+Сид идемпотентен — повторный запуск ничего не дублирует. Состав данных и схема описаны
+в `docs/erd.md`.
 
 Настройки контейнеров можно переопределить: скопировать `deploy/.env.example` в `deploy/.env`
 и поправить значения.

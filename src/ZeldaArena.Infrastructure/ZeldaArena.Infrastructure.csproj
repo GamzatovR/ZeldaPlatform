@@ -13,4 +13,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
   </ItemGroup>
 
+  <!-- Фаза 1: EF Core и PostgreSQL. Identity здесь ради схемы: первая миграция
+       обязана содержать таблицы AspNet* и настоящие FK на AspNetUsers (docs/adr/ADR-0003).
+       Сервисы Identity подключаются в Фазе 3. -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+  </ItemGroup>
+
 </Project>

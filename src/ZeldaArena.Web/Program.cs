@@ -1,4 +1,5 @@
 using ZeldaArena.Infrastructure;
+using ZeldaArena.Infrastructure.Persistence.Ef;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+// Миграции и сид в разработке: `docker compose up -d` плюс `dotnet run` дают
+// работающую базу с нуля. В остальных средах миграции применяются отдельным шагом.
+if (app.Environment.IsDevelopment())
+{
+    await app.Services.MigrateAndSeedAsync();
+}
 
 // Порядок middleware зафиксирован в docs/SPEC.md §14.1:
 // Exception → HSTS/HTTPS → SecurityHeaders → CorrelationId → StaticFiles + Compression →
