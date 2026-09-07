@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text.Json;
 
+using ZeldaArena.Application.Common.Messaging;
+
 namespace ZeldaArena.Application.Common.Behaviors;
 
 /// <summary>
@@ -14,6 +16,16 @@ namespace ZeldaArena.Application.Common.Behaviors;
 /// </summary>
 internal static class RequestPayloadSerializer
 {
+    /// <summary>
+    /// Служебные свойства контракта аудита: у записи для них есть отдельные поля,
+    /// дублировать их в содержимом команды незачем.
+    /// </summary>
+    private static readonly HashSet<string> ContractProperties = new(StringComparer.Ordinal)
+    {
+        nameof(IAuditableRequest.AuditEntityType),
+        nameof(IAuditableRequest.AuditEntityId),
+    };
+
     private static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = false,
@@ -26,7 +38,8 @@ internal static class RequestPayloadSerializer
 
         var properties = request.GetType()
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Where(property => property.CanRead && property.GetIndexParameters().Length == 0);
+            .Where(property => property.CanRead && property.GetIndexParameters().Length == 0)
+            .Where(property => !ContractProperties.Contains(property.Name));
 
         var payload = new Dictionary<string, object?>(StringComparer.Ordinal);
 
