@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ZeldaArena.Infrastructure.Persistence.Ef;
 using ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
+using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
 namespace ZeldaArena.Infrastructure;
 
@@ -32,6 +33,8 @@ public static class DependencyInjection
 
             options.AddInterceptors(provider.GetRequiredService<AuditableEntityInterceptor>());
         });
+
+        services.AddScoped<DatabaseSeeder>();
 
         return services;
     }
