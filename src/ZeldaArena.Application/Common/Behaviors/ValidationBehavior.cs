@@ -30,13 +30,16 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
 
         if (applicable.Length == 0)
         {
-            return await next().ConfigureAwait(false);
+            return await next(cancellationToken).ConfigureAwait(false);
         }
 
-        var context = new ValidationContext<TRequest>(request);
-
+        // Контекст создаётся свой на каждый валидатор. Общий контекст копит ошибки
+        // внутри себя, и результат второго валидатора возвращал бы заодно чужие
+        // failures — пользователь увидел бы каждую ошибку дважды.
         var results = await Task.WhenAll(
-            applicable.Select(validator => validator.ValidateAsync(context, cancellationToken)))
+            applicable.Select(validator => validator.ValidateAsync(
+                new ValidationContext<TRequest>(request),
+                cancellationToken)))
             .ConfigureAwait(false);
 
         var failures = results
@@ -49,6 +52,6 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
             throw new ValidationException(failures);
         }
 
-        return await next().ConfigureAwait(false);
+        return await next(cancellationToken).ConfigureAwait(false);
     }
 }

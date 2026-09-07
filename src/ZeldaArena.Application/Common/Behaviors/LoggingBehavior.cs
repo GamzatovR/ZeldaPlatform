@@ -40,7 +40,7 @@ public sealed class LoggingBehavior<TRequest, TResponse>(
 
         try
         {
-            var response = await next().ConfigureAwait(false);
+            var response = await next(cancellationToken).ConfigureAwait(false);
 
             logger.LogInformation(
                 "Сценарий {RequestName} завершён за {ElapsedMilliseconds} мс",

@@ -43,7 +43,7 @@ public sealed class AuditBehavior<TRequest, TResponse>(
 
         try
         {
-            var response = await next().ConfigureAwait(false);
+            var response = await next(cancellationToken).ConfigureAwait(false);
 
             await WriteAsync(request, startedAt, Outcome(response), cancellationToken)
                 .ConfigureAwait(false);

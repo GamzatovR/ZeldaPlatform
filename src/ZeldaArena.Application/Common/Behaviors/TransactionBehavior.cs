@@ -25,6 +25,6 @@ public sealed class TransactionBehavior<TRequest, TResponse>(IUnitOfWork unitOfW
     {
         ArgumentNullException.ThrowIfNull(next);
 
-        return unitOfWork.ExecuteInTransactionAsync(_ => next(), cancellationToken);
+        return unitOfWork.ExecuteInTransactionAsync(token => next(token), cancellationToken);
     }
 }
