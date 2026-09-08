@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure.Common;
+using ZeldaArena.Infrastructure.Email;
 using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Logging;
 using ZeldaArena.Infrastructure.Persistence.Ef;
@@ -49,6 +50,8 @@ public static class DependencyInjection
         // и SignInManager, зарегистрированные здесь (docs/SPEC.md §8).
         services.AddPlatformIdentity(configuration);
 
+        services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+
         // Порты Application → реализации Infrastructure. Дальше о существовании
         // этих классов не знает никто.
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
@@ -57,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IUserAccountService, IdentityUserAccountService>();
         services.AddScoped<ISignInService, IdentitySignInService>();
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
+        services.AddScoped<IEmailSender, SmtpEmailSender>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));

@@ -27,6 +27,10 @@
     <PackageReference Include="MediatR" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MailKit" />
+  </ItemGroup>
+
   <!-- Р¤Р°Р·Р° 1: EF Core Рё PostgreSQL. Identity Р·РґРµСЃСЊ СЂР°РґРё СЃС…РµРјС‹: РїРµСЂРІР°СЏ РјРёРіСЂР°С†РёСЏ
        РѕР±СЏР·Р°РЅР° СЃРѕРґРµСЂР¶Р°С‚СЊ С‚Р°Р±Р»РёС†С‹ AspNet* Рё РЅР°СЃС‚РѕСЏС‰РёРµ FK РЅР° AspNetUsers (docs/adr/ADR-0003).
        РЎРµСЂРІРёСЃС‹ Identity РїРѕРґРєР»СЋС‡Р°СЋС‚СЃСЏ РІ Р¤Р°Р·Рµ 3. -->
