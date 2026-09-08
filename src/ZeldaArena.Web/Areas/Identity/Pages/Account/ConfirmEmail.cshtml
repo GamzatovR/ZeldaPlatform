@@ -1,0 +1,16 @@
+@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = T["confirm_email.title"].Value;
+}
+
+@if (Model.Succeeded)
+{
+    <div class="alert alert-success" role="alert">@T["confirm_email.success"]</div>
+    <a asp-page="./Login" class="btn btn-primary">@T["login.submit"]</a>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+    <a asp-page="./ResendEmailConfirmation" class="btn btn-outline-primary">@T["resend_confirmation.submit"]</a>
+}

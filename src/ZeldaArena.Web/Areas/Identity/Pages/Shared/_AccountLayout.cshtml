@@ -1,0 +1,20 @@
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@*
+    Общая рамка страниц аккаунта: узкая колонка по центру.
+    Вёрстка по макету docs/design/pages/login.html — Фаза 5 (docs/SPEC.md §9.3, п. 16);
+    сейчас важна работоспособность форм, а не оформление.
+*@
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+        <h1 class="h3 mb-4">@ViewData["Title"]</h1>
+
+        <partial name="_StatusMessage" />
+
+        @RenderBody()
+    </div>
+</div>
+
+@await RenderSectionAsync("Scripts", required: false)

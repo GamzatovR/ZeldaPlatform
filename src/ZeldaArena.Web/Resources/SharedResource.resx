@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="account.invalid_credentials" xml:space="preserve">
+    <value>Неверный адрес электронной почты или пароль.</value>
+  </data>
+  <data name="account.locked_out" xml:space="preserve">
+    <value>Слишком много неудачных попыток. Вход заблокирован на 15 минут.</value>
+  </data>
+  <data name="account.email_not_confirmed" xml:space="preserve">
+    <value>Адрес электронной почты не подтверждён. Проверьте почту или запросите письмо повторно.</value>
+  </data>
+  <data name="account.blocked" xml:space="preserve">
+    <value>Учётная запись заблокирована администратором.</value>
+  </data>
+  <data name="account.email_taken" xml:space="preserve">
+    <value>Этот адрес электронной почты уже занят.</value>
+  </data>
+  <data name="account.user_not_found" xml:space="preserve">
+    <value>Пользователь не найден.</value>
+  </data>
+  <data name="account.invalid_token" xml:space="preserve">
+    <value>Ссылка недействительна или устарела. Запросите новую.</value>
+  </data>
+  <data name="account.password_rejected" xml:space="preserve">
+    <value>Пароль не удовлетворяет требованиям.</value>
+  </data>
+  <data name="account.incorrect_password" xml:space="preserve">
+    <value>Текущий пароль указан неверно.</value>
+  </data>
+  <data name="account.two_factor_code_invalid" xml:space="preserve">
+    <value>Код из приложения-аутентификатора неверен.</value>
+  </data>
+  <data name="account.recovery_code_invalid" xml:space="preserve">
+    <value>Код восстановления неверен или уже использован.</value>
+  </data>
+  <data name="account.two_factor_not_enabled" xml:space="preserve">
+    <value>Двухфакторная аутентификация не включена.</value>
+  </data>
+  <data name="account.two_factor_session_expired" xml:space="preserve">
+    <value>Сессия входа истекла. Начните вход заново.</value>
+  </data>
+  <data name="account.operation_failed" xml:space="preserve">
+    <value>Не удалось выполнить операцию. Попробуйте ещё раз.</value>
+  </data>
+  <data name="field.email" xml:space="preserve">
+    <value>Адрес электронной почты</value>
+  </data>
+  <data name="field.password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="field.confirm_password" xml:space="preserve">
+    <value>Подтверждение пароля</value>
+  </data>
+  <data name="field.display_name" xml:space="preserve">
+    <value>Отображаемое имя</value>
+  </data>
+  <data name="field.remember_me" xml:space="preserve">
+    <value>Запомнить меня</value>
+  </data>
+  <data name="login.title" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="login.submit" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="login.forgot_password" xml:space="preserve">
+    <value>Забыли пароль?</value>
+  </data>
+  <data name="login.resend_confirmation" xml:space="preserve">
+    <value>Прислать письмо с подтверждением ещё раз</value>
+  </data>
+  <data name="login.no_account" xml:space="preserve">
+    <value>Нет учётной записи?</value>
+  </data>
+  <data name="login.register_link" xml:space="preserve">
+    <value>Зарегистрироваться</value>
+  </data>
+  <data name="register.title" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="register.submit" xml:space="preserve">
+    <value>Создать учётную запись</value>
+  </data>
+  <data name="register.have_account" xml:space="preserve">
+    <value>Уже зарегистрированы?</value>
+  </data>
+  <data name="register.login_link" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="register.password_hint" xml:space="preserve">
+    <value>Не короче 10 символов, с цифрой, строчной и заглавной буквой и спецсимволом.</value>
+  </data>
+  <data name="register_confirmation.title" xml:space="preserve">
+    <value>Подтвердите адрес</value>
+  </data>
+  <data name="register_confirmation.message" xml:space="preserve">
+    <value>Мы отправили письмо со ссылкой подтверждения. Войти можно будет после того, как вы по ней перейдёте.</value>
+  </data>
+  <data name="confirm_email.title" xml:space="preserve">
+    <value>Подтверждение адреса</value>
+  </data>
+  <data name="confirm_email.success" xml:space="preserve">
+    <value>Адрес подтверждён. Теперь можно войти.</value>
+  </data>
+  <data name="confirm_email.failure" xml:space="preserve">
+    <value>Подтвердить адрес не удалось.</value>
+  </data>
+  <data name="resend_confirmation.title" xml:space="preserve">
+    <value>Письмо с подтверждением</value>
+  </data>
+  <data name="resend_confirmation.submit" xml:space="preserve">
+    <value>Отправить письмо</value>
+  </data>
+  <data name="resend_confirmation.sent" xml:space="preserve">
+    <value>Если такой адрес зарегистрирован и ещё не подтверждён, письмо отправлено.</value>
+  </data>
+  <data name="lockout.title" xml:space="preserve">
+    <value>Вход заблокирован</value>
+  </data>
+  <data name="lockout.message" xml:space="preserve">
+    <value>Слишком много неудачных попыток входа. Попробуйте снова через 15 минут.</value>
+  </data>
+  <data name="access_denied.title" xml:space="preserve">
+    <value>Доступ запрещён</value>
+  </data>
+  <data name="access_denied.message" xml:space="preserve">
+    <value>У вас нет прав на этот раздел.</value>
+  </data>
+  <data name="email.confirm.subject" xml:space="preserve">
+    <value>Подтверждение адреса на ZeldaArena</value>
+  </data>
+  <data name="email.greeting" xml:space="preserve">
+    <value>Здравствуйте, {0}!</value>
+  </data>
+  <data name="email.confirm.body" xml:space="preserve">
+    <value>Чтобы завершить регистрацию на ZeldaArena, подтвердите адрес электронной почты.</value>
+  </data>
+  <data name="email.confirm.action" xml:space="preserve">
+    <value>Подтвердить адрес</value>
+  </data>
+  <data name="email.reset.subject" xml:space="preserve">
+    <value>Восстановление пароля на ZeldaArena</value>
+  </data>
+  <data name="email.reset.body" xml:space="preserve">
+    <value>Вы запросили смену пароля. Ссылка действительна 30 минут.</value>
+  </data>
+  <data name="email.reset.action" xml:space="preserve">
+    <value>Задать новый пароль</value>
+  </data>
+  <data name="email.change.subject" xml:space="preserve">
+    <value>Подтверждение нового адреса на ZeldaArena</value>
+  </data>
+  <data name="email.change.body" xml:space="preserve">
+    <value>Подтвердите этот адрес, чтобы он стал основным для входа на ZeldaArena.</value>
+  </data>
+  <data name="email.change.action" xml:space="preserve">
+    <value>Подтвердить адрес</value>
+  </data>
+  <data name="email.changed_notice.subject" xml:space="preserve">
+    <value>Адрес учётной записи ZeldaArena изменён</value>
+  </data>
+  <data name="email.changed_notice.body" xml:space="preserve">
+    <value>Адрес учётной записи меняется на {0}. Если это были не вы, немедленно обратитесь в поддержку.</value>
+  </data>
+  <data name="email.password_changed.subject" xml:space="preserve">
+    <value>Пароль на ZeldaArena изменён</value>
+  </data>
+  <data name="email.password_changed.body" xml:space="preserve">
+    <value>Пароль вашей учётной записи только что изменён. Если это были не вы, немедленно обратитесь в поддержку.</value>
+  </data>
+  <data name="email.ignore_hint" xml:space="preserve">
+    <value>Если вы не запрашивали это письмо, просто удалите его.</value>
+  </data>
+  <data name="email.link_hint" xml:space="preserve">
+    <value>Если кнопка не работает, скопируйте ссылку в адресную строку браузера:</value>
+  </data>
+  <data name="nav.login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="nav.register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="nav.logout" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+</root>
