@@ -45,11 +45,18 @@ public static class DependencyInjection
                 provider.GetRequiredService<DispatchDomainEventsInterceptor>());
         });
 
+        // Identity подключается до портов: реализации ниже опираются на UserManager
+        // и SignInManager, зарегистрированные здесь (docs/SPEC.md §8).
+        services.AddPlatformIdentity(configuration);
+
         // Порты Application → реализации Infrastructure. Дальше о существовании
         // этих классов не знает никто.
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
         services.AddSingleton<IQueryExecutor, EfQueryExecutor>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUserAccountService, IdentityUserAccountService>();
+        services.AddScoped<ISignInService, IdentitySignInService>();
+        services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
