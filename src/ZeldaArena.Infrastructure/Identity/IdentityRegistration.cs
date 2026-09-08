@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using ZeldaArena.Domain.Constants;
 using ZeldaArena.Infrastructure.Persistence.Ef;
 
 namespace ZeldaArena.Infrastructure.Identity;
@@ -36,11 +37,14 @@ internal static class IdentityRegistration
         services
             .AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                options.Password.RequiredLength = IdentityPolicy.MinimumPasswordLength;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireNonAlphanumeric = true;
+                // Требования читаются из PasswordPolicy: те же константы проверяет
+                // FluentValidation в Application, поэтому форма и Identity не могут
+                // разойтись в том, какой пароль считать годным.
+                options.Password.RequiredLength = PasswordPolicy.MinimumLength;
+                options.Password.RequireDigit = PasswordPolicy.RequireDigit;
+                options.Password.RequireLowercase = PasswordPolicy.RequireLowercase;
+                options.Password.RequireUppercase = PasswordPolicy.RequireUppercase;
+                options.Password.RequireNonAlphanumeric = PasswordPolicy.RequireNonAlphanumeric;
 
                 options.Lockout.MaxFailedAccessAttempts = IdentityPolicy.MaxFailedAccessAttempts;
                 options.Lockout.DefaultLockoutTimeSpan = IdentityPolicy.LockoutDuration;

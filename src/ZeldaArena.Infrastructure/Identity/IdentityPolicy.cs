@@ -10,8 +10,6 @@ namespace ZeldaArena.Infrastructure.Identity;
 /// </summary>
 internal static class IdentityPolicy
 {
-    public const int MinimumPasswordLength = 10;
-
     public const int MaxFailedAccessAttempts = 5;
 
     public static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(15);
