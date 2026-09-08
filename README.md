@@ -71,7 +71,49 @@ docs/                         ТЗ, ADR, макеты, журнал прогре
 
 ## Демо-учётки
 
-Появятся после Фазы 3 (Identity), см. `docs/PROGRESS.md`.
+Создаются сидом при первом запуске в среде `Development`. Пароли лежат
+в `appsettings.Development.json` — это фикстуры разработки, а не секреты: сид выполняется
+только в `Development`.
+
+| Учётная запись | Пароль | Роль |
+|---|---|---|
+| `admin@zeldaarena.local` | `Admin-Zelda-2026!` | Admin |
+| `moderator@zeldaarena.local` | `Moder-Zelda-2026!` | Moderator |
+| `subscriber@zeldaarena.local` | `Demo-Zelda-2026!` | User (подписка появится в Фазе 4) |
+| `expired@zeldaarena.local` | `Demo-Zelda-2026!` | User |
+| `visitor@zeldaarena.local` | `Demo-Zelda-2026!` | User |
+
+Адрес у всех сидовых учёток уже подтверждён, второй фактор выключен.
+
+**На боевом сервере учётные записи из файла не заводятся.** Раздел `SeedAccounts`
+в `appsettings.json` пуст, а ненастроенная учётная запись пропускается. Администратор
+создаётся переменными окружения:
+
+```bash
+SeedAccounts__Admin__Email=admin@example.com
+SeedAccounts__Admin__Password=<из менеджера секретов>
+```
+
+Локально то же самое удобно держать в User Secrets:
+
+```bash
+dotnet user-secrets set "SeedAccounts:Admin:Password" "<пароль>" --project src/ZeldaArena.Web
+```
+
+## Регистрация и почта
+
+Регистрация требует подтверждения адреса: войти до перехода по ссылке из письма нельзя.
+Письмо забирает MailHog — откройте http://localhost:8025, там же видны письма
+восстановления пароля и смены адреса.
+
+Двухфакторная аутентификация подключается в личном кабинете
+(`/Identity/Account/Manage/TwoFactorAuthentication`): QR-код рисуется на сервере,
+подходит любое приложение с поддержкой TOTP. Для роли `Admin` второй фактор обязателен —
+отключить его нельзя.
+
+Если приложение запускается по HTTP (профиль `http` из `launchSettings.json`), cookie
+аутентификации выдаётся без флага `Secure` — за это отвечает `Identity:RequireSecureCookie`
+в `appsettings.Development.json`. В остальных средах флаг включён.
 
 ## Разработка
 
