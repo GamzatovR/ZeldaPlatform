@@ -15,6 +15,12 @@ public static class AccountValidationRules
 {
     public const int MaxEmailLength = 256;
 
+    /// <summary>Длина кода TOTP: шесть цифр (docs/SPEC.md §8.2).</summary>
+    public const int TwoFactorCodeLength = 6;
+
+    /// <summary>Коды восстановления Identity выдаёт в виде xxxxx-xxxxx.</summary>
+    public const int MinRecoveryCodeLength = 8;
+
     public static IRuleBuilderOptions<T, string> ValidAccountEmail<T>(
         this IRuleBuilder<T, string> ruleBuilder) =>
         ruleBuilder
@@ -67,12 +73,35 @@ public static class AccountValidationRules
         return rules;
     }
 
+    /// <summary>
+    /// Код TOTP: шесть цифр. Пробелы и дефисы допускаются — из аутентификатора код
+    /// часто переносят вручную и группами; нормализует его реализация порта.
+    /// </summary>
+    public static IRuleBuilderOptions<T, string> ValidTwoFactorCode<T>(
+        this IRuleBuilder<T, string> ruleBuilder) =>
+        ruleBuilder
+            .NotEmpty()
+            .WithMessage("Введите код из приложения-аутентификатора.")
+            .Must(code => Digits(code).Length == TwoFactorCodeLength)
+            .WithMessage($"Код состоит из {TwoFactorCodeLength} цифр.");
+
     /// <summary>Язык необязателен: пустое значение означает язык по умолчанию.</summary>
     public static IRuleBuilderOptions<T, string?> SupportedCulture<T>(
         this IRuleBuilder<T, string?> ruleBuilder) =>
         ruleBuilder
             .Must(culture => string.IsNullOrEmpty(culture) || SupportedCultures.IsSupported(culture))
             .WithMessage($"Поддерживаются языки: {string.Join(", ", SupportedCultures.All)}.");
+
+    public static IRuleBuilderOptions<T, string> ValidRecoveryCode<T>(
+        this IRuleBuilder<T, string> ruleBuilder) =>
+        ruleBuilder
+            .NotEmpty()
+            .WithMessage("Введите код восстановления.")
+            .MinimumLength(MinRecoveryCodeLength)
+            .WithMessage("Код восстановления указан не полностью.");
+
+    private static string Digits(string? value) =>
+        value is null ? string.Empty : new string([.. value.Where(char.IsDigit)]);
 
     private static bool ContainsDigit(string password) =>
         !string.IsNullOrEmpty(password) && password.Any(char.IsDigit);

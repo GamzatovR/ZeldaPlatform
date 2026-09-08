@@ -47,6 +47,12 @@
     <PackageVersion Include="MailKit" Version="4.17.0" />
   </ItemGroup>
 
+  <!-- Фаза 3: QR-код для подключения аутентификатора (docs/SPEC.md §8.2).
+       QRCoder под MIT, рисует SVG на сервере — клиентская библиотека не нужна. -->
+  <ItemGroup>
+    <PackageVersion Include="QRCoder" Version="1.8.0" />
+  </ItemGroup>
+
   <!-- Фазы 10-11: Mongo, логи, санитизация, бандлинг -->
   <ItemGroup>
     <PackageVersion Include="MongoDB.Driver" Version="3.11.1" />

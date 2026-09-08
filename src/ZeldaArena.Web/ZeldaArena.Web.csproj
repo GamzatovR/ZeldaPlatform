@@ -13,6 +13,12 @@
     <ProjectReference Include="..\ZeldaArena.Infrastructure\ZeldaArena.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- QR-код настройки аутентификатора рисуется на сервере (docs/SPEC.md §8.2):
+       так он работает и без JavaScript, и без вендорской библиотеки в wwwroot. -->
+  <ItemGroup>
+    <PackageReference Include="QRCoder" />
+  </ItemGroup>
+
   <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (CLAUDE.md, «Команды»). -->
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
