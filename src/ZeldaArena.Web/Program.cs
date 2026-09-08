@@ -6,14 +6,20 @@ using ZeldaArena.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+// Каркас локализации: ресурсы лежат в Resources/, нейтральный файл заполнен по-русски.
+// AddViewLocalization даёт вьюхам IHtmlLocalizer, AddDataAnnotationsLocalization —
+// переводимые сообщения валидации. UseRequestLocalization, en.resx и переключатель
+// языка — Фаза 11 (docs/SPEC.md §9.5).
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 // Страницы аккаунта — Razor Pages в области Identity (docs/SPEC.md §5.3, §9.3 п. 16).
-builder.Services.AddRazorPages();
-
-// Каркас локализации: ресурсы лежат в Resources/, нейтральный файл заполнен по-русски.
-// UseRequestLocalization, en.resx и переключатель языка — Фаза 11 (§9.5).
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddRazorPages()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 // Сценарии и конвейер MediatR. Типы Application в Web разрешены:
 // правило 3 §5.2 закрывает только типы Infrastructure.

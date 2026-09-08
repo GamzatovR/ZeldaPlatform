@@ -51,6 +51,8 @@ public static class DependencyInjection
         services.AddPlatformIdentity(configuration);
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+        services.Configure<SeedAccountsOptions>(
+            configuration.GetSection(SeedAccountsOptions.SectionName));
 
         // Порты Application → реализации Infrastructure. Дальше о существовании
         // этих классов не знает никто.
@@ -69,6 +71,7 @@ public static class DependencyInjection
         // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
 
+        services.AddScoped<IdentitySeeder>();
         services.AddScoped<DatabaseSeeder>();
 
         return services;
