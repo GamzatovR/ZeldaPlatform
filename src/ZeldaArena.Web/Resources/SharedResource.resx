@@ -241,4 +241,193 @@
   <data name="nav.logout" xml:space="preserve">
     <value>Выйти</value>
   </data>
+  <data name="field.current_password" xml:space="preserve">
+    <value>Текущий пароль</value>
+  </data>
+  <data name="field.new_password" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="field.confirm_new_password" xml:space="preserve">
+    <value>Подтверждение нового пароля</value>
+  </data>
+  <data name="field.country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="field.culture" xml:space="preserve">
+    <value>Язык интерфейса</value>
+  </data>
+  <data name="field.new_email" xml:space="preserve">
+    <value>Новый адрес электронной почты</value>
+  </data>
+  <data name="forgot_password.title" xml:space="preserve">
+    <value>Восстановление пароля</value>
+  </data>
+  <data name="forgot_password.hint" xml:space="preserve">
+    <value>Укажите адрес, на который зарегистрирована учётная запись.</value>
+  </data>
+  <data name="forgot_password.submit" xml:space="preserve">
+    <value>Прислать ссылку</value>
+  </data>
+  <data name="forgot_password.sent" xml:space="preserve">
+    <value>Если такой адрес зарегистрирован, письмо со ссылкой отправлено. Ссылка действительна 30 минут.</value>
+  </data>
+  <data name="reset_password.title" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="reset_password.submit" xml:space="preserve">
+    <value>Сохранить пароль</value>
+  </data>
+  <data name="reset_password.done" xml:space="preserve">
+    <value>Пароль изменён. Теперь можно войти.</value>
+  </data>
+  <data name="manage.title" xml:space="preserve">
+    <value>Личный кабинет</value>
+  </data>
+  <data name="manage.nav.profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="manage.nav.password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="manage.nav.email" xml:space="preserve">
+    <value>Адрес почты</value>
+  </data>
+  <data name="manage.nav.two_factor" xml:space="preserve">
+    <value>Двухфакторная аутентификация</value>
+  </data>
+  <data name="manage.profile.title" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="manage.profile.submit" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="manage.profile.saved" xml:space="preserve">
+    <value>Профиль сохранён.</value>
+  </data>
+  <data name="manage.profile.roles" xml:space="preserve">
+    <value>Роли</value>
+  </data>
+  <data name="manage.profile.created_at" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="manage.profile.last_login" xml:space="preserve">
+    <value>Последний вход</value>
+  </data>
+  <data name="manage.password.title" xml:space="preserve">
+    <value>Смена пароля</value>
+  </data>
+  <data name="manage.password.submit" xml:space="preserve">
+    <value>Сменить пароль</value>
+  </data>
+  <data name="manage.password.changed" xml:space="preserve">
+    <value>Пароль изменён. Остальные сессии завершены.</value>
+  </data>
+  <data name="manage.email.title" xml:space="preserve">
+    <value>Смена адреса</value>
+  </data>
+  <data name="manage.email.current" xml:space="preserve">
+    <value>Текущий адрес</value>
+  </data>
+  <data name="manage.email.submit" xml:space="preserve">
+    <value>Отправить подтверждение</value>
+  </data>
+  <data name="manage.email.sent" xml:space="preserve">
+    <value>Ссылка подтверждения отправлена на новый адрес. Пока вы по ней не перейдёте, адрес не изменится.</value>
+  </data>
+  <data name="manage.email.changed" xml:space="preserve">
+    <value>Адрес изменён.</value>
+  </data>
+  <data name="manage.email.change_failed" xml:space="preserve">
+    <value>Сменить адрес не удалось.</value>
+  </data>
+  <data name="manage.two_factor.title" xml:space="preserve">
+    <value>Двухфакторная аутентификация</value>
+  </data>
+  <data name="manage.two_factor.enabled" xml:space="preserve">
+    <value>Включена.</value>
+  </data>
+  <data name="manage.two_factor.disabled" xml:space="preserve">
+    <value>Выключена.</value>
+  </data>
+  <data name="manage.two_factor.enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="manage.two_factor.disable" xml:space="preserve">
+    <value>Выключить</value>
+  </data>
+  <data name="manage.two_factor.disabled_notice" xml:space="preserve">
+    <value>Двухфакторная аутентификация выключена, ключ аутентификатора сброшен.</value>
+  </data>
+  <data name="manage.two_factor.recovery_left" xml:space="preserve">
+    <value>Осталось кодов восстановления: {0}</value>
+  </data>
+  <data name="manage.two_factor.generate_codes" xml:space="preserve">
+    <value>Сгенерировать новые коды восстановления</value>
+  </data>
+  <data name="manage.two_factor.admin_required" xml:space="preserve">
+    <value>Для роли Admin двухфакторная аутентификация обязательна: без неё раздел администрирования закрыт.</value>
+  </data>
+  <data name="enable_authenticator.title" xml:space="preserve">
+    <value>Подключение аутентификатора</value>
+  </data>
+  <data name="enable_authenticator.step_install" xml:space="preserve">
+    <value>Установите приложение-аутентификатор: Google Authenticator, Microsoft Authenticator или любое другое с поддержкой TOTP.</value>
+  </data>
+  <data name="enable_authenticator.step_scan" xml:space="preserve">
+    <value>Отсканируйте QR-код или введите ключ вручную:</value>
+  </data>
+  <data name="enable_authenticator.step_verify" xml:space="preserve">
+    <value>Введите код из приложения, чтобы подтвердить настройку.</value>
+  </data>
+  <data name="enable_authenticator.submit" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="enable_authenticator.enabled" xml:space="preserve">
+    <value>Двухфакторная аутентификация включена. Сохраните коды восстановления.</value>
+  </data>
+  <data name="recovery_codes.title" xml:space="preserve">
+    <value>Коды восстановления</value>
+  </data>
+  <data name="recovery_codes.warning" xml:space="preserve">
+    <value>Сохраните эти коды в надёжном месте. Каждый работает один раз, и показаны они только сейчас.</value>
+  </data>
+  <data name="recovery_codes.regenerate" xml:space="preserve">
+    <value>Сгенерировать заново</value>
+  </data>
+  <data name="recovery_codes.regenerated" xml:space="preserve">
+    <value>Выданы новые коды восстановления, прежние больше не действуют.</value>
+  </data>
+  <data name="login_2fa.title" xml:space="preserve">
+    <value>Код подтверждения</value>
+  </data>
+  <data name="login_2fa.hint" xml:space="preserve">
+    <value>Введите шестизначный код из приложения-аутентификатора.</value>
+  </data>
+  <data name="login_2fa.submit" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="login_2fa.remember_device" xml:space="preserve">
+    <value>Не спрашивать код на этом устройстве 30 дней</value>
+  </data>
+  <data name="login_2fa.use_recovery_code" xml:space="preserve">
+    <value>Войти по коду восстановления</value>
+  </data>
+  <data name="login_recovery.title" xml:space="preserve">
+    <value>Код восстановления</value>
+  </data>
+  <data name="login_recovery.hint" xml:space="preserve">
+    <value>Введите один из сохранённых кодов восстановления. После использования код перестаёт действовать.</value>
+  </data>
+  <data name="login_recovery.submit" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="field.two_factor_code" xml:space="preserve">
+    <value>Код из приложения</value>
+  </data>
+  <data name="field.recovery_code" xml:space="preserve">
+    <value>Код восстановления</value>
+  </data>
+  <data name="nav.manage" xml:space="preserve">
+    <value>Личный кабинет</value>
+  </data>
 </root>

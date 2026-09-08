@@ -27,9 +27,8 @@
     <button type="submit" class="btn btn-primary w-100">@T["login.submit"]</button>
 </form>
 
-@* Ссылка на восстановление пароля появится вместе с самой страницей: тег-хелпер
-   asp-page падает, если маршрут не найден, поэтому ссылки добавляются по мере готовности. *@
 <div class="mt-3 d-flex flex-column gap-1">
+    <a asp-page="./ForgotPassword">@T["login.forgot_password"]</a>
     <a asp-page="./ResendEmailConfirmation">@T["login.resend_confirmation"]</a>
     <span>@T["login.no_account"] <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@T["login.register_link"]</a></span>
 </div>

@@ -1,0 +1,30 @@
+using System.ComponentModel.DataAnnotations;
+
+using ZeldaArena.Domain.Constants;
+
+namespace ZeldaArena.Web.Models.Account;
+
+/// <summary>
+/// Форма нового пароля. Идентификатор и токен приходят скрытыми полями из ссылки
+/// в письме: без них форма бесполезна, а подделать их нельзя — токен подписан.
+/// </summary>
+public sealed class ResetPasswordViewModel
+{
+    public Guid UserId { get; set; }
+
+    public string Token { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Укажите пароль.")]
+    [StringLength(
+        PasswordPolicy.MaximumLength,
+        MinimumLength = PasswordPolicy.MinimumLength,
+        ErrorMessage = "Пароль должен быть от {2} до {1} символов.")]
+    [DataType(DataType.Password)]
+    [Display(Name = "Новый пароль")]
+    public string NewPassword { get; set; } = string.Empty;
+
+    [DataType(DataType.Password)]
+    [Compare(nameof(NewPassword), ErrorMessage = "Пароли не совпадают.")]
+    [Display(Name = "Подтверждение нового пароля")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+}

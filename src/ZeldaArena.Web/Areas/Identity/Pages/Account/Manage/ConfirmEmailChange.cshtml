@@ -1,0 +1,16 @@
+@page
+@model ConfirmEmailChangeModel
+@{
+    ViewData["Title"] = T["manage.email.title"].Value;
+}
+
+@if (Model.Succeeded)
+{
+    <div class="alert alert-success" role="alert">@T["manage.email.changed"]</div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+}
+
+<a asp-page="./Email" class="btn btn-outline-primary">@T["manage.nav.email"]</a>

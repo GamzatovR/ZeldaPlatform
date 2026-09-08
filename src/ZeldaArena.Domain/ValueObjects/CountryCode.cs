@@ -29,6 +29,24 @@ public sealed class CountryCode : ValueObject
         return new CountryCode(normalized);
     }
 
+    /// <summary>
+    /// Разбор без исключения — для валидаторов, где негодный ввод это обычный исход,
+    /// а не сбой. Парная к <see cref="From"/>, как и у <see cref="Slug"/>.
+    /// </summary>
+    public static bool TryFrom(string? value, out CountryCode? countryCode)
+    {
+        try
+        {
+            countryCode = From(value!);
+            return true;
+        }
+        catch (Exception exception) when (exception is ArgumentException or DomainException)
+        {
+            countryCode = null;
+            return false;
+        }
+    }
+
     public override string ToString() => Value;
 
     protected override IEnumerable<object?> GetEqualityComponents()

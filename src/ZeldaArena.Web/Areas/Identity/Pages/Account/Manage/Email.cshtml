@@ -1,0 +1,23 @@
+@page
+@model EmailModel
+@{
+    ViewData["Title"] = T["manage.email.title"].Value;
+}
+
+<p class="text-muted">@T["manage.email.current"]: <strong>@Model.CurrentEmail</strong></p>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="Input.NewEmail" class="form-label">@T["field.new_email"]</label>
+        <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" />
+        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@T["manage.email.submit"]</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
