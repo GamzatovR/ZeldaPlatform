@@ -5,12 +5,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.RegisterUser;
 using ZeldaArena.Domain.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
+using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
@@ -20,6 +22,7 @@ namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 /// «проверьте почту» (docs/SPEC.md §8.2).
 /// </summary>
 [AllowAnonymous]
+[EnableRateLimiting(RateLimitPolicies.Register)]
 public sealed class RegisterModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel
 {

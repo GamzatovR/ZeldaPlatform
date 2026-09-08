@@ -2,6 +2,8 @@ using ZeldaArena.Application;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure;
 using ZeldaArena.Infrastructure.Persistence.Ef;
+using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.RateLimiting;
 using ZeldaArena.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +36,12 @@ builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
 
 // Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
 // адреса страниц — знание слоя представления.
+// Политики §8.1. Динамические Feature:{code} добавит Фаза 4.
+builder.Services.AddPlatformAuthorization();
+
+// Ограничение частоты на формах аккаунта (§8.2).
+builder.Services.AddPlatformRateLimiter();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -62,6 +70,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

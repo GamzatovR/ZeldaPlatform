@@ -3,12 +3,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Common.Models.Identity;
 using ZeldaArena.Application.Features.Account.Commands.SignIn;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
+using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
@@ -21,6 +23,7 @@ namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 /// за пределами Web.
 /// </summary>
 [AllowAnonymous]
+[EnableRateLimiting(RateLimitPolicies.SignIn)]
 public sealed class LoginModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel
 {

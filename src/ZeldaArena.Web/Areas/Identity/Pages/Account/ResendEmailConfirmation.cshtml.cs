@@ -3,11 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.ResendEmailConfirmation;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
+using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
@@ -16,6 +18,7 @@ namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 /// поэтому по нему нельзя узнать, заведён ли он на портале (docs/SPEC.md §8.2).
 /// </summary>
 [AllowAnonymous]
+[EnableRateLimiting(RateLimitPolicies.EmailDelivery)]
 public sealed class ResendEmailConfirmationModel(
     ISender sender,
     IStringLocalizer<SharedResource> localizer)

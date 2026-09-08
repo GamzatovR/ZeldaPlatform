@@ -60,6 +60,7 @@ internal static class IdentityRegistration
                     IdentityPolicy.PasswordResetTokenProviderName;
             })
             .AddEntityFrameworkStores<AppDbContext>()
+            .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
             .AddDefaultTokenProviders()
             .AddTokenProvider<PasswordResetTokenProvider<ApplicationUser>>(
                 IdentityPolicy.PasswordResetTokenProviderName);
