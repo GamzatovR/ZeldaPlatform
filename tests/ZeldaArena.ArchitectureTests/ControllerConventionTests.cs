@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ZeldaArena.ArchitectureTests;
 
@@ -6,6 +7,11 @@ namespace ZeldaArena.ArchitectureTests;
 /// Правило 4 из docs/SPEC.md §5.2: контроллер — тонкий слой, он умеет только отправить
 /// команду или запрос, перевести текст и написать в лог. Всё остальное — признак того,
 /// что бизнес-логика поехала в слой представления (§20, пункт 1).
+///
+/// Проверка распространена и на <see cref="PageModel"/>: страницы аккаунта из Фазы 3 —
+/// это Razor Pages, и без этого соглашение на них попросту не действовало бы.
+/// Формулировка §5.2 говорит про «контроллеры», но имеет в виду весь слой
+/// представления: PageModel — такой же обработчик запроса.
 /// </summary>
 public class ControllerConventionTests
 {
@@ -21,23 +27,40 @@ public class ControllerConventionTests
     [Fact]
     public void Controllers_should_only_inject_sender_localizer_and_logger()
     {
-        var offenders = ArchitectureFixture.Web.GetTypes()
-            .Where(IsController)
-            .SelectMany(controller => controller.GetConstructors())
-            .SelectMany(constructor => constructor.GetParameters()
-                .Where(parameter => !IsAllowed(parameter.ParameterType))
-                .Select(parameter =>
-                    $"{constructor.DeclaringType!.Name}({parameter.ParameterType.Name} {parameter.Name})"))
-            .ToArray();
+        var offenders = Offenders(IsController);
 
         offenders.ShouldBeEmpty(
             "Контроллер принимает только ISender, IStringLocalizer и ILogger. "
             + $"Нарушители: {string.Join(", ", offenders)}");
     }
 
+    [Fact]
+    public void Page_models_should_only_inject_sender_localizer_and_logger()
+    {
+        var offenders = Offenders(IsPageModel);
+
+        offenders.ShouldBeEmpty(
+            "PageModel принимает только ISender, IStringLocalizer и ILogger. "
+            + $"Нарушители: {string.Join(", ", offenders)}");
+    }
+
+    private static string[] Offenders(Func<Type, bool> selector) =>
+        [.. ArchitectureFixture.Web.GetTypes()
+            .Where(selector)
+            .SelectMany(handler => handler.GetConstructors())
+            .SelectMany(constructor => constructor.GetParameters()
+                .Where(parameter => !IsAllowed(parameter.ParameterType))
+                .Select(parameter =>
+                    $"{constructor.DeclaringType!.Name}({parameter.ParameterType.Name} {parameter.Name})"))];
+
     private static bool IsController(Type type) =>
-        typeof(ControllerBase).IsAssignableFrom(type)
-        && type is { IsAbstract: false, IsClass: true }
+        typeof(ControllerBase).IsAssignableFrom(type) && IsConcreteHandler(type);
+
+    private static bool IsPageModel(Type type) =>
+        typeof(PageModel).IsAssignableFrom(type) && IsConcreteHandler(type);
+
+    private static bool IsConcreteHandler(Type type) =>
+        type is { IsAbstract: false, IsClass: true }
         && !ArchitectureFixture.IsCompilerGenerated(type);
 
     private static bool IsAllowed(Type parameterType)
