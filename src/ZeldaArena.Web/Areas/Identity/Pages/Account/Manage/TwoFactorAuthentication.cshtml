@@ -1,0 +1,46 @@
+@page
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = T["manage.two_factor.title"].Value;
+}
+
+@if (Model.Status is null)
+{
+    <div class="alert alert-danger" role="alert">@T["account.operation_failed"]</div>
+}
+else if (Model.Status.IsEnabled)
+{
+    <div class="alert alert-success" role="alert">@T["manage.two_factor.enabled"]</div>
+
+    <p>@string.Format(T["manage.two_factor.recovery_left"].Value, Model.Status.RemainingRecoveryCodes)</p>
+
+    <div class="d-flex flex-column gap-2">
+        <form method="post" asp-page-handler="GenerateCodes">
+            <button type="submit" class="btn btn-outline-primary">@T["manage.two_factor.generate_codes"]</button>
+        </form>
+
+        @if (Model.Status.IsRequired)
+        {
+            @* Для роли Admin второй фактор обязателен: кнопки отключения нет,
+               и хендлер отвергает попытку независимо от разметки (docs/SPEC.md §8.2). *@
+            <div class="alert alert-info mb-0" role="alert">@T["manage.two_factor.admin_required"]</div>
+        }
+        else
+        {
+            <form method="post" asp-page-handler="Disable">
+                <button type="submit" class="btn btn-outline-danger">@T["manage.two_factor.disable"]</button>
+            </form>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">@T["manage.two_factor.disabled"]</div>
+
+    @if (Model.Status.IsRequired)
+    {
+        <div class="alert alert-info" role="alert">@T["manage.two_factor.admin_required"]</div>
+    }
+
+    <a asp-page="./EnableAuthenticator" class="btn btn-primary">@T["manage.two_factor.enable"]</a>
+}

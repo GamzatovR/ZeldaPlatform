@@ -11,9 +11,9 @@ namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 /// по естественному ключу (код тарифа, слаг, артикул), добавляется только недостающее,
 /// повторный запуск ничего не меняет.
 ///
-/// Пользователей, ролей, администратора, новостей, подписок и заказов здесь нет:
-/// им нужен UserManager и таблица AspNetUsers, которые появляются в Фазе 3.
-/// Сидер расширяется там же, а не переписывается.
+/// Пользователей и роли заводит IdentitySeeder, он отрабатывает раньше
+/// (docs/adr/ADR-0006). Новостям нужен автор с внешним ключом на AspNetUsers,
+/// поэтому они сеются здесь, после него. Подписки и заказы — Фаза 4.
 /// </summary>
 public sealed class DatabaseSeeder(
     AppDbContext context,
@@ -27,6 +27,43 @@ public sealed class DatabaseSeeder(
         await SeedBillingAsync(cancellationToken);
         await SeedCatalogAsync(cancellationToken);
         await SeedEsportsAsync(now, cancellationToken);
+        await SeedNewsAsync(now, cancellationToken);
+    }
+
+    /// <summary>
+    /// Новости сеются последними: автором становится первый заведённый пользователь,
+    /// то есть администратор из IdentitySeeder. Если учётных записей нет вовсе —
+    /// такое бывает на боевом сервере, где сид аккаунтов выключен, — новости
+    /// пропускаются, а не падают на внешнем ключе.
+    /// </summary>
+    private async Task SeedNewsAsync(DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        if (await context.NewsArticles.AnyAsync(cancellationToken))
+        {
+            return;
+        }
+
+        var authorId = await context.Users
+            .OrderBy(user => user.CreatedAt)
+            .Select(user => user.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (authorId == Guid.Empty)
+        {
+            logger.LogInformation("Сид новостей пропущен: в базе нет ни одного пользователя.");
+
+            return;
+        }
+
+        var articles = NewsSeedData.Articles(authorId, now);
+
+        context.NewsArticles.AddRange(articles);
+        await context.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation(
+            "Сид новостей: добавлено {NewsCount}, из них опубликовано {PublishedCount}.",
+            articles.Count,
+            articles.Count(article => article.IsPublished));
     }
 
     private async Task SeedBillingAsync(CancellationToken cancellationToken)

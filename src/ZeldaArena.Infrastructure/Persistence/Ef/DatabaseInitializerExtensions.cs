@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
+using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
@@ -21,6 +22,11 @@ public static class DatabaseInitializerExtensions
 
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await context.Database.MigrateAsync(cancellationToken);
+
+        // Роли и учётные записи идут первыми: новость требует автора с внешним ключом
+        // на AspNetUsers, поэтому предметный сид без них не пройдёт (docs/SPEC.md §6).
+        var identitySeeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
+        await identitySeeder.SeedAsync(cancellationToken);
 
         var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
         await seeder.SeedAsync(cancellationToken);

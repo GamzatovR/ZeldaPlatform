@@ -1,0 +1,16 @@
+@page
+@model ShowRecoveryCodesModel
+@{
+    ViewData["Title"] = T["recovery_codes.title"].Value;
+}
+
+<div class="alert alert-warning" role="alert">@T["recovery_codes.warning"]</div>
+
+<ul class="list-group mb-3">
+    @foreach (var code in Model.Codes)
+    {
+        <li class="list-group-item font-monospace">@code</li>
+    }
+</ul>
+
+<a asp-page="./TwoFactorAuthentication" class="btn btn-outline-primary">@T["manage.nav.two_factor"]</a>

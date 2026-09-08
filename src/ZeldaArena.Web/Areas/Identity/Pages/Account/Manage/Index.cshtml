@@ -1,0 +1,47 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = T["manage.profile.title"].Value;
+}
+
+<dl class="row small text-muted">
+    <dt class="col-5">@T["field.email"]</dt>
+    <dd class="col-7">@Model.Email</dd>
+
+    <dt class="col-5">@T["manage.profile.roles"]</dt>
+    <dd class="col-7">@Model.Roles</dd>
+
+    <dt class="col-5">@T["manage.profile.created_at"]</dt>
+    <dd class="col-7">@Model.CreatedAt.ToLocalTime().ToString("g")</dd>
+
+    <dt class="col-5">@T["manage.profile.last_login"]</dt>
+    <dd class="col-7">@(Model.LastLoginAt?.ToLocalTime().ToString("g") ?? "—")</dd>
+</dl>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="Input.DisplayName" class="form-label">@T["field.display_name"]</label>
+        <input asp-for="Input.DisplayName" class="form-control" autocomplete="nickname" />
+        <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.CountryCode" class="form-label">@T["field.country"]</label>
+        <input asp-for="Input.CountryCode" class="form-control" maxlength="2" placeholder="RU" />
+        <span asp-validation-for="Input.CountryCode" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.PreferredCulture" class="form-label">@T["field.culture"]</label>
+        <select asp-for="Input.PreferredCulture" asp-items="Model.Cultures" class="form-select"></select>
+        <span asp-validation-for="Input.PreferredCulture" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@T["manage.profile.submit"]</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

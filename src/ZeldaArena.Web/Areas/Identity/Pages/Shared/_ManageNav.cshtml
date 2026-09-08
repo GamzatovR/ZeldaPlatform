@@ -1,0 +1,17 @@
+@*
+    Активный пункт определяется по имени текущей страницы. Свой tag helper
+    <active-route> появится в Фазе 5 вместе с дизайн-системой (docs/SPEC.md §10.2).
+*@
+@{
+    var page = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+
+    string Active(string suffix) =>
+        page.EndsWith(suffix, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
+}
+
+<nav class="list-group">
+    <a class="list-group-item list-group-item-action @Active("/Manage/Index")" asp-page="./Index">@T["manage.nav.profile"]</a>
+    <a class="list-group-item list-group-item-action @Active("/Manage/ChangePassword")" asp-page="./ChangePassword">@T["manage.nav.password"]</a>
+    <a class="list-group-item list-group-item-action @Active("/Manage/Email")" asp-page="./Email">@T["manage.nav.email"]</a>
+    <a class="list-group-item list-group-item-action @Active("/Manage/TwoFactorAuthentication")" asp-page="./TwoFactorAuthentication">@T["manage.nav.two_factor"]</a>
+</nav>

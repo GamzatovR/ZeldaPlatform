@@ -1,0 +1,33 @@
+@page
+@model LoginWith2faModel
+@{
+    ViewData["Title"] = T["login_2fa.title"].Value;
+}
+
+<p>@T["login_2fa.hint"]</p>
+
+<form method="post" asp-route-returnUrl="@Model.ReturnUrl" asp-route-rememberMe="@Model.Input.RememberMe">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Code" class="form-label">@T["field.two_factor_code"]</label>
+        <input asp-for="Input.Code" class="form-control" autocomplete="one-time-code"
+               inputmode="numeric" autofocus />
+        <span asp-validation-for="Input.Code" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Input.RememberDevice" class="form-check-input" />
+        <label asp-for="Input.RememberDevice" class="form-check-label">@T["login_2fa.remember_device"]</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">@T["login_2fa.submit"]</button>
+</form>
+
+<p class="mt-3">
+    <a asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">@T["login_2fa.use_recovery_code"]</a>
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

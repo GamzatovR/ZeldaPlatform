@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure.Common;
+using ZeldaArena.Infrastructure.Email;
 using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Logging;
 using ZeldaArena.Infrastructure.Persistence.Ef;
@@ -45,11 +46,23 @@ public static class DependencyInjection
                 provider.GetRequiredService<DispatchDomainEventsInterceptor>());
         });
 
+        // Identity подключается до портов: реализации ниже опираются на UserManager
+        // и SignInManager, зарегистрированные здесь (docs/SPEC.md §8).
+        services.AddPlatformIdentity(configuration);
+
+        services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+        services.Configure<SeedAccountsOptions>(
+            configuration.GetSection(SeedAccountsOptions.SectionName));
+
         // Порты Application → реализации Infrastructure. Дальше о существовании
         // этих классов не знает никто.
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
         services.AddSingleton<IQueryExecutor, EfQueryExecutor>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUserAccountService, IdentityUserAccountService>();
+        services.AddScoped<ISignInService, IdentitySignInService>();
+        services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
+        services.AddScoped<IEmailSender, SmtpEmailSender>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
@@ -58,6 +71,7 @@ public static class DependencyInjection
         // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
 
+        services.AddScoped<IdentitySeeder>();
         services.AddScoped<DatabaseSeeder>();
 
         return services;

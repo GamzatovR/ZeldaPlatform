@@ -1,0 +1,52 @@
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
+
+using ZeldaArena.Application.Features.Account.Commands.ChangePassword;
+using ZeldaArena.Web.Extensions;
+using ZeldaArena.Web.Models.Account;
+
+namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
+
+/// <summary>
+/// Смена пароля из кабинета. Требует текущий пароль и завершает остальные сессии
+/// (docs/SPEC.md §8.2) — текущая при этом остаётся живой, cookie перевыписывается
+/// в хендлере.
+/// </summary>
+[Authorize]
+public sealed class ChangePasswordModel(ISender sender, IStringLocalizer<SharedResource> localizer)
+    : PageModel
+{
+    [BindProperty]
+    public ChangePasswordViewModel Input { get; set; } = new();
+
+    public void OnGet()
+    {
+    }
+
+    public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        var result = await sender.Send(
+            new ChangePasswordCommand(Input.CurrentPassword, Input.NewPassword),
+            cancellationToken);
+
+        if (result.IsFailure)
+        {
+            ModelState.AddResultError(result, localizer);
+
+            return Page();
+        }
+
+        TempData["StatusMessage"] = localizer["manage.password.changed"].Value;
+
+        return RedirectToPage();
+    }
+}

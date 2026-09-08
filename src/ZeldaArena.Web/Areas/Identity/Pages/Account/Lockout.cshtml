@@ -1,0 +1,9 @@
+@page
+@model LockoutModel
+@{
+    ViewData["Title"] = T["lockout.title"].Value;
+}
+
+<div class="alert alert-warning" role="alert">@T["lockout.message"]</div>
+
+<a asp-page="./ForgotPassword" class="btn btn-outline-primary">@T["login.forgot_password"]</a>
