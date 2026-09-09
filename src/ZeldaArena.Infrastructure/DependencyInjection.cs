@@ -8,6 +8,7 @@ using ZeldaArena.Infrastructure.Common;
 using ZeldaArena.Infrastructure.Email;
 using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Logging;
+using ZeldaArena.Infrastructure.Payments;
 using ZeldaArena.Infrastructure.Persistence.Ef;
 using ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
@@ -57,6 +58,17 @@ public static class DependencyInjection
         services.Configure<SeedAccountsOptions>(
             configuration.GetSection(SeedAccountsOptions.SectionName));
 
+        // Перец обязателен и проверяется при старте: без него шестизначный код
+        // защищён одним лишь SHA-256, а это миллион вариантов для перебора
+        // по дампу базы (docs/SPEC.md §7.6). Лучше не подняться, чем тихо
+        // работать с ослабленным хешем.
+        services.AddOptions<ConfirmationCodeOptions>()
+            .Bind(configuration.GetSection(ConfirmationCodeOptions.SectionName))
+            .Validate(
+                options => !string.IsNullOrWhiteSpace(options.Pepper),
+                "Не задан Payments:ConfirmationCode:Pepper — секрет для хеша кода подтверждения.")
+            .ValidateOnStart();
+
         // Порты Application → реализации Infrastructure. Дальше о существовании
         // этих классов не знает никто.
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
@@ -73,6 +85,11 @@ public static class DependencyInjection
         services.AddScoped<ISignInService, IdentitySignInService>();
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
         services.AddScoped<IEmailSender, SmtpEmailSender>();
+
+        // Мнимая оплата (§7.6). Провайдер меняется одной строкой — ради этого
+        // у порта и есть Key (EP-6).
+        services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
+        services.AddSingleton<IConfirmationCodeProtector, ConfirmationCodeProtector>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));

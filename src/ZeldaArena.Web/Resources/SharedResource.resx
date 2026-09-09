@@ -430,4 +430,25 @@
   <data name="nav.manage" xml:space="preserve">
     <value>Личный кабинет</value>
   </data>
+  <data name="email.payment_code.subject" xml:space="preserve">
+    <value>Код подтверждения оплаты</value>
+  </data>
+  <data name="email.payment_code.body" xml:space="preserve">
+    <value>Код подтверждения оплаты: {0}. Он действителен {1} мин. Введите его на странице оплаты — переходить по ссылкам из письма для этого не нужно.</value>
+  </data>
+  <data name="email.payment_receipt.subject" xml:space="preserve">
+    <value>Подписка оплачена</value>
+  </data>
+  <data name="email.payment_receipt.body" xml:space="preserve">
+    <value>Оплата прошла. Тариф «{0}», сумма {1}. Подписка действует до {2}.</value>
+  </data>
+  <data name="email.subscription_expired.subject" xml:space="preserve">
+    <value>Подписка закончилась</value>
+  </data>
+  <data name="email.subscription_expired.body" xml:space="preserve">
+    <value>Срок действия подписки по тарифу «{0}» истёк. Платные функции больше недоступны, но их можно вернуть, оформив подписку заново.</value>
+  </data>
+  <data name="email.payment_footer" xml:space="preserve">
+    <value>Если вы не оформляли оплату, просто удалите это письмо: без кода из него ничего не произойдёт.</value>
+  </data>
 </root>

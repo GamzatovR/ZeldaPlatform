@@ -33,6 +33,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // Письма аккаунта собираются здесь, а не в Infrastructure: текст берётся из тех же
 // ресурсов, что и страницы, а ссылка — из таблицы маршрутов (docs/adr/ADR-0006).
 builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
+builder.Services.AddScoped<IBillingEmailSender, BillingEmailSender>();
 
 // Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
 // адреса страниц — знание слоя представления.
