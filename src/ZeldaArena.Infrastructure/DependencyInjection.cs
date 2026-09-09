@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using ZeldaArena.Application.Common.Interfaces;
+using ZeldaArena.Infrastructure.BackgroundJobs;
 using ZeldaArena.Infrastructure.Common;
 using ZeldaArena.Infrastructure.Email;
 using ZeldaArena.Infrastructure.Identity;
@@ -97,6 +98,9 @@ public static class DependencyInjection
 
         // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
+
+        // Раз в час помечает истёкшие подписки (docs/SPEC.md §7.5, п. 4).
+        services.AddHostedService<SubscriptionExpirationService>();
 
         services.AddScoped<IdentitySeeder>();
         services.AddScoped<DatabaseSeeder>();
