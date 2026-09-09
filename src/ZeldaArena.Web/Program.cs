@@ -1,3 +1,8 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+
+using Microsoft.Extensions.WebEncoders;
+
 using ZeldaArena.Application;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure;
@@ -13,6 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 // переводимые сообщения валидации. UseRequestLocalization, en.resx и переключатель
 // языка — Фаза 11 (docs/SPEC.md §9.5).
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// Razor по умолчанию экранирует всё, что вне латиницы: «Подписка» превращается
+// в «&#x41F;&#x43E;...» и страница на русском раздувается в несколько раз. Экранирование
+// защищает от подстановки разметки, а не от кириллицы, поэтому разрешаем весь Unicode —
+// иначе требование §16 по скорости загрузки не выполнить.
+builder.Services.Configure<WebEncoderOptions>(options =>
+    options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()
@@ -33,10 +45,11 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // Письма аккаунта собираются здесь, а не в Infrastructure: текст берётся из тех же
 // ресурсов, что и страницы, а ссылка — из таблицы маршрутов (docs/adr/ADR-0006).
 builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
+builder.Services.AddScoped<IBillingEmailSender, BillingEmailSender>();
 
 // Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
 // адреса страниц — знание слоя представления.
-// Политики §8.1. Динамические Feature:{code} добавит Фаза 4.
+// Статические политики §8.1 плюс динамические Feature:{code} (§7.3).
 builder.Services.AddPlatformAuthorization();
 
 // Ограничение частоты на формах аккаунта (§8.2).

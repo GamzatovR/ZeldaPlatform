@@ -1,0 +1,12 @@
+@*
+    Сообщение об исходе действия, пережившее редирект (PRG). Держится в TempData,
+    поэтому показывается ровно один раз.
+*@
+@{
+    var message = TempData["StatusMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info" role="alert">@message</div>
+}

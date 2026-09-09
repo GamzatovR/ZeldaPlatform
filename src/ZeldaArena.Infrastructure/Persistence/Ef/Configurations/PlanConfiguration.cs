@@ -35,8 +35,14 @@ public sealed class PlanConfiguration : EntityConfiguration<Plan>
             .HasForeignKey(planFeature => planFeature.PlanId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Состав фич — часть агрегата, а не связанные данные: Plan.GrantFeature
+        // и RevokeFeature решают по содержимому этой коллекции, есть ли уже такая
+        // привязка. Без AutoInclude репозиторий отдавал бы тариф с пустым составом,
+        // и повторная привязка вставляла бы вторую строку с тем же составным ключом.
+        // Поймано пробой EP-4 на живом приложении.
         builder.Navigation(plan => plan.PlanFeatures)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
 
         builder.HasIndex(plan => new { plan.IsActive, plan.SortOrder });
     }

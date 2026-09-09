@@ -83,6 +83,45 @@ public class Subscription : BaseEntity, IAuditableEntity
     }
 
     /// <summary>
+    /// Заявка на подписку: пользователь выбрал тариф, но ещё не оплатил
+    /// (docs/SPEC.md §7.5, п. 1).
+    ///
+    /// Нужна затем, что платёж хранит сумму и ссылку на подписку, но не тариф (§6),
+    /// а при подтверждении кода тариф необходим: у него берутся срок и цена. Выбор
+    /// пользователя должен пережить уход со страницы и подтверждение с другого
+    /// устройства, поэтому он лежит в базе, а не в сессии.
+    ///
+    /// Срок нулевой и начнётся только с оплаты: <see cref="Extend"/> отсчитает его
+    /// от даты платежа, потому что <see cref="EndsAt"/> к тому моменту уже в прошлом.
+    /// Прав такая запись не даёт — <see cref="IsActiveAt"/> требует статус Active.
+    /// </summary>
+    public static Subscription Reserve(Guid userId, Plan plan, DateTimeOffset reservedAt)
+    {
+        ArgumentNullException.ThrowIfNull(plan);
+
+        InvariantViolationException.ThrowIf(
+            userId == Guid.Empty,
+            "subscription.user_required",
+            "У подписки обязан быть пользователь.");
+
+        InvariantViolationException.ThrowIf(
+            plan.DurationDays < 1,
+            "subscription.plan_without_duration",
+            "Подписку нельзя оформить на тариф без срока действия.");
+
+        return new Subscription
+        {
+            UserId = userId,
+            PlanId = plan.Id,
+            StartsAt = reservedAt,
+            EndsAt = reservedAt,
+            Status = SubscriptionStatus.Pending,
+            AutoRenew = false,
+            PriceSnapshot = plan.Price.Amount,
+        };
+    }
+
+    /// <summary>
     /// Продление действующей подписки: срок прибавляется к текущему концу, а не к «сейчас»,
     /// иначе пользователь терял бы оплаченные дни. Истёкшая подписка продлевается от даты оплаты.
     /// </summary>

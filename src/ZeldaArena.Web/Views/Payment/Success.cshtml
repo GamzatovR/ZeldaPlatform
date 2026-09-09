@@ -1,0 +1,12 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["payment.success_title"].Value;
+}
+
+<h1 class="h4">@Localizer["payment.success_title"]</h1>
+
+<p>@Localizer["payment.success_body"]</p>
+
+<a class="btn btn-primary" asp-controller="Subscription" asp-action="Index">
+    @Localizer["subscription.title"]
+</a>
