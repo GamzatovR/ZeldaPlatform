@@ -64,6 +64,9 @@ internal sealed class PaymentScenarioFixture
 
     public RecordingUnitOfWork UnitOfWork { get; } = new();
 
+    /// <summary>Перевыпуск cookie после оплаты: без него бейдж Premium отстал бы на пять минут.</summary>
+    public RecordingSignInService SignIn { get; } = new();
+
     /// <summary>Кто платит. Аноним подставляется отдельным тестом.</summary>
     public Guid? SignedInUserId { get; set; }
 
@@ -111,6 +114,7 @@ internal sealed class PaymentScenarioFixture
             new InMemoryQueryExecutor(),
             Codes,
             Email,
+            SignIn,
             UnitOfWork,
             Clock())
         .Handle(

@@ -109,6 +109,29 @@ public class PaymentFlowTests
             .ShouldNotBeEmpty();
     }
 
+    /// <summary>
+    /// Cookie хранит снимок ролей на момент входа, поэтому без перевыпуска бейдж
+    /// Premium появился бы только через пять минут — а человек смотрит на результат
+    /// оплаты прямо сейчас. Поймано сквозной проверкой на живом приложении.
+    /// </summary>
+    [Fact]
+    public async Task Successful_payment_refreshes_the_sign_in_cookie()
+    {
+        await _fixture.PayAsync();
+
+        _fixture.SignIn.RefreshedUsers.ShouldBe([_fixture.UserId]);
+    }
+
+    /// <summary>Неудачная оплата ролей не меняет, и трогать cookie незачем.</summary>
+    [Fact]
+    public async Task A_failed_confirmation_leaves_the_cookie_alone()
+    {
+        await _fixture.StartAsync();
+        await _fixture.ConfirmAsync("000000");
+
+        _fixture.SignIn.RefreshedUsers.ShouldBeEmpty();
+    }
+
     [Fact]
     public async Task A_wrong_code_costs_an_attempt_and_leaves_the_payment_pending()
     {

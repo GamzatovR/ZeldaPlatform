@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+using ZeldaArena.Domain.Billing;
+using ZeldaArena.Domain.Constants;
 using ZeldaArena.Domain.Enums;
 using ZeldaArena.Domain.Esports;
 
@@ -13,7 +15,8 @@ namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 ///
 /// Пользователей и роли заводит IdentitySeeder, он отрабатывает раньше
 /// (docs/adr/ADR-0006). Новостям нужен автор с внешним ключом на AspNetUsers,
-/// поэтому они сеются здесь, после него. Подписки и заказы — Фаза 4.
+/// поэтому они сеются здесь, после него. Подписки — тоже: демо-пользователей
+/// заводит IdentitySeeder. Заказы — Фаза 7.
 /// </summary>
 public sealed class DatabaseSeeder(
     AppDbContext context,
@@ -28,6 +31,7 @@ public sealed class DatabaseSeeder(
         await SeedCatalogAsync(cancellationToken);
         await SeedEsportsAsync(now, cancellationToken);
         await SeedNewsAsync(now, cancellationToken);
+        await SeedSubscriptionsAsync(now, cancellationToken);
     }
 
     /// <summary>
@@ -64,6 +68,67 @@ public sealed class DatabaseSeeder(
             "Сид новостей: добавлено {NewsCount}, из них опубликовано {PublishedCount}.",
             articles.Count,
             articles.Count(article => article.IsPublished));
+    }
+
+    /// <summary>
+    /// Раздаёт подписки демо-пользователям: активная, истёкшая и никакой
+    /// (docs/SPEC.md §6). Три состояния нужны, чтобы фича-гейт было видно вживую:
+    /// у первого платные функции открыты, у второго закрыты, третий их и не покупал.
+    ///
+    /// Идемпотентно: подписка ищется по пользователю, повторный запуск ничего
+    /// не добавляет и не продлевает уже выданное.
+    /// </summary>
+    private async Task SeedSubscriptionsAsync(DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        var plan = await context.Plans
+            .FirstOrDefaultAsync(item => item.Code == PlanCodes.ProMonth, cancellationToken);
+
+        if (plan is null)
+        {
+            return;
+        }
+
+        // Учётные записи заводит IdentitySeeder по конфигурации, и на боевом сервере
+        // его может не быть вовсе — тогда сеять подписки некому.
+        var demoUserIds = await context.Users
+            .Where(user => SubscriptionSeedData.DemoEmails.Contains(user.Email!))
+            .ToDictionaryAsync(user => user.Email!, user => user.Id, cancellationToken);
+
+        var alreadyHaveSubscription = await context.Subscriptions
+            .Select(subscription => subscription.UserId)
+            .ToListAsync(cancellationToken);
+
+        var added = 0;
+
+        foreach (var (email, startedDaysAgo) in SubscriptionSeedData.Subscriptions)
+        {
+            if (!demoUserIds.TryGetValue(email, out var userId)
+                || alreadyHaveSubscription.Contains(userId))
+            {
+                continue;
+            }
+
+            var subscription = Subscription.Activate(userId, plan, now.AddDays(-startedDaysAgo));
+
+            // Истёкшую подписку домен закрывает своим же методом, а не подстановкой
+            // статуса: так у неё появится и событие, и корректная дата.
+            if (!subscription.IsActiveAt(now))
+            {
+                subscription.Expire(now);
+            }
+
+            context.Subscriptions.Add(subscription);
+            added++;
+        }
+
+        if (added == 0)
+        {
+            return;
+        }
+
+        await context.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("Сид подписок: добавлено {Count}.", added);
     }
 
     private async Task SeedBillingAsync(CancellationToken cancellationToken)

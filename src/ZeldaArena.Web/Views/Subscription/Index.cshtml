@@ -1,0 +1,101 @@
+@model ZeldaArena.Web.Models.Billing.SubscriptionPageViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["subscription.title"].Value;
+    var highlighted = Model.PlansGrantingRequiredFeature;
+}
+
+@*
+    Вёрстка намеренно минимальная: дизайн-система появляется в Фазе 5, а макета
+    у этой страницы нет вовсе (docs/SPEC.md §9.3, п. 17). Здесь важна работа
+    сценария, оформление придёт вместе с токенами.
+*@
+
+<h1>@Localizer["subscription.title"]</h1>
+
+<partial name="_StatusMessage" />
+
+@if (Model.RequiredFeature is not null)
+{
+    <div class="alert alert-warning" role="alert">
+        @Localizer["subscription.feature_required"]
+    </div>
+}
+
+@if (Model.Current is { } current)
+{
+    <section class="card mb-4">
+        <div class="card-body">
+            <h2 class="h5">@Localizer["subscription.current"]</h2>
+            <p class="mb-1">
+                <strong>@current.PlanName</strong>
+                @if (current.IsActive)
+                {
+                    <span class="badge bg-success">@Localizer["subscription.active"]</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">@Localizer["subscription.inactive"]</span>
+                }
+            </p>
+            <p class="mb-1">@Localizer["subscription.valid_until"] @current.EndsAt.ToLocalTime().ToString("d")</p>
+
+            @if (current.IsActive && current.AutoRenew)
+            {
+                <form asp-action="Cancel" method="post">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                        @Localizer["subscription.cancel_renewal"]
+                    </button>
+                </form>
+            }
+            else if (current.IsActive)
+            {
+                <p class="text-muted mb-0">@Localizer["subscription.renewal_off"]</p>
+            }
+        </div>
+    </section>
+}
+
+<h2 class="h5">@Localizer["subscription.plans"]</h2>
+
+<div class="row">
+    @foreach (var plan in Model.Plans)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 @(highlighted.Contains(plan.Id) ? "border-primary" : string.Empty)">
+                <div class="card-body">
+                    <h3 class="h6">@plan.Name</h3>
+                    <p class="mb-1">
+                        @if (plan.IsFree)
+                        {
+                            @Localizer["subscription.free"]
+                        }
+                        else
+                        {
+                            @($"{plan.Price:N2} {plan.Currency}")
+                            <span class="text-muted"> / @plan.DurationDays @Localizer["subscription.days"]</span>
+                        }
+                    </p>
+                    <p class="text-muted small">@plan.Description</p>
+
+                    <ul class="small">
+                        @foreach (var feature in plan.Features)
+                        {
+                            <li>@feature.Name</li>
+                        }
+                    </ul>
+
+                    @if (!plan.IsFree)
+                    {
+                        <a class="btn btn-primary btn-sm"
+                           asp-controller="Payment"
+                           asp-action="Card"
+                           asp-route-planId="@plan.Id">
+                            @Localizer["subscription.buy"]
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

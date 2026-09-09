@@ -451,4 +451,139 @@
   <data name="email.payment_footer" xml:space="preserve">
     <value>Если вы не оформляли оплату, просто удалите это письмо: без кода из него ничего не произойдёт.</value>
   </data>
+  <data name="common.back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="subscription.title" xml:space="preserve">
+    <value>Подписка</value>
+  </data>
+  <data name="subscription.current" xml:space="preserve">
+    <value>Текущая подписка</value>
+  </data>
+  <data name="subscription.active" xml:space="preserve">
+    <value>Действует</value>
+  </data>
+  <data name="subscription.inactive" xml:space="preserve">
+    <value>Не действует</value>
+  </data>
+  <data name="subscription.valid_until" xml:space="preserve">
+    <value>Действует до</value>
+  </data>
+  <data name="subscription.cancel_renewal" xml:space="preserve">
+    <value>Отказаться от продления</value>
+  </data>
+  <data name="subscription.renewal_off" xml:space="preserve">
+    <value>Автопродление выключено: доступ сохраняется до конца оплаченного срока.</value>
+  </data>
+  <data name="subscription.cancelled" xml:space="preserve">
+    <value>Автопродление выключено. Подписка действует до конца оплаченного срока.</value>
+  </data>
+  <data name="subscription.plans" xml:space="preserve">
+    <value>Тарифы</value>
+  </data>
+  <data name="subscription.buy" xml:space="preserve">
+    <value>Оформить</value>
+  </data>
+  <data name="subscription.free" xml:space="preserve">
+    <value>Бесплатно</value>
+  </data>
+  <data name="subscription.days" xml:space="preserve">
+    <value>дн.</value>
+  </data>
+  <data name="subscription.feature_required" xml:space="preserve">
+    <value>Эта возможность входит в платную подписку. Выберите тариф, который её открывает, — он отмечен рамкой.</value>
+  </data>
+  <data name="payment.card_title" xml:space="preserve">
+    <value>Оплата подписки</value>
+  </data>
+  <data name="payment.card_hint" xml:space="preserve">
+    <value>Оплата мнимая: деньги не списываются. После отправки формы на указанный адрес придёт код подтверждения. Номер карты и CVV нигде не сохраняются.</value>
+  </data>
+  <data name="payment.pay" xml:space="preserve">
+    <value>Оплатить</value>
+  </data>
+  <data name="payment.confirm_title" xml:space="preserve">
+    <value>Подтверждение оплаты</value>
+  </data>
+  <data name="payment.confirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="payment.code_sent_to" xml:space="preserve">
+    <value>Код отправлен на адрес</value>
+  </data>
+  <data name="payment.code_sent" xml:space="preserve">
+    <value>Новый код отправлен.</value>
+  </data>
+  <data name="payment.attempts_left" xml:space="preserve">
+    <value>Осталось попыток:</value>
+  </data>
+  <data name="payment.valid_until" xml:space="preserve">
+    <value>код действителен до</value>
+  </data>
+  <data name="payment.resend" xml:space="preserve">
+    <value>Отправить код заново</value>
+  </data>
+  <data name="payment.cancel" xml:space="preserve">
+    <value>Отменить оплату</value>
+  </data>
+  <data name="payment.success_title" xml:space="preserve">
+    <value>Подписка оформлена</value>
+  </data>
+  <data name="payment.success_body" xml:space="preserve">
+    <value>Оплата прошла, подписка активна. Чек отправлен на указанный адрес.</value>
+  </data>
+  <data name="billing.plan_not_found" xml:space="preserve">
+    <value>Тариф не найден.</value>
+  </data>
+  <data name="billing.plan_inactive" xml:space="preserve">
+    <value>Этот тариф больше не продаётся.</value>
+  </data>
+  <data name="billing.plan_not_purchasable" xml:space="preserve">
+    <value>Этот тариф нельзя оформить.</value>
+  </data>
+  <data name="billing.plan_code_taken" xml:space="preserve">
+    <value>Тариф с таким кодом уже существует.</value>
+  </data>
+  <data name="billing.feature_not_found" xml:space="preserve">
+    <value>Платная функция не найдена.</value>
+  </data>
+  <data name="billing.feature_code_taken" xml:space="preserve">
+    <value>Функция с таким кодом уже существует.</value>
+  </data>
+  <data name="payment.not_found" xml:space="preserve">
+    <value>Платёж не найден.</value>
+  </data>
+  <data name="payment.not_pending" xml:space="preserve">
+    <value>Этот платёж уже завершён.</value>
+  </data>
+  <data name="payment.wrong_code" xml:space="preserve">
+    <value>Код неверен. Проверьте письмо и попробуйте ещё раз.</value>
+  </data>
+  <data name="payment.code_expired" xml:space="preserve">
+    <value>Срок действия кода истёк. Начните оплату заново.</value>
+  </data>
+  <data name="payment.no_attempts_left" xml:space="preserve">
+    <value>Попытки ввода кода исчерпаны. Начните оплату заново.</value>
+  </data>
+  <data name="payment.already_processed" xml:space="preserve">
+    <value>Платёж уже обработан.</value>
+  </data>
+  <data name="payment.resend_too_soon" xml:space="preserve">
+    <value>Новый код можно запросить не чаще раза в минуту.</value>
+  </data>
+  <data name="payment.card_declined" xml:space="preserve">
+    <value>Карта отклонена. Проверьте реквизиты.</value>
+  </data>
+  <data name="subscription.not_found" xml:space="preserve">
+    <value>Подписка не найдена.</value>
+  </data>
+  <data name="subscription.not_active" xml:space="preserve">
+    <value>Активной подписки нет.</value>
+  </data>
+  <data name="nav.subscription" xml:space="preserve">
+    <value>Подписка</value>
+  </data>
+  <data name="nav.premium" xml:space="preserve">
+    <value>Premium</value>
+  </data>
 </root>

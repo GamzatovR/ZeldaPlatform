@@ -1,0 +1,45 @@
+@model ZeldaArena.Web.Models.Billing.ConfirmPaymentViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["payment.confirm_title"].Value;
+}
+
+<h1 class="h4">@Localizer["payment.confirm_title"]</h1>
+
+<partial name="_StatusMessage" />
+
+<p>@Localizer["payment.code_sent_to"] <strong>@Model.MaskedEmail</strong></p>
+
+<p class="text-muted small">
+    @Localizer["payment.attempts_left"] @Model.AttemptsLeft ·
+    @Localizer["payment.valid_until"] @Model.ExpiresAt.ToLocalTime().ToString("HH:mm")
+</p>
+
+<form method="post" class="col-md-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="ConfirmationCode" class="form-label"></label>
+        <input asp-for="ConfirmationCode" class="form-control" autocomplete="one-time-code" inputmode="numeric" />
+        <span asp-validation-for="ConfirmationCode" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Localizer["payment.confirm"]</button>
+</form>
+
+@* Отдельные формы: повторная отправка и отмена — это свои действия, а не кнопки той же формы *@
+<div class="mt-3 d-flex gap-2">
+    <form asp-action="Resend" asp-route-id="@Model.PaymentId" method="post">
+        <button type="submit" class="btn btn-outline-secondary btn-sm" disabled="@(!Model.CanResendNow)">
+            @Localizer["payment.resend"]
+        </button>
+    </form>
+
+    <form asp-action="Cancel" asp-route-id="@Model.PaymentId" method="post">
+        <button type="submit" class="btn btn-link btn-sm">@Localizer["payment.cancel"]</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

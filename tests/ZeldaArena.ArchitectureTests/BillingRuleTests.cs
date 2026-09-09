@@ -21,8 +21,15 @@ namespace ZeldaArena.ArchitectureTests;
 public partial class BillingRuleTests
 {
     /// <summary>
-    /// Файлы, которым положено упоминать роль: там она выдаётся, снимается, сеется
-    /// и объявлена. Проверять их запретом бессмысленно — они и есть исключение.
+    /// Файлы, которым положено упоминать роль: там она объявлена, выдаётся, снимается
+    /// и сеется. Проверять их запретом бессмысленно — они и есть исключение.
+    ///
+    /// Отдельно стоит <c>_LoginPartial.cshtml</c>: бейдж у ника — то самое
+    /// единственное применение роли, ради которого она существует (docs/SPEC.md §7.4).
+    /// Отличить «показать бейдж» от «скрыть платный блок» регулярным выражением нельзя,
+    /// поэтому исключение сделано точечно, на один файл. Платные блоки в разметке
+    /// прячет <c>&lt;feature-gate&gt;</c>, и правило продолжает следить за всеми
+    /// остальными представлениями.
     /// </summary>
     private static readonly string[] AllowedToMentionPremium =
     [
@@ -30,6 +37,7 @@ public partial class BillingRuleTests
         "SubscriptionActivatedEventHandler.cs",
         "SubscriptionExpiredEventHandler.cs",
         "IdentitySeeder.cs",
+        "_LoginPartial.cshtml",
     ];
 
     [Fact]

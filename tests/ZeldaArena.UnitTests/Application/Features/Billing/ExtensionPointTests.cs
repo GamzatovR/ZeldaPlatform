@@ -104,6 +104,26 @@ public class ExtensionPointTests
         pro.PlanFeatures.ShouldHaveSingleItem().Value.ShouldBe("5");
     }
 
+    /// <summary>
+    /// Повторная выдача той же фичи не должна плодить вторую привязку: у PlanFeatures
+    /// составной первичный ключ, и вторая строка — это падение на дубле ключа.
+    ///
+    /// На живом приложении так и случилось: репозиторий отдавал тариф с пустым составом,
+    /// потому что коллекция — навигация, а GetByIdAsync её не грузил. Лечится
+    /// AutoInclude в PlanConfiguration; здесь проверяется само правило домена.
+    /// </summary>
+    [Fact]
+    public async Task Granting_the_same_feature_twice_does_not_duplicate_the_row()
+    {
+        var pro = PlanWith("pro-month", _teamCreate);
+
+        await SetFeaturesAsync(pro, [_teamCreate, _statsAdvanced]);
+        await SetFeaturesAsync(pro, [_teamCreate, _statsAdvanced]);
+
+        pro.PlanFeatures.Count.ShouldBe(2);
+        pro.PlanFeatures.Select(planFeature => planFeature.FeatureId).Distinct().Count().ShouldBe(2);
+    }
+
     /// <summary>Привязка к несуществующей фиче молча не давала бы никаких прав — это ошибка формы.</summary>
     [Fact]
     public async Task An_unknown_feature_is_refused()

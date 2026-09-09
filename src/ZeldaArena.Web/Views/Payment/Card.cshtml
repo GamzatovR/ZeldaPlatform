@@ -1,0 +1,63 @@
+@model ZeldaArena.Web.Models.Billing.CardPaymentViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["payment.card_title"].Value;
+}
+
+<h1 class="h4">@Localizer["payment.card_title"]</h1>
+
+@if (Model.PlanName is not null)
+{
+    <p class="text-muted">
+        @Model.PlanName — @($"{Model.Price:N2} {Model.Currency}")
+    </p>
+}
+
+<div class="alert alert-secondary" role="alert">
+    @Localizer["payment.card_hint"]
+</div>
+
+<form method="post" class="col-md-6">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="PlanId" />
+    <input type="hidden" asp-for="IdempotencyKey" />
+
+    <div class="mb-3">
+        <label asp-for="CardNumber" class="form-label"></label>
+        @* autocomplete off: реквизиты не должны оседать в браузере *@
+        <input asp-for="CardNumber" class="form-control" autocomplete="off" inputmode="numeric" />
+        <span asp-validation-for="CardNumber" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col mb-3">
+            <label asp-for="ExpiryMonth" class="form-label"></label>
+            <input asp-for="ExpiryMonth" class="form-control" inputmode="numeric" />
+            <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
+        </div>
+        <div class="col mb-3">
+            <label asp-for="ExpiryYear" class="form-label"></label>
+            <input asp-for="ExpiryYear" class="form-control" inputmode="numeric" />
+            <span asp-validation-for="ExpiryYear" class="text-danger"></span>
+        </div>
+        <div class="col mb-3">
+            <label asp-for="Cvv" class="form-label"></label>
+            <input asp-for="Cvv" class="form-control" autocomplete="off" inputmode="numeric" />
+            <span asp-validation-for="Cvv" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ConfirmationEmail" class="form-label"></label>
+        <input asp-for="ConfirmationEmail" class="form-control" />
+        <span asp-validation-for="ConfirmationEmail" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Localizer["payment.pay"]</button>
+    <a class="btn btn-link" asp-controller="Subscription" asp-action="Index">@Localizer["common.back"]</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -21,7 +21,7 @@ namespace ZeldaArena.Web.RateLimiting;
 /// минимум два запроса, и пороги заданы с учётом этого. Уточнить до «только POST»
 /// можно будет в Фазе 8, когда формы аккаунта получат AJAX-эндпоинты.
 ///
-/// Оплата, комментарии и чат получат свои политики в Фазах 4 и 10.
+/// Комментарии и чат получат свои политики в Фазе 10.
 /// </summary>
 public static class RateLimitPolicies
 {
@@ -29,6 +29,12 @@ public static class RateLimitPolicies
     public const string Register = "account-register";
     public const string PasswordRecovery = "account-password-recovery";
     public const string EmailDelivery = "account-email-delivery";
+
+    /// <summary>Создание платежа: каждый заход шлёт письмо с кодом (docs/SPEC.md §7.6).</summary>
+    public const string PaymentStart = "payment-start";
+
+    /// <summary>Подтверждение и повторная отправка кода.</summary>
+    public const string PaymentConfirm = "payment-confirm";
 
     private static readonly TimeSpan Window = TimeSpan.FromMinutes(5);
 
@@ -60,6 +66,15 @@ public static class RateLimitPolicies
             // Отправка писем — самая дорогая операция и самый заманчивый способ
             // использовать сервер как рассыльщик, поэтому порог самый низкий.
             AddFixedWindow(options, EmailDelivery, permitLimit: 6);
+
+            // Оплата (§7.6). Порог низкий: каждая попытка заводит платёж и шлёт
+            // письмо, а осмысленных заходов за пять минут человек делает единицы.
+            AddFixedWindow(options, PaymentStart, permitLimit: 8);
+
+            // Подтверждение кода дополняет счётчик попыток в самом платеже:
+            // тот защищает один платёж от перебора, эта политика — сервер
+            // от перебора по многим платежам сразу.
+            AddFixedWindow(options, PaymentConfirm, permitLimit: 20);
         });
 
         return services;

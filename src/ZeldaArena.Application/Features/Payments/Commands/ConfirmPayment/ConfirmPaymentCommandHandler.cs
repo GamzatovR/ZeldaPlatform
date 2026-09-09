@@ -30,6 +30,7 @@ public sealed class ConfirmPaymentCommandHandler(
     IQueryExecutor queryExecutor,
     IConfirmationCodeProtector codes,
     IBillingEmailSender emailSender,
+    ISignInService signInService,
     IUnitOfWork unitOfWork,
     IDateTimeProvider clock)
     : IRequestHandler<ConfirmPaymentCommand, Result>
@@ -71,6 +72,13 @@ public sealed class ConfirmPaymentCommandHandler(
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        // Роль Premium выдана обработчиком события, но в cookie её ещё нет: та хранит
+        // снимок ролей на момент входа и обновилась бы сама только через пять минут
+        // (SecurityStampValidationInterval). Пользователь смотрит на результат оплаты
+        // прямо сейчас, поэтому cookie перевыписывается здесь — как после смены пароля
+        // в Фазе 3.
+        await signInService.RefreshSignInAsync(userId, cancellationToken).ConfigureAwait(false);
 
         await emailSender
             .SendPaymentReceiptAsync(
