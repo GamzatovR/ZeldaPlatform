@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+
 using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Web.Authorization;
@@ -39,6 +41,15 @@ public static class AuthorizationRegistration
 
             .AddPolicy(PolicyNames.EmailConfirmed, policy =>
                 policy.RequireClaim(AppClaimTypes.EmailConfirmed, AppClaimTypes.True));
+
+        // Политики платных функций не перечисляются: FeaturePolicyProvider собирает
+        // Feature:{code} на лету, поэтому новая функция не требует правки этого файла
+        // (docs/SPEC.md §7.3, EP-3). Всё остальное он отдаёт провайдеру по умолчанию.
+        services.AddSingleton<IAuthorizationPolicyProvider, FeaturePolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, FeatureAuthorizationHandler>();
+
+        // Отказ из-за отсутствующей подписки уводит на тарифы, а не отвечает 403 (§7.3).
+        services.AddSingleton<IAuthorizationMiddlewareResultHandler, FeatureAccessDeniedHandler>();
 
         return services;
     }

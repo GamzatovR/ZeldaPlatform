@@ -36,7 +36,7 @@ builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
 
 // Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
 // адреса страниц — знание слоя представления.
-// Политики §8.1. Динамические Feature:{code} добавит Фаза 4.
+// Статические политики §8.1 плюс динамические Feature:{code} (§7.3).
 builder.Services.AddPlatformAuthorization();
 
 // Ограничение частоты на формах аккаунта (§8.2).
