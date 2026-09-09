@@ -30,6 +30,9 @@ public static class DependencyInjection
         services.TryAddSingleton(TimeProvider.System);
         services.AddHttpContextAccessor();
 
+        // Кэш прав на платные функции: TTL пять минут (docs/SPEC.md §7.3).
+        services.AddMemoryCache();
+
         services.AddScoped<AuditableEntityInterceptor>();
         services.AddScoped<DispatchDomainEventsInterceptor>();
 
@@ -58,8 +61,15 @@ public static class DependencyInjection
         // этих классов не знает никто.
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
         services.AddSingleton<IQueryExecutor, EfQueryExecutor>();
+
+        // Кэш и его сброс — одно состояние, поэтому один синглтон на два входа:
+        // читает его EntitlementService, сбрасывают обработчики событий и админка.
+        services.AddSingleton<EntitlementCache>();
+        services.AddSingleton<IEntitlementCacheInvalidator>(provider =>
+            provider.GetRequiredService<EntitlementCache>());
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IUserAccountService, IdentityUserAccountService>();
+        services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ISignInService, IdentitySignInService>();
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
         services.AddScoped<IEmailSender, SmtpEmailSender>();
