@@ -277,6 +277,30 @@ public class PaymentFlowTests
         _fixture.Email.Count(RecordingBillingEmailSender.LetterKind.PaymentCode).ShouldBe(1);
     }
 
+    /// <summary>
+    /// Ключ приходит скрытым полем формы, то есть подконтролен клиенту, а уникальный
+    /// индекс на нём — общий на всю таблицу (§6). Пока владелец не был частью ключа,
+    /// чужое значение роняло вставку на нарушении уникальности: поиск шёл по паре
+    /// «пользователь + ключ» и существующий платёж не находил. Поймано пробой
+    /// на живом приложении — приходил 500.
+    /// </summary>
+    [Fact]
+    public async Task Two_users_may_submit_the_same_idempotency_key()
+    {
+        await _fixture.StartAsync(idempotencyKey: "form-1");
+
+        var firstKey = _fixture.SinglePayment.IdempotencyKey;
+
+        _fixture.SignedInUserId = Guid.CreateVersion7();
+        var second = await _fixture.StartAsync(idempotencyKey: "form-1");
+
+        second.IsSuccess.ShouldBeTrue();
+        _fixture.Payments.Entities.Count.ShouldBe(2);
+
+        // Ключи в базе разные, поэтому глобальный уникальный индекс не сработает.
+        _fixture.Payments.Entities[^1].IdempotencyKey.ShouldNotBe(firstKey);
+    }
+
     [Fact]
     public async Task A_different_idempotency_key_starts_a_new_payment()
     {

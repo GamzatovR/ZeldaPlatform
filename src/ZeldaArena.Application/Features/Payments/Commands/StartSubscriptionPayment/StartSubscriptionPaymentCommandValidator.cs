@@ -14,8 +14,12 @@ namespace ZeldaArena.Application.Features.Payments.Commands.StartSubscriptionPay
 public sealed class StartSubscriptionPaymentCommandValidator
     : AbstractValidator<StartSubscriptionPaymentCommand>
 {
-    /// <summary>Ключ идемпотентности форма присылает своим — обычно Guid.</summary>
-    public const int MaxIdempotencyKeyLength = 64;
+    /// <summary>
+    /// Клиентская часть ключа идемпотентности; форма присылает Guid. Длина ограничена
+    /// так, чтобы вместе с идентификатором владельца ключ помещался в столбец
+    /// (<see cref="PaymentIdempotency"/>, docs/SPEC.md §6).
+    /// </summary>
+    public const int MaxIdempotencyKeyLength = PaymentIdempotency.MaxClientKeyLength;
 
     public StartSubscriptionPaymentCommandValidator()
     {

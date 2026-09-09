@@ -48,8 +48,11 @@ public sealed class StartSubscriptionPaymentCommandHandler(
 
         // Идемпотентность (§7.6): повторная отправка формы — обновлённая страница,
         // второй клик, возврат по «Назад» — не заводит второй платёж и не шлёт
-        // второе письмо, а возвращает тот же самый.
-        var existing = await FindByIdempotencyKeyAsync(userId, request.IdempotencyKey, cancellationToken)
+        // второе письмо, а возвращает тот же самый. Владелец зашит в ключ, поэтому
+        // чужой ключ не столкнётся с нашим на уникальном индексе.
+        var idempotencyKey = PaymentIdempotency.KeyFor(userId, request.IdempotencyKey);
+
+        var existing = await FindByIdempotencyKeyAsync(idempotencyKey, cancellationToken)
             .ConfigureAwait(false);
 
         if (existing is not null)
@@ -114,7 +117,7 @@ public sealed class StartSubscriptionPaymentCommandHandler(
             request.ConfirmationEmail,
             code.Hash,
             now.Add(PaymentPolicy.CodeLifetime),
-            request.IdempotencyKey,
+            idempotencyKey,
             subscriptionId: reserved.Id);
 
         await payments.AddAsync(payment, cancellationToken).ConfigureAwait(false);
@@ -135,18 +138,16 @@ public sealed class StartSubscriptionPaymentCommandHandler(
     }
 
     /// <summary>
-    /// Ключ идемпотентности уникален во всей таблице, но платёж ищется ещё и по
-    /// владельцу: чужой ключ не должен возвращать чужой платёж даже при совпадении.
+    /// Владелец уже зашит в ключ (<see cref="PaymentIdempotency"/>), поэтому искать
+    /// дополнительно по <c>UserId</c> не нужно: чужой платёж по такому ключу
+    /// не найдётся никогда.
     /// </summary>
     private Task<PaymentIdentity?> FindByIdempotencyKeyAsync(
-        Guid userId,
         string idempotencyKey,
         CancellationToken cancellationToken)
     {
-        var key = idempotencyKey.Trim();
-
         var query = paymentsForRead.Query()
-            .Where(payment => payment.UserId == userId && payment.IdempotencyKey == key)
+            .Where(payment => payment.IdempotencyKey == idempotencyKey)
             .Select(payment => new PaymentIdentity(payment.Id, payment.ConfirmationEmail));
 
         return queryExecutor.FirstOrDefaultAsync(query, cancellationToken);
