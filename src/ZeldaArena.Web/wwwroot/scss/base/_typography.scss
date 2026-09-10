@@ -48,3 +48,14 @@ a {
 .text-accent {
   color: var(--color-accent);
 }
+
+.small-token {
+  font-size: var(--fs-xs);
+}
+
+// Моноширинный набор: коды восстановления, TraceId, ключ аутентификатора.
+.mono {
+  font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: $ls-tight;
+}

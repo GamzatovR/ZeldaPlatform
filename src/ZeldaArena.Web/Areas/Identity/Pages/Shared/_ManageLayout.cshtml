@@ -1,23 +1,32 @@
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
+
+    var pageTitle = new PageTitleViewModel(T["manage.title"].Value);
 }
 
 @*
-    Кабинет шире форм входа: слева навигация по разделам, справа содержимое.
+    Кабинет: слева навигация по разделам, справа содержимое.
+    Макета у кабинета нет (docs/SPEC.md §9.3 п. 17) — собран из тех же токенов
+    и компонентов, что и остальные страницы (docs/design/design-system.md).
 *@
-<h1 class="h3 mb-4">@T["manage.title"]</h1>
+<partial name="/Views/Shared/_PageTitle.cshtml" model="pageTitle" />
 
-<div class="row">
-    <div class="col-12 col-md-4 col-lg-3 mb-3">
-        <partial name="_ManageNav" />
+<section class="account">
+    <div class="container">
+        <div class="account__layout">
+            <partial name="_ManageNav" />
+
+            <div>
+                <div class="panel">
+                    <h2 class="panel__title">@ViewData["Title"]</h2>
+
+                    <partial name="_StatusMessage" />
+
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-12 col-md-8 col-lg-7">
-        <h2 class="h5 mb-3">@ViewData["Title"]</h2>
-
-        <partial name="_StatusMessage" />
-
-        @RenderBody()
-    </div>
-</div>
+</section>
 
 @await RenderSectionAsync("Scripts", required: false)

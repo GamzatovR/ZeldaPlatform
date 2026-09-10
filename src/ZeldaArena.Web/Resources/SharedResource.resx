@@ -634,4 +634,7 @@
   <data name="error.go_home" xml:space="preserve">
     <value>На главную</value>
   </data>
+  <data name="account.page_title" xml:space="preserve">
+    <value>Аккаунт</value>
+  </data>
 </root>

@@ -1,17 +1,25 @@
 @*
-    Активный пункт определяется по имени текущей страницы. Свой tag helper
-    <active-route> появится в Фазе 5 вместе с дизайн-системой (docs/SPEC.md §10.2).
+    Навигация по кабинету. Активный пункт помечает тег-хелпер <active-route>
+    из Фазы 5 (docs/SPEC.md §10.2): он ставит и класс, и aria-current, поэтому
+    текущий раздел различим не только по цвету.
 *@
-@{
-    var page = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
-
-    string Active(string suffix) =>
-        page.EndsWith(suffix, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
-}
-
-<nav class="list-group">
-    <a class="list-group-item list-group-item-action @Active("/Manage/Index")" asp-page="./Index">@T["manage.nav.profile"]</a>
-    <a class="list-group-item list-group-item-action @Active("/Manage/ChangePassword")" asp-page="./ChangePassword">@T["manage.nav.password"]</a>
-    <a class="list-group-item list-group-item-action @Active("/Manage/Email")" asp-page="./Email">@T["manage.nav.email"]</a>
-    <a class="list-group-item list-group-item-action @Active("/Manage/TwoFactorAuthentication")" asp-page="./TwoFactorAuthentication">@T["manage.nav.two_factor"]</a>
+<nav aria-label="@T["manage.title"]">
+    <ul class="account-nav">
+        <li>
+            <a class="account-nav__link" asp-page="./Index"
+               active-page="/Account/Manage/Index">@T["manage.nav.profile"]</a>
+        </li>
+        <li>
+            <a class="account-nav__link" asp-page="./ChangePassword"
+               active-page="/Account/Manage/ChangePassword">@T["manage.nav.password"]</a>
+        </li>
+        <li>
+            <a class="account-nav__link" asp-page="./Email"
+               active-page="/Account/Manage/Email">@T["manage.nav.email"]</a>
+        </li>
+        <li>
+            <a class="account-nav__link" asp-page="./TwoFactorAuthentication"
+               active-page="/Account/Manage/TwoFactorAuthentication">@T["manage.nav.two_factor"]</a>
+        </li>
+    </ul>
 </nav>

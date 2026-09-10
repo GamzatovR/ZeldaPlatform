@@ -1,62 +1,85 @@
+@using ZeldaArena.Web.Models.Layout
 @model ZeldaArena.Web.Models.Billing.CardPaymentViewModel
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["payment.card_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(Localizer["payment.card_title"].Value);
 }
 
-<h1 class="h4">@Localizer["payment.card_title"]</h1>
+@*
+    Шаг 1 мнимой оплаты (docs/SPEC.md §7.6). Макета у страницы нет — карточка
+    формы взята из .login-form, как предписывает docs/design/design-system.md.
 
-@if (Model.PlanName is not null)
-{
-    <p class="text-muted">
-        @Model.PlanName — @($"{Model.Price:N2} {Model.Currency}")
-    </p>
-}
+    Форма обычная, без AJAX: перевод оплаты на fetch — Фаза 8. Без JavaScript
+    она обязана работать и сейчас (§9.1).
+*@
+<partial name="_PageTitle" model="pageTitle" />
 
-<div class="alert alert-secondary" role="alert">
-    @Localizer["payment.card_hint"]
-</div>
+<section class="auth">
+    <div class="container">
+        <div class="row auth__row">
+            <div class="col-12 col-md-10 col-lg-7">
+                <div class="form-card">
+                    <h1>@Localizer["payment.card_title"]</h1>
 
-<form method="post" class="col-md-6">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @if (Model.PlanName is not null)
+                    {
+                        <p class="text-muted-token">
+                            @Model.PlanName — @($"{Model.Price:N2} {Model.Currency}")
+                        </p>
+                    }
 
-    <input type="hidden" asp-for="PlanId" />
-    <input type="hidden" asp-for="IdempotencyKey" />
+                    <div class="alert-token" role="status">@Localizer["payment.card_hint"]</div>
 
-    <div class="mb-3">
-        <label asp-for="CardNumber" class="form-label"></label>
-        @* autocomplete off: реквизиты не должны оседать в браузере *@
-        <input asp-for="CardNumber" class="form-control" autocomplete="off" inputmode="numeric" />
-        <span asp-validation-for="CardNumber" class="text-danger"></span>
-    </div>
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
 
-    <div class="row">
-        <div class="col mb-3">
-            <label asp-for="ExpiryMonth" class="form-label"></label>
-            <input asp-for="ExpiryMonth" class="form-control" inputmode="numeric" />
-            <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
+                        <input type="hidden" asp-for="PlanId" />
+                        <input type="hidden" asp-for="IdempotencyKey" />
+
+                        <div class="form-group">
+                            <label asp-for="CardNumber" class="form-label"></label>
+                            @* autocomplete off: реквизиты не должны оседать в браузере (§7.6) *@
+                            <input asp-for="CardNumber" class="form-control" autocomplete="off" inputmode="numeric" />
+                            <span asp-validation-for="CardNumber"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4 form-group">
+                                <label asp-for="ExpiryMonth" class="form-label"></label>
+                                <input asp-for="ExpiryMonth" class="form-control" inputmode="numeric" />
+                                <span asp-validation-for="ExpiryMonth"></span>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label asp-for="ExpiryYear" class="form-label"></label>
+                                <input asp-for="ExpiryYear" class="form-control" inputmode="numeric" />
+                                <span asp-validation-for="ExpiryYear"></span>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label asp-for="Cvv" class="form-label"></label>
+                                <input asp-for="Cvv" class="form-control" autocomplete="off" inputmode="numeric" />
+                                <span asp-validation-for="Cvv"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ConfirmationEmail" class="form-label"></label>
+                            <input asp-for="ConfirmationEmail" class="form-control" />
+                            <span asp-validation-for="ConfirmationEmail"></span>
+                        </div>
+
+                        <button type="submit" class="btn-solid btn-block">@Localizer["payment.pay"]</button>
+                    </form>
+
+                    <p class="auth__footer">
+                        <a class="link-underline" asp-controller="Subscription" asp-action="Index">@Localizer["common.back"]</a>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="col mb-3">
-            <label asp-for="ExpiryYear" class="form-label"></label>
-            <input asp-for="ExpiryYear" class="form-control" inputmode="numeric" />
-            <span asp-validation-for="ExpiryYear" class="text-danger"></span>
-        </div>
-        <div class="col mb-3">
-            <label asp-for="Cvv" class="form-label"></label>
-            <input asp-for="Cvv" class="form-control" autocomplete="off" inputmode="numeric" />
-            <span asp-validation-for="Cvv" class="text-danger"></span>
-        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="ConfirmationEmail" class="form-label"></label>
-        <input asp-for="ConfirmationEmail" class="form-control" />
-        <span asp-validation-for="ConfirmationEmail" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">@Localizer["payment.pay"]</button>
-    <a class="btn btn-link" asp-controller="Subscription" asp-action="Index">@Localizer["common.back"]</a>
-</form>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

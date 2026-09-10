@@ -5,34 +5,34 @@
 }
 
 <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+    <div asp-validation-summary="ModelOnly" class="form-group" role="alert"></div>
 
-    <div class="mb-3">
+    <div class="form-group">
         <label asp-for="Input.Email" class="form-label">@T["field.email"]</label>
         <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <span asp-validation-for="Input.Email"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group">
         <label asp-for="Input.DisplayName" class="form-label">@T["field.display_name"]</label>
         <input asp-for="Input.DisplayName" class="form-control" autocomplete="nickname" />
-        <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
+        <span asp-validation-for="Input.DisplayName"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group">
         <label asp-for="Input.Password" class="form-label">@T["field.password"]</label>
         <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-describedby="passwordHint" />
         <div id="passwordHint" class="form-text">@T["register.password_hint"]</div>
-        <span asp-validation-for="Input.Password" class="text-danger"></span>
+        <span asp-validation-for="Input.Password"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="form-group">
         <label asp-for="Input.ConfirmPassword" class="form-label">@T["field.confirm_password"]</label>
         <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        <span asp-validation-for="Input.ConfirmPassword"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100">@T["register.submit"]</button>
+    <button type="submit" class="btn-solid btn-block">@T["register.submit"]</button>
 </form>
 
 <p class="mt-3">
