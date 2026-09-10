@@ -1,0 +1,94 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Models.Layout
+@model HeaderViewModel
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Шапка. Мобильное меню и меню аккаунта раскрывает wwwroot/js/nav.js:
+    плагин meanmenu и выпадающие меню Bootstrap из шаблона недоступны
+    (docs/design/design-system.md §1).
+
+    Без JavaScript кнопки просто ничего не делают, поэтому меню в разметке
+    идёт до них и остаётся достижимым: на узком экране оно раскрыто.
+*@
+<header class="site-header">
+    <div class="container">
+        <div class="site-header__inner">
+            <a class="site-header__brand" asp-controller="Home" asp-action="Index">
+                <img src="~/img/logo.png" alt="@T["brand.name"]" width="180" height="43" />
+            </a>
+
+            <nav class="site-nav" id="site-nav" aria-label="@T["nav.primary"]">
+                <ul class="site-nav__list">
+                    @foreach (var item in Model.NavItems)
+                    {
+                        <li>
+                            <a class="site-nav__link"
+                               asp-controller="@item.Controller"
+                               asp-action="@item.Action"
+                               active-controller="@item.Controller">@T[item.ResourceKey]</a>
+                        </li>
+                    }
+                </ul>
+
+                @* Поиск по сайту. Обычная GET-форма: без JavaScript обязана работать (§9.1). *@
+                <form class="site-search" asp-controller="Home" asp-action="Index" method="get" role="search">
+                    <label class="visually-hidden" for="site-search-input">@T["search.label"]</label>
+                    <input class="site-search__input" id="site-search-input" type="search"
+                           name="q" placeholder="@T["search.placeholder"]" />
+                    <button class="site-search__submit" type="submit">
+                        <icon name="@IconNames.Search" label="@T["search.submit"]" />
+                    </button>
+                </form>
+            </nav>
+
+            <div class="site-header__actions">
+                @if (Model.ShowPremiumBadge)
+                {
+                    @* Бейдж подписчика — только отображение (docs/SPEC.md §7.4). *@
+                    <span class="badge-token badge-token--premium">@T["nav.premium"]</span>
+                }
+
+                @if (Model.IsAuthenticated)
+                {
+                    <div class="site-menu" data-menu>
+                        <button class="site-header__action" type="button"
+                                data-menu-toggle aria-expanded="false" aria-controls="account-menu">
+                            <icon name="@IconNames.User" />
+                            <span class="visually-hidden">@T["nav.account"]</span>
+                        </button>
+
+                        <ul class="site-menu__panel" id="account-menu">
+                            <li class="site-menu__item">
+                                <a class="site-menu__link" asp-area="Identity" asp-page="/Account/Manage/Index">@T["nav.manage"]</a>
+                            </li>
+                            <li class="site-menu__item">
+                                <a class="site-menu__link" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">@T["nav.security"]</a>
+                            </li>
+                            <li class="site-menu__item">
+                                @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@
+                                <form asp-area="Identity" asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Content("~/")" method="post">
+                                    <button class="site-menu__link site-menu__submit" type="submit">@T["nav.logout"]</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="site-header__action" asp-area="Identity" asp-page="/Account/Login">
+                        <icon name="@IconNames.User" />
+                        <span class="visually-hidden">@T["nav.login"]</span>
+                    </a>
+                }
+            </div>
+
+            <button class="site-header__toggle" type="button"
+                    data-nav-toggle aria-expanded="false" aria-controls="site-nav">
+                <icon name="@IconNames.Menu" label="@T["nav.toggle"]" />
+            </button>
+        </div>
+    </div>
+</header>

@@ -1,25 +1,37 @@
-﻿@model ErrorViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Constants
+@model ErrorViewModel
+@inject IHtmlLocalizer<SharedResource> T
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = T["error.500.title"].Value;
+    Layout = "_ErrorLayout";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+@*
+    Свёрстано по docs/design/pages/404.html — это образец для всех страниц ошибок
+    (docs/SPEC.md §14.2). Остальные коды и ErrorController приходят в Фазе 11.
+*@
+<section class="error-page">
+    <div class="container">
+        <div class="error-page__image">
+            <img src="~/img/error.png" alt="" />
+        </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        <span class="error-page__code">500</span>
+        <h1 class="error-page__title">@T["error.500.title"]</h1>
+        <p class="error-page__text">@T["error.500.text"]</p>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        @if (Model.ShowRequestId)
+        {
+            @* Идентификатор для обращения в поддержку. Стек и подробности
+               исключения наружу не отдаются (§14.2). *@
+            <p class="error-page__trace">@T["error.trace_id"]: <code>@Model.RequestId</code></p>
+        }
+
+        <div class="error-page__actions">
+            <a class="btn-solid" asp-controller="Home" asp-action="Index">
+                <icon name="@IconNames.ArrowUp" /> @T["error.go_home"]
+            </a>
+        </div>
+    </div>
+</section>

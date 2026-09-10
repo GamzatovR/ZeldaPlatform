@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> T
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] — @T["brand.name"]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Teko:wght@@400;500;600;700&family=Poppins:wght@@400;500;600&display=swap" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @*
+        Страницы ошибок идут без шапки и подвала: их разметка может зависеть
+        от того же, что и уронило запрос. Композиция взята из pages/404.html,
+        остальные коды делаются по её образцу (docs/SPEC.md §14.2).
+        Полный набор 400/401/403/429/500 и ErrorController — Фаза 11.
+    *@
+    <main id="main">
+        @RenderBody()
+    </main>
+</body>
+</html>

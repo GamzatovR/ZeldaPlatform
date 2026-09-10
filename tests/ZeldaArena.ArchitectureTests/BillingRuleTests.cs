@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using ZeldaArena.Domain.Constants;
 
@@ -24,12 +24,17 @@ public partial class BillingRuleTests
     /// Файлы, которым положено упоминать роль: там она объявлена, выдаётся, снимается
     /// и сеется. Проверять их запретом бессмысленно — они и есть исключение.
     ///
-    /// Отдельно стоит <c>_LoginPartial.cshtml</c>: бейдж у ника — то самое
+    /// Отдельно стоит <c>HeaderViewComponent.cs</c>: бейдж у ника — то самое
     /// единственное применение роли, ради которого она существует (docs/SPEC.md §7.4).
     /// Отличить «показать бейдж» от «скрыть платный блок» регулярным выражением нельзя,
-    /// поэтому исключение сделано точечно, на один файл. Платные блоки в разметке
-    /// прячет <c>&lt;feature-gate&gt;</c>, и правило продолжает следить за всеми
-    /// остальными представлениями.
+    /// поэтому исключение сделано точечно, на один файл. Роль читается ровно один раз
+    /// и уезжает во вьюху булевым флагом <c>ShowPremiumBadge</c>, поэтому сама разметка
+    /// шапки о роли уже не знает и под исключение не попадает. Платные блоки прячет
+    /// <c>&lt;feature-gate&gt;</c>, и правило продолжает следить за всеми остальными
+    /// представлениями.
+    ///
+    /// До Фазы 5 исключением был <c>_LoginPartial.cshtml</c>; вместе с перевёрсткой
+    /// шапки бейдж переехал в компонент, а сам partial удалён.
     /// </summary>
     private static readonly string[] AllowedToMentionPremium =
     [
@@ -37,7 +42,7 @@ public partial class BillingRuleTests
         "SubscriptionActivatedEventHandler.cs",
         "SubscriptionExpiredEventHandler.cs",
         "IdentitySeeder.cs",
-        "_LoginPartial.cshtml",
+        "HeaderViewComponent.cs",
     ];
 
     [Fact]
