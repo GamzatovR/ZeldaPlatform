@@ -1,0 +1,13 @@
+// Шрифты. Teko и Poppins подключены ссылкой на Google Fonts в _Layout: их файлов
+// в макете нет. Перевод на самостоятельный хостинг и CSP под шрифты — Фаза 11
+// (docs/design/design-system.md §4).
+
+@font-face {
+  font-family: "VerminVibes";
+  // Макет объявляет ещё .eot и .svg, но в assets/fonts лежит только .woff,
+  // поэтому источник ровно один.
+  src: url("/fonts/vermin-vibes.woff") format("woff");
+  font-weight: $fw-normal;
+  font-style: normal;
+  font-display: swap;
+}

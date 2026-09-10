@@ -1,0 +1,23 @@
+// Таблицы (design-system.md §11). Геометрия и цвета заданы переменными
+// Bootstrap в _bootstrap.scss; здесь — типографика макета.
+
+.table-token {
+  margin-bottom: 0;
+
+  thead th {
+    border-bottom: 0;
+    color: var(--color-text);
+    font-size: var(--fs-xl);
+    font-weight: $fw-bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    color: var(--color-text);
+    font-size: var(--fs-md);
+    font-weight: $fw-semibold;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+}

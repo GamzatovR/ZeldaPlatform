@@ -127,21 +127,9 @@ $table-cell-padding-x: rem($space-3);
 $table-striped-bg: $color-surface;
 $table-hover-bg: $color-surface-raised;
 
-// Выпадающее меню шапки
-$dropdown-bg: $color-surface-nav;
-$dropdown-color: $color-text;
-$dropdown-border-width: 0;
-$dropdown-border-radius: 0;
-$dropdown-box-shadow: $shadow-card;
-$dropdown-link-color: $color-text;
-$dropdown-link-hover-color: $color-accent;
-$dropdown-link-hover-bg: transparent;
-$dropdown-link-active-color: $color-accent;
-$dropdown-link-active-bg: transparent;
-$dropdown-padding-y: rem($space-3);
-$dropdown-item-padding-y: rem($space-1);
-$dropdown-item-padding-x: rem($space-4);
-$dropdown-font-size: rem($fs-base);
+// Выпадающего меню и мобильной раскладки здесь нет сознательно: и то и другое
+// раскрывается своим скриптом (layout/_header.scss), поэтому части dropdown
+// и transitions не подключены.
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
@@ -161,7 +149,5 @@ $dropdown-font-size: rem($fs-base);
 @import "bootstrap/scss/grid";
 @import "bootstrap/scss/tables";
 @import "bootstrap/scss/forms";
-@import "bootstrap/scss/transitions"; // .collapse / .collapsing для мобильного меню
-@import "bootstrap/scss/dropdown";
 @import "bootstrap/scss/helpers";
 @import "bootstrap/scss/utilities/api";

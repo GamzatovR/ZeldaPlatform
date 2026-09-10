@@ -1,0 +1,57 @@
+// Страницы ошибок. Верстается по pages/404.html один в один, остальные коды
+// делаются по той же композиции с заменой текста и кнопок (docs/SPEC.md §14.2).
+
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: $section-y-sm 0;
+  text-align: center;
+}
+
+.error-page__image {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.error-page__code {
+  display: block;
+  margin-top: $section-y-sm;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--fs-6xl);
+  line-height: 1;
+}
+
+.error-page__title {
+  margin: var(--space-2) 0;
+  font-size: var(--fs-6xl);
+  letter-spacing: $ls-tight;
+
+  @media (max-width: $bp-md - 1px) {
+    font-size: $fs-6xl-sm;
+  }
+}
+
+.error-page__text {
+  max-width: 550px;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+}
+
+.error-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+// 500 показывает TraceId для обращения в поддержку (§14.2).
+.error-page__trace {
+  margin-top: var(--space-5);
+  color: var(--color-text-dim);
+  font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+  font-size: var(--fs-xs);
+}

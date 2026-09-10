@@ -1,0 +1,80 @@
+// Личный кабинет: профиль, подписка, безопасность. Макета нет (§9.3 п. 17),
+// собран из тех же токенов и компонентов.
+
+.account {
+  padding-top: $section-y-md;
+  padding-bottom: $section-y;
+}
+
+.account__layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-6);
+
+  @media (max-width: $bp-lg - 1px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  align-self: start;
+}
+
+.account-nav__link {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text);
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background-color: var(--color-surface-sunken);
+  }
+
+  &.is-active {
+    border-left-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+.panel {
+  padding: var(--space-6);
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+
+  & + & {
+    margin-top: var(--space-6);
+  }
+}
+
+.panel__title {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-3xl);
+  letter-spacing: $ls-tight;
+}
+
+.definition-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+
+  dt {
+    color: var(--color-text-muted);
+    font-weight: $fw-normal;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+  }
+}

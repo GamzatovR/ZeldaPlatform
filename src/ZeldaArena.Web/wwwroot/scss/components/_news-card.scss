@@ -1,0 +1,53 @@
+// Карточка новости — .single-blog-post-item макета.
+// У новостей из сида обложки нет (поле CoverPath пустое), поэтому карточка
+// обязана выглядеть целой и без картинки.
+
+.news-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.news-card__image {
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-surface);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition) ease;
+  }
+}
+
+.news-card:hover .news-card__image img {
+  transform: scale(1.07);
+}
+
+.news-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+.news-card__date {
+  color: var(--color-accent);
+  font-size: var(--fs-base);
+  text-transform: uppercase;
+}
+
+.news-card__title {
+  margin-bottom: 0;
+  font-size: var(--fs-2xl);
+  letter-spacing: $ls-tight;
+}
+
+.news-card__summary {
+  color: var(--color-text-muted);
+}

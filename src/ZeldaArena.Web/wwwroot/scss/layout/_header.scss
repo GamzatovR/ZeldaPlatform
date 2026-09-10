@@ -1,0 +1,241 @@
+// Шапка сайта. Разметка макета опирается на meanmenu и на выпадающие меню
+// Bootstrap; ни того, ни другого в выданном шаблоне нет (design-system.md §1),
+// поэтому и раскрытие мобильного меню, и выпадающий список аккаунта — свои.
+// Многоуровневого меню в проекте нет: разделов шесть (§13).
+
+.site-header {
+  position: relative;
+  z-index: 1030;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.site-header__brand {
+  flex: 0 0 auto;
+  max-width: 180px;
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+// ─── Меню ────────────────────────────────────────────────────────────────────
+
+.site-nav {
+  flex: 1 1 auto;
+}
+
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__link {
+  display: block;
+  padding: 9px 17px 4px;
+  color: var(--color-text);
+  font-size: var(--fs-lg);
+  font-weight: $fw-semibold;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background-color var(--transition-fast) ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+    background-color: var(--color-surface-nav);
+  }
+
+  // Проставляется тег-хелпером <active-route>: текущий раздел подсвечен
+  // и помечен aria-current, иначе подсветка была бы видна только зрячим.
+  &.is-active {
+    color: var(--color-text);
+    background-color: var(--color-surface-nav);
+  }
+}
+
+// ─── Действия справа ─────────────────────────────────────────────────────────
+
+.site-header__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.site-header__action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: none;
+  border: 0;
+  color: var(--color-text);
+  font-size: var(--fs-xl);
+  line-height: 1;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+// ─── Выпадающее меню аккаунта ────────────────────────────────────────────────
+// Раскрывается своим скриптом: класс is-open ставится на обёртку,
+// aria-expanded — на кнопку.
+
+.site-menu {
+  position: relative;
+}
+
+.site-menu__panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 1;
+  display: none;
+  min-width: 210px;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  list-style: none;
+  background-color: var(--color-surface-nav);
+  box-shadow: var(--shadow-card);
+}
+
+.site-menu.is-open .site-menu__panel {
+  display: block;
+}
+
+.site-menu__item + .site-menu__item {
+  margin-top: 13px;
+}
+
+.site-menu__link {
+  display: block;
+  color: var(--color-text);
+  font-size: var(--fs-base);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+// Выход обязан идти POST с антифоржери-токеном, поэтому это кнопка в форме,
+// а не ссылка. Внешне не должна отличаться от соседних пунктов.
+.site-menu__submit {
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+}
+
+// ─── Поиск ───────────────────────────────────────────────────────────────────
+// Полноэкранный оверлей макета не переносится (§13): поиск — обычная форма,
+// работающая и без JavaScript.
+
+.site-search {
+  display: flex;
+  align-items: center;
+  max-width: 260px;
+}
+
+.site-search__input {
+  height: 38px;
+  padding: 2px var(--space-3) 0;
+  background-color: var(--color-surface-raised);
+  border: 0;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+  min-width: 0;
+}
+
+.site-search__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: var(--color-accent-strong);
+  border: 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--color-text);
+}
+
+// ─── Бургер и мобильная раскладка ────────────────────────────────────────────
+
+.site-header__toggle {
+  display: none;
+  padding: var(--space-1) var(--space-2);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--fs-2xl);
+  line-height: 1;
+}
+
+@media (max-width: $bp-lg - 1px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+  }
+
+  .site-header__toggle {
+    display: inline-flex;
+    order: 3;
+    margin-left: auto;
+  }
+
+  .site-header__actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .site-nav {
+    order: 4;
+    flex: 1 0 100%;
+    display: none;
+    padding-bottom: var(--space-3);
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .site-nav__link {
+    padding: var(--space-3) var(--space-2) var(--space-2);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .site-search {
+    display: none;
+  }
+
+  .site-nav.is-open .site-search {
+    display: flex;
+    max-width: none;
+    margin-top: var(--space-3);
+  }
+}

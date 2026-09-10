@@ -1,4 +1,33 @@
-// Точка входа стилей ZeldaArena. Порядок разделов — docs/design/design-system.md §14.
+// Точка входа стилей ZeldaArena.
+// Порядок разделов — docs/design/design-system.md §14.
+//
+// Единственный файл, где допустимы литеральные цвета и размеры, — _tokens.scss.
+// Всё остальное обязано ссылаться на токены; проверяется grep'ом в конце фазы.
 
 @import "tokens";
 @import "bootstrap";
+
+@import "base/fonts";
+@import "base/reset";
+@import "base/typography";
+
+@import "layout/section";
+@import "layout/page-title";
+@import "layout/header";
+@import "layout/footer";
+
+@import "components/icons";
+@import "components/buttons";
+@import "components/forms";
+@import "components/alerts";
+@import "components/badges";
+@import "components/tables";
+@import "components/pagination";
+@import "components/match-card";
+@import "components/news-card";
+@import "components/plan-card";
+
+@import "pages/home";
+@import "pages/auth";
+@import "pages/account";
+@import "pages/error";
