@@ -71,16 +71,8 @@ public class ProjectFileRuleTests
     /// </summary>
     private static string ProjectFilePath(string project)
     {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "ZeldaArena.sln")))
-        {
-            directory = directory.Parent;
-        }
-
-        directory.ShouldNotBeNull("Не найден корень решения: ZeldaArena.sln выше каталога сборки нет.");
-
-        var path = Path.Combine(directory.FullName, "src", project, $"{project}.csproj");
+        var path = Path.Combine(
+            ArchitectureFixture.SolutionRoot(), "src", project, $"{project}.csproj");
 
         File.Exists(path).ShouldBeTrue($"Файл проекта не найден: {path}");
 

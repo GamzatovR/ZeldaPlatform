@@ -637,4 +637,55 @@
   <data name="account.page_title" xml:space="preserve">
     <value>Аккаунт</value>
   </data>
+  <data name="home.title" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="home.hero_sub" xml:space="preserve">
+    <value>Киберспорт по Zelda</value>
+  </data>
+  <data name="home.hero_tagline" xml:space="preserve">
+    <value>Турниры, матчи и статистика в одном месте</value>
+  </data>
+  <data name="home.hero_cta" xml:space="preserve">
+    <value>Выбрать тариф</value>
+  </data>
+  <data name="home.hero_matches" xml:space="preserve">
+    <value>К матчам</value>
+  </data>
+  <data name="home.matches_sub" xml:space="preserve">
+    <value>Матчи</value>
+  </data>
+  <data name="home.matches_title" xml:space="preserve">
+    <value>Идут сейчас и ближайшие</value>
+  </data>
+  <data name="home.matches_empty" xml:space="preserve">
+    <value>Пока ни одного запланированного матча.</value>
+  </data>
+  <data name="home.news_sub" xml:space="preserve">
+    <value>Новости</value>
+  </data>
+  <data name="home.news_title" xml:space="preserve">
+    <value>Что происходит на арене</value>
+  </data>
+  <data name="home.news_empty" xml:space="preserve">
+    <value>Новостей пока нет.</value>
+  </data>
+  <data name="home.subscribe_sub" xml:space="preserve">
+    <value>Подписка</value>
+  </data>
+  <data name="home.subscribe_title" xml:space="preserve">
+    <value>Своя команда</value>
+  </data>
+  <data name="home.subscribe_text" xml:space="preserve">
+    <value>Подписка открывает создание собственной команды, управление составом и расширенную статистику.</value>
+  </data>
+  <data name="home.subscribe_cta" xml:space="preserve">
+    <value>Оформить подписку</value>
+  </data>
+  <data name="match.live" xml:space="preserve">
+    <value>В эфире</value>
+  </data>
+  <data name="match.score" xml:space="preserve">
+    <value>Счёт матча</value>
+  </data>
 </root>

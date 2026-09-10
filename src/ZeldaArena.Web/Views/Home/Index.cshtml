@@ -1,8 +1,99 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Constants
+@model ZeldaArena.Web.Models.Home.HomeViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["home.title"].Value;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@*
+    Главная (docs/SPEC.md §9.3, страница 1). Свёрстана по docs/design/pages/home.html.
+
+    Слайдер трейлеров, партнёры, награды и подменённый курсор из макета не
+    переносятся: они держатся на owl.carousel, wow.js и cursor.js, которых
+    в выданном шаблоне нет (docs/design/design-system.md §1, §13).
+
+    Секции, которых здесь пока нет и которые придут со своими сценариями:
+    витрина товаров — Фаза 7, топ-команды — Фаза 6, бегущая строка live-матчей —
+    Фаза 10. Заглушек под них не ставим.
+*@
+
+<section class="hero">
+    <div class="container hero__inner">
+        <span class="hero__sub">@T["home.hero_sub"]</span>
+
+        <div class="hero__logo">
+            <img src="~/img/zelda.png" alt="@T["brand.name"]" />
+        </div>
+
+        <p class="hero__tagline">@T["home.hero_tagline"]</p>
+
+        <div class="hero__actions">
+            <a class="btn-solid" asp-controller="Subscription" asp-action="Index">
+                <icon name="@IconNames.Trophy" /> @T["home.hero_cta"]
+            </a>
+            <a class="btn-ghost" href="#matches">@T["home.hero_matches"]</a>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="matches">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">@T["home.matches_sub"]</span>
+            <h2>@T["home.matches_title"]</h2>
+        </div>
+
+        @if (Model.Matches.Count == 0)
+        {
+            @* Пустое состояние показывается отдельно, а не пустым местом (§10.2). *@
+            <p class="empty-state">@T["home.matches_empty"]</p>
+        }
+        else
+        {
+            foreach (var match in Model.Matches)
+            {
+                <partial name="_MatchCard" model="match" />
+            }
+        }
+    </div>
+</section>
+
+<section class="section section--surface">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">@T["home.news_sub"]</span>
+            <h2>@T["home.news_title"]</h2>
+        </div>
+
+        @if (Model.News.Count == 0)
+        {
+            <p class="empty-state">@T["home.news_empty"]</p>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var article in Model.News)
+                {
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <partial name="_NewsCard" model="article" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-title">
+            <span class="sub-title">@T["home.subscribe_sub"]</span>
+            <h2>@T["home.subscribe_title"]</h2>
+            <p>@T["home.subscribe_text"]</p>
+        </div>
+
+        <div class="hero__actions">
+            <a class="btn-solid" asp-controller="Subscription" asp-action="Index">@T["home.subscribe_cta"]</a>
+        </div>
+    </div>
+</section>

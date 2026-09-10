@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using ZeldaArena.Application;
@@ -36,6 +36,26 @@ internal static class ArchitectureFixture
         assembly.GetReferencedAssemblies()
             .Select(reference => reference.Name ?? string.Empty)
             .ToArray();
+
+    /// <summary>
+    /// Корень решения. Нужен проверкам, которые читают исходники и файлы проектов,
+    /// а не собранные сборки. Лежит здесь, а не в каждой такой проверке: до Фазы 5
+    /// метод был скопирован в двух файлах, и третья копия появилась бы вместе
+    /// с проверкой спрайта иконок.
+    /// </summary>
+    public static string SolutionRoot()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+
+        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "ZeldaArena.sln")))
+        {
+            directory = directory.Parent;
+        }
+
+        directory.ShouldNotBeNull("Не найден корень решения: ZeldaArena.sln выше каталога сборки нет.");
+
+        return directory.FullName;
+    }
 
     public static bool IsCompilerGenerated(Type type) =>
         type.IsDefined(typeof(CompilerGeneratedAttribute), inherit: false)

@@ -131,7 +131,7 @@ public partial class BillingRuleTests
 
     private static IEnumerable<(string Path, string Text)> SourceFiles()
     {
-        var root = SolutionRoot();
+        var root = ArchitectureFixture.SolutionRoot();
 
         return Directory
             .EnumerateFiles(Path.Combine(root, "src"), "*.cs", SearchOption.AllDirectories)
@@ -146,17 +146,4 @@ public partial class BillingRuleTests
             .Select(path => (Path: Path.GetRelativePath(root, path), Text: File.ReadAllText(path)));
     }
 
-    private static string SolutionRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directory is not null && !File.Exists(Path.Combine(directory.FullName, "ZeldaArena.sln")))
-        {
-            directory = directory.Parent;
-        }
-
-        directory.ShouldNotBeNull("Не найден корень решения: ZeldaArena.sln выше каталога сборки нет.");
-
-        return directory.FullName;
-    }
 }

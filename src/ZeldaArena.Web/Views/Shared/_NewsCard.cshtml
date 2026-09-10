@@ -1,0 +1,36 @@
+@using ZeldaArena.Application.Features.News.Queries.GetLatestNews
+@model NewsListItemDto
+
+@*
+    Карточка новости по .single-blog-post-item макета. Переиспользуется лентой
+    новостей в Фазе 6, тогда же заголовок станет ссылкой на /news/{slug} —
+    сейчас такого маршрута ещё нет, а ссылка на несуществующую страницу
+    роняет представление (грабли Фазы 3).
+
+    У новостей из сида обложки нет: поле CoverPath пустое, поэтому блок картинки
+    выводится только при её наличии, а карточка обязана оставаться целой без неё.
+*@
+<article class="news-card">
+    @if (Model.CoverPath is not null)
+    {
+        <div class="news-card__image">
+            <img src="@Model.CoverPath" alt="" loading="lazy" />
+        </div>
+    }
+
+    <div class="news-card__body">
+        @if (Model.PublishedAt is { } publishedAt)
+        {
+            <time class="news-card__date" datetime="@publishedAt.ToString("O")">
+                @publishedAt.ToLocalTime().ToString("d")
+            </time>
+        }
+
+        <h3 class="news-card__title">@Model.Title</h3>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Summary))
+        {
+            <p class="news-card__summary">@Model.Summary</p>
+        }
+    </div>
+</article>
