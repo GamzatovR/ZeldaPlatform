@@ -1,0 +1,24 @@
+{
+  "$comment": [
+    "Источник — wwwroot/scss (путь задан docs/SPEC.md §9.1), результат — wwwroot/css.",
+    "Файлы, чьё имя начинается с подчёркивания, dart-sass считает partial'ами и отдельно",
+    "не собирает, поэтому на выходе ровно один site.css.",
+    "Исходники Bootstrap лежат в Styles/vendor и подключены через --load-path, а не",
+    "внутрь Source: иначе dart-sass собрал бы bootstrap.scss и bootstrap-grid.scss",
+    "как самостоятельные файлы и вывалил весь фреймворк в wwwroot/css.",
+    "Style expanded с картами исходников в разработке; в Release — compressed без карт.",
+    "Бандлинг и версионирование поверх этого добавит WebOptimizer в Фазе 11."
+  ],
+  "Source": "wwwroot/scss",
+  "Target": "wwwroot/css",
+  "Arguments": "--load-path=Styles/vendor --quiet-deps --silence-deprecation=import",
+  "GenerateSourceMap": true,
+  "SourceMapUrls": "relative",
+  "Style": "expanded",
+  "Configurations": {
+    "Release": {
+      "GenerateSourceMap": false,
+      "Style": "compressed"
+    }
+  }
+}

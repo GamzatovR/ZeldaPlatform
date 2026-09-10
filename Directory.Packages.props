@@ -53,6 +53,13 @@
     <PackageVersion Include="QRCoder" Version="1.8.0" />
   </ItemGroup>
 
+  <!-- Фаза 5: SCSS собирается dart-sass'ом через MSBuild. Бинарник приходит
+       NuGet-пакетом под нужный RID, поэтому Node не нужен ни в CI, ни в Dockerfile.
+       Минификацию и бандлинг поверх собранного CSS добавит WebOptimizer в Фазе 11. -->
+  <ItemGroup>
+    <PackageVersion Include="AspNetCore.SassCompiler" Version="1.103.0" />
+  </ItemGroup>
+
   <!-- Фазы 10-11: Mongo, логи, санитизация, бандлинг -->
   <ItemGroup>
     <PackageVersion Include="MongoDB.Driver" Version="3.11.1" />
