@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using ZeldaArena.Web.Constants
 @using ZeldaArena.Web.Models.Layout
 @model HeaderViewModel
@@ -32,15 +32,12 @@
                     }
                 </ul>
 
-                @* Поиск по сайту. Обычная GET-форма: без JavaScript обязана работать (§9.1). *@
-                <form class="site-search" asp-controller="Home" asp-action="Index" method="get" role="search">
-                    <label class="visually-hidden" for="site-search-input">@T["search.label"]</label>
-                    <input class="site-search__input" id="site-search-input" type="search"
-                           name="q" placeholder="@T["search.placeholder"]" />
-                    <button class="site-search__submit" type="submit">
-                        <icon name="@IconNames.Search" label="@T["search.submit"]" />
-                    </button>
-                </form>
+                @*
+                    Поиска здесь пока нет: искать не по чему, разделы турниров, команд
+                    и игроков появятся в Фазе 6, а эндпоинт — в Фазе 8 вместе с Areas/Api.
+                    Поле, молча теряющее запрос, — та же сломанная ссылка, только хуже:
+                    ссылку видно, что она никуда не ведёт, а форму — нет.
+                *@
             </nav>
 
             <div class="site-header__actions">

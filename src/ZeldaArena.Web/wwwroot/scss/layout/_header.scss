@@ -30,7 +30,10 @@
 // ─── Меню ────────────────────────────────────────────────────────────────────
 
 .site-nav {
+  display: flex;
   flex: 1 1 auto;
+  align-items: center;
+  gap: var(--space-4);
 }
 
 .site-nav__list {
@@ -144,40 +147,6 @@
   text-align: left;
 }
 
-// ─── Поиск ───────────────────────────────────────────────────────────────────
-// Полноэкранный оверлей макета не переносится (§13): поиск — обычная форма,
-// работающая и без JavaScript.
-
-.site-search {
-  display: flex;
-  align-items: center;
-  max-width: 260px;
-}
-
-.site-search__input {
-  height: 38px;
-  padding: 2px var(--space-3) 0;
-  background-color: var(--color-surface-raised);
-  border: 0;
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
-  color: var(--color-text);
-  font-family: var(--font-prose);
-  font-size: var(--fs-xs);
-  min-width: 0;
-}
-
-.site-search__submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  background-color: var(--color-accent-strong);
-  border: 0;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  color: var(--color-text);
-}
-
 // ─── Бургер и мобильная раскладка ────────────────────────────────────────────
 
 .site-header__toggle {
@@ -227,15 +196,5 @@
   .site-nav__link {
     padding: var(--space-3) var(--space-2) var(--space-2);
     border-bottom: 1px solid var(--color-border-subtle);
-  }
-
-  .site-search {
-    display: none;
-  }
-
-  .site-nav.is-open .site-search {
-    display: flex;
-    max-width: none;
-    margin-top: var(--space-3);
   }
 }

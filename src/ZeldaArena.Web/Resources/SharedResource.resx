@@ -607,15 +607,6 @@
   <data name="nav.toggle" xml:space="preserve">
     <value>Открыть меню</value>
   </data>
-  <data name="search.label" xml:space="preserve">
-    <value>Поиск по сайту</value>
-  </data>
-  <data name="search.placeholder" xml:space="preserve">
-    <value>Что ищем?</value>
-  </data>
-  <data name="search.submit" xml:space="preserve">
-    <value>Найти</value>
-  </data>
   <data name="a11y.skip_to_content" xml:space="preserve">
     <value>Перейти к содержимому</value>
   </data>
