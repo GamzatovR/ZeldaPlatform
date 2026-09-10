@@ -1,0 +1,61 @@
+// Типографика макета: интерфейс набран Teko, связный текст — Poppins
+// (docs/design/design-system.md §4).
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+  text-transform: uppercase;
+  line-height: $lh-tight;
+  font-weight: $fw-semibold;
+}
+
+p {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-prose);
+  font-size: var(--fs-sm);
+  line-height: $lh-prose;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--transition-fast) ease-in-out;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+.text-muted-token {
+  color: var(--color-text-muted);
+}
+
+.text-dim {
+  color: var(--color-text-dim);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.small-token {
+  font-size: var(--fs-xs);
+}
+
+// Моноширинный набор: коды восстановления, TraceId, ключ аутентификатора.
+.mono {
+  font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+  font-size: var(--fs-xs);
+  letter-spacing: $ls-tight;
+}

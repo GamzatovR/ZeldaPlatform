@@ -1,0 +1,48 @@
+// Вертикальный ритм секций и заголовок секции (design-system.md §5, §11).
+// В макете это классы .ptb-100 / .ptb-70; здесь они получают адаптив, которого
+// в шаблоне нет вовсе — responsive.css отсутствует (§1).
+
+.section {
+  padding-top: $section-y;
+  padding-bottom: $section-y;
+
+  @media (max-width: $bp-lg - 1px) {
+    padding-top: $section-y-md;
+    padding-bottom: $section-y-md;
+  }
+
+  @media (max-width: $bp-sm - 1px) {
+    padding-top: $section-y-sm;
+    padding-bottom: $section-y-sm;
+  }
+}
+
+.section--surface {
+  background-color: var(--color-surface);
+}
+
+.section-title {
+  max-width: 720px;
+  margin: 0 auto var(--space-7);
+  text-align: center;
+
+  .sub-title {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-accent);
+    font-size: var(--fs-xl);
+    font-weight: $fw-semibold;
+    letter-spacing: $ls-tight;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-bottom: 0;
+    font-size: var(--fs-6xl);
+    letter-spacing: $ls-wide;
+
+    @media (max-width: $bp-md - 1px) {
+      font-size: $fs-6xl-sm;
+    }
+  }
+}

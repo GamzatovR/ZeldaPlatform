@@ -1,4 +1,13 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+// Точка входа клиентских скриптов. Подключается как ES-модуль, поэтому
+// выполняется после разбора разметки — DOMContentLoaded здесь не нужен.
+//
+// Из 14 скриптов, подключённых страницами шаблона, в макете лежит только main.js
+// (docs/design/design-system.md §1). Слайдеры, параллакс, лайтбоксы и подменённый
+// курсор в проект не переносятся: они не дают ничего по критериям и мешают
+// требованию §16 по скорости загрузки.
 
-// Write your JavaScript code.
+import { initNav } from './nav.js';
+import { initGoTop } from './go-top.js';
+
+initNav();
+initGoTop();

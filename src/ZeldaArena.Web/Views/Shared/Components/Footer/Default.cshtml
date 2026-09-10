@@ -1,0 +1,50 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Constants
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Подвал. Меню и соцсети — из макета; переключатель языка ru/en (§9.5)
+    встаёт в .copyright__row в Фазе 11, место под него в макете уже есть
+    (docs/design/design-system.md §11).
+*@
+<footer class="site-footer">
+    <div class="container">
+        <a class="site-footer__brand" asp-controller="Home" asp-action="Index">
+            <img src="~/img/logo.png" alt="@T["brand.name"]" width="180" height="43" loading="lazy" />
+        </a>
+
+        <nav aria-label="@T["nav.footer"]">
+            <ul class="site-footer__menu">
+                <li>
+                    <a class="site-footer__link" asp-controller="Subscription" asp-action="Index">@T["nav.subscription"]</a>
+                </li>
+            </ul>
+        </nav>
+
+        <ul class="site-footer__social">
+            <li>
+                <a href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer">
+                    <icon name="@IconNames.Twitch" label="Twitch" />
+                </a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+                    <icon name="@IconNames.Youtube" label="YouTube" />
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+                    <icon name="@IconNames.Twitter" label="Twitter" />
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+<div class="copyright">
+    <div class="container">
+        <div class="copyright__row">
+            <p>&copy; @DateTime.UtcNow.Year @T["brand.name"]</p>
+        </div>
+    </div>
+</div>

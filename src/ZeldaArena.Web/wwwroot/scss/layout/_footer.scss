@@ -1,0 +1,69 @@
+// Подвал (design-system.md §11). Блок .lang-switcher — готовое место
+// под переключатель языка ru/en из §9.5; включается в Фазе 11.
+
+.site-footer {
+  padding: $space-8 0;
+  background-color: var(--color-surface);
+  text-align: center;
+}
+
+.site-footer__brand {
+  display: inline-block;
+  max-width: 180px;
+}
+
+.site-footer__menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4) 40px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__link {
+  color: var(--color-text);
+  font-size: var(--fs-lg);
+  font-weight: $fw-medium;
+  text-transform: uppercase;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+.site-footer__social {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-2xl);
+}
+
+.copyright {
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--color-border-subtle);
+
+  p {
+    margin-bottom: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-lg);
+    text-transform: uppercase;
+  }
+}
+
+.copyright__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+
+  @media (max-width: $bp-md - 1px) {
+    justify-content: center;
+    text-align: center;
+  }
+}

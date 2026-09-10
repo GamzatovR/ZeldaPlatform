@@ -1,0 +1,65 @@
+// Страницы аккаунта: вход, регистрация, восстановление пароля, 2FA.
+// Верстаются по .login-form макета (docs/SPEC.md §9.3 п. 16),
+// сама карточка — компонент .form-card.
+
+.auth {
+  padding-top: $section-y;
+  padding-bottom: $section-y;
+
+  @media (max-width: $bp-lg - 1px) {
+    padding-top: $section-y-md;
+    padding-bottom: $section-y-md;
+  }
+}
+
+.auth__row {
+  display: flex;
+  justify-content: center;
+}
+
+.auth__footer {
+  margin-top: var(--space-5);
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+  text-align: center;
+}
+
+.auth__aside {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+// Коды восстановления показываются один раз — набор моноширинных плашек.
+.recovery-codes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: var(--space-2);
+    background-color: var(--color-surface-sunken);
+    border-radius: var(--radius-sm);
+    font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+    font-size: var(--fs-xs);
+    text-align: center;
+  }
+}
+
+// QR-код аутентификатора рисуется на сервере (§8.2), поэтому это готовый SVG.
+.authenticator-qr {
+  display: inline-block;
+  padding: var(--space-3);
+  background-color: var(--color-text);
+  border-radius: var(--radius-md);
+
+  svg {
+    display: block;
+  }
+}

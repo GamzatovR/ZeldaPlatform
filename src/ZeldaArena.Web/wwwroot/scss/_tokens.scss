@@ -1,0 +1,180 @@
+@use "sass:math";
+
+// Токены дизайн-системы. Значения извлечены из макета, обоснование каждого —
+// docs/design/design-system.md. Единственный файл проекта, где допустимы
+// литеральные цвета и размеры: всё остальное обязано ссылаться сюда.
+//
+// Токен существует в двух видах:
+//   $foo — SCSS-переменная, нужна на этапе сборки (настройка Bootstrap, @media);
+//   --foo — CSS-переменная, нужна в рантайме (компоненты, будущие темы).
+// Источник истины — SCSS-переменная, CSS-переменная печатается из неё,
+// поэтому разъехаться они не могут.
+
+// Шкала макета задана в пикселях, а арифметика Bootstrap ведётся в rem: попытка
+// сложить 18px с .5rem роняет сборку. Пиксельное значение остаётся источником
+// истины, а сюда переводятся только те токены, которые уходят в переменные Bootstrap.
+@function rem($px) {
+  @return math.div($px, 16px) * 1rem;
+}
+
+// ─── Палитра (design-system.md §2) ────────────────────────────────────────────
+
+$color-bg: #0c0305; // --blackColor: фон страницы
+$color-surface: #1b060a; // .bg-1b060a: чередующиеся секции, подвал
+$color-surface-raised: #22152c; // формы и карточки, 32 вхождения в макете
+$color-surface-sunken: #000000; // поля ввода внутри карточки формы
+$color-surface-nav: #00030e; // меню и выпадающие списки
+
+$color-border: #2e2e2e; // разделители таблиц
+$color-border-subtle: #1a0c09; // тонкая линия на тёмном
+
+// Акцент разведён на два токена ради контраста: белый текст на #fc0820 даёт
+// 4.04:1 при требуемых 4.5:1 (§9.1). Подробности — design-system.md §3.
+$color-accent: #fc0820; // --mainColor: текст, рамки, иконки на тёмном
+$color-accent-strong: #e00019; // заливки, под которыми лежит белый текст
+
+$color-text: #ffffff;
+$color-text-muted: #c2c0c0;
+$color-text-dim: #8d8385;
+
+$color-warning: #ffba0a;
+$color-success: #128012; // в макете ключевое слово green
+
+$color-facebook: #3b5998;
+$color-twitter: #1da1f2;
+$color-instagram: #c13584;
+$color-linkedin: #007bb5;
+
+// ─── Типографика (§4) ─────────────────────────────────────────────────────────
+
+$font-body: "Teko", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-display: "VerminVibes", "Teko", system-ui, sans-serif;
+$font-prose: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+$fs-xs: 14px;
+$fs-sm: 15px;
+$fs-base: 16px;
+$fs-md: 17px;
+$fs-lg: 18px; // базовый размер макета
+$fs-xl: 20px;
+$fs-2xl: 25px;
+$fs-3xl: 30px;
+$fs-4xl: 32px;
+$fs-5xl: 40px;
+$fs-6xl: 50px;
+$fs-display: 130px;
+
+// Уменьшенные значения крупных кеглей: 130px не помещается ни в один мобильный
+// экран, а responsive.css в макете отсутствует (design-system.md §1, §8).
+$fs-display-md: 64px;
+$fs-display-sm: 40px;
+$fs-6xl-sm: 32px;
+$fs-5xl-sm: 28px;
+
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+$lh-tight: 1.1;
+$lh-base: 1.4;
+$lh-prose: 1.8;
+
+$ls-tight: 1px;
+$ls-wide: 2px;
+$ls-wider: 3px;
+
+// ─── Отступы (§5) ─────────────────────────────────────────────────────────────
+
+$space-1: 5px;
+$space-2: 10px;
+$space-3: 15px;
+$space-4: 20px;
+$space-5: 25px;
+$space-6: 30px;
+$space-7: 45px;
+$space-8: 50px;
+
+$section-y: 100px;
+$section-y-md: 70px;
+$section-y-sm: 50px;
+
+$container-width: 1210px;
+
+// ─── Радиусы, тени, движение (§6) ─────────────────────────────────────────────
+
+$radius-sm: 3px;
+$radius-md: 5px;
+$radius-pill: 60px;
+$radius-circle: 50%;
+
+$shadow-card: 0 10px 27px 0 rgb(14 8 18 / 50%);
+
+$transition: 0.5s; // --transition макета: крупные эффекты
+$transition-fast: 0.2s; // цвет текста, фокус — макет так же делает чекбоксы
+
+// ─── Брейкпоинты (§8) ─────────────────────────────────────────────────────────
+// Совпадают с сеткой Bootstrap и с §9.1; отсюда же берёт значения _bootstrap.scss.
+
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+
+// ─── CSS-переменные ───────────────────────────────────────────────────────────
+
+:root {
+  --color-bg: #{$color-bg};
+  --color-surface: #{$color-surface};
+  --color-surface-raised: #{$color-surface-raised};
+  --color-surface-sunken: #{$color-surface-sunken};
+  --color-surface-nav: #{$color-surface-nav};
+
+  --color-border: #{$color-border};
+  --color-border-subtle: #{$color-border-subtle};
+
+  --color-accent: #{$color-accent};
+  --color-accent-strong: #{$color-accent-strong};
+
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-dim: #{$color-text-dim};
+
+  --color-warning: #{$color-warning};
+  --color-success: #{$color-success};
+
+  --font-body: #{$font-body};
+  --font-display: #{$font-display};
+  --font-prose: #{$font-prose};
+
+  --fs-xs: #{$fs-xs};
+  --fs-sm: #{$fs-sm};
+  --fs-base: #{$fs-base};
+  --fs-md: #{$fs-md};
+  --fs-lg: #{$fs-lg};
+  --fs-xl: #{$fs-xl};
+  --fs-2xl: #{$fs-2xl};
+  --fs-3xl: #{$fs-3xl};
+  --fs-4xl: #{$fs-4xl};
+  --fs-5xl: #{$fs-5xl};
+  --fs-6xl: #{$fs-6xl};
+
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+  --space-7: #{$space-7};
+  --space-8: #{$space-8};
+
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-pill: #{$radius-pill};
+  --radius-circle: #{$radius-circle};
+
+  --shadow-card: #{$shadow-card};
+
+  --transition: #{$transition};
+  --transition-fast: #{$transition-fast};
+}

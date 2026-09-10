@@ -1,0 +1,44 @@
+// Бейджи (design-system.md §11). Отдельного класса в макете нет — собраны
+// из круглых .sale / .hot и подписей .sub-title.
+
+.badge-token {
+  display: inline-block;
+  padding: 4px var(--space-2) 2px;
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--fs-xs);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-tight;
+  line-height: 1.2;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.badge-token--accent {
+  background-color: var(--color-accent-strong);
+  color: var(--color-text);
+}
+
+.badge-token--success {
+  background-color: var(--color-success);
+  color: var(--color-text);
+}
+
+// Бейдж подписчика. Роль Premium здесь — исключительно отображение,
+// доступ дают фичи (docs/SPEC.md §7.4).
+.badge-token--premium {
+  background-color: var(--color-warning);
+  color: var(--color-bg);
+}
+
+// Живой матч. Пульсация гасится общим правилом prefers-reduced-motion.
+.badge-token--live {
+  background-color: var(--color-accent-strong);
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}

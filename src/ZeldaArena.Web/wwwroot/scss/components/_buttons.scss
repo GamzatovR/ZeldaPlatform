@@ -1,0 +1,121 @@
+// Кнопки макета: .default-btn и .optional-btn (design-system.md §9).
+// Bootstrap-овские .btn не подключены — у макета своя геометрия и своя заливка
+// псевдоэлементом, накрывать её каскадом было бы хуже, чем написать свою.
+//
+// Асимметричный вертикальный padding (15px сверху, 9px снизу) — не опечатка:
+// так компенсируется высокая базовая линия Teko.
+
+%btn-base {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  overflow: hidden;
+  border: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-xl);
+  font-weight: $fw-normal;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color var(--transition-fast) ease-in-out;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 0;
+    height: 0;
+    background-color: var(--color-text);
+    transition: width var(--transition) ease, height var(--transition) ease;
+  }
+
+  &:hover {
+    color: var(--color-accent);
+  }
+
+  &:hover::before {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+.btn-solid {
+  @extend %btn-base;
+
+  padding: 15px var(--space-8) 9px;
+  // Заливка на тон темнее акцента: белый текст на #fc0820 даёт 4.04:1
+  // при требуемых 4.5:1 (design-system.md §3).
+  background-color: var(--color-accent-strong);
+  color: var(--color-text);
+
+  &::before {
+    left: 0;
+  }
+}
+
+.btn-ghost {
+  @extend %btn-base;
+
+  padding: 15px $space-7 9px;
+  background-color: transparent;
+  color: var(--color-text);
+
+  &::before {
+    right: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--color-text);
+  }
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+// Ссылка с подчёркиванием, уезжающим на акцент — приём макета
+// (.lost-your-password).
+.link-underline {
+  position: relative;
+  display: inline-block;
+  font-size: var(--fs-base);
+  font-weight: $fw-medium;
+  letter-spacing: $ls-tight;
+  line-height: 1.3;
+  text-transform: uppercase;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    transition: width var(--transition-fast) ease-in-out;
+  }
+
+  &::before {
+    width: 100%;
+    background-color: var(--color-text-muted);
+  }
+
+  &::after {
+    width: 0;
+    background-color: var(--color-accent);
+  }
+
+  &:hover::before { width: 0; }
+  &:hover::after { width: 100%; }
+}

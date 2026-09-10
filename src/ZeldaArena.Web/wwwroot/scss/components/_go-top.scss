@@ -1,0 +1,26 @@
+// Кнопка «наверх». В макете это .go-top с иконкой boxicons; иконка заменена
+// символом спрайта, поведение — свой скрипт вместо main.js шаблона.
+// Кнопка скрыта до прокрутки атрибутом hidden, поэтому без JavaScript
+// её просто нет — она ничего не добавляет к навигации.
+
+.go-top {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 1040;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-accent-strong);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--fs-2xl);
+  transition: opacity var(--transition-fast) ease-in-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}

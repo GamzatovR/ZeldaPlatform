@@ -1,6 +1,10 @@
 @*
     Сообщение об исходе действия, пережившее редирект (PRG). Держится в TempData,
     поэтому показывается ровно один раз.
+
+    Признак ошибки — ведущий «!», как это заведено в страницах аккаунта Фазы 3.
+    role="status" вместо alert: сообщение появляется после перехода, а не
+    прерывает работу, и перебивать им скринридер не нужно.
 *@
 @{
     var message = TempData["StatusMessage"] as string;
@@ -9,7 +13,7 @@
 
 @if (!string.IsNullOrEmpty(message))
 {
-    <div class="alert @(isError ? "alert-danger" : "alert-success")" role="alert">
+    <div class="alert-token @(isError ? "alert-token--error" : "alert-token--success")" role="status">
         @(isError ? message[1..] : message)
     </div>
 }

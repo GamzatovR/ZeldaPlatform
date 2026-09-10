@@ -1,0 +1,19 @@
+// Сообщения статуса и ошибок. В макете их нет — собраны из токенов.
+
+.alert-token {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-left: 3px solid var(--color-text-dim);
+  border-radius: var(--radius-md);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+  line-height: $lh-prose;
+}
+
+.alert-token--success { border-left-color: var(--color-success); }
+.alert-token--error { border-left-color: var(--color-accent); }
+.alert-token--warning { border-left-color: var(--color-warning); }

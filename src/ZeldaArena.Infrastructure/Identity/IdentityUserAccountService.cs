@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Identity;
@@ -80,6 +80,16 @@ public sealed class IdentityUserAccountService(
             : Result.Failure<Guid>(IdentityErrorTranslator.ToError(assigned));
     }
 
+    /// <summary>
+    /// Идемпотентна: если роль уже есть, это успех, а не ошибка.
+    ///
+    /// <c>UserManager.AddToRoleAsync</c> в такой ситуации возвращает
+    /// <c>UserAlreadyInRole</c>, и обработчик <c>SubscriptionActivatedEvent</c> писал
+    /// предупреждение при каждом продлении подписки — то есть на совершенно штатном
+    /// пути. Смысл порта — «убедиться, что роль у пользователя есть»; ровно этого
+    /// хотят и обработчики событий подписки, и сидер, поэтому проверка стоит здесь,
+    /// а не повторяется у каждого вызывающего.
+    /// </summary>
     public Task<Result> AddToRoleAsync(
         Guid userId,
         string role,
@@ -89,11 +99,25 @@ public sealed class IdentityUserAccountService(
 
         return WithUserAsync(
             userId,
-            async user => IdentityErrorTranslator.ToResult(
-                await userManager.AddToRoleAsync(user, role).ConfigureAwait(false)),
+            async user =>
+            {
+                if (await userManager.IsInRoleAsync(user, role).ConfigureAwait(false))
+                {
+                    return Result.Success();
+                }
+
+                return IdentityErrorTranslator.ToResult(
+                    await userManager.AddToRoleAsync(user, role).ConfigureAwait(false));
+            },
             cancellationToken);
     }
 
+    /// <summary>
+    /// Идемпотентна по той же причине, что и <see cref="AddToRoleAsync"/>: снятие
+    /// отсутствующей роли — успех. Иначе <c>SubscriptionExpirationService</c>, которая
+    /// ходит раз в час, писала бы предупреждение на каждой подписке, роль по которой
+    /// уже снята.
+    /// </summary>
     public Task<Result> RemoveFromRoleAsync(
         Guid userId,
         string role,
@@ -103,8 +127,16 @@ public sealed class IdentityUserAccountService(
 
         return WithUserAsync(
             userId,
-            async user => IdentityErrorTranslator.ToResult(
-                await userManager.RemoveFromRoleAsync(user, role).ConfigureAwait(false)),
+            async user =>
+            {
+                if (!await userManager.IsInRoleAsync(user, role).ConfigureAwait(false))
+                {
+                    return Result.Success();
+                }
+
+                return IdentityErrorTranslator.ToResult(
+                    await userManager.RemoveFromRoleAsync(user, role).ConfigureAwait(false));
+            },
             cancellationToken);
     }
 

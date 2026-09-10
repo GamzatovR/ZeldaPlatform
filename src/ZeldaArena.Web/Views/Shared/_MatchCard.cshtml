@@ -1,0 +1,58 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches
+@model HomeMatchDto
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Карточка матча по .single-matches-box макета (docs/design/design-system.md §11).
+    Переиспользуется страницами турнира и расписания в Фазе 6.
+
+    Блок счёта помечен aria-live: в Фазе 10 счёт начнёт приходить по SignalR (§11),
+    и смена числа без этого осталась бы незамеченной для скринридера.
+*@
+<article class="match-card">
+    <div class="row align-items-center">
+        <div class="col-lg-5">
+            <div class="match-card__team">
+                @if (Model.TeamALogoPath is not null)
+                {
+                    <img src="@Model.TeamALogoPath" alt="" loading="lazy" />
+                }
+                <div class="match-card__content">
+                    <h3 class="match-card__name">@Model.TeamAName</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="match-card__result">
+                @if (Model.IsLive)
+                {
+                    <span class="badge-token badge-token--live">@T["match.live"]</span>
+                }
+
+                <ul class="match-card__score" aria-live="polite"
+                    aria-label="@T["match.score"]">
+                    <li>@Model.ScoreA</li>
+                    <li>@Model.ScoreB</li>
+                </ul>
+
+                <time class="match-card__meta" datetime="@Model.ScheduledAt.ToString("O")">
+                    @Model.ScheduledAt.ToLocalTime().ToString("g")
+                </time>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="match-card__team match-card__team--right">
+                @if (Model.TeamBLogoPath is not null)
+                {
+                    <img src="@Model.TeamBLogoPath" alt="" loading="lazy" />
+                }
+                <div class="match-card__content">
+                    <h3 class="match-card__name">@Model.TeamBName</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

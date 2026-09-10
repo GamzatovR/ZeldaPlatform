@@ -1,34 +1,36 @@
-@page
+﻿@page
 @model EnableAuthenticatorModel
 @{
     ViewData["Title"] = T["enable_authenticator.title"].Value;
 }
 
 <ol class="mb-4">
-    <li class="mb-3">@T["enable_authenticator.step_install"]</li>
-    <li class="mb-3">
+    <li>@T["enable_authenticator.step_install"]</li>
+    <li>
         @T["enable_authenticator.step_scan"]
 
         @* QR нарисован на сервере, поэтому виден и без JavaScript.
            Ключ и ссылка — секрет, наружу они уходят только на этой странице. *@
-        <div class="my-3" aria-hidden="true">@Html.Raw(Model.QrCodeSvg)</div>
+        @* Светлая подложка обязательна: страница тёмная, а QR рисуется тёмными
+           модулями — на фоне --color-bg камера его не прочтёт. *@
+        <div class="authenticator-qr my-3" aria-hidden="true">@Html.Raw(Model.QrCodeSvg)</div>
 
-        <p class="font-monospace">@Model.SharedKey</p>
+        <p class="mono">@Model.SharedKey</p>
     </li>
     <li>@T["enable_authenticator.step_verify"]</li>
 </ol>
 
 <form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+    <div asp-validation-summary="ModelOnly" class="form-group" role="alert"></div>
 
-    <div class="mb-3">
+    <div class="form-group">
         <label asp-for="Input.VerificationCode" class="form-label">@T["field.two_factor_code"]</label>
         <input asp-for="Input.VerificationCode" class="form-control" autocomplete="one-time-code"
                inputmode="numeric" />
-        <span asp-validation-for="Input.VerificationCode" class="text-danger"></span>
+        <span asp-validation-for="Input.VerificationCode"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">@T["enable_authenticator.submit"]</button>
+    <button type="submit" class="btn-solid">@T["enable_authenticator.submit"]</button>
 </form>
 
 @section Scripts {

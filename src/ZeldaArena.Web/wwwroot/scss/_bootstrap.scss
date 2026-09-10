@@ -1,0 +1,153 @@
+// Bootstrap 5 из исходных SCSS: подключаются только те части, которые проект
+// действительно использует. Собранного CSS Bootstrap в проекте нет — иначе
+// в бандл уехали бы карусели, тултипы и офф-канвасы, а §16 требует обратного.
+//
+// Здесь именно @import, а не @use: в Bootstrap 5.3 файл _variables.scss на строке 494
+// вызывает миксин _assert-ascending из _functions.scss, то есть рассчитывает на общую
+// область имён @import. С @use сборка падает на «Undefined mixin». Переход на @use
+// возможен только вместе с переходом на Bootstrap 6.
+//
+// Настройка идёт переменными до @import "variables" — так задумано самим Bootstrap.
+// Переопределять его правила каскадом и !important в проекте запрещено (CLAUDE.md).
+
+@import "bootstrap/scss/functions";
+
+// ─── Настройка переменными (значения — из _tokens.scss) ───────────────────────
+
+// Отключаем всё, чем не пользуемся: тёмная схема Bootstrap не нужна — проект
+// тёмный сам по себе, а печать и RFS раздувают вывод впустую.
+$enable-dark-mode: false;
+$enable-rfs: false;
+$enable-shadows: false;
+$enable-gradients: false;
+$enable-smooth-scroll: true;
+$enable-reduced-motion: true;
+$enable-important-utilities: false;
+
+$prefix: bs-;
+
+// Сетка и контейнер (design-system.md §7, §8)
+$grid-breakpoints: (
+  xs: 0,
+  sm: $bp-sm,
+  md: $bp-md,
+  lg: $bp-lg,
+  xl: $bp-xl,
+  xxl: 1400px,
+);
+// Ключа xxl нет сознательно: контейнер макета — 1210px, а карта Bootstrap
+// обязана строго возрастать. Без xxl на экранах шире 1400px действует ширина xl.
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: $container-width,
+);
+$grid-gutter-width: rem($space-6);
+
+// Палитра и типографика
+$body-bg: $color-bg;
+$body-color: $color-text;
+$body-secondary-color: $color-text-muted;
+$body-tertiary-color: $color-text-dim;
+
+$primary: $color-accent-strong;
+$secondary: $color-surface-raised;
+$success: $color-success;
+$warning: $color-warning;
+$danger: $color-accent-strong;
+$light: $color-text;
+$dark: $color-bg;
+
+$font-family-base: $font-body;
+$font-size-base: rem($fs-lg);
+$line-height-base: $lh-base;
+$headings-color: $color-text;
+$headings-font-weight: $fw-semibold;
+
+$link-color: $color-accent;
+$link-hover-color: $color-text;
+$link-decoration: none;
+
+$border-color: $color-border;
+$border-radius: rem($radius-md);
+$border-radius-sm: rem($radius-sm);
+$border-radius-lg: rem($radius-md);
+
+$transition-base: all $transition-fast ease-in-out;
+
+// Фокус: макет гасит обводку (`:focus { outline: 0 !important }`), что прямо
+// нарушает §9.1. Возвращаем видимое кольцо акцентным цветом.
+$focus-ring-width: rem(2px);
+$focus-ring-opacity: 1;
+$focus-ring-color: $color-accent;
+
+// Поля ввода (design-system.md §10)
+$input-bg: $color-surface-raised;
+$input-disabled-bg: $color-surface;
+$input-color: $color-text;
+$input-border-width: 0;
+$input-border-color: transparent;
+$input-box-shadow: none;
+$input-focus-bg: $color-surface-raised;
+$input-focus-color: $color-text;
+$input-focus-border-color: $color-accent;
+$input-placeholder-color: $color-text-muted;
+$input-height: rem(50px);
+$input-padding-y: rem($space-2);
+$input-padding-x: rem($space-3);
+$input-font-family: $font-prose;
+$input-font-size: rem($fs-xs);
+$input-font-weight: $fw-medium;
+
+$form-label-color: $color-text;
+$form-label-font-size: rem($fs-lg);
+$form-label-font-weight: $fw-medium;
+$form-label-margin-bottom: rem($space-2);
+
+$form-check-input-bg: $color-surface-sunken;
+$form-check-input-border: 1px solid $color-text-dim;
+$form-check-input-checked-bg-color: $color-accent-strong;
+$form-check-input-checked-border-color: $color-accent-strong;
+
+$form-select-bg: $color-surface-raised;
+$form-select-color: $color-text;
+$form-select-border-width: 0;
+$form-select-indicator-color: $color-text;
+
+$form-feedback-invalid-color: $color-accent;
+$form-feedback-valid-color: $color-success;
+
+// Таблицы (design-system.md §11)
+$table-color: $color-text;
+$table-bg: transparent;
+$table-border-color: $color-border;
+$table-cell-padding-y: rem($space-5);
+$table-cell-padding-x: rem($space-3);
+$table-striped-bg: $color-surface;
+$table-hover-bg: $color-surface-raised;
+
+// Выпадающего меню и мобильной раскладки здесь нет сознательно: и то и другое
+// раскрывается своим скриптом (layout/_header.scss), поэтому части dropdown
+// и transitions не подключены.
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// ─── Части, которые реально используются ──────────────────────────────────────
+// Списка «на будущее» здесь нет сознательно: каждая новая часть добавляется
+// той фазой, которой она понадобилась, и вместе с разметкой, которая её просит.
+// Что подключено не будет: buttons, pagination, badge (свои по макету),
+// carousel, tooltip, popover, offcanvas, accordion, spinners (не нужны вовсе).
+
+@import "bootstrap/scss/root"; // --bs-* переменные, на них опираются grid и forms
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/utilities/api";

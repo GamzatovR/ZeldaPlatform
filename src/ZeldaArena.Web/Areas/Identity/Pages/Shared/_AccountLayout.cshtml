@@ -1,20 +1,30 @@
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
+
+    var pageTitle = new PageTitleViewModel(T["account.page_title"].Value);
 }
 
 @*
-    Общая рамка страниц аккаунта: узкая колонка по центру.
-    Вёрстка по макету docs/design/pages/login.html — Фаза 5 (docs/SPEC.md §9.3, п. 16);
-    сейчас важна работоспособность форм, а не оформление.
+    Общая рамка страниц входа, регистрации, восстановления пароля и 2FA.
+    Свёрстано по .login-form из docs/design/pages/login.html — это единственные
+    страницы аккаунта, у которых макет есть (docs/SPEC.md §9.3 п. 16).
 *@
-<div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-5">
-        <h1 class="h3 mb-4">@ViewData["Title"]</h1>
+<partial name="/Views/Shared/_PageTitle.cshtml" model="pageTitle" />
 
-        <partial name="_StatusMessage" />
+<section class="auth">
+    <div class="container">
+        <div class="row auth__row">
+            <div class="col-12 col-md-9 col-lg-6">
+                <div class="form-card">
+                    <h1>@ViewData["Title"]</h1>
 
-        @RenderBody()
+                    <partial name="_StatusMessage" />
+
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 @await RenderSectionAsync("Scripts", required: false)

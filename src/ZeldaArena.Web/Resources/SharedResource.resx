@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -585,5 +585,98 @@
   </data>
   <data name="nav.premium" xml:space="preserve">
     <value>Premium</value>
+  </data>
+  <data name="brand.name" xml:space="preserve">
+    <value>ZeldaArena</value>
+  </data>
+  <data name="nav.primary" xml:space="preserve">
+    <value>Основная навигация</value>
+  </data>
+  <data name="nav.footer" xml:space="preserve">
+    <value>Навигация в подвале</value>
+  </data>
+  <data name="nav.home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="nav.account" xml:space="preserve">
+    <value>Личный кабинет</value>
+  </data>
+  <data name="nav.security" xml:space="preserve">
+    <value>Безопасность</value>
+  </data>
+  <data name="nav.toggle" xml:space="preserve">
+    <value>Открыть меню</value>
+  </data>
+  <data name="a11y.skip_to_content" xml:space="preserve">
+    <value>Перейти к содержимому</value>
+  </data>
+  <data name="a11y.back_to_top" xml:space="preserve">
+    <value>Наверх</value>
+  </data>
+  <data name="error.500.title" xml:space="preserve">
+    <value>Что-то пошло не так</value>
+  </data>
+  <data name="error.500.text" xml:space="preserve">
+    <value>Запрос не удалось обработать. Мы уже знаем о проблеме — попробуйте повторить позже.</value>
+  </data>
+  <data name="error.trace_id" xml:space="preserve">
+    <value>Код обращения</value>
+  </data>
+  <data name="error.go_home" xml:space="preserve">
+    <value>На главную</value>
+  </data>
+  <data name="account.page_title" xml:space="preserve">
+    <value>Аккаунт</value>
+  </data>
+  <data name="home.title" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="home.hero_sub" xml:space="preserve">
+    <value>Киберспорт по Zelda</value>
+  </data>
+  <data name="home.hero_tagline" xml:space="preserve">
+    <value>Турниры, матчи и статистика в одном месте</value>
+  </data>
+  <data name="home.hero_cta" xml:space="preserve">
+    <value>Выбрать тариф</value>
+  </data>
+  <data name="home.hero_matches" xml:space="preserve">
+    <value>К матчам</value>
+  </data>
+  <data name="home.matches_sub" xml:space="preserve">
+    <value>Матчи</value>
+  </data>
+  <data name="home.matches_title" xml:space="preserve">
+    <value>Идут сейчас и ближайшие</value>
+  </data>
+  <data name="home.matches_empty" xml:space="preserve">
+    <value>Пока ни одного запланированного матча.</value>
+  </data>
+  <data name="home.news_sub" xml:space="preserve">
+    <value>Новости</value>
+  </data>
+  <data name="home.news_title" xml:space="preserve">
+    <value>Что происходит на арене</value>
+  </data>
+  <data name="home.news_empty" xml:space="preserve">
+    <value>Новостей пока нет.</value>
+  </data>
+  <data name="home.subscribe_sub" xml:space="preserve">
+    <value>Подписка</value>
+  </data>
+  <data name="home.subscribe_title" xml:space="preserve">
+    <value>Своя команда</value>
+  </data>
+  <data name="home.subscribe_text" xml:space="preserve">
+    <value>Подписка открывает создание собственной команды, управление составом и расширенную статистику.</value>
+  </data>
+  <data name="home.subscribe_cta" xml:space="preserve">
+    <value>Оформить подписку</value>
+  </data>
+  <data name="match.live" xml:space="preserve">
+    <value>В эфире</value>
+  </data>
+  <data name="match.score" xml:space="preserve">
+    <value>Счёт матча</value>
   </data>
 </root>

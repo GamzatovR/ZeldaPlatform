@@ -1,9 +1,11 @@
-@page
+﻿@page
 @model AccessDeniedModel
 @{
     ViewData["Title"] = T["access_denied.title"].Value;
 }
 
-<div class="alert alert-danger" role="alert">@T["access_denied.message"]</div>
+<div class="alert-token alert-token--error" role="alert">@T["access_denied.message"]</div>
 
-<a asp-page="/Index" asp-area="" class="btn btn-outline-primary">ZeldaArena</a>
+@* Главная — действие MVC, а не Razor Page: asp-page="/Index" указывал
+   на несуществующую страницу и ронял отрисовку целиком. *@
+<a asp-area="" asp-controller="Home" asp-action="Index" class="btn-ghost">@T["error.go_home"]</a>

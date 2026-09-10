@@ -1,0 +1,112 @@
+// Карточка матча — .single-matches-box макета (design-system.md §11).
+// Логотипы команд в макете стоят абсолютом; при сужении они переводятся
+// в поток, иначе на мобильном налезают на название.
+
+.match-card {
+  margin-bottom: var(--space-7);
+}
+
+.match-card__team {
+  position: relative;
+  padding-top: var(--space-7);
+  padding-left: 100px;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 180px;
+  }
+}
+
+.match-card__content {
+  text-align: right;
+}
+
+.match-card__name {
+  margin-bottom: 0;
+  padding: var(--space-5) $space-7 var(--space-5) 0;
+  background-image: url("/img/matches-bg1.png");
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: var(--fs-4xl);
+  font-weight: $fw-bold;
+}
+
+.match-card__team--right {
+  padding-left: 0;
+  padding-right: 100px;
+
+  img {
+    left: auto;
+    right: 0;
+  }
+
+  .match-card__content {
+    text-align: left;
+  }
+
+  .match-card__name {
+    padding: var(--space-5) 0 var(--space-5) $space-7;
+    background-image: url("/img/matches-bg2.png");
+    background-position: left center;
+  }
+}
+
+.match-card__result {
+  padding-top: var(--space-6);
+  text-align: center;
+}
+
+// Счёт обновляется по SignalR (§11), поэтому блок помечен aria-live
+// в разметке — иначе смену счёта не услышит скринридер.
+.match-card__score {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-5xl);
+  font-weight: $fw-bold;
+  line-height: 1;
+}
+
+.match-card__meta {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-base);
+  text-transform: uppercase;
+}
+
+@media (max-width: $bp-lg - 1px) {
+  .match-card__team,
+  .match-card__team--right {
+    padding: 0;
+    text-align: center;
+
+    img {
+      position: static;
+      max-width: 110px;
+      margin-bottom: var(--space-3);
+    }
+  }
+
+  .match-card__content,
+  .match-card__team--right .match-card__content {
+    text-align: center;
+  }
+
+  .match-card__name,
+  .match-card__team--right .match-card__name {
+    padding: var(--space-2) 0;
+    background-image: none;
+    font-size: var(--fs-3xl);
+  }
+
+  .match-card__result {
+    padding: var(--space-4) 0;
+  }
+}

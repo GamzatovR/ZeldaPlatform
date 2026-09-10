@@ -1,0 +1,46 @@
+// Дополнения к reboot Bootstrap: то, что макет делает по-своему,
+// и то, что он делает неправильно.
+
+// Макет гасит обводку целиком (`:focus { outline: 0 !important }`). Это прямое
+// нарушение §9.1, поэтому фокус возвращается — но только клавиатурный, чтобы
+// не подсвечивать каждый клик мышью.
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+// Пропуск к содержимому: обязателен для обхода клавиатурой, в макете его нет.
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1080;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-accent-strong);
+  color: var(--color-text);
+  transform: translateY(-150%);
+  transition: transform var(--transition-fast) ease-in-out;
+
+  &:focus {
+    transform: translateY(0);
+    color: var(--color-text);
+  }
+}
+
+// §9.1: анимации макета (glitch у заголовка, пульсация live-метки) обязаны
+// отключаться, если пользователь просил меньше движения.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

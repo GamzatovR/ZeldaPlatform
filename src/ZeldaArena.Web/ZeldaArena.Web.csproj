@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <RootNamespace>ZeldaArena.Web</RootNamespace>
@@ -17,6 +17,23 @@
        так он работает и без JavaScript, и без вендорской библиотеки в wwwroot. -->
   <ItemGroup>
     <PackageReference Include="QRCoder" />
+  </ItemGroup>
+
+  <!-- Фаза 5: SCSS собирается в wwwroot/css на сборке, настройки — в sasscompiler.json. -->
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.SassCompiler" />
+  </ItemGroup>
+
+  <!--
+    Путь wwwroot/scss задан спецификацией (docs/SPEC.md §9.1), но исходники стилей —
+    не статика: наружу должен уходить только собранный CSS. Поэтому каталог исключён
+    из Content и не попадает ни в манифест MapStaticAssets, ни в публикацию.
+    Здесь же лежат исходники Bootstrap (wwwroot/scss/vendor, восстанавливаются
+    по libman.json) — из них через @use берутся только нужные части.
+  -->
+  <ItemGroup>
+    <Content Remove="wwwroot\scss\**" />
+    <None Include="wwwroot\scss\**" />
   </ItemGroup>
 
   <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (CLAUDE.md, «Команды»). -->

@@ -1,0 +1,14 @@
+// Иконки — SVG-спрайт, вставляемый тег-хелпером <icon> (design-system.md §12).
+// Цвет берётся из currentColor, размер привязан к кеглю соседнего текста.
+
+.icon {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  vertical-align: -0.125em;
+}
+
+.icon--lg {
+  width: 1.5em;
+  height: 1.5em;
+}
