@@ -8,8 +8,10 @@
 
 @*
     Каждое действие — своя маленькая POST-форма: «−» и «+» отправляют готовое
-    новое количество, поэтому корзина работает и без JavaScript (§9.1). Итог
-    и признаки проблем пришли с сервера; здесь ничего не вычисляется.
+    новое количество, поэтому корзина работает и без JavaScript (§9.1). С JavaScript
+    cart.js перехватывает формы по data-cart-quantity / data-cart-remove, шлёт
+    PATCH/DELETE в Areas/Api и перерисовывает этот partial. Итог и признаки проблем
+    пришли с сервера; здесь ничего не вычисляется.
 *@
 @if (Model.IsEmpty)
 {
@@ -66,7 +68,8 @@ else
                             @if (line.IsActive && line.StockQuantity > 0)
                             {
                                 <div class="input-counter">
-                                    <form method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                    <form method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId"
+                                          data-cart-quantity="@line.ProductId">
                                         <input type="hidden" name="Quantity" value="@(line.Quantity - 1)" />
                                         <button class="input-counter__step" type="submit" disabled="@(line.Quantity <= 1)"
                                                 aria-label="@T["cart.decrease", line.Name]">
@@ -74,14 +77,16 @@ else
                                         </button>
                                     </form>
 
-                                    <form class="input-counter__field" method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                    <form class="input-counter__field" method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId"
+                                          data-cart-quantity="@line.ProductId">
                                         <label class="visually-hidden" for="@quantityId">@T["cart.quantity_of", line.Name]</label>
                                         <input id="@quantityId" name="Quantity" type="number" inputmode="numeric"
                                                min="1" max="@line.MaxQuantity" value="@line.Quantity" required />
                                         <button class="visually-hidden-focusable input-counter__apply" type="submit">@T["cart.apply_quantity"]</button>
                                     </form>
 
-                                    <form method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                    <form method="post" asp-area="" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId"
+                                          data-cart-quantity="@line.ProductId">
                                         <input type="hidden" name="Quantity" value="@(line.Quantity + 1)" />
                                         <button class="input-counter__step" type="submit" disabled="@(line.Quantity >= line.MaxQuantity)"
                                                 aria-label="@T["cart.increase", line.Name]">
@@ -97,7 +102,8 @@ else
                         </td>
                         <td>@MoneyText.Format(line.LineTotal, line.Currency)</td>
                         <td>
-                            <form method="post" asp-area="" asp-controller="Cart" asp-action="Remove" asp-route-productId="@line.ProductId">
+                            <form method="post" asp-area="" asp-controller="Cart" asp-action="Remove" asp-route-productId="@line.ProductId"
+                                  data-cart-remove="@line.ProductId">
                                 <button class="btn-ghost btn-ghost--sm" type="submit" aria-label="@T["cart.remove_of", line.Name]">
                                     <icon name="@IconNames.Trash" />
                                 </button>
