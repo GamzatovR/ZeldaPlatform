@@ -119,6 +119,17 @@ else
 
         <div class="cart-summary__actions">
             <a class="btn-ghost" asp-controller="Shop" asp-action="Index">@T["cart.continue_shopping"]</a>
+
+            @if (Model.CanCheckout)
+            {
+                @* Гостя вход вернёт сюда же, а корзина к тому времени вольётся в его (§14.1). *@
+                <a class="btn-solid" asp-controller="Checkout" asp-action="Index">@T["cart.checkout"]</a>
+            }
+            else
+            {
+                <span class="btn-solid is-disabled" aria-disabled="true">@T["cart.checkout"]</span>
+                <p class="cart-summary__hint">@T["cart.checkout_blocked"]</p>
+            }
         </div>
     </div>
 }

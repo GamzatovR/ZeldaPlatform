@@ -1417,4 +1417,145 @@
   <data name="cart.unavailable" xml:space="preserve">
     <value>Корзина недоступна: разрешите cookie в браузере.</value>
   </data>
+  <data name="nav.orders" xml:space="preserve">
+    <value>Мои заказы</value>
+  </data>
+  <data name="cart.checkout" xml:space="preserve">
+    <value>Оформить заказ</value>
+  </data>
+  <data name="cart.checkout_blocked" xml:space="preserve">
+    <value>Уберите или исправьте отмеченные позиции, чтобы оформить заказ.</value>
+  </data>
+  <data name="checkout.title" xml:space="preserve">
+    <value>Оформление заказа</value>
+  </data>
+  <data name="checkout.sub" xml:space="preserve">
+    <value>Доставка и оплата</value>
+  </data>
+  <data name="checkout.shipping" xml:space="preserve">
+    <value>Доставка</value>
+  </data>
+  <data name="checkout.your_order" xml:space="preserve">
+    <value>Ваш заказ</value>
+  </data>
+  <data name="checkout.payment" xml:space="preserve">
+    <value>Оплата</value>
+  </data>
+  <data name="checkout.place_order" xml:space="preserve">
+    <value>Оформить и оплатить</value>
+  </data>
+  <data name="checkout.note" xml:space="preserve">
+    <value>После оформления на почту придёт код подтверждения. Пока вы вводите код, товары закреплены за вами.</value>
+  </data>
+  <data name="checkout.back_to_cart" xml:space="preserve">
+    <value>Вернуться в корзину</value>
+  </data>
+  <data name="checkout.cart_has_problems" xml:space="preserve">
+    <value>В корзине есть товары, которые нельзя купить в таком количестве. Проверьте отмеченные позиции.</value>
+  </data>
+  <data name="checkout.stock_changed" xml:space="preserve">
+    <value>Пока вы оформляли заказ, остаток на складе изменился. Проверьте корзину.</value>
+  </data>
+  <data name="order.not_found" xml:space="preserve">
+    <value>Заказ не найден.</value>
+  </data>
+  <data name="order.not_cancelable" xml:space="preserve">
+    <value>Отменить можно только неоплаченный заказ.</value>
+  </data>
+  <data name="order.not_payable" xml:space="preserve">
+    <value>Этот заказ уже не ждёт оплаты.</value>
+  </data>
+  <data name="order.paid" xml:space="preserve">
+    <value>Заказ оплачен. Чек отправлен на почту.</value>
+  </data>
+  <data name="order.canceled" xml:space="preserve">
+    <value>Заказ отменён, товары вернулись на склад.</value>
+  </data>
+  <data name="order.payment_canceled" xml:space="preserve">
+    <value>Оплата отменена, заказ отменён. Товары снова в корзине.</value>
+  </data>
+  <data name="order.items_returned" xml:space="preserve">
+    <value>Заказ отменён, товары снова в корзине — оформите его заново.</value>
+  </data>
+  <data name="order.list_title" xml:space="preserve">
+    <value>Мои заказы</value>
+  </data>
+  <data name="order.list_sub" xml:space="preserve">
+    <value>История покупок</value>
+  </data>
+  <data name="order.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="order.sort.placed_desc" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="order.sort.placed_asc" xml:space="preserve">
+    <value>Сначала старые</value>
+  </data>
+  <data name="order.sort.total_desc" xml:space="preserve">
+    <value>Сначала дорогие</value>
+  </data>
+  <data name="order.sort.total_asc" xml:space="preserve">
+    <value>Сначала дешёвые</value>
+  </data>
+  <data name="order.empty" xml:space="preserve">
+    <value>Заказов пока нет.</value>
+  </data>
+  <data name="order.number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="order.placed_at" xml:space="preserve">
+    <value>Оформлен</value>
+  </data>
+  <data name="order.paid_at" xml:space="preserve">
+    <value>Оплачен</value>
+  </data>
+  <data name="order.canceled_at" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="order.items" xml:space="preserve">
+    <value>Товаров, шт.</value>
+  </data>
+  <data name="order.total" xml:space="preserve">
+    <value>Итого</value>
+  </data>
+  <data name="order.details_title" xml:space="preserve">
+    <value>Заказ {0}</value>
+  </data>
+  <data name="order.lines" xml:space="preserve">
+    <value>Состав заказа</value>
+  </data>
+  <data name="order.shipping_to" xml:space="preserve">
+    <value>Доставка</value>
+  </data>
+  <data name="order.continue_payment" xml:space="preserve">
+    <value>Ввести код оплаты</value>
+  </data>
+  <data name="order.cancel" xml:space="preserve">
+    <value>Отменить заказ</value>
+  </data>
+  <data name="order.back_to_list" xml:space="preserve">
+    <value>Все заказы</value>
+  </data>
+  <data name="enum.order_status.pending" xml:space="preserve">
+    <value>Ждёт оплаты</value>
+  </data>
+  <data name="enum.order_status.paid" xml:space="preserve">
+    <value>Оплачен</value>
+  </data>
+  <data name="enum.order_status.shipped" xml:space="preserve">
+    <value>Отправлен</value>
+  </data>
+  <data name="enum.order_status.completed" xml:space="preserve">
+    <value>Выполнен</value>
+  </data>
+  <data name="enum.order_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="email.order_receipt.subject" xml:space="preserve">
+    <value>Заказ оплачен</value>
+  </data>
+  <data name="email.order_receipt.body" xml:space="preserve">
+    <value>Оплата прошла. Заказ {0}, сумма {1}. Заказ и его статус — в разделе «Мои заказы».</value>
+  </data>
 </root>

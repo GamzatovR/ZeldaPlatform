@@ -1,0 +1,35 @@
+// Оформление заказа — .billing-details и .order-details макета
+// (docs/design/pages/checkout.html). Карточки собраны из .form-card, как формы аккаунта.
+
+.checkout__block {
+  height: 100%;
+}
+
+.checkout__title {
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-3xl);
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+}
+
+.checkout__table {
+  tfoot th,
+  tfoot td {
+    border-bottom: 0;
+    color: var(--color-text);
+    font-size: var(--fs-xl);
+    text-transform: uppercase;
+  }
+}
+
+.checkout__total {
+  color: var(--color-accent);
+  font-weight: $fw-bold;
+}
+
+.checkout__note {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+}

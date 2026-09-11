@@ -1,0 +1,37 @@
+// История и детали заказа. Макета нет (docs/design/README.md) — таблицы шаблона
+// плюс карточка сводки на токенах.
+
+.orders-table td a {
+  color: var(--color-accent);
+  font-weight: $fw-bold;
+}
+
+.order-summary {
+  padding: var(--space-5);
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+}
+
+.order-summary__list {
+  margin-bottom: var(--space-5);
+
+  dt {
+    color: var(--color-text-muted);
+    font-size: var(--fs-base);
+    font-weight: $fw-medium;
+    letter-spacing: $ls-tight;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin-bottom: var(--space-3);
+    font-family: var(--font-prose);
+    font-size: var(--fs-xs);
+  }
+}
+
+.order-summary__total {
+  color: var(--color-accent);
+  font-size: var(--fs-xl);
+  font-weight: $fw-bold;
+}

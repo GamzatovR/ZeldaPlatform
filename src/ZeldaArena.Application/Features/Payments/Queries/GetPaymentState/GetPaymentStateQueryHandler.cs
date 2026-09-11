@@ -3,6 +3,7 @@ using MediatR;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Domain.Billing;
+using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Queries.GetPaymentState;
 
@@ -16,6 +17,8 @@ namespace ZeldaArena.Application.Features.Payments.Queries.GetPaymentState;
 public sealed class GetPaymentStateQueryHandler(
     ICurrentUserService currentUser,
     IReadRepository<Payment> payments,
+    IReadRepository<Order> orders,
+    IQueryExecutor queryExecutor,
     IDateTimeProvider clock)
     : IRequestHandler<GetPaymentStateQuery, PaymentStateDto?>
 {
@@ -39,6 +42,14 @@ public sealed class GetPaymentStateQueryHandler(
             return null;
         }
 
+        var orderNumber = payment.OrderId is { } orderId
+            ? await queryExecutor
+                .FirstOrDefaultAsync(
+                    orders.Query().Where(order => order.Id == orderId).Select(order => order.Number),
+                    cancellationToken)
+                .ConfigureAwait(false)
+            : null;
+
         return new PaymentStateDto(
             payment.Id,
             payment.Status,
@@ -47,6 +58,8 @@ public sealed class GetPaymentStateQueryHandler(
             payment.Amount.Currency,
             payment.ConfirmationAttemptsLeft,
             payment.ConfirmationExpiresAt,
-            PaymentTiming.CanResendAt(payment, clock.UtcNow));
+            PaymentTiming.CanResendAt(payment, clock.UtcNow),
+            payment.Purpose,
+            orderNumber);
     }
 }

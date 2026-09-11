@@ -70,6 +70,9 @@
                                 <a class="site-menu__link" asp-area="" asp-controller="MyTeam" asp-action="Index">@T["nav.my_team"]</a>
                             </li>
                             <li class="site-menu__item">
+                                <a class="site-menu__link" asp-area="" asp-controller="Orders" asp-action="Index">@T["nav.orders"]</a>
+                            </li>
+                            <li class="site-menu__item">
                                 @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@
                                 <form asp-area="Identity" asp-page="/Account/Logout"
                                       asp-route-returnUrl="@Url.Content("~/")" method="post">

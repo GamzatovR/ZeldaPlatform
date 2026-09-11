@@ -3,15 +3,19 @@ using MediatR;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Application.Common.Models.Identity;
+using ZeldaArena.Application.Common.Models.Shop;
+using ZeldaArena.Application.Features.Orders;
 using ZeldaArena.Domain.Billing;
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Enums;
+using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 
 /// <summary>
-/// Сверяет код и, если он верен, активирует или продлевает подписку — всё в одной
-/// транзакции, как требует docs/SPEC.md §7.5, п. 3.
+/// Сверяет код и, если он верен, доводит покупку до конца — в одной транзакции,
+/// как требует docs/SPEC.md §7.5, п. 3: подписка активируется или продлевается,
+/// заказ помечается оплаченным (§7.6, шаг 4).
 ///
 /// Неудачная попытка тоже сохраняется. Это не мелочь: <c>Payment.Confirm</c>
 /// уменьшает счётчик попыток, и если бы неуспех откатывал транзакцию, счётчик
@@ -27,6 +31,8 @@ public sealed class ConfirmPaymentCommandHandler(
     IRepository<Subscription> subscriptions,
     IReadRepository<Subscription> subscriptionsForRead,
     IReadRepository<Plan> plans,
+    IRepository<Order> orders,
+    OrderCancellation orderCancellation,
     IQueryExecutor queryExecutor,
     IConfirmationCodeProtector codes,
     IBillingEmailSender emailSender,
@@ -55,12 +61,28 @@ public sealed class ConfirmPaymentCommandHandler(
             return Result.Failure(BillingErrors.PaymentNotFound);
         }
 
+        return payment.Purpose == PaymentPurpose.Order
+            ? await ConfirmOrderPaymentAsync(payment, request.ConfirmationCode, cancellationToken).ConfigureAwait(false)
+            : await ConfirmSubscriptionPaymentAsync(payment, request.ConfirmationCode, userId, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<Result> ConfirmSubscriptionPaymentAsync(
+        Payment payment,
+        string confirmationCode,
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
         var now = clock.UtcNow;
-        var outcome = payment.Confirm(codes.Hash(request.ConfirmationCode), now);
+        var outcome = payment.Confirm(codes.Hash(confirmationCode), now);
 
         if (outcome != PaymentConfirmationResult.Succeeded)
         {
-            return await FailAsync(payment, outcome, cancellationToken).ConfigureAwait(false);
+            if (IsTerminal(outcome))
+            {
+                await DiscardReservationAsync(payment, cancellationToken).ConfigureAwait(false);
+            }
+
+            return await FailAsync(outcome, cancellationToken).ConfigureAwait(false);
         }
 
         var activated = await ActivateSubscriptionAsync(payment, userId, now, cancellationToken)
@@ -95,20 +117,70 @@ public sealed class ConfirmPaymentCommandHandler(
     }
 
     /// <summary>
-    /// Исчерпанные попытки и истёкший срок роняют платёж в Failed, и вместе с ним
-    /// теряет смысл заявка на подписку — она была только носителем выбранного тарифа.
-    /// Неверный код такой развязки не требует: попытки ещё остались.
+    /// Заказ оплачивается, только пока ждёт оплаты. Если его успели отменить в соседней
+    /// вкладке, код не принимается вовсе: иначе деньги списались бы за отменённый заказ.
+    ///
+    /// Истёкший код и исчерпанные попытки сразу отменяют заказ и возвращают остаток —
+    /// правило ADR-0009: повторная оплата — только новым оформлением.
     /// </summary>
-    private async Task<Result> FailAsync(
+    private async Task<Result> ConfirmOrderPaymentAsync(
         Payment payment,
-        PaymentConfirmationResult outcome,
+        string confirmationCode,
         CancellationToken cancellationToken)
     {
-        if (outcome is PaymentConfirmationResult.Expired or PaymentConfirmationResult.NoAttemptsLeft)
+        var order = payment.OrderId is { } orderId
+            ? await orders.GetByIdAsync(orderId, cancellationToken).ConfigureAwait(false)
+            : null;
+
+        if (order is null)
         {
-            await DiscardReservationAsync(payment, cancellationToken).ConfigureAwait(false);
+            return Result.Failure(ShopErrors.OrderNotFound);
         }
 
+        if (payment.IsPending && order.Status != OrderStatus.Pending)
+        {
+            payment.Fail(ShopErrors.OrderNotPayable.Code);
+            await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return Result.Failure(ShopErrors.OrderNotPayable);
+        }
+
+        var now = clock.UtcNow;
+        var outcome = payment.Confirm(codes.Hash(confirmationCode), now);
+
+        if (outcome != PaymentConfirmationResult.Succeeded)
+        {
+            if (IsTerminal(outcome) && order.Status == OrderStatus.Pending)
+            {
+                await orderCancellation.CancelAsync(order, returnItemsToCart: true, cancellationToken).ConfigureAwait(false);
+            }
+
+            return await FailAsync(outcome, cancellationToken).ConfigureAwait(false);
+        }
+
+        order.MarkPaid(now);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        await emailSender
+            .SendOrderReceiptAsync(
+                payment.ConfirmationEmail,
+                currentUser.UserName,
+                order.Number,
+                order.Total,
+                order.Currency,
+                cancellationToken)
+            .ConfigureAwait(false);
+
+        return Result.Success();
+    }
+
+    /// <summary>Исчерпанные попытки и истёкший срок роняют платёж в Failed; неверный код — нет.</summary>
+    private static bool IsTerminal(PaymentConfirmationResult outcome) =>
+        outcome is PaymentConfirmationResult.Expired or PaymentConfirmationResult.NoAttemptsLeft;
+
+    private async Task<Result> FailAsync(PaymentConfirmationResult outcome, CancellationToken cancellationToken)
+    {
         // Сохраняем и при неуспехе: в записи изменился счётчик попыток или статус.
         if (outcome != PaymentConfirmationResult.AlreadyProcessed)
         {
@@ -189,6 +261,10 @@ public sealed class ConfirmPaymentCommandHandler(
         return Result.Success(new ActivatedSubscription(plan.Name, existing.EndsAt));
     }
 
+    /// <summary>
+    /// Провал оплаты лишает смысла заявку на подписку — она была только носителем
+    /// выбранного тарифа.
+    /// </summary>
     private async Task DiscardReservationAsync(Payment payment, CancellationToken cancellationToken)
     {
         if (payment.SubscriptionId is not { } reservationId)

@@ -1,0 +1,69 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Orders.OrderListViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["order.list_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["order.list_title"].Value, T["order.list_sub"].Value, Compact: true);
+    var filter = Model.Filter;
+    var sort = OrderSorting.Map.Resolve(filter.Sort);
+}
+
+@*
+    История заказов (docs/SPEC.md §9.3, п. 15). Макета нет — собрана из табличных
+    блоков шаблона (docs/design/README.md). Третий фильтруемый список на механизме
+    §10.2: GET-форма, состояние в адресе, partial-список под Фазу 8.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
+              aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="status">@T["order.status"]</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var status in Enum.GetValues<OrderStatus>())
+                        {
+                            <option value="@status" selected="@(filter.Status == status)">@T[EnumResourceKeys.For(status)]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="sort">@T["filter.sort"]</label>
+                    <select class="form-select" id="sort" name="sort">
+                        @foreach (var key in OrderSorting.Map.Keys)
+                        {
+                            <option value="@key" selected="@(key == sort)">@T["order.sort." + key]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
+                    <select class="form-select" id="pageSize" name="pageSize">
+                        @foreach (var size in PageSizes.Allowed)
+                        {
+                            <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <div id="order-list" data-list>
+            <partial name="_OrderList" model="Model.Result" />
+        </div>
+    </div>
+</section>

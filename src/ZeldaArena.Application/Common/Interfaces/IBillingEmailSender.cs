@@ -34,6 +34,15 @@ public interface IBillingEmailSender
         DateTimeOffset subscriptionEndsAt,
         CancellationToken cancellationToken = default);
 
+    /// <summary>Чек заказа магазина: номер, по которому заказ найдётся в истории, и сумма (§7.6, шаг 4).</summary>
+    Task SendOrderReceiptAsync(
+        string email,
+        string? displayName,
+        string orderNumber,
+        decimal amount,
+        string currency,
+        CancellationToken cancellationToken = default);
+
     /// <summary>Подписка закончилась — шлёт фоновая служба (§7.5, п. 4).</summary>
     Task SendSubscriptionExpiredAsync(
         string email,
