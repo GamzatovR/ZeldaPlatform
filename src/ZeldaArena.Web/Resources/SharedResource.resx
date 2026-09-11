@@ -1258,4 +1258,10 @@
   <data name="file.invalid_upload" xml:space="preserve">
     <value>Подходят только изображения PNG, JPEG и WebP не больше 2 МБ.</value>
   </data>
+  <data name="manage.qr_alt" xml:space="preserve">
+    <value>QR-код для приложения-аутентификатора. Если камера не читает его, введите ключ ниже вручную.</value>
+  </data>
+  <data name="nav.my_team" xml:space="preserve">
+    <value>Моя команда</value>
+  </data>
 </root>
