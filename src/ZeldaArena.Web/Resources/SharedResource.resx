@@ -1099,4 +1099,58 @@
   <data name="file.invalid_image" xml:space="preserve">
     <value>Файл не является изображением PNG, JPEG или WebP.</value>
   </data>
+  <data name="player.list_title" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="player.list_sub" xml:space="preserve">
+    <value>Игроки ZeldaArena</value>
+  </data>
+  <data name="player.search_placeholder" xml:space="preserve">
+    <value>Ник, имя или фамилия</value>
+  </data>
+  <data name="player.team" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="player.sort.nickname_asc" xml:space="preserve">
+    <value>Ник от А до Я</value>
+  </data>
+  <data name="player.sort.nickname_desc" xml:space="preserve">
+    <value>Ник от Я до А</value>
+  </data>
+  <data name="player.free_agent" xml:space="preserve">
+    <value>Свободный игрок</value>
+  </data>
+  <data name="player.name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="player.avg_kills" xml:space="preserve">
+    <value>Убийств за матч</value>
+  </data>
+  <data name="player.avg_deaths" xml:space="preserve">
+    <value>Смертей за матч</value>
+  </data>
+  <data name="player.avg_assists" xml:space="preserve">
+    <value>Помощи за матч</value>
+  </data>
+  <data name="player.advanced_cta" xml:space="preserve">
+    <value>Разбивка показателей игрока по турнирам доступна по подписке.</value>
+  </data>
+  <data name="player.teams" xml:space="preserve">
+    <value>История команд</value>
+  </data>
+  <data name="player.teams_empty" xml:space="preserve">
+    <value>Игрок ещё не выступал ни за одну команду.</value>
+  </data>
+  <data name="player.joined" xml:space="preserve">
+    <value>Пришёл</value>
+  </data>
+  <data name="player.left" xml:space="preserve">
+    <value>Ушёл</value>
+  </data>
+  <data name="player.current" xml:space="preserve">
+    <value>По сей день</value>
+  </data>
+  <data name="player.matches_empty" xml:space="preserve">
+    <value>Игрок ещё не сыграл ни одного матча.</value>
+  </data>
 </root>

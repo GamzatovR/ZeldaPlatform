@@ -1,0 +1,173 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Constants
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Players.PlayerDetailsViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var player = Model.Player;
+    var current = player.CurrentTeam;
+
+    ViewData["Title"] = player.Nickname;
+
+    var pageTitle = new PageTitleViewModel(player.Nickname, current?.TeamName ?? T["player.free_agent"].Value, Compact: true);
+}
+
+@*
+    Страница игрока (docs/SPEC.md §9.3, п. 10) по docs/design/pages/player.html:
+    .player-details-desc с мета-строкой, ниже — статистика, история составов, матчи.
+    Расширенная статистика — за stats.advanced, как на странице команды (§7.3).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <div class="details-desc">
+            <div class="details-desc__head">
+                <avatar image="@Url.StoredFile(player.AvatarPath)" name="@player.Nickname" class="details-desc__avatar" />
+
+                <ul class="meta-list">
+                    @if (player.FirstName is not null || player.LastName is not null)
+                    {
+                        <li class="meta-list__item">
+                            @T["player.name"]
+                            <span class="meta-list__value">@player.FirstName @player.LastName</span>
+                        </li>
+                    }
+                    <li class="meta-list__item">
+                        @T["player.role"]
+                        <span class="meta-list__value">@T[EnumResourceKeys.For(player.Role)]</span>
+                    </li>
+                    <li class="meta-list__item">
+                        @T["player.country"]
+                        <span class="meta-list__value">@player.CountryCode</span>
+                    </li>
+                    <li class="meta-list__item">
+                        @T["player.team"]
+                        <span class="meta-list__value">
+                            @if (current is not null)
+                            {
+                                <a asp-controller="Teams" asp-action="Details" asp-route-slug="@current.TeamSlug">@current.TeamName</a>
+                            }
+                            else
+                            {
+                                @T["player.free_agent"]
+                            }
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(player.Bio))
+            {
+                <p class="details-desc__lead">@player.Bio</p>
+            }
+        </div>
+
+        <section class="details-block" aria-labelledby="stats-title">
+            <h2 class="details-block__title" id="stats-title">@T["team.stats"]</h2>
+
+            <ul class="stat-tiles">
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@player.MatchesPlayed</span>
+                    <span class="stat-tile__label">@T["stats.matches"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@player.AverageKills.ToString("0.0")</span>
+                    <span class="stat-tile__label">@T["player.avg_kills"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@player.AverageDeaths.ToString("0.0")</span>
+                    <span class="stat-tile__label">@T["player.avg_deaths"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@player.AverageAssists.ToString("0.0")</span>
+                    <span class="stat-tile__label">@T["player.avg_assists"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@player.AverageRating.ToString("0.00")</span>
+                    <span class="stat-tile__label">@T["stats.rating"]</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="details-block" aria-labelledby="advanced-title">
+            <h2 class="details-block__title" id="advanced-title">@T["team.advanced"]</h2>
+
+            <feature-gate feature="@FeatureCodes.StatsAdvanced">
+                @if (Model.AdvancedStats is { } advanced)
+                {
+                    <partial name="_PlayerAdvancedStats" model="advanced" />
+                }
+            </feature-gate>
+
+            <feature-gate feature="@FeatureCodes.StatsAdvanced" when-missing>
+                <div class="feature-cta">
+                    <p>@T["player.advanced_cta"]</p>
+                    <a class="btn-solid" asp-controller="Subscription" asp-action="Index"
+                       asp-route-required="@FeatureCodes.StatsAdvanced">@T["home.subscribe_cta"]</a>
+                </div>
+            </feature-gate>
+        </section>
+
+        <section class="details-block" aria-labelledby="teams-title">
+            <h2 class="details-block__title" id="teams-title">@T["player.teams"]</h2>
+
+            @if (player.Teams.Count == 0)
+            {
+                <p class="empty-state">@T["player.teams_empty"]</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-token">
+                        <thead>
+                            <tr>
+                                <th scope="col">@T["player.team"]</th>
+                                <th scope="col">@T["player.role"]</th>
+                                <th scope="col">@T["player.joined"]</th>
+                                <th scope="col">@T["player.left"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var entry in player.Teams)
+                            {
+                                <tr>
+                                    <td><a asp-controller="Teams" asp-action="Details" asp-route-slug="@entry.TeamSlug">@entry.TeamName</a></td>
+                                    <td>@T[EnumResourceKeys.For(entry.Role)]</td>
+                                    <td><time datetime="@entry.JoinedAt.ToString("O")">@entry.JoinedAt.ToLocalTime().ToString("d")</time></td>
+                                    <td>
+                                        @if (entry.LeftAt is { } leftAt)
+                                        {
+                                            <time datetime="@leftAt.ToString("O")">@leftAt.ToLocalTime().ToString("d")</time>
+                                        }
+                                        else
+                                        {
+                                            @T["player.current"]
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+
+        <section class="details-block" aria-labelledby="matches-title">
+            <h2 class="details-block__title" id="matches-title">@T["team.history"]</h2>
+
+            @if (player.RecentMatches.Count == 0)
+            {
+                <p class="empty-state">@T["player.matches_empty"]</p>
+            }
+            else
+            {
+                foreach (var match in player.RecentMatches)
+                {
+                    <partial name="_MatchCard" model="match" />
+                }
+            }
+        </section>
+    </div>
+</section>
