@@ -107,11 +107,18 @@ public class GetTournamentsQueryHandlerTests
             .ShouldBe(["Winter Clash", "Autumn Open", "Summer Major"]);
     }
 
+    /// <summary>
+    /// Перевёрнутый диапазон выбирается обычной формой, поэтому это не ошибка валидации,
+    /// а пустой результат: отказ валидатора до Фазы 11 обернулся бы ошибкой сервера.
+    /// </summary>
     [Fact]
-    public void Validator_rejects_a_range_that_ends_before_it_starts() =>
-        new GetTournamentsQueryValidator()
-            .Validate(new GetTournamentsQuery { From = new DateOnly(2026, 9, 2), To = new DateOnly(2026, 9, 1) })
-            .IsValid.ShouldBeFalse();
+    public async Task Reversed_date_range_gives_an_empty_list_not_an_error()
+    {
+        var query = new GetTournamentsQuery { From = new DateOnly(2026, 9, 2), To = new DateOnly(2026, 9, 1) };
+
+        new GetTournamentsQueryValidator().Validate(query).IsValid.ShouldBeTrue();
+        (await Handle(query)).TotalCount.ShouldBe(0);
+    }
 
     [Fact]
     public void Validator_rejects_a_negative_prize() =>

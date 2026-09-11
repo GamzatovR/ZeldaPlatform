@@ -41,9 +41,6 @@ public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedReso
 {
     private const string StatusKey = "StatusMessage";
 
-    /// <summary>Логотип до 2 МБ плюс поля формы; большее отвергается до сценария (§15).</summary>
-    private const long MaxUploadRequestBytes = ImageUploadRules.MaxSizeBytes + (256 * 1024);
-
     [HttpGet("")]
     public async Task<IActionResult> Index(Guid? team, CancellationToken cancellationToken)
     {
@@ -106,8 +103,8 @@ public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedReso
     [HttpPost("{teamId:guid}/logo")]
     [RequireFeature(FeatureCodes.TeamCreate)]
     [ValidateAntiForgeryToken]
-    [RequestSizeLimit(MaxUploadRequestBytes)]
-    [RequestFormLimits(MultipartBodyLengthLimit = MaxUploadRequestBytes)]
+    [RequestSizeLimit(ImageUploadRules.MaxRequestBytes)]
+    [RequestFormLimits(MultipartBodyLengthLimit = ImageUploadRules.MaxRequestBytes)]
     public async Task<IActionResult> ChangeLogo(
         Guid teamId,
         [ImageFile] IFormFile? logo,

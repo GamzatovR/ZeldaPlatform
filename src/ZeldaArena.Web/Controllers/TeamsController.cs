@@ -23,12 +23,6 @@ namespace ZeldaArena.Web.Controllers;
 [Route("teams")]
 public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
-    /// <summary>
-    /// Предел тела запроса с логотипом: сам файл до 2 МБ плюс поля формы. Большее
-    /// отвергается ещё до того, как дойдёт до сценария и займёт память (§15).
-    /// </summary>
-    private const long MaxUploadRequestBytes = ImageUploadRules.MaxSizeBytes + (256 * 1024);
-
     [HttpGet("")]
     public async Task<IActionResult> Index([FromQuery] GetTeamsQuery filter, CancellationToken cancellationToken)
     {
@@ -55,8 +49,8 @@ public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResou
     [Authorize]
     [RequireFeature(FeatureCodes.TeamCreate)]
     [ValidateAntiForgeryToken]
-    [RequestSizeLimit(MaxUploadRequestBytes)]
-    [RequestFormLimits(MultipartBodyLengthLimit = MaxUploadRequestBytes)]
+    [RequestSizeLimit(ImageUploadRules.MaxRequestBytes)]
+    [RequestFormLimits(MultipartBodyLengthLimit = ImageUploadRules.MaxRequestBytes)]
     public async Task<IActionResult> Create(CreateTeamViewModel model, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(model);

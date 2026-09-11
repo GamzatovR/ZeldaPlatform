@@ -9,6 +9,9 @@ namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments;
 /// Размер страницы и ключ сортировки сюда намеренно не попали — они нормализуются молча.
 /// Ссылку на список сохраняют в закладки и пересылают, и она обязана открыться даже после
 /// того, как сортировку переименовали, а не встречать пользователя ошибкой (§10.2).
+///
+/// Перевёрнутый диапазон дат («с» позже «по») тоже не ошибка: его можно выбрать обычной
+/// формой, и честный ответ на него — пустой список с подсказкой (§10.2), а не отказ.
 /// </summary>
 public sealed class GetTournamentsQueryValidator : AbstractValidator<GetTournamentsQuery>
 {
@@ -33,11 +36,6 @@ public sealed class GetTournamentsQueryValidator : AbstractValidator<GetTourname
             .GreaterThanOrEqualTo(0)
             .When(query => query.PrizeMin.HasValue)
             .WithMessage("Призовой фонд не может быть отрицательным.");
-
-        RuleFor(query => query.To)
-            .GreaterThanOrEqualTo(query => query.From)
-            .When(query => query.From.HasValue && query.To.HasValue)
-            .WithMessage("Дата «по» не может быть раньше даты «с».");
 
         RuleFor(query => query.Region)
             .IsInEnum()

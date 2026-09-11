@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 using ZeldaArena.Application.Common.Validation;
 using ZeldaArena.Domain.Enums;
+using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Models.Teams;
 
@@ -32,6 +33,7 @@ public class TeamProfileViewModel
     public Region Region { get; set; } = Region.Cis;
 
     [DataType(DataType.Date)]
+    [NotInFuture(ErrorMessage = "Дата основания не может быть в будущем.")]
     [Display(Name = "Дата основания")]
     public DateOnly? FoundedAt { get; set; }
 

@@ -1,6 +1,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using ZeldaArena.Domain.Enums
 @using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Validation
 @model ZeldaArena.Web.Models.Teams.TeamProfileViewModel
 @inject IHtmlLocalizer<SharedResource> T
 
@@ -37,7 +38,8 @@
     </div>
     <div class="col-12 col-sm-6 form-group">
         <label asp-for="FoundedAt" class="form-label"></label>
-        <input asp-for="FoundedAt" class="form-control" type="date" />
+        <input asp-for="FoundedAt" class="form-control" type="date"
+               max="@NotInFutureAttribute.Today.ToString("yyyy-MM-dd")" />
         <span asp-validation-for="FoundedAt"></span>
     </div>
 </div>
