@@ -17,5 +17,8 @@ internal sealed class StubCurrentUserService : ICurrentUserService
 
     public string? CorrelationId { get; init; }
 
-    public bool IsInRole(string role) => false;
+    /// <summary>Роли текущего пользователя: админские сценарии различают Admin и Moderator.</summary>
+    public HashSet<string> Roles { get; } = [];
+
+    public bool IsInRole(string role) => Roles.Contains(role);
 }

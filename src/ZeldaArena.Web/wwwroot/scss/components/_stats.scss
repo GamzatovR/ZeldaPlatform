@@ -33,6 +33,9 @@
   font-size: var(--fs-base);
   letter-spacing: $ls-tight;
   text-transform: uppercase;
+  // Длинные русские слова («Пользователей») на 360 px шире плитки в две колонки.
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 // Форма: W / L последних матчей. Цвет — не единственный признак (§9.1):

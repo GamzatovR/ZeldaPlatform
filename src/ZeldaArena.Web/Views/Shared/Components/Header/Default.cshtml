@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Authorization
 @using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Authorization
 @using ZeldaArena.Web.Models.Layout
 @model HeaderViewModel
 @inject IHtmlLocalizer<SharedResource> T
+@inject IAuthorizationService Authorization
 
 @*
     Шапка. Мобильное меню и меню аккаунта раскрывает wwwroot/js/nav.js:
@@ -72,6 +75,16 @@
                             <li class="site-menu__item">
                                 <a class="site-menu__link" asp-area="" asp-controller="Orders" asp-action="Index">@T["nav.orders"]</a>
                             </li>
+                            @*
+                                Ссылка на админку — по той же политике, что охраняет область (§8.1),
+                                а не по роли: правило «кто входит в админку» живёт в одном месте.
+                            *@
+                            @if ((await Authorization.AuthorizeAsync(User, PolicyNames.ModeratorOrAdmin)).Succeeded)
+                            {
+                                <li class="site-menu__item">
+                                    <a class="site-menu__link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">@T["nav.admin"]</a>
+                                </li>
+                            }
                             <li class="site-menu__item">
                                 @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@
                                 <form asp-area="Identity" asp-page="/Account/Logout"

@@ -1597,4 +1597,70 @@
   <data name="filter.remove_chip" xml:space="preserve">
     <value>Снять фильтр</value>
   </data>
+  <data name="nav.admin" xml:space="preserve">
+    <value>Админка</value>
+  </data>
+  <data name="admin.brand" xml:space="preserve">
+    <value>Админка</value>
+  </data>
+  <data name="admin.nav.label" xml:space="preserve">
+    <value>Разделы админки</value>
+  </data>
+  <data name="admin.nav.dashboard" xml:space="preserve">
+    <value>Дашборд</value>
+  </data>
+  <data name="admin.nav.to_site" xml:space="preserve">
+    <value>На сайт</value>
+  </data>
+  <data name="admin.dashboard.title" xml:space="preserve">
+    <value>Дашборд</value>
+  </data>
+  <data name="admin.dashboard.live_matches" xml:space="preserve">
+    <value>Матчей в эфире</value>
+  </data>
+  <data name="admin.dashboard.teams_awaiting" xml:space="preserve">
+    <value>Команд ждут одобрения</value>
+  </data>
+  <data name="admin.dashboard.users" xml:space="preserve">
+    <value>Пользователей</value>
+  </data>
+  <data name="admin.dashboard.active_subscriptions" xml:space="preserve">
+    <value>Активных подписок</value>
+  </data>
+  <data name="admin.dashboard.revenue_30" xml:space="preserve">
+    <value>Выручка за 30 дней</value>
+  </data>
+  <data name="admin.dashboard.revenue_total" xml:space="preserve">
+    <value>Выручка всего</value>
+  </data>
+  <data name="admin.dashboard.orders_to_ship" xml:space="preserve">
+    <value>Заказов к отправке</value>
+  </data>
+  <data name="admin.dashboard.upcoming" xml:space="preserve">
+    <value>Ближайшие матчи</value>
+  </data>
+  <data name="admin.dashboard.no_matches" xml:space="preserve">
+    <value>Идущих и запланированных матчей нет.</value>
+  </data>
+  <data name="admin.dashboard.recent_orders" xml:space="preserve">
+    <value>Последние заказы</value>
+  </data>
+  <data name="admin.dashboard.no_orders" xml:space="preserve">
+    <value>Заказов пока нет.</value>
+  </data>
+  <data name="admin.match.scheduled_at" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="admin.match.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="admin.match.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="admin.match.score" xml:space="preserve">
+    <value>Счёт</value>
+  </data>
+  <data name="admin.common.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
 </root>

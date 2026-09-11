@@ -1,0 +1,227 @@
+// Каркас админки: боковое меню, верхняя панель, область содержимого (§9.4:
+// «единый _AdminLayout с боковым меню и тостами»). Mobile-first: на узком экране
+// меню свёрнуто и раскрывается кнопкой в верхней панели (nav.js, класс is-open),
+// с lg меню стоит колонкой слева всегда (§9.1, брейкпоинты 576/768/992/1200).
+
+.admin-shell {
+  min-height: 100vh;
+}
+
+// ─── Боковое меню ────────────────────────────────────────────────────────────
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-surface-nav);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+// Сворачивается меню, только когда есть кому его раскрыть: класс has-js ставит
+// admin.js. Без JavaScript меню остаётся раскрытым над содержимым и достижимым.
+.has-js .admin-sidebar:not(.is-open) {
+  display: none;
+}
+
+.admin-sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  color: var(--color-text);
+
+  img {
+    display: block;
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+.admin-sidebar__caption {
+  color: var(--color-accent);
+  font-size: var(--fs-base);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wide;
+  text-transform: uppercase;
+}
+
+.admin-sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.admin-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--fs-lg);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+  transition: background-color var(--transition-fast) ease-in-out, color var(--transition-fast) ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text);
+    background-color: var(--color-surface-raised);
+  }
+
+  // Текущий раздел: цвет и полоса слева плюс aria-current от <active-route> —
+  // подсветка цветом одна была бы видна только зрячим (§9.1).
+  &.is-active {
+    color: var(--color-text);
+    background-color: var(--color-surface-raised);
+    box-shadow: inset 3px 0 0 var(--color-accent);
+  }
+}
+
+// Выход — кнопка в форме (POST), внешне не отличается от соседних ссылок.
+.admin-nav__submit {
+  background: none;
+  border: 0;
+  text-align: left;
+}
+
+// ─── Верхняя панель и содержимое ─────────────────────────────────────────────
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+// Кнопка без JavaScript ничего не делает, поэтому и показывается только с ним.
+.admin-topbar__toggle {
+  display: none;
+  padding: var(--space-1) var(--space-2);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--fs-2xl);
+  line-height: 1;
+}
+
+.has-js .admin-topbar__toggle {
+  display: inline-flex;
+}
+
+.admin-topbar__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: var(--fs-xl);
+  font-weight: $fw-semibold;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin-topbar__user {
+  display: none;
+  color: var(--color-text-dim);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+}
+
+.admin-content {
+  padding: var(--space-4);
+}
+
+.admin-heading {
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-4xl);
+  text-transform: uppercase;
+}
+
+// ─── Панели дашборда ─────────────────────────────────────────────────────────
+
+.admin-panels {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.admin-panel {
+  min-width: 0;
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.admin-panel__title {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-2xl);
+  text-transform: uppercase;
+}
+
+.admin-panel__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-sm);
+}
+
+// ─── Широкие экраны ──────────────────────────────────────────────────────────
+
+@media (min-width: $bp-md) {
+  .admin-content {
+    padding: var(--space-6);
+  }
+
+  .admin-topbar__user {
+    display: inline;
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .admin-shell {
+    display: grid;
+    grid-template-columns: $admin-sidebar-width minmax(0, 1fr);
+  }
+
+  // На широком экране меню видно всегда, кнопка не нужна.
+  .admin-sidebar,
+  .has-js .admin-sidebar:not(.is-open) {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--color-border-subtle);
+    border-bottom: 0;
+  }
+
+  .admin-sidebar__footer {
+    margin-top: auto;
+  }
+
+  .has-js .admin-topbar__toggle {
+    display: none;
+  }
+}
+
+@media (min-width: $bp-xl) {
+  .admin-panels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

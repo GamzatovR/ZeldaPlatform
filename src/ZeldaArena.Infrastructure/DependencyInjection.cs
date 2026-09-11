@@ -83,6 +83,7 @@ public static class DependencyInjection
             provider.GetRequiredService<EntitlementCache>());
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IUserAccountService, IdentityUserAccountService>();
+        services.AddScoped<IUserAdministrationService, IdentityUserAdministrationService>();
         services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ISignInService, IdentitySignInService>();
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();

@@ -7,6 +7,7 @@ using ZeldaArena.Application;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure;
 using ZeldaArena.Infrastructure.Persistence.Ef;
+using ZeldaArena.Web.Areas.Admin;
 using ZeldaArena.Web.Areas.Api;
 using ZeldaArena.Web.Authorization;
 using ZeldaArena.Web.Middleware;
@@ -28,7 +29,8 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.Configure<WebEncoderOptions>(options =>
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
-builder.Services.AddControllersWithViews()
+// Доступ ко всей админке — одно соглашение, а не атрибут на каждом контроллере (§8.1).
+builder.Services.AddControllersWithViews(options => options.Conventions.Add(new AdminAreaConvention()))
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 

@@ -43,6 +43,9 @@ public static class IconNames
     public const string Clock = "clock";
     public const string Globe = "globe";
 
+    // Админка
+    public const string Grid = "grid";
+
     // Обратная связь
     public const string Check = "check";
     public const string Alert = "alert";

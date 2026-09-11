@@ -31,6 +31,11 @@ internal sealed class InMemoryQueryExecutor : IQueryExecutor
         CancellationToken cancellationToken = default) =>
         Task.FromResult(query.Any());
 
+    public Task<decimal> SumAsync(
+        IQueryable<decimal> query,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult(query.Sum());
+
     public Task<PagedResult<T>> ToPagedResultAsync<T>(
         IQueryable<T> query,
         int page,
