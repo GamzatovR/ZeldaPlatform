@@ -1,4 +1,4 @@
-using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
+using ZeldaArena.Application.Common.Models.Esports;
 using ZeldaArena.Application.Features.News.Queries.GetLatestNews;
 
 namespace ZeldaArena.Web.Models.Home;
@@ -13,7 +13,7 @@ namespace ZeldaArena.Web.Models.Home;
 /// </summary>
 public sealed class HomeViewModel
 {
-    public required IReadOnlyList<HomeMatchDto> Matches { get; init; }
+    public required IReadOnlyList<MatchCardDto> Matches { get; init; }
 
     public required IReadOnlyList<NewsListItemDto> News { get; init; }
 }

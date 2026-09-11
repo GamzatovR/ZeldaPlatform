@@ -1,6 +1,7 @@
 using MediatR;
 
 using ZeldaArena.Application.Common.Interfaces;
+using ZeldaArena.Application.Common.Models.Esports;
 using ZeldaArena.Domain.Enums;
 using ZeldaArena.Domain.Esports;
 
@@ -17,19 +18,15 @@ namespace ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
 /// их в JOIN, а не в отдельный запрос на строку — ровно та ошибка, что была
 /// поймана на списке турниров в Фазе 2.
 ///
-/// Проекция написана явным <c>Select</c>, а не <c>ProjectToType</c>, как в списке
-/// турниров. Причина конкретная: Mapster разворачивает <c>TeamA.Name</c> без проверки
-/// на null, потому что в DTO это ненулевая строка. В SQL это безразлично — внешний
-/// ключ обязателен, и команда найдётся всегда, — но любой прогон того же выражения
-/// не на EF Core падает с <c>NullReferenceException</c>, а значит хендлер становится
-/// непроверяемым. Явное выражение переводится в SQL так же и при этом безопасно.
+/// Проекция — общая <see cref="MatchCardProjection"/>: та же карточка стоит
+/// на странице турнира, в расписании и в истории команды.
 /// </summary>
 public sealed class GetHomeMatchesQueryHandler(
     IReadRepository<Match> matches,
     IQueryExecutor queryExecutor)
-    : IRequestHandler<GetHomeMatchesQuery, IReadOnlyList<HomeMatchDto>>
+    : IRequestHandler<GetHomeMatchesQuery, IReadOnlyList<MatchCardDto>>
 {
-    public Task<IReadOnlyList<HomeMatchDto>> Handle(
+    public Task<IReadOnlyList<MatchCardDto>> Handle(
         GetHomeMatchesQuery request,
         CancellationToken cancellationToken)
     {
@@ -42,18 +39,7 @@ public sealed class GetHomeMatchesQueryHandler(
             .OrderBy(match => match.Status == MatchStatus.Live ? 0 : 1)
             .ThenBy(match => match.ScheduledAt)
             .Take(request.Count)
-            .Select(match => new HomeMatchDto
-            {
-                Id = match.Id,
-                TeamAName = match.TeamA == null ? string.Empty : match.TeamA.Name,
-                TeamALogoPath = match.TeamA == null ? null : match.TeamA.LogoPath,
-                TeamBName = match.TeamB == null ? string.Empty : match.TeamB.Name,
-                TeamBLogoPath = match.TeamB == null ? null : match.TeamB.LogoPath,
-                ScoreA = match.ScoreA,
-                ScoreB = match.ScoreB,
-                ScheduledAt = match.ScheduledAt,
-                Status = match.Status,
-            });
+            .Select(MatchCardProjection.Expression);
 
         return queryExecutor.ToListAsync(query, cancellationToken);
     }
