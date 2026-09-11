@@ -1,5 +1,5 @@
 // Пагинация (design-system.md §11). Разметку даёт тег-хелпер <pagination>
-// (TagHelpers/PaginationTagHelper.cs); в Фазе 8 клиент подхватит те же ссылки.
+// (TagHelpers/PaginationTagHelper.cs); ajax-list.js перехватывает те же ссылки.
 
 .pagination-token {
   display: flex;

@@ -5,7 +5,7 @@
 @model PagedResult<OrderListItemDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@* Результат фильтра заказов; в Фазе 8 его вернёт AJAX-эндпоинт истории заказов. *@
+@* Результат фильтра заказов; его же возвращает GET /api/orders. *@
 @if (Model.TotalCount == 0)
 {
     <div class="empty-state">

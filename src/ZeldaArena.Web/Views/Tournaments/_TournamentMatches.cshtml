@@ -5,8 +5,8 @@
 @inject IHtmlLocalizer<SharedResource> T
 
 @*
-    Матчи выбранной вкладки. Отдельный partial: в Фазе 8 его вернёт
-    GET /api/tournaments/{id}/matches (docs/SPEC.md §10.1, сценарий 2).
+    Матчи выбранной вкладки. Отдельный partial: его же возвращает
+    GET /api/tournaments/{slug}/matches (docs/SPEC.md §10.1, сценарий 2).
 *@
 @if (Model.TotalCount == 0)
 {
