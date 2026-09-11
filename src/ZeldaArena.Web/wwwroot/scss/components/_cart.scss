@@ -122,7 +122,8 @@
 
 .cart-summary__totals {
   display: grid;
-  grid-template-columns: auto auto;
+  flex: 1 1 260px;
+  grid-template-columns: 1fr auto;
   gap: var(--space-1) var(--space-5);
   margin: 0;
   font-size: var(--fs-xl);
@@ -137,6 +138,7 @@
     margin: 0;
     font-weight: $fw-semibold;
     text-align: right;
+    white-space: nowrap;
   }
 }
 
@@ -145,11 +147,26 @@
   font-size: var(--fs-3xl);
 }
 
+// На узком экране кнопки встают в столбец на всю ширину: с полями макета
+// в 40–45px «Продолжить покупки» иначе переносилось на две строки.
 .cart-summary__actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex: 1 1 100%;
+  flex-direction: column;
   gap: var(--space-3);
+
+  .btn-solid,
+  .btn-ghost {
+    padding-inline: var(--space-4);
+    text-align: center;
+  }
+
+  @media (min-width: $bp-md) {
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 }
 
 .cart-summary__hint {

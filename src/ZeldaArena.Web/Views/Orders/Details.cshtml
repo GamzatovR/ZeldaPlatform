@@ -3,10 +3,15 @@
 @using ZeldaArena.Web.Models.Layout
 @model ZeldaArena.Application.Features.Orders.Queries.GetOrderDetails.OrderDetailsDto
 @inject IHtmlLocalizer<SharedResource> T
+@inject IStringLocalizer<SharedResource> L
 @{
-    ViewData["Title"] = T["order.details_title", Model.Number].Value;
+    // IStringLocalizer, а не IHtmlLocalizer: у LocalizedHtmlString свойство Value —
+    // шаблон без подстановки аргументов («Заказ {0}»), форматирует он только при выводе.
+    var title = L["order.details_title", Model.Number].Value;
 
-    var pageTitle = new PageTitleViewModel(T["order.details_title", Model.Number].Value, Compact: true);
+    ViewData["Title"] = title;
+
+    var pageTitle = new PageTitleViewModel(title, Compact: true);
 }
 
 @*

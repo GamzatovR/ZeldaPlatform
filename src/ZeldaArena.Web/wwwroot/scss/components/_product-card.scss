@@ -100,4 +100,11 @@
 .product-card__actions {
   margin-top: auto;
   padding-top: var(--space-3);
+
+  // Боковые поля кнопок макета (40–45px) рассчитаны на широкую кнопку; в карточке
+  // шириной в четверть контейнера «Нет в наличии» с ними переносилось на две строки.
+  .btn-solid,
+  .btn-ghost {
+    padding-inline: var(--space-3);
+  }
 }
