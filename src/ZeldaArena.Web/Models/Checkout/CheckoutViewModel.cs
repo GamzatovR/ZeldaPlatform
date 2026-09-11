@@ -30,6 +30,10 @@ public sealed class CheckoutViewModel
         PlaceOrderCommandValidator.MaxPhoneLength,
         MinimumLength = PlaceOrderCommandValidator.MinPhoneLength,
         ErrorMessage = "Телефон — от {2} до {1} символов.")]
+
+    // Длину без пробелов по краям считают и валидатор, и ShippingAddress; StringLength
+    // считает пробелы, и «   12» проходило форму, чтобы упасть на сервере.
+    [RegularExpression(@"^\s*\S.{3,}\S\s*$", ErrorMessage = "Телефон — от 5 до 30 символов.")]
     [DataType(DataType.PhoneNumber)]
     [Display(Name = "Телефон")]
     public string Phone { get; set; } = string.Empty;

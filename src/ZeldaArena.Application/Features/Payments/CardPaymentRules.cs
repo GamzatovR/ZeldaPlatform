@@ -42,7 +42,7 @@ public static class CardPaymentRules
         // Срок проверяется целиком, а не по годам и месяцам порознь: декабрь
         // прошлого года проходит обе отдельные проверки.
         validator.RuleFor(command => command)
-            .Must(command => NotExpired(command.ExpiryMonth, command.ExpiryYear))
+            .Must(command => !IsExpired(command.ExpiryMonth, command.ExpiryYear))
             .WithName(nameof(ICardPaymentDetails.ExpiryYear))
             .WithMessage("Срок действия карты истёк.")
             .When(command => command.ExpiryMonth is >= 1 and <= 12
@@ -69,7 +69,13 @@ public static class CardPaymentRules
     /// Карта действительна до последнего дня указанного месяца включительно.
     /// Сегодняшний день берётся у системных часов, потому что валидатор не должен
     /// зависеть от порта времени: правило про календарь, а не про состояние приложения.
+    ///
+    /// Открыт для формы в Web: правило, которое форма может нарушить без подделки
+    /// запроса, обязано проверяться и на её уровне, иначе отказ валидатора до Фазы 11
+    /// превращается в ошибку сервера. Одно правило на оба уровня — копии разъехались бы.
     /// </summary>
-    private static bool NotExpired(int month, int year) =>
-        new DateOnly(year, month, 1).AddMonths(1) > DateOnly.FromDateTime(DateTime.UtcNow);
+    public static bool IsExpired(int month, int year) =>
+        month is < 1 or > 12
+        || year is < 1 or > 9998
+        || new DateOnly(year, month, 1).AddMonths(1) <= DateOnly.FromDateTime(DateTime.UtcNow);
 }

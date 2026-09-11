@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
+using ZeldaArena.Application.Common.Validation;
+using ZeldaArena.Application.Features.Payments;
+
 namespace ZeldaArena.Web.Models.Billing;
 
 /// <summary>
@@ -12,7 +15,7 @@ namespace ZeldaArena.Web.Models.Billing;
 /// Модель живёт один запрос: номер и CVV уходят в команду, оттуда в платёжный
 /// провайдер и нигде не сохраняются (§7.6).
 /// </summary>
-public sealed class CardDetailsInputModel
+public sealed class CardDetailsInputModel : IValidatableObject
 {
     [Required(ErrorMessage = "Укажите номер карты.")]
     [CreditCard(ErrorMessage = "Номер карты указан неверно.")]
@@ -38,6 +41,21 @@ public sealed class CardDetailsInputModel
 
     [Required(ErrorMessage = "Укажите адрес для чека.")]
     [EmailAddress(ErrorMessage = "Адрес электронной почты указан неверно.")]
+    [StringLength(AccountValidationRules.MaxEmailLength, ErrorMessage = "Адрес не длиннее {1} символов.")]
     [Display(Name = "Адрес для чека и кода подтверждения")]
     public string ConfirmationEmail { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Истёкшая карта — ошибка, которую форма допускает без подделки запроса: месяц
+    /// и год по отдельности проходят свои диапазоны. Правило то же, что у серверного
+    /// валидатора (<see cref="CardPaymentRules.IsExpired"/>). Вызывается, только когда
+    /// поля по отдельности уже прошли проверку.
+    /// </summary>
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (CardPaymentRules.IsExpired(ExpiryMonth, ExpiryYear))
+        {
+            yield return new ValidationResult("Срок действия карты истёк.", [nameof(ExpiryYear)]);
+        }
+    }
 }
