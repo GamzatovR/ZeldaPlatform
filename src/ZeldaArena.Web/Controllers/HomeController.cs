@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
 using ZeldaArena.Application.Features.News.Queries.GetLatestNews;
+using ZeldaArena.Application.Features.Teams.Queries.GetTopTeams;
 using ZeldaArena.Web.Models;
 using ZeldaArena.Web.Models.Home;
 
@@ -19,7 +20,7 @@ public class HomeController(ISender sender) : Controller
 {
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        // Два независимых запроса. Параллелить их нельзя: DbContext не потокобезопасен,
+        // Независимые запросы. Параллелить их нельзя: DbContext не потокобезопасен,
         // а оба уходят через один и тот же scoped-контекст.
         var matches = await sender
             .Send(new GetHomeMatchesQuery(), cancellationToken)
@@ -29,7 +30,11 @@ public class HomeController(ISender sender) : Controller
             .Send(new GetLatestNewsQuery(), cancellationToken)
             .ConfigureAwait(false);
 
-        return View(new HomeViewModel { Matches = matches, News = news });
+        var teams = await sender
+            .Send(new GetTopTeamsQuery(), cancellationToken)
+            .ConfigureAwait(false);
+
+        return View(new HomeViewModel { Matches = matches, News = news, TopTeams = teams });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

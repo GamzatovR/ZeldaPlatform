@@ -1264,4 +1264,13 @@
   <data name="nav.my_team" xml:space="preserve">
     <value>Моя команда</value>
   </data>
+  <data name="home.teams_sub" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="home.teams_title" xml:space="preserve">
+    <value>Топ-команды</value>
+  </data>
+  <data name="home.teams_all" xml:space="preserve">
+    <value>Все команды</value>
+  </data>
 </root>
