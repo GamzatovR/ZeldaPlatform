@@ -1,0 +1,108 @@
+// Показатели: плитки с числом и подписью, строка формы последних матчей,
+// список «ключ — значение» шапки страницы. Собрано из .tournament-meta макета
+// (pages/tournament.html) и блоков профиля pages/team.html.
+
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.stat-tile {
+  padding: var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.stat-tile__value {
+  display: block;
+  color: var(--color-text);
+  font-size: var(--fs-5xl);
+  font-weight: $fw-bold;
+  line-height: 1;
+}
+
+.stat-tile__label {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-base);
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+}
+
+// Форма: W / L последних матчей. Цвет — не единственный признак (§9.1):
+// буква и доступное имя дублируют его.
+.form-streak {
+  display: flex;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.form-streak__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-lg);
+  font-weight: $fw-bold;
+
+  &--win {
+    background-color: var(--color-success);
+    color: var(--color-text);
+  }
+
+  &--loss {
+    background-color: var(--color-accent-strong);
+    color: var(--color-text);
+  }
+}
+
+// Мета-строка шапки: .tournament-meta макета.
+.meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) $space-7;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meta-list__item {
+  color: var(--color-text-muted);
+  font-size: var(--fs-base);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+}
+
+.meta-list__value {
+  display: block;
+  color: var(--color-text);
+  font-size: var(--fs-2xl);
+  font-weight: $fw-bold;
+}
+
+// Блок за платной функцией, когда её нет: призыв оформить подписку.
+.feature-cta {
+  padding: var(--space-6);
+  background-color: var(--color-surface-raised);
+  border: 1px dashed var(--color-warning);
+  border-radius: var(--radius-md);
+  text-align: center;
+
+  p {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-muted);
+    font-family: var(--font-prose);
+    font-size: var(--fs-sm);
+  }
+}

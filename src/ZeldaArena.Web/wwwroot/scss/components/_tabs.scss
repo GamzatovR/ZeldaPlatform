@@ -1,0 +1,41 @@
+// Вкладки — .matches-tabs макета (pages/tournament.html). В макете это вкладки
+// Bootstrap на JavaScript; здесь каждая вкладка — ссылка с ?state= в адресе:
+// состояние живёт в URL и переживает F5 (docs/SPEC.md §10.2), а без JavaScript
+// переключение остаётся обычным переходом. Текущая вкладка отмечена
+// aria-current, а не role="tab": это навигация между адресами, а не панели
+// на одной странице.
+
+.tabs-token {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  background-color: var(--color-surface-sunken);
+  list-style: none;
+}
+
+.tabs-token__link {
+  display: block;
+  padding: 12px $space-7 6px var(--space-6);
+  color: var(--color-text);
+  font-size: var(--fs-2xl);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-wide;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+  transition: color var(--transition-fast) ease-in-out;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+
+  &[aria-current="page"] {
+    background-color: var(--color-accent-strong);
+    color: var(--color-text);
+  }
+
+  @media (max-width: $bp-sm - 1px) {
+    padding: 10px var(--space-5) 4px var(--space-3);
+    font-size: var(--fs-lg);
+  }
+}

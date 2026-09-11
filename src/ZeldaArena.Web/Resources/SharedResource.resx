@@ -679,4 +679,16 @@
   <data name="match.score" xml:space="preserve">
     <value>Счёт матча</value>
   </data>
+  <data name="pagination.label" xml:space="preserve">
+    <value>Постраничная навигация</value>
+  </data>
+  <data name="pagination.previous" xml:space="preserve">
+    <value>Предыдущая страница</value>
+  </data>
+  <data name="pagination.next" xml:space="preserve">
+    <value>Следующая страница</value>
+  </data>
+  <data name="pagination.page" xml:space="preserve">
+    <value>Страница {0}</value>
+  </data>
 </root>

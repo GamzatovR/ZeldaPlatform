@@ -1,5 +1,5 @@
 // Пагинация (design-system.md §11). Разметку даёт тег-хелпер <pagination>
-// из Фазы 8; стиль готов заранее, чтобы та фаза не занималась вёрсткой.
+// (TagHelpers/PaginationTagHelper.cs); в Фазе 8 клиент подхватит те же ссылки.
 
 .pagination-token {
   display: flex;
@@ -34,4 +34,15 @@
     opacity: 0.4;
     pointer-events: none;
   }
+}
+
+// Многоточие между далёкими номерами: не ссылка и скринридеру не нужно.
+.pagination-token__gap {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 24px;
+  height: 38px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-xl);
 }

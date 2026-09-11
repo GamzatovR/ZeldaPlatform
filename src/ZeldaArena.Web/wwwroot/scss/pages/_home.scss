@@ -62,13 +62,3 @@
   justify-content: center;
   gap: var(--space-3);
 }
-
-// Пустое состояние списка — требование §10.2: пустой результат
-// показывается отдельно, а не пустым местом.
-.empty-state {
-  padding: var(--space-7) var(--space-4);
-  background-color: var(--color-surface-raised);
-  border-radius: var(--radius-md);
-  text-align: center;
-  color: var(--color-text-muted);
-}
