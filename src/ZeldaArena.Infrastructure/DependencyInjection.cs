@@ -106,6 +106,7 @@ public static class DependencyInjection
 
         // Раз в час помечает истёкшие подписки (docs/SPEC.md §7.5, п. 4).
         services.AddHostedService<SubscriptionExpirationService>();
+        services.AddHostedService<AbandonedOrderExpirationService>();
 
         services.AddScoped<IdentitySeeder>();
         services.AddScoped<DatabaseSeeder>();
