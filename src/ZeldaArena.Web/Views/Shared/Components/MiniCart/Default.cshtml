@@ -1,0 +1,16 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Carts
+@using ZeldaArena.Web.Constants
+@model CartSummaryDto
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Счётчик в data-атрибуте — под обновление из AJAX-ответа в Фазе 8.
+    Подпись для скринридера говорит число словами, а не голой цифрой в кружке.
+*@
+<a class="site-header__action mini-cart" asp-area="" asp-controller="Cart" asp-action="Index"
+   data-mini-cart active-controller="Cart">
+    <icon name="@IconNames.Cart" />
+    <span class="visually-hidden">@T["cart.mini_label", Model.ItemCount]</span>
+    <span class="mini-cart__count" data-mini-cart-count aria-hidden="true" hidden="@(Model.ItemCount == 0)">@Model.ItemCount</span>
+</a>

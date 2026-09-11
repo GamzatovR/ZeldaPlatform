@@ -21,6 +21,9 @@
 
 <section class="section">
     <div class="container">
+        @* Исход «в корзину»: форма карточки возвращает сюда же, с тем же фильтром. *@
+        <partial name="_StatusMessage" />
+
         <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
               aria-label="@T["filter.title"]">
             <div class="row g-3">

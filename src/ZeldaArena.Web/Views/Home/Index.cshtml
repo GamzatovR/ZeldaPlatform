@@ -124,18 +124,21 @@
 
 @if (Model.Products.Count > 0)
 {
-    <section class="section section--surface">
+    <section class="section section--surface" id="shop">
         <div class="container">
             <div class="section-title">
                 <span class="sub-title">@T["home.shop_sub"]</span>
                 <h2>@T["home.shop_title"]</h2>
             </div>
 
+            @* Исход «в корзину» с витрины: форма карточки возвращает на главную. *@
+            <partial name="_StatusMessage" />
+
             <div class="row g-4">
                 @foreach (var product in Model.Products)
                 {
                     <div class="col-12 col-sm-6 col-lg-3">
-                        <vc:product-card product="product" />
+                        <vc:product-card product="product" return-fragment="shop" />
                     </div>
                 }
             </div>

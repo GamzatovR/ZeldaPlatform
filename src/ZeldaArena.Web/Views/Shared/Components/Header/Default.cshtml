@@ -47,6 +47,9 @@
                     <span class="badge-token badge-token--premium">@T["nav.premium"]</span>
                 }
 
+                @* Корзина есть и у гостя: она живёт по подписанной куке (§14.1). *@
+                @await Component.InvokeAsync("MiniCart")
+
                 @if (Model.IsAuthenticated)
                 {
                     <div class="site-menu" data-menu>

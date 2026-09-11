@@ -7,6 +7,7 @@ using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 
 using ZeldaArena.Application.Common.Behaviors;
+using ZeldaArena.Application.Features.Carts;
 using ZeldaArena.Application.Features.Payments;
 
 namespace ZeldaArena.Application;
@@ -40,6 +41,7 @@ public static class DependencyInjection
 
         // Общие шаги сценариев, а не порты: живут в Application и зависят только от портов.
         services.AddScoped<PaymentInitiator>();
+        services.AddScoped<CartLocator>();
 
         // Своя конфигурация Mapster, а не TypeAdapterConfig.GlobalSettings: глобальная
         // статика протекала бы между тестами и между вызовами AddApplication.

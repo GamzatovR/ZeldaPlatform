@@ -1,11 +1,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@using ZeldaArena.Application.Features.Shop.Queries.GetProducts
 @using ZeldaArena.Web.Constants
 @using ZeldaArena.Web.Extensions
-@model ProductListItemDto
+@model ZeldaArena.Web.Models.Shop.ProductCardViewModel
 @inject IHtmlLocalizer<SharedResource> T
 @{
-    var image = Url.ProductImage(Model.ImagePath);
+    var product = Model.Product;
+    var image = Url.ProductImage(product.ImagePath);
 }
 
 @*
@@ -13,11 +13,11 @@
     design-system.md §11). Страницы товара в проекте нет (§9.3), поэтому название
     не ссылка. Бейджи .sale/.hot макета отданы под наличие: скидок в магазине нет.
 *@
-<article class="product-card" data-product-id="@Model.Id">
+<article class="product-card" data-product-id="@product.Id">
     <div class="product-card__image">
         @if (image is not null)
         {
-            <img src="@image" alt="@Model.Name" loading="lazy" width="400" height="400" />
+            <img src="@image" alt="@product.Name" loading="lazy" width="400" height="400" />
         }
         else
         {
@@ -25,18 +25,42 @@
         }
     </div>
 
-    @if (!Model.IsInStock)
+    @if (!product.IsInStock)
     {
         <span class="product-card__badge product-card__badge--out">@T["shop.out_of_stock"]</span>
     }
-    else if (Model.IsLowStock)
+    else if (product.IsLowStock)
     {
-        <span class="product-card__badge">@T["shop.low_stock", Model.StockQuantity]</span>
+        <span class="product-card__badge">@T["shop.low_stock", product.StockQuantity]</span>
     }
 
     <div class="product-card__content">
-        <span class="product-card__category">@Model.CategoryName</span>
-        <h3 class="product-card__name">@Model.Name</h3>
-        <span class="product-card__price">@MoneyText.Format(Model.Price, Model.Currency)</span>
+        <span class="product-card__category">@product.CategoryName</span>
+        <h3 class="product-card__name">@product.Name</h3>
+        <span class="product-card__price">@MoneyText.Format(product.Price, product.Currency)</span>
+
+        <div class="product-card__actions">
+            @if (product.IsInStock)
+            {
+                @*
+                    Обычная POST-форма: без JavaScript товар кладётся в корзину переходом
+                    обратно (§9.1). В Фазе 8 data-add-to-cart перехватит отправку и
+                    обновит мини-корзину без перезагрузки (§10.1, сценарий 5).
+                *@
+                <form method="post" asp-controller="Cart" asp-action="Add" data-add-to-cart>
+                    <input type="hidden" name="ProductId" value="@product.Id" />
+                    <input type="hidden" name="Quantity" value="1" />
+                    <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+                    <button class="btn-solid btn-block" type="submit">
+                        <icon name="@IconNames.Cart" /> @T["shop.add_to_cart"]
+                        <span class="visually-hidden">: @product.Name</span>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <button class="btn-ghost btn-block" type="button" disabled>@T["shop.out_of_stock"]</button>
+            }
+        </div>
     </div>
 </article>

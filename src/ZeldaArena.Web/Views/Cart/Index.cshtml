@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Application.Features.Carts.Queries.GetCart.CartDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["cart.title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["cart.title"].Value, T["cart.sub"].Value);
+}
+
+@*
+    Корзина (docs/SPEC.md §9.3, п. 13), по docs/design/pages/cart.html. Таблица вынесена
+    в partial с data-cart: в Фазе 8 AJAX-изменение количества вернёт её же целиком
+    с пересчитанным итогом (§10.1, сценарий 6).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <partial name="_StatusMessage" />
+
+        <div id="cart" data-cart>
+            <partial name="_CartTable" model="Model" />
+        </div>
+    </div>
+</section>

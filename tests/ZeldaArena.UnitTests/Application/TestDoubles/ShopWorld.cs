@@ -1,3 +1,4 @@
+using ZeldaArena.Application.Features.Carts;
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Shop;
 using ZeldaArena.Domain.ValueObjects;
@@ -29,6 +30,31 @@ internal sealed class ShopWorld
     public List<ProductCategory> Categories { get; } = [];
 
     public InMemoryRepository<Product> Products { get; } = new();
+
+    public InMemoryRepository<Cart> Carts { get; } = new();
+
+    public RecordingUnitOfWork UnitOfWork { get; } = new();
+
+    /// <summary>Кто сейчас работает: вошедший пользователь, гость по куке — или никто.</summary>
+    public StubCurrentUserService CurrentUser { get; } = new();
+
+    public StubGuestCartIdentity Guest { get; } = new();
+
+    public IEnumerable<CartItem> CartItems => Carts.Entities.SelectMany(cart => cart.Items);
+
+    public CartLocator Locator() =>
+        new(CurrentUser, Guest, Carts, new InMemoryReadRepository<Cart>(Carts.Entities), new InMemoryQueryExecutor());
+
+    public void SignInAs(Guid userId) => CurrentUser.UserId = userId;
+
+    public void BrowseAsGuest(Guid anonymousId)
+    {
+        CurrentUser.UserId = null;
+        Guest.AnonymousId = anonymousId;
+    }
+
+    public Cart? CartOf(Guid? userId = null, Guid? anonymousId = null) =>
+        Carts.Entities.SingleOrDefault(cart => userId is not null ? cart.UserId == userId : cart.AnonymousId == anonymousId);
 
     public ProductCategory AddCategory(string slug, string name)
     {

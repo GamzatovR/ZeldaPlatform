@@ -1330,4 +1330,91 @@
   <data name="home.shop_all" xml:space="preserve">
     <value>Весь каталог</value>
   </data>
+  <data name="shop.add_to_cart" xml:space="preserve">
+    <value>В корзину</value>
+  </data>
+  <data name="shop.product_not_found" xml:space="preserve">
+    <value>Товар не найден.</value>
+  </data>
+  <data name="cart.title" xml:space="preserve">
+    <value>Корзина</value>
+  </data>
+  <data name="cart.sub" xml:space="preserve">
+    <value>Проверьте заказ</value>
+  </data>
+  <data name="cart.empty" xml:space="preserve">
+    <value>В корзине пока пусто.</value>
+  </data>
+  <data name="cart.to_shop" xml:space="preserve">
+    <value>Перейти в магазин</value>
+  </data>
+  <data name="cart.continue_shopping" xml:space="preserve">
+    <value>Продолжить покупки</value>
+  </data>
+  <data name="cart.col_product" xml:space="preserve">
+    <value>Товар</value>
+  </data>
+  <data name="cart.col_price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="cart.col_quantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="cart.col_total" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="cart.col_actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="cart.items_count" xml:space="preserve">
+    <value>Товаров, шт.</value>
+  </data>
+  <data name="cart.subtotal" xml:space="preserve">
+    <value>Итого</value>
+  </data>
+  <data name="cart.decrease" xml:space="preserve">
+    <value>Уменьшить количество: {0}</value>
+  </data>
+  <data name="cart.increase" xml:space="preserve">
+    <value>Увеличить количество: {0}</value>
+  </data>
+  <data name="cart.quantity_of" xml:space="preserve">
+    <value>Количество: {0}</value>
+  </data>
+  <data name="cart.apply_quantity" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="cart.remove_of" xml:space="preserve">
+    <value>Убрать из корзины: {0}</value>
+  </data>
+  <data name="cart.mini_label" xml:space="preserve">
+    <value>Корзина, товаров: {0}</value>
+  </data>
+  <data name="cart.added" xml:space="preserve">
+    <value>Товар добавлен в корзину.</value>
+  </data>
+  <data name="cart.quantity_changed" xml:space="preserve">
+    <value>Количество изменено.</value>
+  </data>
+  <data name="cart.removed" xml:space="preserve">
+    <value>Товар убран из корзины.</value>
+  </data>
+  <data name="cart.invalid_input" xml:space="preserve">
+    <value>Проверьте количество.</value>
+  </data>
+  <data name="cart.product_unavailable" xml:space="preserve">
+    <value>Товар снят с продажи — уберите его из корзины.</value>
+  </data>
+  <data name="cart.out_of_stock" xml:space="preserve">
+    <value>Товара нет в наличии.</value>
+  </data>
+  <data name="cart.insufficient_stock" xml:space="preserve">
+    <value>На складе осталось {0} шт.</value>
+  </data>
+  <data name="cart.item_not_found" xml:space="preserve">
+    <value>Такого товара в корзине нет.</value>
+  </data>
+  <data name="cart.unavailable" xml:space="preserve">
+    <value>Корзина недоступна: разрешите cookie в браузере.</value>
+  </data>
 </root>

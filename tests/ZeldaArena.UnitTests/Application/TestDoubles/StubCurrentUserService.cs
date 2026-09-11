@@ -4,7 +4,8 @@ namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
 internal sealed class StubCurrentUserService : ICurrentUserService
 {
-    public Guid? UserId { get; init; }
+    /// <summary>Изменяемый: сценарии магазина проверяют, что происходит при входе гостя.</summary>
+    public Guid? UserId { get; set; }
 
     public string? UserName { get; init; }
 
