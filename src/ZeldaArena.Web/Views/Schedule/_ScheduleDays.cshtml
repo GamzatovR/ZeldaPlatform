@@ -40,7 +40,7 @@ else
                                 <span class="schedule-box__tournament">@match.TournamentName</span>
 
                                 <h3 class="schedule-box__teams">
-                                    <a class="schedule-box__link" asp-controller="Matches" asp-action="Details" asp-route-id="@match.Id">
+                                    <a class="schedule-box__link" asp-area="" asp-controller="Matches" asp-action="Details" asp-route-id="@match.Id">
                                         @match.TeamAName <span class="schedule-box__score" data-match-score>@match.ScoreA : @match.ScoreB</span> @match.TeamBName
                                     </a>
                                 </h3>

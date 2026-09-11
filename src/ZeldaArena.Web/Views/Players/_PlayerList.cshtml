@@ -22,7 +22,7 @@ else
                     <avatar image="@Url.StoredFile(player.AvatarPath)" name="@player.Nickname" />
 
                     <h2 class="entity-card__name">
-                        <a asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a>
+                        <a asp-area="" asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a>
                     </h2>
 
                     <p class="entity-card__caption">@(player.TeamName ?? T["player.free_agent"].Value)</p>

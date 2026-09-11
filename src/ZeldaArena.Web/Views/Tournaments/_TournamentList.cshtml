@@ -6,8 +6,8 @@
 
 @*
     Результат фильтра: итог, сетка и пагинация. Отдельный partial, потому что
-    в Фазе 8 его же вернёт GET /api/tournaments (docs/SPEC.md §10.1, сценарий 1),
-    и страница подменит только этот блок.
+    его же возвращает GET /api/tournaments (docs/SPEC.md §10.1, сценарий 1),
+    и страница подменяет только этот блок.
 *@
 @if (Model.TotalCount == 0)
 {
@@ -21,7 +21,8 @@ else
         @foreach (var tournament in Model.Items)
         {
             <div class="col-12 col-sm-6 col-lg-4">
-                <partial name="_TournamentCard" model="tournament" />
+                @* Полный путь: из Areas/Api поиск по имени идёт в папках области. *@
+                <partial name="~/Views/Tournaments/_TournamentCard.cshtml" model="tournament" />
             </div>
         }
     </div>

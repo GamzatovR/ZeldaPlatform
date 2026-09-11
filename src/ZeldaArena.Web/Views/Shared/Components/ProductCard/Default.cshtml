@@ -47,7 +47,7 @@
                     обратно (§9.1). В Фазе 8 data-add-to-cart перехватит отправку и
                     обновит мини-корзину без перезагрузки (§10.1, сценарий 5).
                 *@
-                <form method="post" asp-controller="Cart" asp-action="Add" data-add-to-cart>
+                <form method="post" asp-area="" asp-controller="Cart" asp-action="Add" data-add-to-cart>
                     <input type="hidden" name="ProductId" value="@product.Id" />
                     <input type="hidden" name="Quantity" value="1" />
                     <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />

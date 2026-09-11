@@ -10,7 +10,7 @@
 {
     <div class="empty-state">
         <p>@T["order.empty"]</p>
-        <a class="btn-solid" asp-controller="Shop" asp-action="Index">@T["cart.to_shop"]</a>
+        <a class="btn-solid" asp-area="" asp-controller="Shop" asp-action="Index">@T["cart.to_shop"]</a>
     </div>
 }
 else
@@ -33,7 +33,7 @@ else
                 @foreach (var order in Model.Items)
                 {
                     <tr>
-                        <td><a asp-controller="Orders" asp-action="Details" asp-route-number="@order.Number">@order.Number</a></td>
+                        <td><a asp-area="" asp-controller="Orders" asp-action="Details" asp-route-number="@order.Number">@order.Number</a></td>
                         <td><time datetime="@order.PlacedAt.ToString("O")">@order.PlacedAt.ToLocalTime().ToString("g")</time></td>
                         <td><span class="@OrderStatusBadge.CssFor(order.Status)">@T[EnumResourceKeys.For(order.Status)]</span></td>
                         <td>@order.ItemCount</td>
