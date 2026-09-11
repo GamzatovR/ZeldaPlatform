@@ -17,7 +17,7 @@ namespace ZeldaArena.Web.Validation;
 /// отправляет файл целиком, а читать его в JavaScript ради magic bytes бессмысленно —
 /// сервер сделает это всё равно (§15, «сервер валидирует всегда»).
 /// </summary>
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public sealed class ImageFileAttribute : ValidationAttribute, IClientModelValidator
 {
     public ImageFileAttribute()

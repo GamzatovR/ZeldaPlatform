@@ -1195,4 +1195,67 @@
   <data name="team.tag" xml:space="preserve">
     <value>Тег</value>
   </data>
+  <data name="my_team.switch" xml:space="preserve">
+    <value>Мои команды</value>
+  </data>
+  <data name="my_team.page" xml:space="preserve">
+    <value>Страница команды</value>
+  </data>
+  <data name="my_team.actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="my_team.save_role" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="my_team.remove" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="my_team.new_player" xml:space="preserve">
+    <value>Новый игрок</value>
+  </data>
+  <data name="my_team.add_player" xml:space="preserve">
+    <value>Добавить в состав</value>
+  </data>
+  <data name="my_team.free_agent" xml:space="preserve">
+    <value>Свободный игрок</value>
+  </data>
+  <data name="my_team.no_free_agents" xml:space="preserve">
+    <value>Свободных игроков сейчас нет. Заведите новый профиль игрока.</value>
+  </data>
+  <data name="my_team.profile" xml:space="preserve">
+    <value>Профиль команды</value>
+  </data>
+  <data name="my_team.save_profile" xml:space="preserve">
+    <value>Сохранить профиль</value>
+  </data>
+  <data name="my_team.logo" xml:space="preserve">
+    <value>Логотип</value>
+  </data>
+  <data name="my_team.logo_file" xml:space="preserve">
+    <value>Файл логотипа</value>
+  </data>
+  <data name="my_team.save_logo" xml:space="preserve">
+    <value>Загрузить логотип</value>
+  </data>
+  <data name="my_team.profile_saved" xml:space="preserve">
+    <value>Профиль команды сохранён.</value>
+  </data>
+  <data name="my_team.logo_saved" xml:space="preserve">
+    <value>Логотип обновлён.</value>
+  </data>
+  <data name="my_team.player_added" xml:space="preserve">
+    <value>Игрок добавлен в состав.</value>
+  </data>
+  <data name="my_team.role_saved" xml:space="preserve">
+    <value>Роль игрока изменена.</value>
+  </data>
+  <data name="my_team.player_removed" xml:space="preserve">
+    <value>Игрок убран из состава. Его прошлые матчи за команду остаются в истории.</value>
+  </data>
+  <data name="my_team.invalid_input" xml:space="preserve">
+    <value>Проверьте заполнение формы.</value>
+  </data>
+  <data name="file.invalid_upload" xml:space="preserve">
+    <value>Подходят только изображения PNG, JPEG и WebP не больше 2 МБ.</value>
+  </data>
 </root>
