@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using ZeldaArena.Application.Common.Models.Esports
+@using ZeldaArena.Web.Extensions
 @model MatchCardDto
 @inject IHtmlLocalizer<SharedResource> T
 
@@ -16,7 +17,7 @@
             <div class="match-card__team">
                 @if (Model.TeamALogoPath is not null)
                 {
-                    <img src="@Model.TeamALogoPath" alt="" loading="lazy" />
+                    <img src="@Url.StoredFile(Model.TeamALogoPath)" alt="" loading="lazy" />
                 }
                 <div class="match-card__content">
                     <h3 class="match-card__name">@Model.TeamAName</h3>
@@ -47,7 +48,7 @@
             <div class="match-card__team match-card__team--right">
                 @if (Model.TeamBLogoPath is not null)
                 {
-                    <img src="@Model.TeamBLogoPath" alt="" loading="lazy" />
+                    <img src="@Url.StoredFile(Model.TeamBLogoPath)" alt="" loading="lazy" />
                 }
                 <div class="match-card__content">
                     <h3 class="match-card__name">@Model.TeamBName</h3>

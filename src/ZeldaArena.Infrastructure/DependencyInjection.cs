@@ -7,6 +7,7 @@ using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure.BackgroundJobs;
 using ZeldaArena.Infrastructure.Common;
 using ZeldaArena.Infrastructure.Email;
+using ZeldaArena.Infrastructure.Files;
 using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Logging;
 using ZeldaArena.Infrastructure.Payments;
@@ -95,6 +96,10 @@ public static class DependencyInjection
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
         services.AddScoped<INewsRepository, EfNewsRepository>();
+
+        // Загруженные логотипы и аватары (docs/SPEC.md §15): вне wwwroot, под GUID-именем.
+        services.Configure<FileStorageOptions>(configuration.GetSection(FileStorageOptions.SectionName));
+        services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
