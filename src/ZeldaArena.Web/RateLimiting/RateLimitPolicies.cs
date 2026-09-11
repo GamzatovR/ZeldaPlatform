@@ -36,6 +36,9 @@ public static class RateLimitPolicies
     /// <summary>Подтверждение и повторная отправка кода.</summary>
     public const string PaymentConfirm = "payment-confirm";
 
+    /// <summary>Remote-проверка занятости адреса на форме регистрации (§10.1, сценарий 11).</summary>
+    public const string EmailCheck = "account-email-check";
+
     private static readonly TimeSpan Window = TimeSpan.FromMinutes(5);
 
     public static IServiceCollection AddPlatformRateLimiter(this IServiceCollection services)
@@ -75,6 +78,11 @@ public static class RateLimitPolicies
             // тот защищает один платёж от перебора, эта политика — сервер
             // от перебора по многим платежам сразу.
             AddFixedWindow(options, PaymentConfirm, permitLimit: 20);
+
+            // Remote-проверка уходит на каждую правку поля после первой ошибки, поэтому
+            // порог выше, чем у форм: человек, исправляющий опечатку, в него не упрётся,
+            // а перебор адресов — упрётся.
+            AddFixedWindow(options, EmailCheck, permitLimit: 60);
         });
 
         return services;
