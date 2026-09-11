@@ -1,0 +1,87 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Shop.Queries.GetProducts
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Shop.ShopListViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["shop.list_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["shop.list_title"].Value, T["shop.list_sub"].Value);
+    var filter = Model.Filter;
+    var sort = ProductSorting.Map.Resolve(filter.Sort);
+}
+
+@*
+    Каталог (docs/SPEC.md §9.3, п. 12), по docs/design/pages/shop.html. Тот же механизм,
+    что у турниров, команд и игроков: GET-форма, состояние в адресе, partial-список
+    под Фазу 8 (§10.2). Размер страницы — из whitelist 12/24/48 (§10.3).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
+              aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="form-label" for="category">@T["shop.category"]</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Slug" selected="@(filter.Category == category.Slug)">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="priceMin">@T["shop.price_min"]</label>
+                    <input class="form-control" id="priceMin" name="priceMin" type="number" min="0" step="100"
+                           value="@filter.PriceMin" inputmode="numeric" />
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="priceMax">@T["shop.price_max"]</label>
+                    <input class="form-control" id="priceMax" name="priceMax" type="number" min="0" step="100"
+                           value="@filter.PriceMax" inputmode="numeric" />
+                </div>
+                <div class="col-6 col-md-6 col-lg-3">
+                    <label class="form-label" for="sort">@T["filter.sort"]</label>
+                    <select class="form-select" id="sort" name="sort">
+                        @foreach (var key in ProductSorting.Map.Keys)
+                        {
+                            <option value="@key" selected="@(key == sort)">@T["shop.sort." + key]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
+                    <select class="form-select" id="pageSize" name="pageSize">
+                        @foreach (var size in PageSizes.Allowed)
+                        {
+                            <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-3 d-flex align-items-end">
+                    <div class="form-check">
+                        @* Значение true, а не on: адрес читается и совпадает с примером §10.2. *@
+                        <input class="form-check-input" id="inStock" name="inStock" type="checkbox" value="true"
+                               checked="@(filter.InStock == true)" />
+                        <label class="form-check-label" for="inStock">@T["shop.in_stock_only"]</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <h2 class="visually-hidden">@T["shop.catalog_heading"]</h2>
+
+        <div id="product-list" data-list>
+            <partial name="_ProductList" model="Model.Result" />
+        </div>
+    </div>
+</section>

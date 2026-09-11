@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Shop.Queries.GetProducts
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Extensions
+@model ProductListItemDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var image = Url.ProductImage(Model.ImagePath);
+}
+
+@*
+    Карточка товара — .single-products-box макета (docs/design/pages/shop.html,
+    design-system.md §11). Страницы товара в проекте нет (§9.3), поэтому название
+    не ссылка. Бейджи .sale/.hot макета отданы под наличие: скидок в магазине нет.
+*@
+<article class="product-card" data-product-id="@Model.Id">
+    <div class="product-card__image">
+        @if (image is not null)
+        {
+            <img src="@image" alt="@Model.Name" loading="lazy" width="400" height="400" />
+        }
+        else
+        {
+            <span class="product-card__placeholder"><icon name="@IconNames.Cart" /></span>
+        }
+    </div>
+
+    @if (!Model.IsInStock)
+    {
+        <span class="product-card__badge product-card__badge--out">@T["shop.out_of_stock"]</span>
+    }
+    else if (Model.IsLowStock)
+    {
+        <span class="product-card__badge">@T["shop.low_stock", Model.StockQuantity]</span>
+    }
+
+    <div class="product-card__content">
+        <span class="product-card__category">@Model.CategoryName</span>
+        <h3 class="product-card__name">@Model.Name</h3>
+        <span class="product-card__price">@MoneyText.Format(Model.Price, Model.Currency)</span>
+    </div>
+</article>

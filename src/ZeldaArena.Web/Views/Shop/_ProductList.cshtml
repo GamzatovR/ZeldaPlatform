@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Shop.Queries.GetProducts
+@model PagedResult<ProductListItemDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Результат фильтра магазина; в Фазе 8 его же вернёт GET /api/shop/products (§10.1, сценарий 4). *@
+@if (Model.TotalCount == 0)
+{
+    <p class="empty-state">@T["shop.empty"]</p>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", Model.TotalCount]</p>
+
+    <div class="row g-4">
+        @foreach (var product in Model.Items)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <vc:product-card product="product" />
+            </div>
+        }
+    </div>
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}

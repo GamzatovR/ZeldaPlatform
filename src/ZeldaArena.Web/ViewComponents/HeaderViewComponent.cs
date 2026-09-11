@@ -31,6 +31,7 @@ public sealed class HeaderViewComponent : ViewComponent
         new("nav.schedule", "Schedule", "Index"),
         new("nav.teams", "Teams", "Index"),
         new("nav.players", "Players", "Index"),
+        new("nav.shop", "Shop", "Index"),
         new("nav.subscription", "Subscription", "Index"),
     ];
 

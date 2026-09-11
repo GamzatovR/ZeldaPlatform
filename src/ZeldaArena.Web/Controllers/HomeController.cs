@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
 using ZeldaArena.Application.Features.News.Queries.GetLatestNews;
+using ZeldaArena.Application.Features.Shop.Queries.GetShowcaseProducts;
 using ZeldaArena.Application.Features.Teams.Queries.GetTopTeams;
 using ZeldaArena.Web.Models;
 using ZeldaArena.Web.Models.Home;
@@ -34,7 +35,11 @@ public class HomeController(ISender sender) : Controller
             .Send(new GetTopTeamsQuery(), cancellationToken)
             .ConfigureAwait(false);
 
-        return View(new HomeViewModel { Matches = matches, News = news, TopTeams = teams });
+        var products = await sender
+            .Send(new GetShowcaseProductsQuery(), cancellationToken)
+            .ConfigureAwait(false);
+
+        return View(new HomeViewModel { Matches = matches, News = news, TopTeams = teams, Products = products });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

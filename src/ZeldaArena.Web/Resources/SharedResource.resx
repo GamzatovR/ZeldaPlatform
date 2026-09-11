@@ -1273,4 +1273,61 @@
   <data name="home.teams_all" xml:space="preserve">
     <value>Все команды</value>
   </data>
+  <data name="nav.shop" xml:space="preserve">
+    <value>Магазин</value>
+  </data>
+  <data name="shop.list_title" xml:space="preserve">
+    <value>Магазин</value>
+  </data>
+  <data name="shop.list_sub" xml:space="preserve">
+    <value>Игровая периферия</value>
+  </data>
+  <data name="shop.catalog_heading" xml:space="preserve">
+    <value>Товары</value>
+  </data>
+  <data name="shop.category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="shop.price_min" xml:space="preserve">
+    <value>Цена от</value>
+  </data>
+  <data name="shop.price_max" xml:space="preserve">
+    <value>Цена до</value>
+  </data>
+  <data name="shop.in_stock_only" xml:space="preserve">
+    <value>Только в наличии</value>
+  </data>
+  <data name="shop.sort.newest" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="shop.sort.price_asc" xml:space="preserve">
+    <value>Сначала дешёвые</value>
+  </data>
+  <data name="shop.sort.price_desc" xml:space="preserve">
+    <value>Сначала дорогие</value>
+  </data>
+  <data name="shop.sort.name_asc" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="shop.empty" xml:space="preserve">
+    <value>Таких товаров нет. Измените условия фильтра или сбросьте его.</value>
+  </data>
+  <data name="shop.out_of_stock" xml:space="preserve">
+    <value>Нет в наличии</value>
+  </data>
+  <data name="shop.low_stock" xml:space="preserve">
+    <value>Осталось {0} шт.</value>
+  </data>
+  <data name="filter.page_size" xml:space="preserve">
+    <value>На странице</value>
+  </data>
+  <data name="home.shop_sub" xml:space="preserve">
+    <value>Магазин</value>
+  </data>
+  <data name="home.shop_title" xml:space="preserve">
+    <value>Игровая периферия</value>
+  </data>
+  <data name="home.shop_all" xml:space="preserve">
+    <value>Весь каталог</value>
+  </data>
 </root>
