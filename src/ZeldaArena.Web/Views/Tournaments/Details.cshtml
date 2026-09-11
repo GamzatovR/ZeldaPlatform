@@ -18,8 +18,8 @@
     .single-top-team-item.
 
     Вкладки — ссылки с ?state= и якорем на блок матчей: состояние в адресе, F5 и «Назад»
-    работают без JavaScript (§10.2). В Фазе 8 клиент будет подменять только #tournament-matches
-    ответом GET /api/tournaments/{id}/matches (§10.1, сценарий 2).
+    работают без JavaScript (§10.2). С JavaScript ajax-list.js подменяет только #tournament-matches
+    ответом GET /api/tournaments/{slug}/matches (§10.1, сценарий 2).
 *@
 <partial name="_PageTitle" model="pageTitle" />
 
@@ -89,7 +89,8 @@
                 </ul>
             </nav>
 
-            <div id="tournament-matches" data-list>
+            <div id="tournament-matches" data-list
+                 data-api="@Url.Action("Matches", "TournamentsApi", new { area = "Api", slug = tournament.Slug })">
                 <partial name="_TournamentMatches" model="Model.Matches" />
             </div>
         </section>

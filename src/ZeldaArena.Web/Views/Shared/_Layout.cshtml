@@ -41,6 +41,31 @@
 
     @await Component.InvokeAsync("Footer")
 
+    @*
+        Тосты AJAX (docs/SPEC.md §10.1): регион объявлен заранее, чтобы aria-live
+        сработал на первом же сообщении. Тексты по кодам ответа — здесь, из ресурсов,
+        а не строками в JavaScript (§9.5). Шаблон с {0} берётся через .Value: IHtmlLocalizer
+        подставил бы аргументы при выводе и упал бы на их отсутствии.
+    *@
+    <div class="toast-region" data-toasts role="status" aria-live="polite"
+         data-close-label="@T["toast.close"]"
+         data-msg-unauthorized="@T["toast.unauthorized"]"
+         data-msg-login="@T["toast.login"]"
+         data-msg-forbidden="@T["toast.forbidden"]"
+         data-msg-too-many="@T["toast.too_many_requests"].Value"
+         data-msg-server="@T["toast.server_error"]"
+         data-msg-network="@T["toast.network"]"></div>
+
+    @* Скелетон списка на время загрузки (§9.1); подставляет ajax-list.js. *@
+    <template id="list-skeleton">
+        <div class="skeleton-list" aria-hidden="true">
+            @for (var i = 0; i < 6; i++)
+            {
+                <div class="skeleton-token"></div>
+            }
+        </div>
+    </template>
+
     <button class="go-top" type="button" data-go-top hidden>
         <icon name="@IconNames.ArrowUp" label="@T["a11y.back_to_top"]" />
     </button>

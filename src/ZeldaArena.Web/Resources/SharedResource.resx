@@ -1570,4 +1570,31 @@
   <data name="api.concurrent_change" xml:space="preserve">
     <value>Данные одновременно изменены другим запросом. Обновите страницу и повторите.</value>
   </data>
+  <data name="toast.close" xml:space="preserve">
+    <value>Закрыть уведомление</value>
+  </data>
+  <data name="toast.unauthorized" xml:space="preserve">
+    <value>Сессия закончилась или вы не вошли. Войдите, чтобы продолжить.</value>
+  </data>
+  <data name="toast.login" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+  <data name="toast.forbidden" xml:space="preserve">
+    <value>Недостаточно прав для этого действия.</value>
+  </data>
+  <data name="toast.too_many_requests" xml:space="preserve">
+    <value>Слишком много запросов. Повторите через {0} мин.</value>
+  </data>
+  <data name="toast.server_error" xml:space="preserve">
+    <value>Что-то пошло не так на сервере. Повторите чуть позже.</value>
+  </data>
+  <data name="toast.network" xml:space="preserve">
+    <value>Нет связи с сервером. Проверьте подключение и повторите.</value>
+  </data>
+  <data name="filter.active" xml:space="preserve">
+    <value>Активные фильтры</value>
+  </data>
+  <data name="filter.remove_chip" xml:space="preserve">
+    <value>Снять фильтр</value>
+  </data>
 </root>

@@ -1,0 +1,38 @@
+// Чипсы активных фильтров (docs/SPEC.md §10.2). Форма — pill-бейдж дизайн-системы
+// (design-system.md §11), крестик — кнопка целиком, а не мелкая мишень внутри.
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.chip-token {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  color: var(--color-text);
+  font-size: var(--fs-base);
+  letter-spacing: $ls-tight;
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  transition: border-color var(--transition-fast);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-accent);
+  }
+}
+
+.chip-token__remove {
+  color: var(--color-accent);
+  font-size: var(--fs-lg);
+  line-height: 1;
+}

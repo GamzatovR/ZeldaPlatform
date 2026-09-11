@@ -44,13 +44,16 @@
                 </div>
             </div>
 
+            <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+                 aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
             <div class="filters__actions">
                 <button class="btn-solid" type="submit">@T["filter.apply"]</button>
-                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+                <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
             </div>
         </form>
 
-        <div id="schedule-days" data-list>
+        <div id="schedule-days" data-list data-api="@Url.Action("Index", "ScheduleApi", new { area = "Api" })">
             <partial name="_ScheduleDays" model="Model.Schedule" />
         </div>
     </div>

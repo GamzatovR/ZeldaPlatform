@@ -62,7 +62,8 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-2">
                     <label class="form-label" for="sort">@T["filter.sort"]</label>
-                    <select class="form-select" id="sort" name="sort">
+                    <select class="form-select" id="sort" name="sort"
+                            data-default="@PlayerSorting.Map.DefaultKey" data-no-chip>
                         @foreach (var key in PlayerSorting.Map.Keys)
                         {
                             <option value="@key" selected="@(key == sort)">@T["player.sort." + key]</option>
@@ -71,13 +72,16 @@
                 </div>
             </div>
 
+            <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+                 aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
             <div class="filters__actions">
                 <button class="btn-solid" type="submit">@T["filter.apply"]</button>
-                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+                <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
             </div>
         </form>
 
-        <div id="player-list" data-list>
+        <div id="player-list" data-list data-api="@Url.Action("Index", "PlayersApi", new { area = "Api" })">
             <partial name="_PlayerList" model="Model.Result" />
         </div>
     </div>
