@@ -1663,4 +1663,10 @@
   <data name="admin.common.status" xml:space="preserve">
     <value>Статус</value>
   </data>
+  <data name="table.sort_ascending" xml:space="preserve">
+    <value> — сортировать по возрастанию</value>
+  </data>
+  <data name="table.sort_descending" xml:space="preserve">
+    <value> — сортировать по убыванию</value>
+  </data>
 </root>

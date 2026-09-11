@@ -11,7 +11,14 @@
 //   [data-filter-form]              — GET-форма фильтра (необязательна);
 //   [data-filter-reset]             — «Сбросить всё»;
 //   [data-pagination] a, a[data-tab] — ссылки, которые перехватываются;
-//   select[data-default]            — значение по умолчанию, в адрес не пишется.
+//   a[data-sort]                    — заголовок столбца с сортировкой (<sortable-header>);
+//   select[data-default]            — значение по умолчанию, в адрес не пишется;
+//   input[type=hidden][data-list-state] — часть состояния, которую меняют ссылки
+//                                     (сортировка по заголовку): форма фильтра несёт её
+//                                     дальше, иначе смена фильтра сбрасывала бы сортировку.
+//
+// Событие list:refresh на document перезапрашивает текущее состояние — после
+// действия в строке таблицы (одобрить, заблокировать) список рисуется заново.
 
 import { request, isAbort, reportError } from './http.js';
 import { renderChips } from './filter-chips.js';
@@ -53,7 +60,14 @@ function urlFromForm(form) {
 /** Значения формы из адреса — для «Назад» и «Сбросить всё». */
 function syncForm(form, params) {
   for (const field of form.elements) {
-    if (!field.name || field.type === 'hidden' || field.type === 'submit') {
+    if (!field.name || field.type === 'submit') {
+      continue;
+    }
+
+    if (field.type === 'hidden') {
+      if (field.dataset.listState !== undefined) {
+        field.value = params.get(field.name) ?? field.dataset.default ?? '';
+      }
       continue;
     }
 
@@ -114,10 +128,11 @@ export function initAjaxList() {
   let inFlight = null;
   let current = pathAndQuery(location);
 
-  async function load(url, { push = true, scroll = false } = {}) {
+  async function load(url, { push = true, scroll = false, force = false } = {}) {
     // Тот же адрес — тот же список: change после input на числовом поле
-    // и hash-переходы не должны гонять лишний запрос.
-    if (pathAndQuery(url) === current) {
+    // и hash-переходы не должны гонять лишний запрос. Исключение — list:refresh:
+    // адрес тот же, а строки на сервере изменились.
+    if (pathAndQuery(url) === current && !force) {
       return;
     }
 
@@ -213,14 +228,24 @@ export function initAjaxList() {
       return;
     }
 
-    const link = event.target.closest('a[data-tab], [data-pagination] a[href]');
+    const link = event.target.closest('a[data-tab], [data-pagination] a[href], a[data-sort]');
 
     if (!link || (!link.matches('[data-tab]') && !container.contains(link))) {
       return;
     }
 
     event.preventDefault();
-    load(new URL(link.href), { scroll: !link.matches('[data-tab]') });
+    const url = new URL(link.href);
+
+    if (form) {
+      syncForm(form, url.searchParams);
+    }
+
+    load(url, { scroll: !link.matches('[data-tab]') });
+  });
+
+  document.addEventListener('list:refresh', () => {
+    load(new URL(location.href), { push: false, force: true });
   });
 
   window.addEventListener('popstate', () => {
