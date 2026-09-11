@@ -49,3 +49,21 @@
   font-size: var(--fs-3xl);
   letter-spacing: $ls-tight;
 }
+
+// Шапка страницы команды и игрока: крупный логотип или аватар рядом с мета-строкой.
+.details-desc__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+
+  .meta-list {
+    margin-top: 0;
+  }
+}
+
+.details-desc__avatar.entity-card__image {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 0;
+}

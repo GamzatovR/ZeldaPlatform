@@ -48,3 +48,18 @@
   font-size: var(--fs-lg);
   text-transform: uppercase;
 }
+
+// Действия над списком — над панелью фильтров: «Создать команду» и подсказка к ней.
+.list-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.list-toolbar__hint {
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+}

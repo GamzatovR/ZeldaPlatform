@@ -976,4 +976,127 @@
   <data name="schedule.ahead" xml:space="preserve">
     <value>Впереди</value>
   </data>
+  <data name="team.list_title" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="team.list_sub" xml:space="preserve">
+    <value>Команды ZeldaArena</value>
+  </data>
+  <data name="team.search_placeholder" xml:space="preserve">
+    <value>Название или тег</value>
+  </data>
+  <data name="team.rating_min" xml:space="preserve">
+    <value>Рейтинг от</value>
+  </data>
+  <data name="team.sort.rating_desc" xml:space="preserve">
+    <value>Рейтинг по убыванию</value>
+  </data>
+  <data name="team.sort.rating_asc" xml:space="preserve">
+    <value>Рейтинг по возрастанию</value>
+  </data>
+  <data name="team.sort.name_asc" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="team.players_count" xml:space="preserve">
+    <value>Игроков: {0}</value>
+  </data>
+  <data name="team.create_cta" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="team.create_hint" xml:space="preserve">
+    <value>Создание своей команды доступно по подписке.</value>
+  </data>
+  <data name="team.pending_notice" xml:space="preserve">
+    <value>Команда ждёт одобрения модератора. Пока её видите только вы: в списке команд её нет.</value>
+  </data>
+  <data name="team.founded" xml:space="preserve">
+    <value>Основана</value>
+  </data>
+  <data name="team.manage" xml:space="preserve">
+    <value>Управлять командой</value>
+  </data>
+  <data name="team.stats" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="team.played" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="team.wins" xml:space="preserve">
+    <value>Побед</value>
+  </data>
+  <data name="team.losses" xml:space="preserve">
+    <value>Поражений</value>
+  </data>
+  <data name="team.win_rate" xml:space="preserve">
+    <value>Процент побед</value>
+  </data>
+  <data name="team.form" xml:space="preserve">
+    <value>Форма</value>
+  </data>
+  <data name="team.form_label" xml:space="preserve">
+    <value>Исходы последних матчей, от свежего к старому</value>
+  </data>
+  <data name="team.win" xml:space="preserve">
+    <value>Победа</value>
+  </data>
+  <data name="team.loss" xml:space="preserve">
+    <value>Поражение</value>
+  </data>
+  <data name="team.win_short" xml:space="preserve">
+    <value>В</value>
+  </data>
+  <data name="team.loss_short" xml:space="preserve">
+    <value>П</value>
+  </data>
+  <data name="team.advanced" xml:space="preserve">
+    <value>Расширенная статистика</value>
+  </data>
+  <data name="team.advanced_cta" xml:space="preserve">
+    <value>Средние показатели игроков и разбивка по турнирам доступны по подписке.</value>
+  </data>
+  <data name="team.advanced_players" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="team.advanced_tournaments" xml:space="preserve">
+    <value>По турнирам</value>
+  </data>
+  <data name="team.roster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
+  <data name="team.roster_empty" xml:space="preserve">
+    <value>В составе пока никого нет.</value>
+  </data>
+  <data name="team.upcoming" xml:space="preserve">
+    <value>Ближайшие матчи</value>
+  </data>
+  <data name="team.history" xml:space="preserve">
+    <value>Последние матчи</value>
+  </data>
+  <data name="team.history_empty" xml:space="preserve">
+    <value>Команда ещё не сыграла ни одного матча.</value>
+  </data>
+  <data name="stats.matches" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="feature.required" xml:space="preserve">
+    <value>Эта функция доступна по подписке.</value>
+  </data>
+  <data name="team.not_found" xml:space="preserve">
+    <value>Команда не найдена.</value>
+  </data>
+  <data name="player.not_found" xml:space="preserve">
+    <value>Игрок не найден.</value>
+  </data>
+  <data name="team.limit_reached" xml:space="preserve">
+    <value>Достигнут лимит команд для вашей подписки.</value>
+  </data>
+  <data name="team.name_taken" xml:space="preserve">
+    <value>Команда с таким названием уже есть.</value>
+  </data>
+  <data name="player.already_in_team" xml:space="preserve">
+    <value>Игрок уже состоит в другой команде.</value>
+  </data>
+  <data name="file.invalid_image" xml:space="preserve">
+    <value>Файл не является изображением PNG, JPEG или WebP.</value>
+  </data>
 </root>

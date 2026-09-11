@@ -1,0 +1,183 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Constants
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Teams.TeamDetailsViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var team = Model.Team;
+
+    ViewData["Title"] = team.Name;
+
+    var pageTitle = new PageTitleViewModel(team.Name, team.Tag, Compact: true);
+}
+
+@*
+    Страница команды (docs/SPEC.md §9.3, п. 7) по docs/design/pages/team.html:
+    .team-details-desc с описанием, счётчики .team-meta, состав .player-list.
+
+    Кнопка Follow придёт в Фазе 8 вместе со сценарием подписки на команду (§10.1, сценарий 9).
+    Расширенная статистика — за функцией stats.advanced: данные сюда приходят только
+    от сценария, который сам проверил право (§7.3), а <feature-gate> лишь выбирает,
+    показать таблицы или призыв оформить подписку.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        @if (!team.IsApproved)
+        {
+            <p class="details-notice" role="status">@T["team.pending_notice"]</p>
+        }
+
+        <div class="details-desc">
+            <div class="details-desc__head">
+                <avatar image="@Url.StoredFile(team.LogoPath)" name="@team.Name" class="details-desc__avatar" />
+
+                <ul class="meta-list">
+                    <li class="meta-list__item">
+                        @T["tournament.region"]
+                        <span class="meta-list__value">@T[EnumResourceKeys.For(team.Region)]</span>
+                    </li>
+                    <li class="meta-list__item">
+                        @T["player.country"]
+                        <span class="meta-list__value">@team.CountryCode</span>
+                    </li>
+                    <li class="meta-list__item">
+                        @T["stats.rating"]
+                        <span class="meta-list__value">@team.Rating</span>
+                    </li>
+                    @if (team.FoundedAt is { } foundedAt)
+                    {
+                        <li class="meta-list__item">
+                            @T["team.founded"]
+                            <span class="meta-list__value">@foundedAt.Year</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(team.Description))
+            {
+                <p class="details-desc__lead">@team.Description</p>
+            }
+
+            @if (team.IsOwnedByViewer)
+            {
+                <p class="details-desc__lead">
+                    <a class="btn-ghost" asp-controller="MyTeam" asp-action="Index">@T["team.manage"]</a>
+                </p>
+            }
+        </div>
+
+        <section class="details-block" aria-labelledby="stats-title">
+            <h2 class="details-block__title" id="stats-title">@T["team.stats"]</h2>
+
+            <ul class="stat-tiles">
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@team.MatchesPlayed</span>
+                    <span class="stat-tile__label">@T["team.played"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@team.Wins</span>
+                    <span class="stat-tile__label">@T["team.wins"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@team.Losses</span>
+                    <span class="stat-tile__label">@T["team.losses"]</span>
+                </li>
+                <li class="stat-tile">
+                    <span class="stat-tile__value">@team.WinRate%</span>
+                    <span class="stat-tile__label">@T["team.win_rate"]</span>
+                </li>
+            </ul>
+
+            @if (team.Form.Count > 0)
+            {
+                <h3 class="details-block__subtitle">@T["team.form"]</h3>
+                <ol class="form-streak" aria-label="@T["team.form_label"]">
+                    @foreach (var won in team.Form)
+                    {
+                        <li class="form-streak__item @(won ? "form-streak__item--win" : "form-streak__item--loss")"
+                            aria-label="@(won ? T["team.win"] : T["team.loss"])">@(won ? T["team.win_short"] : T["team.loss_short"])</li>
+                    }
+                </ol>
+            }
+        </section>
+
+        <section class="details-block" aria-labelledby="advanced-title">
+            <h2 class="details-block__title" id="advanced-title">@T["team.advanced"]</h2>
+
+            <feature-gate feature="@FeatureCodes.StatsAdvanced">
+                @if (Model.AdvancedStats is { } advanced)
+                {
+                    <partial name="_TeamAdvancedStats" model="advanced" />
+                }
+            </feature-gate>
+
+            <feature-gate feature="@FeatureCodes.StatsAdvanced" when-missing>
+                <div class="feature-cta">
+                    <p>@T["team.advanced_cta"]</p>
+                    <a class="btn-solid" asp-controller="Subscription" asp-action="Index"
+                       asp-route-required="@FeatureCodes.StatsAdvanced">@T["home.subscribe_cta"]</a>
+                </div>
+            </feature-gate>
+        </section>
+
+        <section class="details-block" aria-labelledby="roster-title">
+            <h2 class="details-block__title" id="roster-title">@T["team.roster"]</h2>
+
+            @if (team.Roster.Count == 0)
+            {
+                <p class="empty-state">@T["team.roster_empty"]</p>
+            }
+            else
+            {
+                <div class="row g-4">
+                    @foreach (var player in team.Roster)
+                    {
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <article class="entity-card">
+                                <avatar image="@Url.StoredFile(player.AvatarPath)" name="@player.Nickname" />
+
+                                <h3 class="entity-card__name">
+                                    <a asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a>
+                                </h3>
+
+                                <p class="entity-card__caption">@T[EnumResourceKeys.For(player.Role)] · @player.CountryCode</p>
+                            </article>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        @if (team.UpcomingMatches.Count > 0)
+        {
+            <section class="details-block" aria-labelledby="upcoming-title">
+                <h2 class="details-block__title" id="upcoming-title">@T["team.upcoming"]</h2>
+
+                @foreach (var match in team.UpcomingMatches)
+                {
+                    <partial name="_MatchCard" model="match" />
+                }
+            </section>
+        }
+
+        <section class="details-block" aria-labelledby="history-title">
+            <h2 class="details-block__title" id="history-title">@T["team.history"]</h2>
+
+            @if (team.RecentMatches.Count == 0)
+            {
+                <p class="empty-state">@T["team.history_empty"]</p>
+            }
+            else
+            {
+                foreach (var match in team.RecentMatches)
+                {
+                    <partial name="_MatchCard" model="match" />
+                }
+            }
+        </section>
+    </div>
+</section>
