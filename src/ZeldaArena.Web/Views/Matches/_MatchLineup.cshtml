@@ -1,0 +1,35 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Matches.Queries.GetMatchDetails
+@using ZeldaArena.Web.Extensions
+@model IReadOnlyList<LineupPlayerDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Состав одной команды на момент матча. *@
+@if (Model.Count == 0)
+{
+    <p class="empty-state">@T["match.lineup_empty"]</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-token">
+            <thead>
+                <tr>
+                    <th scope="col">@T["player.nickname"]</th>
+                    <th scope="col">@T["player.role"]</th>
+                    <th scope="col">@T["player.country"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var player in Model)
+                {
+                    <tr>
+                        <td><a asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a></td>
+                        <td>@T[EnumResourceKeys.For(player.Role)]</td>
+                        <td>@player.CountryCode</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

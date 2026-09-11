@@ -5,7 +5,7 @@
     Заголовок дублируется в атрибут title — на нём держится glitch-эффект макета:
     псевдоэлементы берут текст через content: attr(title).
 *@
-<section class="page-title">
+<section class="page-title @(Model.Compact ? "page-title--compact" : null)">
     <div class="container">
         @if (!string.IsNullOrWhiteSpace(Model.SubTitle))
         {

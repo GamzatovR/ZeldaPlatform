@@ -1,0 +1,108 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Application.Features.Matches.Queries.GetMatchDetails.MatchDetailsDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var card = Model.Card;
+    var title = $"{card.TeamAName} vs {card.TeamBName}";
+
+    ViewData["Title"] = title;
+
+    var pageTitle = new PageTitleViewModel(title, card.TournamentName, Compact: true);
+}
+
+@*
+    Страница матча (docs/SPEC.md §9.3, п. 5), по docs/design/pages/match.html:
+    карточка счёта .single-matches-box, ниже — составы и статистика игроков.
+
+    Лента событий и чат матча придут в Фазе 10 вместе с MongoDB и SignalR, комментарии —
+    в Фазе 8. Пустых блоков под них здесь нет: заглушка, притворяющаяся данными, хуже
+    отсутствующей секции (правило Фазы 5).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <partial name="_MatchCard" model="card" />
+
+        <div class="details-desc">
+            <ul class="meta-list">
+                <li class="meta-list__item">
+                    @T["match.tournament"]
+                    <span class="meta-list__value">
+                        <a asp-controller="Tournaments" asp-action="Details" asp-route-slug="@card.TournamentSlug">@card.TournamentName</a>
+                    </span>
+                </li>
+                <li class="meta-list__item">
+                    @T["match.format"]
+                    <span class="meta-list__value">@T["match.best_of", card.BestOf]</span>
+                </li>
+                <li class="meta-list__item">
+                    @T["match.status"]
+                    <span class="meta-list__value">@T[EnumResourceKeys.For(card.Status)]</span>
+                </li>
+                @if (Model.StartedAt is { } startedAt)
+                {
+                    <li class="meta-list__item">
+                        @T["match.started_at"]
+                        <span class="meta-list__value">
+                            <time datetime="@startedAt.ToString("O")">@startedAt.ToLocalTime().ToString("g")</time>
+                        </span>
+                    </li>
+                }
+                @if (Model.EndedAt is { } endedAt)
+                {
+                    <li class="meta-list__item">
+                        @T["match.ended_at"]
+                        <span class="meta-list__value">
+                            <time datetime="@endedAt.ToString("O")">@endedAt.ToLocalTime().ToString("g")</time>
+                        </span>
+                    </li>
+                }
+            </ul>
+
+            @if (Model.StreamUrl is not null)
+            {
+                <p class="details-desc__lead">
+                    <a class="btn-solid" href="@Model.StreamUrl" target="_blank" rel="noopener noreferrer">
+                        <icon name="@IconNames.Play" /> @T["match.watch"]
+                    </a>
+                </p>
+            }
+        </div>
+
+        <section class="details-block" aria-labelledby="lineups-title">
+            <h2 class="details-block__title" id="lineups-title">@T["match.lineups"]</h2>
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <h3 class="details-block__subtitle">@card.TeamAName</h3>
+                    <partial name="_MatchLineup" model="Model.LineupA" />
+                </div>
+                <div class="col-12 col-lg-6">
+                    <h3 class="details-block__subtitle">@card.TeamBName</h3>
+                    <partial name="_MatchLineup" model="Model.LineupB" />
+                </div>
+            </div>
+        </section>
+
+        <section class="details-block" aria-labelledby="stats-title">
+            <h2 class="details-block__title" id="stats-title">@T["match.stats"]</h2>
+
+            @if (Model.StatsA.Count == 0 && Model.StatsB.Count == 0)
+            {
+                <p class="empty-state">@T["match.stats_empty"]</p>
+            }
+            else
+            {
+                <h3 class="details-block__subtitle">@card.TeamAName</h3>
+                <partial name="_MatchStats" model="Model.StatsA" />
+
+                <h3 class="details-block__subtitle">@card.TeamBName</h3>
+                <partial name="_MatchStats" model="Model.StatsB" />
+            }
+        </section>
+    </div>
+</section>

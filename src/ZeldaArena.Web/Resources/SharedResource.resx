@@ -904,4 +904,58 @@
   <data name="match.vs" xml:space="preserve">
     <value>против</value>
   </data>
+  <data name="match.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="match.format" xml:space="preserve">
+    <value>Формат</value>
+  </data>
+  <data name="match.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="match.started_at" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="match.ended_at" xml:space="preserve">
+    <value>Окончание</value>
+  </data>
+  <data name="match.watch" xml:space="preserve">
+    <value>Смотреть трансляцию</value>
+  </data>
+  <data name="match.lineups" xml:space="preserve">
+    <value>Составы</value>
+  </data>
+  <data name="match.lineup_empty" xml:space="preserve">
+    <value>Состав команды на время матча неизвестен.</value>
+  </data>
+  <data name="match.stats" xml:space="preserve">
+    <value>Статистика игроков</value>
+  </data>
+  <data name="match.stats_empty" xml:space="preserve">
+    <value>Статистика появится после завершения матча.</value>
+  </data>
+  <data name="player.nickname" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="player.role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="player.country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="stats.kills" xml:space="preserve">
+    <value>Убийства</value>
+  </data>
+  <data name="stats.deaths" xml:space="preserve">
+    <value>Смерти</value>
+  </data>
+  <data name="stats.assists" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="stats.damage" xml:space="preserve">
+    <value>Урон</value>
+  </data>
+  <data name="stats.rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
 </root>

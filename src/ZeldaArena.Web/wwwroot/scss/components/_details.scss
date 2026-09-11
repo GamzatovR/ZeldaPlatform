@@ -42,3 +42,10 @@
   font-family: var(--font-prose);
   font-size: var(--fs-sm);
 }
+
+.details-block__subtitle {
+  margin-bottom: var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--fs-3xl);
+  letter-spacing: $ls-tight;
+}
