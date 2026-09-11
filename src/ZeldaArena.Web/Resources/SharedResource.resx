@@ -1165,4 +1165,34 @@
   <data name="news.read" xml:space="preserve">
     <value>Читать новость</value>
   </data>
+  <data name="team.create_title" xml:space="preserve">
+    <value>Новая команда</value>
+  </data>
+  <data name="team.create_sub" xml:space="preserve">
+    <value>По подписке</value>
+  </data>
+  <data name="team.create_notice" xml:space="preserve">
+    <value>После создания команда уйдёт на модерацию: до одобрения её видите только вы. Капитаном станете вы.</value>
+  </data>
+  <data name="team.create_submit" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="team.created" xml:space="preserve">
+    <value>Команда создана и отправлена на модерацию.</value>
+  </data>
+  <data name="file.image_hint" xml:space="preserve">
+    <value>PNG, JPEG или WebP, не больше 2 МБ. Необязательно.</value>
+  </data>
+  <data name="my_team.title" xml:space="preserve">
+    <value>Моя команда</value>
+  </data>
+  <data name="my_team.none" xml:space="preserve">
+    <value>У вас пока нет своей команды. Создайте её — это доступно по подписке.</value>
+  </data>
+  <data name="my_team.read_only" xml:space="preserve">
+    <value>Подписка неактивна: команда сохранена, но менять её профиль и состав нельзя, пока подписка не будет продлена.</value>
+  </data>
+  <data name="team.tag" xml:space="preserve">
+    <value>Тег</value>
+  </data>
 </root>

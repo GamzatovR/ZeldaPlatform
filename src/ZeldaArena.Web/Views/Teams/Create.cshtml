@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Files
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Teams.CreateTeamViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["team.create_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["team.create_title"].Value, T["team.create_sub"].Value);
+}
+
+@*
+    Создание своей команды — главная платная функция (docs/SPEC.md §4, §9.3 п. 8).
+    Макета нет: карточка формы взята из .login-form, как предписывает docs/design/README.md.
+    Сюда пускает только [RequireFeature(team.create)]; без подписки отказ уводит на тарифы (§7.3).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="auth">
+    <div class="container">
+        <div class="row auth__row">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="form-card">
+                    <h1>@T["team.create_title"]</h1>
+
+                    <div class="alert-token" role="status">@T["team.create_notice"]</div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+                        <partial name="_TeamProfileFields" model="Model" />
+
+                        <div class="form-group">
+                            <label asp-for="Logo" class="form-label"></label>
+                            <input asp-for="Logo" class="form-control" type="file" accept="@ImageUploadRules.AcceptAttribute" />
+                            <span class="form-hint">@T["file.image_hint"]</span>
+                            <span asp-validation-for="Logo"></span>
+                        </div>
+
+                        <button class="btn-solid" type="submit">@T["team.create_submit"]</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}
