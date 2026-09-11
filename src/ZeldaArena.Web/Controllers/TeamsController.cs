@@ -11,6 +11,7 @@ using ZeldaArena.Application.Features.Teams.Queries.GetTeamBySlug;
 using ZeldaArena.Application.Features.Teams.Queries.GetTeams;
 using ZeldaArena.Domain.Constants;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Teams;
 
@@ -82,7 +83,7 @@ public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResou
             return View(model);
         }
 
-        TempData["StatusMessage"] = localizer["team.created"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["team.created"].Value;
 
         return RedirectToAction(nameof(MyTeamController.Index), "MyTeam");
     }

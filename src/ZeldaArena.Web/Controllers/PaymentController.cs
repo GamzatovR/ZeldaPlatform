@@ -15,6 +15,7 @@ using ZeldaArena.Application.Features.Subscriptions.Queries.GetSubscriptionPlans
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Enums;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Billing;
 using ZeldaArena.Web.Payments;
@@ -42,7 +43,7 @@ public sealed class PaymentController(
     IStringLocalizer<SharedResource> localizer)
     : Controller
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     /// <summary>Форма реквизитов. Ключ идемпотентности выдаётся здесь и живёт до отправки.</summary>
     [HttpGet("card")]

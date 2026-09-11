@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.RequestEmailChange;
 using ZeldaArena.Application.Features.Account.Queries.GetAccountProfile;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
 
@@ -57,7 +58,7 @@ public sealed class EmailModel(ISender sender, IStringLocalizer<SharedResource> 
             return await OnGetAsync(cancellationToken);
         }
 
-        TempData["StatusMessage"] = localizer["manage.email.sent"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["manage.email.sent"].Value;
 
         return RedirectToPage();
     }

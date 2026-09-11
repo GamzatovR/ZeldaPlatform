@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.EnableTwoFactor;
 using ZeldaArena.Application.Features.Account.Queries.GetAuthenticatorSetup;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
 using ZeldaArena.Web.Services;
@@ -57,7 +58,7 @@ public sealed class EnableAuthenticatorModel(
         }
 
         TempData["RecoveryCodes"] = string.Join('\n', result.Value.Codes);
-        TempData["StatusMessage"] = localizer["enable_authenticator.enabled"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["enable_authenticator.enabled"].Value;
 
         return RedirectToPage("./ShowRecoveryCodes");
     }

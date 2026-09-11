@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.ResendEmailConfirmation;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
 using ZeldaArena.Web.RateLimiting;
@@ -49,7 +50,7 @@ public sealed class ResendEmailConfirmationModel(
             return Page();
         }
 
-        TempData["StatusMessage"] = localizer["resend_confirmation.sent"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["resend_confirmation.sent"].Value;
 
         return RedirectToPage();
     }

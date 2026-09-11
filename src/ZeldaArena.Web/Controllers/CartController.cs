@@ -9,6 +9,7 @@ using ZeldaArena.Application.Features.Carts.Commands.ChangeCartItemQuantity;
 using ZeldaArena.Application.Features.Carts.Commands.RemoveCartItem;
 using ZeldaArena.Application.Features.Carts.Queries.GetCart;
 using ZeldaArena.Domain.Common;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Carts;
 
@@ -26,7 +27,7 @@ namespace ZeldaArena.Web.Controllers;
 [Route("cart")]
 public sealed class CartController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     [HttpGet("")]
     public async Task<IActionResult> Index(CancellationToken cancellationToken) =>
