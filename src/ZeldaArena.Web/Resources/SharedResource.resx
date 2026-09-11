@@ -1153,4 +1153,16 @@
   <data name="player.matches_empty" xml:space="preserve">
     <value>Игрок ещё не сыграл ни одного матча.</value>
   </data>
+  <data name="news.sub" xml:space="preserve">
+    <value>Новости</value>
+  </data>
+  <data name="news.published" xml:space="preserve">
+    <value>Опубликовано</value>
+  </data>
+  <data name="news.views" xml:space="preserve">
+    <value>Просмотров</value>
+  </data>
+  <data name="news.read" xml:space="preserve">
+    <value>Читать новость</value>
+  </data>
 </root>

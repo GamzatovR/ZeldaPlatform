@@ -3,6 +3,7 @@
 // обязана выглядеть целой и без картинки.
 
 .news-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -46,6 +47,21 @@
   margin-bottom: 0;
   font-size: var(--fs-2xl);
   letter-spacing: $ls-tight;
+}
+
+.news-card__link {
+  color: var(--color-text);
+
+  // Вся карточка кликабельна, но ссылка одна — у заголовка.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  &:hover {
+    color: var(--color-accent);
+  }
 }
 
 .news-card__summary {

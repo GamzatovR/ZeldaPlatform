@@ -2,10 +2,8 @@
 @model NewsListItemDto
 
 @*
-    Карточка новости по .single-blog-post-item макета. Переиспользуется лентой
-    новостей в Фазе 6, тогда же заголовок станет ссылкой на /news/{slug} —
-    сейчас такого маршрута ещё нет, а ссылка на несуществующую страницу
-    роняет представление (грабли Фазы 3).
+    Карточка новости по .single-blog-post-item макета. Заголовок — ссылка на /news/{slug}
+    (Фаза 6); вся карточка кликабельна через растянутую ссылку, как у карточек команд.
 
     У новостей из сида обложки нет: поле CoverPath пустое, поэтому блок картинки
     выводится только при её наличии, а карточка обязана оставаться целой без неё.
@@ -26,7 +24,9 @@
             </time>
         }
 
-        <h3 class="news-card__title">@Model.Title</h3>
+        <h3 class="news-card__title">
+            <a class="news-card__link" asp-controller="News" asp-action="Details" asp-route-slug="@Model.Slug">@Model.Title</a>
+        </h3>
 
         @if (!string.IsNullOrWhiteSpace(Model.Summary))
         {
