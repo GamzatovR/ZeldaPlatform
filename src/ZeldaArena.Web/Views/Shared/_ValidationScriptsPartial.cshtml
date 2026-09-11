@@ -1,2 +1,9 @@
-﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+@*
+    jQuery — единственная причина, по которой он вообще есть в проекте: на нём держится
+    jquery-validation-unobtrusive (docs/SPEC.md §2). До Фазы 6 его здесь не было, и оба
+    плагина падали на «jQuery is not defined» — клиентская валидация молчала на всех формах,
+    а сквозные проверки шли curl'ом и этого не видели.
+*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>

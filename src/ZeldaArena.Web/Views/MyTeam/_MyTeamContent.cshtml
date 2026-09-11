@@ -1,0 +1,113 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@model ZeldaArena.Web.Models.MyTeam.MyTeamViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var team = Model.Team!;
+}
+
+@*
+    Профиль и состав своей команды. Управление составом (роль, удаление) встроено в строки
+    таблицы и выводится только тому, кто может править: без функции таблица — только чтение.
+*@
+<div class="details-desc">
+    <div class="details-desc__head">
+        <avatar image="@Url.StoredFile(team.LogoPath)" name="@team.Name" class="details-desc__avatar" />
+
+        <ul class="meta-list">
+            <li class="meta-list__item">
+                @T["my_team.page"]
+                <span class="meta-list__value">
+                    <a asp-controller="Teams" asp-action="Details" asp-route-slug="@team.Slug">@team.Name</a>
+                </span>
+            </li>
+            <li class="meta-list__item">
+                @T["team.tag"]
+                <span class="meta-list__value">@team.Tag</span>
+            </li>
+            <li class="meta-list__item">
+                @T["tournament.region"]
+                <span class="meta-list__value">@T[EnumResourceKeys.For(team.Region)]</span>
+            </li>
+            <li class="meta-list__item">
+                @T["player.country"]
+                <span class="meta-list__value">@team.CountryCode</span>
+            </li>
+        </ul>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(team.Description))
+    {
+        <p class="details-desc__lead">@team.Description</p>
+    }
+</div>
+
+<section class="details-block" aria-labelledby="roster-title">
+    <h2 class="details-block__title" id="roster-title">@T["team.roster"]</h2>
+
+    @if (team.Roster.Count == 0)
+    {
+        <p class="empty-state">@T["team.roster_empty"]</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-token">
+                <thead>
+                    <tr>
+                        <th scope="col">@T["player.nickname"]</th>
+                        <th scope="col">@T["player.role"]</th>
+                        <th scope="col">@T["player.country"]</th>
+                        <th scope="col">@T["player.joined"]</th>
+                        @if (team.CanEdit)
+                        {
+                            <th scope="col"><span class="visually-hidden">@T["my_team.actions"]</span></th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in team.Roster)
+                    {
+                        <tr>
+                            <td><a asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a></td>
+                            <td>
+                                @if (team.CanEdit)
+                                {
+                                    <form class="inline-form" method="post" asp-action="ChangeRole"
+                                          asp-route-teamId="@team.Id" asp-route-playerId="@player.PlayerId">
+                                        <label class="visually-hidden" for="role-@player.PlayerId">@T["player.role"]: @player.Nickname</label>
+                                        <select class="form-select form-select-sm" id="role-@player.PlayerId" name="role">
+                                            @foreach (var role in Enum.GetValues<PlayerRole>())
+                                            {
+                                                <option value="@role" selected="@(role == player.Role)">@T[EnumResourceKeys.For(role)]</option>
+                                            }
+                                        </select>
+                                        <button class="btn-ghost btn-ghost--sm" type="submit">@T["my_team.save_role"]</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    @T[EnumResourceKeys.For(player.Role)]
+                                }
+                            </td>
+                            <td>@player.CountryCode</td>
+                            <td><time datetime="@player.JoinedAt.ToString("O")">@player.JoinedAt.ToLocalTime().ToString("d")</time></td>
+                            @if (team.CanEdit)
+                            {
+                                <td>
+                                    <form method="post" asp-action="RemovePlayer"
+                                          asp-route-teamId="@team.Id" asp-route-playerId="@player.PlayerId">
+                                        <button class="btn-ghost btn-ghost--sm" type="submit">
+                                            @T["my_team.remove"]<span class="visually-hidden"> @player.Nickname</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

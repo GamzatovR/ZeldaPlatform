@@ -1,0 +1,134 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Matches.Queries.GetTournamentMatches
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Tournaments.TournamentDetailsViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var tournament = Model.Tournament;
+
+    ViewData["Title"] = tournament.Name;
+
+    var pageTitle = new PageTitleViewModel(tournament.Name, T["tournament.details_sub"].Value, Compact: true);
+}
+
+@*
+    Страница турнира (docs/SPEC.md §9.3, п. 4), свёрстана по docs/design/pages/tournament.html:
+    .tournament-details-desc с мета-строкой, вкладки матчей .matches-tabs, участники
+    .single-top-team-item.
+
+    Вкладки — ссылки с ?state= и якорем на блок матчей: состояние в адресе, F5 и «Назад»
+    работают без JavaScript (§10.2). В Фазе 8 клиент будет подменять только #tournament-matches
+    ответом GET /api/tournaments/{id}/matches (§10.1, сценарий 2).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <div class="details-desc">
+            <ul class="meta-list">
+                <li class="meta-list__item">
+                    @T["tournament.dates"]
+                    <span class="meta-list__value">
+                        <time datetime="@tournament.StartsAt.ToString("O")">@tournament.StartsAt.ToLocalTime().ToString("d")</time>
+                        —
+                        <time datetime="@tournament.EndsAt.ToString("O")">@tournament.EndsAt.ToLocalTime().ToString("d")</time>
+                    </span>
+                </li>
+                <li class="meta-list__item">
+                    @T["tournament.prize"]
+                    <span class="meta-list__value">@($"{tournament.PrizePoolAmount:N0} {tournament.PrizePoolCurrency}")</span>
+                </li>
+                <li class="meta-list__item">
+                    @T["tournament.region"]
+                    <span class="meta-list__value">@T[EnumResourceKeys.For(tournament.Region)]</span>
+                </li>
+                <li class="meta-list__item">
+                    @T["tournament.tier"]
+                    <span class="meta-list__value">@T[EnumResourceKeys.For(tournament.Tier)]</span>
+                </li>
+                <li class="meta-list__item">
+                    @T["tournament.status"]
+                    <span class="meta-list__value">@T[EnumResourceKeys.For(tournament.Status)]</span>
+                </li>
+            </ul>
+
+            @if (!string.IsNullOrWhiteSpace(tournament.Description))
+            {
+                <p class="details-desc__lead">@tournament.Description</p>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(tournament.RulesHtml))
+        {
+            <section class="details-block" aria-labelledby="rules-title">
+                <h2 class="details-block__title" id="rules-title">@T["tournament.rules"]</h2>
+
+                @* Одно из двух разрешённых мест Html.Raw: регламент проходит HtmlSanitizer на входе (§15). *@
+                <div class="prose">@Html.Raw(tournament.RulesHtml)</div>
+            </section>
+        }
+
+        <section class="details-block" id="matches" aria-labelledby="matches-title">
+            <h2 class="details-block__title" id="matches-title">@T["tournament.matches"]</h2>
+
+            <nav aria-labelledby="matches-title">
+                <ul class="tabs-token">
+                    @foreach (var state in Enum.GetValues<MatchListState>())
+                    {
+                        <li>
+                            <a class="tabs-token__link"
+                               asp-action="Details"
+                               asp-route-slug="@tournament.Slug"
+                               asp-route-state="@(state == MatchListState.All ? null : state.ToString().ToLowerInvariant())"
+                               asp-fragment="matches"
+                               aria-current="@(state == Model.State ? "page" : null)"
+                               data-tab>@T[EnumResourceKeys.For(state)]</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+            <div id="tournament-matches" data-list>
+                <partial name="_TournamentMatches" model="Model.Matches" />
+            </div>
+        </section>
+
+        <section class="details-block" aria-labelledby="teams-title">
+            <h2 class="details-block__title" id="teams-title">@T["tournament.teams"]</h2>
+
+            @if (tournament.Participants.Count == 0)
+            {
+                <p class="empty-state">@T["tournament.teams_empty"]</p>
+            }
+            else
+            {
+                <div class="row g-4">
+                    @foreach (var team in tournament.Participants)
+                    {
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <article class="entity-card">
+                                <avatar image="@Url.StoredFile(team.TeamLogoPath)" name="@team.TeamName" />
+
+                                <h3 class="entity-card__name">
+                                    <a asp-controller="Teams" asp-action="Details" asp-route-slug="@team.TeamSlug">@team.TeamName</a>
+                                </h3>
+
+                                <p class="entity-card__caption">@team.TeamTag</p>
+
+                                <ul class="entity-card__tags">
+                                    <li><span class="badge-token">@T["tournament.rating", team.Rating]</span></li>
+                                    <li><span class="badge-token">@T["tournament.seed", team.Seed]</span></li>
+                                    @if (team.Placement is { } placement)
+                                    {
+                                        <li><span class="badge-token badge-token--premium">@T["tournament.placement", placement]</span></li>
+                                    }
+                                </ul>
+                            </article>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+    </div>
+</section>

@@ -1,0 +1,22 @@
+// Страница новости. Макета статьи в шаблоне нет: тело набрано .prose,
+// шапка — той же мета-строкой, что у турнира и матча.
+
+.news-article {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.news-article__cover {
+  display: block;
+  width: 100%;
+  margin: var(--space-5) 0;
+  border-radius: var(--radius-md);
+}
+
+.news-article__body {
+  margin-top: var(--space-6);
+}
+
+.news-article__back {
+  margin-top: var(--space-7);
+}

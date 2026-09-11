@@ -1,0 +1,23 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Common.Models.Esports
+@model PagedResult<MatchCardDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Матчи выбранной вкладки. Отдельный partial: в Фазе 8 его вернёт
+    GET /api/tournaments/{id}/matches (docs/SPEC.md §10.1, сценарий 2).
+*@
+@if (Model.TotalCount == 0)
+{
+    <p class="empty-state">@T["tournament.matches_empty"]</p>
+}
+else
+{
+    foreach (var match in Model.Items)
+    {
+        <partial name="_MatchCard" model="match" />
+    }
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}

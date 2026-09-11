@@ -16,7 +16,19 @@
         <nav aria-label="@T["nav.footer"]">
             <ul class="site-footer__menu">
                 <li>
-                    <a class="site-footer__link" asp-controller="Subscription" asp-action="Index">@T["nav.subscription"]</a>
+                    <a class="site-footer__link" asp-area="" asp-controller="Tournaments" asp-action="Index">@T["nav.tournaments"]</a>
+                </li>
+                <li>
+                    <a class="site-footer__link" asp-area="" asp-controller="Schedule" asp-action="Index">@T["nav.schedule"]</a>
+                </li>
+                <li>
+                    <a class="site-footer__link" asp-area="" asp-controller="Teams" asp-action="Index">@T["nav.teams"]</a>
+                </li>
+                <li>
+                    <a class="site-footer__link" asp-area="" asp-controller="Players" asp-action="Index">@T["nav.players"]</a>
+                </li>
+                <li>
+                    <a class="site-footer__link" asp-area="" asp-controller="Subscription" asp-action="Index">@T["nav.subscription"]</a>
                 </li>
             </ul>
         </nav>

@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Players.Queries.GetPlayers
+@using ZeldaArena.Web.Extensions
+@model PagedResult<PlayerListItemDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Результат фильтра игроков; в Фазе 8 его же вернёт GET /api/players (§10.1, сценарий 1). *@
+@if (Model.TotalCount == 0)
+{
+    <p class="empty-state">@T["filter.empty"]</p>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", Model.TotalCount]</p>
+
+    <div class="row g-4">
+        @foreach (var player in Model.Items)
+        {
+            <div class="col-12 col-sm-6 col-lg-3">
+                <article class="entity-card">
+                    <avatar image="@Url.StoredFile(player.AvatarPath)" name="@player.Nickname" />
+
+                    <h2 class="entity-card__name">
+                        <a asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug">@player.Nickname</a>
+                    </h2>
+
+                    <p class="entity-card__caption">@(player.TeamName ?? T["player.free_agent"].Value)</p>
+
+                    <ul class="entity-card__tags">
+                        <li><span class="badge-token">@T[EnumResourceKeys.For(player.Role)]</span></li>
+                        <li><span class="badge-token">@player.CountryCode</span></li>
+                    </ul>
+                </article>
+            </div>
+        }
+    </div>
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}

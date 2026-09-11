@@ -798,6 +798,11 @@ namespace ZeldaArena.Infrastructure.Persistence.Ef.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PlayerId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_RosterEntries_PlayerId_Active")
+                        .HasFilter("\"LeftAt\" IS NULL");
+
                     b.HasIndex("PlayerId", "LeftAt");
 
                     b.HasIndex("TeamId", "LeftAt");

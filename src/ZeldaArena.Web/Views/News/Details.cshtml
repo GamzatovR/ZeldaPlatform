@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Application.Features.News.Queries.GetNewsArticleBySlug.NewsArticleDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = Model.Title;
+
+    var pageTitle = new PageTitleViewModel(Model.Title, T["news.sub"].Value, Compact: true);
+}
+
+@*
+    Новость (docs/SPEC.md §9.3, п. 11). Отдельного макета статьи в шаблоне нет —
+    тело набрано стилями .article-content со страницы матча (pages/match.html) через .prose.
+    Комментарии к новости придут в Фазе 8 вместе со своим AJAX-сценарием (§10.1, сценарий 10).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <article class="news-article">
+            <ul class="meta-list">
+                <li class="meta-list__item">
+                    @T["news.published"]
+                    <span class="meta-list__value">
+                        <time datetime="@Model.PublishedAt.ToString("O")">@Model.PublishedAt.ToLocalTime().ToString("d")</time>
+                    </span>
+                </li>
+                <li class="meta-list__item">
+                    @T["news.views"]
+                    <span class="meta-list__value">@Model.ViewCount</span>
+                </li>
+            </ul>
+
+            @if (Model.CoverPath is not null)
+            {
+                <img class="news-article__cover" src="@Url.StoredFile(Model.CoverPath)" alt="" />
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Summary))
+            {
+                <p class="details-desc__lead">@Model.Summary</p>
+            }
+
+            @* Одно из двух разрешённых мест Html.Raw: тело новости проходит HtmlSanitizer на входе (§15). *@
+            <div class="prose news-article__body">@Html.Raw(Model.BodyHtml)</div>
+
+            <p class="news-article__back">
+                <a class="btn-ghost" asp-controller="Home" asp-action="Index">@T["common.back"]</a>
+            </p>
+        </article>
+    </div>
+</section>

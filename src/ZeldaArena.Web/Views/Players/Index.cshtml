@@ -1,0 +1,84 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Players.Queries.GetPlayers
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Players.PlayerListViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["player.list_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["player.list_title"].Value, T["player.list_sub"].Value);
+    var filter = Model.Filter;
+    var sort = PlayerSorting.Map.Resolve(filter.Sort);
+}
+
+@*
+    Список игроков (docs/SPEC.md §9.3, п. 9). Тот же механизм фильтрации, что у турниров
+    и команд: GET-форма, состояние в адресе, partial-список под Фазу 8 (§10.2).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
+              aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="form-label" for="search">@T["filter.search"]</label>
+                    <input class="form-control" id="search" name="search" type="search"
+                           value="@filter.Search" maxlength="@GetPlayersQueryValidator.MaxSearchLength"
+                           placeholder="@T["player.search_placeholder"]" />
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="role">@T["player.role"]</label>
+                    <select class="form-select" id="role" name="role">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var role in Enum.GetValues<PlayerRole>())
+                        {
+                            <option value="@role" selected="@(filter.Role == role)">@T[EnumResourceKeys.For(role)]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="country">@T["player.country"]</label>
+                    <select class="form-select" id="country" name="country">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var country in Model.Options.Countries)
+                        {
+                            <option value="@country" selected="@(string.Equals(filter.Country, country, StringComparison.OrdinalIgnoreCase))">@country</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="form-label" for="team">@T["player.team"]</label>
+                    <select class="form-select" id="team" name="team">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var team in Model.Options.Teams)
+                        {
+                            <option value="@team.Slug" selected="@(team.Slug == filter.Team)">@team.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 col-lg-2">
+                    <label class="form-label" for="sort">@T["filter.sort"]</label>
+                    <select class="form-select" id="sort" name="sort">
+                        @foreach (var key in PlayerSorting.Map.Keys)
+                        {
+                            <option value="@key" selected="@(key == sort)">@T["player.sort." + key]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <div id="player-list" data-list>
+            <partial name="_PlayerList" model="Model.Result" />
+        </div>
+    </div>
+</section>

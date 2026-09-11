@@ -13,7 +13,7 @@
            Ключ и ссылка — секрет, наружу они уходят только на этой странице. *@
         @* Светлая подложка обязательна: страница тёмная, а QR рисуется тёмными
            модулями — на фоне --color-bg камера его не прочтёт. *@
-        <div class="authenticator-qr my-3" aria-hidden="true">@Html.Raw(Model.QrCodeSvg)</div>
+        <div class="authenticator-qr my-3"><img src="@Model.QrCodeDataUri" alt="@T["manage.qr_alt"]" /></div>
 
         <p class="mono">@Model.SharedKey</p>
     </li>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models;
 using ZeldaArena.Domain.Esports;
+using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
@@ -54,8 +55,16 @@ public sealed class EfNewsRepository(AppDbContext context) : INewsRepository
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(slug);
 
+        // Сравнение объектом-значением, а не строкой: у столбца стоит конвертер,
+        // и обращение к Slug.Value EF Core в SQL не переводит — запрос падал
+        // на первом же открытии новости (найдено в Фазе 6).
+        if (!Slug.TryFrom(slug, out var value) || value is null)
+        {
+            return Task.FromResult<NewsArticle?>(null);
+        }
+
         return context.NewsArticles
-            .FirstOrDefaultAsync(article => article.Slug.Value == slug, cancellationToken);
+            .FirstOrDefaultAsync(article => article.Slug == value, cancellationToken);
     }
 
     public Task<NewsArticle?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>

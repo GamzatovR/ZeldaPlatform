@@ -679,4 +679,598 @@
   <data name="match.score" xml:space="preserve">
     <value>Счёт матча</value>
   </data>
+  <data name="pagination.label" xml:space="preserve">
+    <value>Постраничная навигация</value>
+  </data>
+  <data name="pagination.previous" xml:space="preserve">
+    <value>Предыдущая страница</value>
+  </data>
+  <data name="pagination.next" xml:space="preserve">
+    <value>Следующая страница</value>
+  </data>
+  <data name="pagination.page" xml:space="preserve">
+    <value>Страница {0}</value>
+  </data>
+  <data name="enum.match_status.scheduled" xml:space="preserve">
+    <value>Запланирован</value>
+  </data>
+  <data name="enum.match_status.live" xml:space="preserve">
+    <value>Идёт</value>
+  </data>
+  <data name="enum.match_status.finished" xml:space="preserve">
+    <value>Завершён</value>
+  </data>
+  <data name="enum.match_status.postponed" xml:space="preserve">
+    <value>Перенесён</value>
+  </data>
+  <data name="enum.match_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="enum.tournament_status.announced" xml:space="preserve">
+    <value>Анонсирован</value>
+  </data>
+  <data name="enum.tournament_status.ongoing" xml:space="preserve">
+    <value>Идёт</value>
+  </data>
+  <data name="enum.tournament_status.finished" xml:space="preserve">
+    <value>Завершён</value>
+  </data>
+  <data name="enum.tournament_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="enum.tournament_tier.s" xml:space="preserve">
+    <value>Tier S</value>
+  </data>
+  <data name="enum.tournament_tier.a" xml:space="preserve">
+    <value>Tier A</value>
+  </data>
+  <data name="enum.tournament_tier.b" xml:space="preserve">
+    <value>Tier B</value>
+  </data>
+  <data name="enum.tournament_tier.c" xml:space="preserve">
+    <value>Tier C</value>
+  </data>
+  <data name="enum.region.global" xml:space="preserve">
+    <value>Весь мир</value>
+  </data>
+  <data name="enum.region.europe" xml:space="preserve">
+    <value>Европа</value>
+  </data>
+  <data name="enum.region.cis" xml:space="preserve">
+    <value>СНГ</value>
+  </data>
+  <data name="enum.region.north_america" xml:space="preserve">
+    <value>Северная Америка</value>
+  </data>
+  <data name="enum.region.south_america" xml:space="preserve">
+    <value>Южная Америка</value>
+  </data>
+  <data name="enum.region.asia" xml:space="preserve">
+    <value>Азия</value>
+  </data>
+  <data name="enum.region.oceania" xml:space="preserve">
+    <value>Океания</value>
+  </data>
+  <data name="enum.player_role.attacker" xml:space="preserve">
+    <value>Атакующий</value>
+  </data>
+  <data name="enum.player_role.defender" xml:space="preserve">
+    <value>Защитник</value>
+  </data>
+  <data name="enum.player_role.support" xml:space="preserve">
+    <value>Поддержка</value>
+  </data>
+  <data name="enum.player_role.flex" xml:space="preserve">
+    <value>Универсал</value>
+  </data>
+  <data name="enum.player_role.coach" xml:space="preserve">
+    <value>Тренер</value>
+  </data>
+  <data name="enum.player_role.substitute" xml:space="preserve">
+    <value>Запасной</value>
+  </data>
+  <data name="enum.match_list_state.all" xml:space="preserve">
+    <value>Все матчи</value>
+  </data>
+  <data name="enum.match_list_state.upcoming" xml:space="preserve">
+    <value>Предстоящие</value>
+  </data>
+  <data name="enum.match_list_state.past" xml:space="preserve">
+    <value>Прошедшие</value>
+  </data>
+  <data name="nav.tournaments" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="nav.schedule" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
+  <data name="nav.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="nav.players" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="filter.title" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="filter.any" xml:space="preserve">
+    <value>Любой</value>
+  </data>
+  <data name="filter.search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="filter.search_placeholder" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="filter.sort" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="filter.apply" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="filter.reset" xml:space="preserve">
+    <value>Сбросить всё</value>
+  </data>
+  <data name="filter.found" xml:space="preserve">
+    <value>Найдено: {0}</value>
+  </data>
+  <data name="filter.empty" xml:space="preserve">
+    <value>По этим условиям ничего не нашлось. Попробуйте ослабить фильтр или сбросить его.</value>
+  </data>
+  <data name="tournament.list_title" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="tournament.list_sub" xml:space="preserve">
+    <value>Все турниры ZeldaArena</value>
+  </data>
+  <data name="tournament.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="tournament.region" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="tournament.from" xml:space="preserve">
+    <value>Начало с</value>
+  </data>
+  <data name="tournament.to" xml:space="preserve">
+    <value>Начало по</value>
+  </data>
+  <data name="tournament.prize_min" xml:space="preserve">
+    <value>Призовой от</value>
+  </data>
+  <data name="tournament.prize" xml:space="preserve">
+    <value>Призовой фонд</value>
+  </data>
+  <data name="tournament.dates" xml:space="preserve">
+    <value>Даты</value>
+  </data>
+  <data name="tournament.tier" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="tournament.participants" xml:space="preserve">
+    <value>Участников: {0}</value>
+  </data>
+  <data name="tournament.featured" xml:space="preserve">
+    <value>Главный турнир</value>
+  </data>
+  <data name="tournament.sort.date_desc" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="tournament.sort.date_asc" xml:space="preserve">
+    <value>Сначала старые</value>
+  </data>
+  <data name="tournament.sort.prize_desc" xml:space="preserve">
+    <value>Призовой по убыванию</value>
+  </data>
+  <data name="tournament.sort.prize_asc" xml:space="preserve">
+    <value>Призовой по возрастанию</value>
+  </data>
+  <data name="tournament.sort.name_asc" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="tournament.details_sub" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="tournament.rules" xml:space="preserve">
+    <value>Регламент</value>
+  </data>
+  <data name="tournament.matches" xml:space="preserve">
+    <value>Матчи турнира</value>
+  </data>
+  <data name="tournament.matches_empty" xml:space="preserve">
+    <value>В этой вкладке матчей нет.</value>
+  </data>
+  <data name="tournament.teams" xml:space="preserve">
+    <value>Команды-участницы</value>
+  </data>
+  <data name="tournament.teams_empty" xml:space="preserve">
+    <value>Состав участников ещё не объявлен.</value>
+  </data>
+  <data name="tournament.seed" xml:space="preserve">
+    <value>Посев {0}</value>
+  </data>
+  <data name="tournament.placement" xml:space="preserve">
+    <value>Место: {0}</value>
+  </data>
+  <data name="tournament.rating" xml:space="preserve">
+    <value>Рейтинг {0}</value>
+  </data>
+  <data name="match.best_of" xml:space="preserve">
+    <value>Bo{0}</value>
+  </data>
+  <data name="match.details" xml:space="preserve">
+    <value>Подробнее о матче</value>
+  </data>
+  <data name="match.vs" xml:space="preserve">
+    <value>против</value>
+  </data>
+  <data name="match.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="match.format" xml:space="preserve">
+    <value>Формат</value>
+  </data>
+  <data name="match.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="match.started_at" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="match.ended_at" xml:space="preserve">
+    <value>Окончание</value>
+  </data>
+  <data name="match.watch" xml:space="preserve">
+    <value>Смотреть трансляцию</value>
+  </data>
+  <data name="match.lineups" xml:space="preserve">
+    <value>Составы</value>
+  </data>
+  <data name="match.lineup_empty" xml:space="preserve">
+    <value>Состав команды на время матча неизвестен.</value>
+  </data>
+  <data name="match.stats" xml:space="preserve">
+    <value>Статистика игроков</value>
+  </data>
+  <data name="match.stats_empty" xml:space="preserve">
+    <value>Статистика появится после завершения матча.</value>
+  </data>
+  <data name="player.nickname" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="player.role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="player.country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="stats.kills" xml:space="preserve">
+    <value>Убийства</value>
+  </data>
+  <data name="stats.deaths" xml:space="preserve">
+    <value>Смерти</value>
+  </data>
+  <data name="stats.assists" xml:space="preserve">
+    <value>Помощь</value>
+  </data>
+  <data name="stats.damage" xml:space="preserve">
+    <value>Урон</value>
+  </data>
+  <data name="stats.rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="schedule.title" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
+  <data name="schedule.sub" xml:space="preserve">
+    <value>Матчи по дням</value>
+  </data>
+  <data name="schedule.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="schedule.all_tournaments" xml:space="preserve">
+    <value>Все турниры</value>
+  </data>
+  <data name="schedule.status" xml:space="preserve">
+    <value>Статус матча</value>
+  </data>
+  <data name="schedule.ahead" xml:space="preserve">
+    <value>Впереди</value>
+  </data>
+  <data name="team.list_title" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="team.list_sub" xml:space="preserve">
+    <value>Команды ZeldaArena</value>
+  </data>
+  <data name="team.search_placeholder" xml:space="preserve">
+    <value>Название или тег</value>
+  </data>
+  <data name="team.rating_min" xml:space="preserve">
+    <value>Рейтинг от</value>
+  </data>
+  <data name="team.sort.rating_desc" xml:space="preserve">
+    <value>Рейтинг по убыванию</value>
+  </data>
+  <data name="team.sort.rating_asc" xml:space="preserve">
+    <value>Рейтинг по возрастанию</value>
+  </data>
+  <data name="team.sort.name_asc" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="team.players_count" xml:space="preserve">
+    <value>Игроков: {0}</value>
+  </data>
+  <data name="team.create_cta" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="team.create_hint" xml:space="preserve">
+    <value>Создание своей команды доступно по подписке.</value>
+  </data>
+  <data name="team.pending_notice" xml:space="preserve">
+    <value>Команда ждёт одобрения модератора. Пока её видите только вы: в списке команд её нет.</value>
+  </data>
+  <data name="team.founded" xml:space="preserve">
+    <value>Основана</value>
+  </data>
+  <data name="team.manage" xml:space="preserve">
+    <value>Управлять командой</value>
+  </data>
+  <data name="team.stats" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="team.played" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="team.wins" xml:space="preserve">
+    <value>Побед</value>
+  </data>
+  <data name="team.losses" xml:space="preserve">
+    <value>Поражений</value>
+  </data>
+  <data name="team.win_rate" xml:space="preserve">
+    <value>Процент побед</value>
+  </data>
+  <data name="team.form" xml:space="preserve">
+    <value>Форма</value>
+  </data>
+  <data name="team.form_label" xml:space="preserve">
+    <value>Исходы последних матчей, от свежего к старому</value>
+  </data>
+  <data name="team.win" xml:space="preserve">
+    <value>Победа</value>
+  </data>
+  <data name="team.loss" xml:space="preserve">
+    <value>Поражение</value>
+  </data>
+  <data name="team.win_short" xml:space="preserve">
+    <value>В</value>
+  </data>
+  <data name="team.loss_short" xml:space="preserve">
+    <value>П</value>
+  </data>
+  <data name="team.advanced" xml:space="preserve">
+    <value>Расширенная статистика</value>
+  </data>
+  <data name="team.advanced_cta" xml:space="preserve">
+    <value>Средние показатели игроков и разбивка по турнирам доступны по подписке.</value>
+  </data>
+  <data name="team.advanced_players" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="team.advanced_tournaments" xml:space="preserve">
+    <value>По турнирам</value>
+  </data>
+  <data name="team.roster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
+  <data name="team.roster_empty" xml:space="preserve">
+    <value>В составе пока никого нет.</value>
+  </data>
+  <data name="team.upcoming" xml:space="preserve">
+    <value>Ближайшие матчи</value>
+  </data>
+  <data name="team.history" xml:space="preserve">
+    <value>Последние матчи</value>
+  </data>
+  <data name="team.history_empty" xml:space="preserve">
+    <value>Команда ещё не сыграла ни одного матча.</value>
+  </data>
+  <data name="stats.matches" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="feature.required" xml:space="preserve">
+    <value>Эта функция доступна по подписке.</value>
+  </data>
+  <data name="team.not_found" xml:space="preserve">
+    <value>Команда не найдена.</value>
+  </data>
+  <data name="player.not_found" xml:space="preserve">
+    <value>Игрок не найден.</value>
+  </data>
+  <data name="team.limit_reached" xml:space="preserve">
+    <value>Достигнут лимит команд для вашей подписки.</value>
+  </data>
+  <data name="team.name_taken" xml:space="preserve">
+    <value>Команда с таким названием уже есть.</value>
+  </data>
+  <data name="player.already_in_team" xml:space="preserve">
+    <value>Игрок уже состоит в другой команде.</value>
+  </data>
+  <data name="file.invalid_image" xml:space="preserve">
+    <value>Файл не является изображением PNG, JPEG или WebP.</value>
+  </data>
+  <data name="player.list_title" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="player.list_sub" xml:space="preserve">
+    <value>Игроки ZeldaArena</value>
+  </data>
+  <data name="player.search_placeholder" xml:space="preserve">
+    <value>Ник, имя или фамилия</value>
+  </data>
+  <data name="player.team" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="player.sort.nickname_asc" xml:space="preserve">
+    <value>Ник от А до Я</value>
+  </data>
+  <data name="player.sort.nickname_desc" xml:space="preserve">
+    <value>Ник от Я до А</value>
+  </data>
+  <data name="player.free_agent" xml:space="preserve">
+    <value>Свободный игрок</value>
+  </data>
+  <data name="player.name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="player.avg_kills" xml:space="preserve">
+    <value>Убийств за матч</value>
+  </data>
+  <data name="player.avg_deaths" xml:space="preserve">
+    <value>Смертей за матч</value>
+  </data>
+  <data name="player.avg_assists" xml:space="preserve">
+    <value>Помощи за матч</value>
+  </data>
+  <data name="player.advanced_cta" xml:space="preserve">
+    <value>Разбивка показателей игрока по турнирам доступна по подписке.</value>
+  </data>
+  <data name="player.teams" xml:space="preserve">
+    <value>История команд</value>
+  </data>
+  <data name="player.teams_empty" xml:space="preserve">
+    <value>Игрок ещё не выступал ни за одну команду.</value>
+  </data>
+  <data name="player.joined" xml:space="preserve">
+    <value>Пришёл</value>
+  </data>
+  <data name="player.left" xml:space="preserve">
+    <value>Ушёл</value>
+  </data>
+  <data name="player.current" xml:space="preserve">
+    <value>По сей день</value>
+  </data>
+  <data name="player.matches_empty" xml:space="preserve">
+    <value>Игрок ещё не сыграл ни одного матча.</value>
+  </data>
+  <data name="news.sub" xml:space="preserve">
+    <value>Новости</value>
+  </data>
+  <data name="news.published" xml:space="preserve">
+    <value>Опубликовано</value>
+  </data>
+  <data name="news.views" xml:space="preserve">
+    <value>Просмотров</value>
+  </data>
+  <data name="news.read" xml:space="preserve">
+    <value>Читать новость</value>
+  </data>
+  <data name="team.create_title" xml:space="preserve">
+    <value>Новая команда</value>
+  </data>
+  <data name="team.create_sub" xml:space="preserve">
+    <value>По подписке</value>
+  </data>
+  <data name="team.create_notice" xml:space="preserve">
+    <value>После создания команда уйдёт на модерацию: до одобрения её видите только вы. Капитаном станете вы.</value>
+  </data>
+  <data name="team.create_submit" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="team.created" xml:space="preserve">
+    <value>Команда создана и отправлена на модерацию.</value>
+  </data>
+  <data name="file.image_hint" xml:space="preserve">
+    <value>PNG, JPEG или WebP, не больше 2 МБ. Необязательно.</value>
+  </data>
+  <data name="my_team.title" xml:space="preserve">
+    <value>Моя команда</value>
+  </data>
+  <data name="my_team.none" xml:space="preserve">
+    <value>У вас пока нет своей команды. Создайте её — это доступно по подписке.</value>
+  </data>
+  <data name="my_team.read_only" xml:space="preserve">
+    <value>Подписка неактивна: команда сохранена, но менять её профиль и состав нельзя, пока подписка не будет продлена.</value>
+  </data>
+  <data name="team.tag" xml:space="preserve">
+    <value>Тег</value>
+  </data>
+  <data name="my_team.switch" xml:space="preserve">
+    <value>Мои команды</value>
+  </data>
+  <data name="my_team.page" xml:space="preserve">
+    <value>Страница команды</value>
+  </data>
+  <data name="my_team.actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="my_team.save_role" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="my_team.remove" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="my_team.new_player" xml:space="preserve">
+    <value>Новый игрок</value>
+  </data>
+  <data name="my_team.add_player" xml:space="preserve">
+    <value>Добавить в состав</value>
+  </data>
+  <data name="my_team.free_agent" xml:space="preserve">
+    <value>Свободный игрок</value>
+  </data>
+  <data name="my_team.no_free_agents" xml:space="preserve">
+    <value>Свободных игроков сейчас нет. Заведите новый профиль игрока.</value>
+  </data>
+  <data name="my_team.profile" xml:space="preserve">
+    <value>Профиль команды</value>
+  </data>
+  <data name="my_team.save_profile" xml:space="preserve">
+    <value>Сохранить профиль</value>
+  </data>
+  <data name="my_team.logo" xml:space="preserve">
+    <value>Логотип</value>
+  </data>
+  <data name="my_team.logo_file" xml:space="preserve">
+    <value>Файл логотипа</value>
+  </data>
+  <data name="my_team.save_logo" xml:space="preserve">
+    <value>Загрузить логотип</value>
+  </data>
+  <data name="my_team.profile_saved" xml:space="preserve">
+    <value>Профиль команды сохранён.</value>
+  </data>
+  <data name="my_team.logo_saved" xml:space="preserve">
+    <value>Логотип обновлён.</value>
+  </data>
+  <data name="my_team.player_added" xml:space="preserve">
+    <value>Игрок добавлен в состав.</value>
+  </data>
+  <data name="my_team.role_saved" xml:space="preserve">
+    <value>Роль игрока изменена.</value>
+  </data>
+  <data name="my_team.player_removed" xml:space="preserve">
+    <value>Игрок убран из состава. Его прошлые матчи за команду остаются в истории.</value>
+  </data>
+  <data name="my_team.invalid_input" xml:space="preserve">
+    <value>Проверьте заполнение формы.</value>
+  </data>
+  <data name="file.invalid_upload" xml:space="preserve">
+    <value>Подходят только изображения PNG, JPEG и WebP не больше 2 МБ.</value>
+  </data>
+  <data name="manage.qr_alt" xml:space="preserve">
+    <value>QR-код для приложения-аутентификатора. Если камера не читает его, введите ключ ниже вручную.</value>
+  </data>
+  <data name="nav.my_team" xml:space="preserve">
+    <value>Моя команда</value>
+  </data>
+  <data name="home.teams_sub" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="home.teams_title" xml:space="preserve">
+    <value>Топ-команды</value>
+  </data>
+  <data name="home.teams_all" xml:space="preserve">
+    <value>Все команды</value>
+  </data>
 </root>

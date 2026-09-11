@@ -14,7 +14,8 @@ namespace ZeldaArena.Web.ViewComponents;
 /// вместе со своими контроллерами:
 ///
 /// <list type="bullet">
-///   <item>Фаза 6 — Турниры, Расписание, Команды, Игроки, Новости;</item>
+///   <item>Фаза 6 — Турниры, Расписание, Команды, Игроки (отдельной ленты новостей нет:
+///   новость открывается из карточки на главной);</item>
 ///   <item>Фаза 7 — Магазин;</item>
 ///   <item>Фаза 8 — счётчик корзины, поиск через AJAX;</item>
 ///   <item>Фаза 10 — колокольчик уведомлений;</item>
@@ -26,6 +27,10 @@ public sealed class HeaderViewComponent : ViewComponent
     private static readonly IReadOnlyList<HeaderViewModel.NavItem> Items =
     [
         new("nav.home", "Home", "Index"),
+        new("nav.tournaments", "Tournaments", "Index"),
+        new("nav.schedule", "Schedule", "Index"),
+        new("nav.teams", "Teams", "Index"),
+        new("nav.players", "Players", "Index"),
         new("nav.subscription", "Subscription", "Index"),
     ];
 

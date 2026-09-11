@@ -1,0 +1,57 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Schedule.ScheduleViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["schedule.title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["schedule.title"].Value, T["schedule.sub"].Value);
+    var filter = Model.Filter;
+}
+
+@*
+    Расписание (docs/SPEC.md §9.3, п. 2) по docs/design/pages/schedule.html:
+    строки .single-stream-schedule-box, сгруппированные по дням. Фильтр — GET-форма,
+    адрес и есть состояние (§10.2); в Фазе 8 клиент подменит только #schedule-days.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <form class="filters" method="get" asp-action="Index" data-filter-form aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="tournament">@T["schedule.tournament"]</label>
+                    <select class="form-select" id="tournament" name="tournament">
+                        <option value="">@T["schedule.all_tournaments"]</option>
+                        @foreach (var tournament in Model.Tournaments)
+                        {
+                            <option value="@tournament.Slug" selected="@(tournament.Slug == filter.Tournament)">@tournament.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label" for="status">@T["schedule.status"]</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">@T["schedule.ahead"]</option>
+                        @foreach (var status in Enum.GetValues<MatchStatus>())
+                        {
+                            <option value="@status" selected="@(filter.Status == status)">@T[EnumResourceKeys.For(status)]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <div id="schedule-days" data-list>
+            <partial name="_ScheduleDays" model="Model.Schedule" />
+        </div>
+    </div>
+</section>

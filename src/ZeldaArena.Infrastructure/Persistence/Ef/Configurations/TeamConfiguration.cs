@@ -38,7 +38,13 @@ public sealed class TeamConfiguration : EntityConfiguration<Team>
             .HasForeignKey(entry => entry.TeamId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Состав — часть агрегата, а не связанные данные: Team.AddPlayer, RemovePlayer
+        // и ChangePlayerRole решают по содержимому этой коллекции. Без AutoInclude
+        // репозиторий отдавал бы команду с пустым составом, и игрок добавлялся бы
+        // повторно, а снять его было бы нельзя — тот же случай, что с тарифом в Фазе 4.
+        // Проекции в DTO это не касается: Select включения игнорирует.
         builder.Navigation(team => team.RosterEntries)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }

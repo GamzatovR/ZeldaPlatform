@@ -55,4 +55,16 @@ public class SortMapTests
         Should.Throw<ArgumentException>(
             () => map.Add("asc", query => query.OrderByDescending(value => value)));
     }
+
+    [Theory]
+    [InlineData("desc", "desc")]
+    [InlineData("DESC", "desc")]
+    [InlineData(null, "asc")]
+    [InlineData("whatever", "asc")]
+    public void Resolve_names_the_order_the_list_is_actually_sorted_by(string? key, string expected) =>
+        Map().Resolve(key).ShouldBe(expected);
+
+    [Fact]
+    public void Keys_keep_the_order_they_were_added_in() =>
+        Map().Keys.ShouldBe(["asc", "desc"]);
 }

@@ -1,0 +1,122 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Files
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@model ZeldaArena.Web.Models.MyTeam.MyTeamViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var team = Model.Team!;
+}
+
+@* Формы правки своей команды — выводятся только при функции team.create. *@
+<div class="row g-4">
+    <div class="col-12 col-lg-6">
+        <section class="form-card" aria-labelledby="new-player-title">
+            <h2 id="new-player-title">@T["my_team.new_player"]</h2>
+
+            <form method="post" asp-action="AddNewPlayer" asp-route-teamId="@team.Id">
+                <div class="form-group">
+                    <label asp-for="NewPlayer.Nickname" class="form-label"></label>
+                    <input asp-for="NewPlayer.Nickname" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="NewPlayer.Nickname"></span>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 form-group">
+                        <label asp-for="NewPlayer.Role" class="form-label"></label>
+                        <select asp-for="NewPlayer.Role" class="form-select">
+                            @foreach (var role in Enum.GetValues<PlayerRole>())
+                            {
+                                <option value="@role" selected="@(role == Model.NewPlayer.Role)">@T[EnumResourceKeys.For(role)]</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                        <label asp-for="NewPlayer.CountryCode" class="form-label"></label>
+                        <input asp-for="NewPlayer.CountryCode" class="form-control" maxlength="2" />
+                        <span asp-validation-for="NewPlayer.CountryCode"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 form-group">
+                        <label asp-for="NewPlayer.FirstName" class="form-label"></label>
+                        <input asp-for="NewPlayer.FirstName" class="form-control" />
+                        <span asp-validation-for="NewPlayer.FirstName"></span>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                        <label asp-for="NewPlayer.LastName" class="form-label"></label>
+                        <input asp-for="NewPlayer.LastName" class="form-control" />
+                        <span asp-validation-for="NewPlayer.LastName"></span>
+                    </div>
+                </div>
+                <button class="btn-solid" type="submit">@T["my_team.add_player"]</button>
+            </form>
+        </section>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <section class="form-card" aria-labelledby="free-agent-title">
+            <h2 id="free-agent-title">@T["my_team.free_agent"]</h2>
+
+            @if (Model.FreeAgents.Count == 0)
+            {
+                <p class="text-muted-token">@T["my_team.no_free_agents"]</p>
+            }
+            else
+            {
+                <form method="post" asp-action="AddFreeAgent" asp-route-teamId="@team.Id">
+                    <div class="form-group">
+                        <label class="form-label" for="free-agent">@T["player.nickname"]</label>
+                        <select class="form-select" id="free-agent" name="playerId" required>
+                            @foreach (var agent in Model.FreeAgents)
+                            {
+                                <option value="@agent.Id">@agent.Nickname · @T[EnumResourceKeys.For(agent.Role)] · @agent.CountryCode</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="free-agent-role">@T["player.role"]</label>
+                        <select class="form-select" id="free-agent-role" name="role">
+                            @foreach (var role in Enum.GetValues<PlayerRole>())
+                            {
+                                <option value="@role">@T[EnumResourceKeys.For(role)]</option>
+                            }
+                        </select>
+                    </div>
+                    <button class="btn-solid" type="submit">@T["my_team.add_player"]</button>
+                </form>
+            }
+        </section>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <section class="form-card" aria-labelledby="profile-title">
+            <h2 id="profile-title">@T["my_team.profile"]</h2>
+
+            <form method="post" asp-action="UpdateProfile" asp-route-teamId="@team.Id">
+                <partial name="~/Views/Teams/_TeamProfileFields.cshtml" for="Profile" />
+                <button class="btn-solid" type="submit">@T["my_team.save_profile"]</button>
+            </form>
+        </section>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <section class="form-card" aria-labelledby="logo-title">
+            <h2 id="logo-title">@T["my_team.logo"]</h2>
+
+            <form method="post" asp-action="ChangeLogo" asp-route-teamId="@team.Id" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label class="form-label" for="logo">@T["my_team.logo_file"]</label>
+                    <input class="form-control" id="logo" name="logo" type="file" required
+                           accept="@ImageUploadRules.AcceptAttribute"
+                           data-val="true"
+                           data-val-imagefile="@T["file.invalid_upload"]"
+                           data-val-imagefile-extensions="@ImageUploadRules.AcceptAttribute"
+                           data-val-imagefile-maxsize="@ImageUploadRules.MaxSizeBytes" />
+                    <span class="form-hint">@T["file.image_hint"]</span>
+                    <span class="field-validation-valid" data-valmsg-for="logo" data-valmsg-replace="true"></span>
+                </div>
+                <button class="btn-solid" type="submit">@T["my_team.save_logo"]</button>
+            </form>
+        </section>
+    </div>
+</div>

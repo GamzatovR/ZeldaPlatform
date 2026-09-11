@@ -1,0 +1,93 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Tournaments.TournamentListViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["tournament.list_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["tournament.list_title"].Value, T["tournament.list_sub"].Value);
+    var filter = Model.Filter;
+    var sort = TournamentSorting.Map.Resolve(filter.Sort);
+}
+
+@*
+    Список турниров (docs/SPEC.md §9.3, п. 3). Макета у списков нет — он собран
+    из сетки карточек и полей формы дизайн-системы (docs/design/README.md).
+
+    Фильтр — обычная GET-форма: адрес и есть состояние (§10.2). В Фазе 8 клиент
+    перехватит её по data-filter-form и будет подменять только #tournament-list,
+    отдавая тот же partial из Areas/Api.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
+              aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="form-label" for="search">@T["filter.search"]</label>
+                    <input class="form-control" id="search" name="search" type="search"
+                           value="@filter.Search" maxlength="@GetTournamentsQueryValidator.MaxSearchLength"
+                           placeholder="@T["filter.search_placeholder"]" />
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="status">@T["tournament.status"]</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var status in Enum.GetValues<TournamentStatus>())
+                        {
+                            <option value="@status" selected="@(filter.Status == status)">@T[EnumResourceKeys.For(status)]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="region">@T["tournament.region"]</label>
+                    <select class="form-select" id="region" name="region">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var region in Enum.GetValues<Region>())
+                        {
+                            <option value="@region" selected="@(filter.Region == region)">@T[EnumResourceKeys.For(region)]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label" for="from">@T["tournament.from"]</label>
+                    <input class="form-control" id="from" name="from" type="date"
+                           value="@filter.From?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label" for="to">@T["tournament.to"]</label>
+                    <input class="form-control" id="to" name="to" type="date"
+                           value="@filter.To?.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <label class="form-label" for="prizeMin">@T["tournament.prize_min"]</label>
+                    <input class="form-control" id="prizeMin" name="prizeMin" type="number" min="0" step="1000"
+                           value="@filter.PrizeMin?.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
+                </div>
+                <div class="col-6 col-md-6 col-lg-3">
+                    <label class="form-label" for="sort">@T["filter.sort"]</label>
+                    <select class="form-select" id="sort" name="sort">
+                        @foreach (var key in TournamentSorting.Map.Keys)
+                        {
+                            <option value="@key" selected="@(key == sort)">@T["tournament.sort." + key]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <div id="tournament-list" data-list>
+            <partial name="_TournamentList" model="Model.Result" />
+        </div>
+    </div>
+</section>

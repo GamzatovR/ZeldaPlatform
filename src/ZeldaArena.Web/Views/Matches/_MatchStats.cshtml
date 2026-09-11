@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Matches.Queries.GetMatchDetails
+@model IReadOnlyList<PlayerMatchStatsDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Показатели игроков одной команды за матч. Широкая таблица прокручивается внутри блока (§9.1). *@
+<div class="table-responsive mb-4">
+    <table class="table table-token">
+        <thead>
+            <tr>
+                <th scope="col">@T["player.nickname"]</th>
+                <th scope="col"><abbr title="@T["stats.kills"]">K</abbr></th>
+                <th scope="col"><abbr title="@T["stats.deaths"]">D</abbr></th>
+                <th scope="col"><abbr title="@T["stats.assists"]">A</abbr></th>
+                <th scope="col">@T["stats.damage"]</th>
+                <th scope="col">@T["stats.rating"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Players" asp-action="Details" asp-route-slug="@line.Slug">@line.Nickname</a></td>
+                    <td>@line.Kills</td>
+                    <td>@line.Deaths</td>
+                    <td>@line.Assists</td>
+                    <td>@line.Damage.ToString("N0")</td>
+                    <td>@line.Rating.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -7,4 +7,8 @@ namespace ZeldaArena.Web.Models.Layout;
 /// </summary>
 /// <param name="Title">Заголовок. Дублируется в атрибут title ради glitch-эффекта макета.</param>
 /// <param name="SubTitle">Надзаголовок акцентным цветом; необязателен.</param>
-public sealed record PageTitleViewModel(string Title, string? SubTitle = null);
+/// <param name="Compact">
+/// Уменьшенный кегль для имён собственных: «Hyrule Knights vs Kakariko Guard» набором
+/// в 130px не помещается и на широком экране.
+/// </param>
+public sealed record PageTitleViewModel(string Title, string? SubTitle = null, bool Compact = false);

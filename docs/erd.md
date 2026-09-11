@@ -392,7 +392,11 @@ erDiagram
 `Code` у тарифов и фич; `Sku` у товаров; `Number` у заказов; `IdempotencyKey` у платежей;
 `(UserId, TargetType, TargetId)` у подписок на команды; `(MatchId, PlayerId)` у статистики;
 `(CartId, ProductId)` у позиций корзины; частичные уникальные на `Carts.UserId`
-и `Carts.AnonymousId`.
+и `Carts.AnonymousId`, а также `RosterEntries(PlayerId) WHERE "LeftAt" IS NULL`
+(`IX_RosterEntries_PlayerId_Active`, миграция `RosterSingleActiveTeam`, Фаза 6):
+у игрока не больше одной открытой записи состава — «игрок не может состоять в двух
+командах одновременно» (`docs/SPEC.md` §15) держит сама база. Закрытые записи — история,
+и на них ограничение не распространяется.
 
 Составные под фильтрацию `docs/SPEC.md` §10.2: `Matches(TournamentId, Status, ScheduledAt)`,
 `Matches(Status, ScheduledAt)`, `Tournaments(Status, StartsAt)`, `Tournaments(Region, Status)`,

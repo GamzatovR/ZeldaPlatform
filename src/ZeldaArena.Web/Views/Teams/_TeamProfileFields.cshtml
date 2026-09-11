@@ -1,0 +1,51 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Validation
+@model ZeldaArena.Web.Models.Teams.TeamProfileViewModel
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Поля профиля команды — общие для создания и правки в кабинете капитана. *@
+<div class="form-group">
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" autocomplete="off" />
+    <span asp-validation-for="Name"></span>
+</div>
+
+<div class="row">
+    <div class="col-12 col-sm-4 form-group">
+        <label asp-for="Tag" class="form-label"></label>
+        <input asp-for="Tag" class="form-control" autocomplete="off" />
+        <span asp-validation-for="Tag"></span>
+    </div>
+    <div class="col-12 col-sm-8 form-group">
+        <label asp-for="CountryCode" class="form-label"></label>
+        <input asp-for="CountryCode" class="form-control" maxlength="2" autocomplete="country" />
+        <span asp-validation-for="CountryCode"></span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-sm-6 form-group">
+        <label asp-for="Region" class="form-label"></label>
+        <select asp-for="Region" class="form-select">
+            @foreach (var region in Enum.GetValues<Region>())
+            {
+                <option value="@region" selected="@(Model.Region == region)">@T[EnumResourceKeys.For(region)]</option>
+            }
+        </select>
+        <span asp-validation-for="Region"></span>
+    </div>
+    <div class="col-12 col-sm-6 form-group">
+        <label asp-for="FoundedAt" class="form-label"></label>
+        <input asp-for="FoundedAt" class="form-control" type="date"
+               max="@NotInFutureAttribute.Today.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="FoundedAt"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description"></span>
+</div>

@@ -119,3 +119,10 @@
   &:hover::before { width: 0; }
   &:hover::after { width: 100%; }
 }
+
+// Кнопка в строке таблицы: сохранить роль, убрать игрока из состава.
+.btn-ghost--sm,
+.btn-solid--sm {
+  padding: 8px var(--space-3) 4px;
+  font-size: var(--fs-base);
+}

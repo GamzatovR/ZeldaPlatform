@@ -1,0 +1,44 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Players.Queries.GetPlayerAdvancedStats
+@model IReadOnlyList<PlayerTournamentStatsDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Расширенная статистика игрока по турнирам (stats.advanced); таблица вместо графиков — Приоритет B (§17). *@
+@if (Model.Count == 0)
+{
+    <p class="empty-state">@T["player.matches_empty"]</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-token">
+            <thead>
+                <tr>
+                    <th scope="col">@T["match.tournament"]</th>
+                    <th scope="col">@T["stats.matches"]</th>
+                    <th scope="col"><abbr title="@T["stats.kills"]">K</abbr></th>
+                    <th scope="col"><abbr title="@T["stats.deaths"]">D</abbr></th>
+                    <th scope="col"><abbr title="@T["stats.assists"]">A</abbr></th>
+                    <th scope="col">KDA</th>
+                    <th scope="col">@T["stats.damage"]</th>
+                    <th scope="col">@T["stats.rating"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model)
+                {
+                    <tr>
+                        <td><a asp-controller="Tournaments" asp-action="Details" asp-route-slug="@line.Slug">@line.Name</a></td>
+                        <td>@line.Matches</td>
+                        <td>@line.Kills.ToString("0.0")</td>
+                        <td>@line.Deaths.ToString("0.0")</td>
+                        <td>@line.Assists.ToString("0.0")</td>
+                        <td>@line.Kda.ToString("0.00")</td>
+                        <td>@line.Damage.ToString("N0")</td>
+                        <td>@line.Rating.ToString("0.00")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

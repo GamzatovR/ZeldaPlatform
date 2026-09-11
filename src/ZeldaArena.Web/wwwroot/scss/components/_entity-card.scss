@@ -1,0 +1,96 @@
+// Карточка команды или игрока — .single-top-team-item макета
+// (pages/tournament.html, блок участников). Одна карточка на обе сущности:
+// логотип или аватар, имя, подпись и строка меток.
+
+.entity-card {
+  position: relative;
+  height: 100%;
+  padding: var(--space-6) var(--space-5);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: box-shadow var(--transition) ease;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: var(--shadow-card);
+  }
+}
+
+.entity-card__image {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-circle);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Инициалы вместо картинки: у команд и игроков сида логотипов нет,
+// а пустой круг читался бы как недогруженное изображение.
+.entity-card__initials {
+  color: var(--color-accent);
+  font-size: var(--fs-4xl);
+  font-weight: $fw-bold;
+  line-height: 1;
+}
+
+.entity-card__name {
+  margin-bottom: var(--space-1);
+  font-size: var(--fs-4xl);
+  letter-spacing: $ls-tight;
+
+  a {
+    color: var(--color-text);
+
+    // Вся карточка кликабельна, но ссылка одна — у названия.
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+}
+
+.entity-card__caption {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+}
+
+.entity-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entity-card__prize {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+
+  strong {
+    color: var(--color-warning);
+    font-weight: $fw-bold;
+  }
+}

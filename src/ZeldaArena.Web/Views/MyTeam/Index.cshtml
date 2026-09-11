@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Constants
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.MyTeam.MyTeamViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["my_team.title"].Value;
+
+    var team = Model.Team;
+    var pageTitle = new PageTitleViewModel(T["my_team.title"].Value, team?.Name);
+}
+
+@*
+    Кабинет капитана (docs/SPEC.md §9.3, п. 8). Макета нет — собран из карточки формы
+    и компонентов страницы команды (docs/design/README.md).
+
+    Без функции team.create страница только для чтения: команда остаётся, править её
+    нельзя (CLAUDE.md). Формы в разметке для такого пользователя не выводятся вовсе,
+    а сервер откажет и тому, кто отправит их руками.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <partial name="_StatusMessage" />
+
+        @if (team is null)
+        {
+            <div class="feature-cta">
+                <p>@T["my_team.none"]</p>
+                <a class="btn-solid" asp-controller="Teams" asp-action="Create">
+                    <icon name="@IconNames.Plus" /> @T["team.create_cta"]
+                </a>
+            </div>
+        }
+        else
+        {
+            @if (team.OwnedTeams.Count > 1)
+            {
+                <nav class="details-desc" aria-label="@T["my_team.switch"]">
+                    <ul class="tabs-token">
+                        @foreach (var owned in team.OwnedTeams)
+                        {
+                            <li>
+                                <a class="tabs-token__link" asp-action="Index" asp-route-team="@owned.Id"
+                                   aria-current="@(owned.Id == team.Id ? "page" : null)">@owned.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+
+            @if (!team.IsApproved)
+            {
+                <p class="details-notice" role="status">@T["team.pending_notice"]</p>
+            }
+
+            @if (!team.CanEdit)
+            {
+                <div class="details-notice" role="status">
+                    @T["my_team.read_only"]
+                    <a asp-controller="Subscription" asp-action="Index" asp-route-required="@FeatureCodes.TeamCreate">@T["home.subscribe_cta"]</a>
+                </div>
+            }
+
+            <partial name="_MyTeamContent" model="Model" />
+
+            @if (team.CanEdit)
+            {
+                <partial name="_MyTeamForms" model="Model" />
+            }
+        }
+    </div>
+</section>
+
+@section Scripts {
+    @if (team?.CanEdit == true)
+    {
+        <partial name="_ValidationScriptsPartial" />
+        <script src="~/js/file-validation.js" asp-append-version="true"></script>
+    }
+}

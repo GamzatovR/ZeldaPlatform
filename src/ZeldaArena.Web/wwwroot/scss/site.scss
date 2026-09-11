@@ -24,11 +24,20 @@
 @import "components/badges";
 @import "components/tables";
 @import "components/pagination";
+@import "components/empty-state";
+@import "components/tabs";
+@import "components/filters";
+@import "components/entity-card";
+@import "components/stats";
+@import "components/details";
+@import "components/prose";
 @import "components/match-card";
 @import "components/news-card";
 @import "components/plan-card";
 
 @import "pages/home";
+@import "pages/schedule";
+@import "pages/news";
 @import "pages/auth";
 @import "pages/account";
 @import "pages/error";

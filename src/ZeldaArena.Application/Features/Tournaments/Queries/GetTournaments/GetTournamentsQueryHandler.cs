@@ -50,6 +50,19 @@ public sealed class GetTournamentsQueryHandler(
             query = query.Where(tournament => tournament.StartsAt >= startOfDay);
         }
 
+        if (request.To is { } to)
+        {
+            // «По дату включительно» — это «раньше начала следующего дня».
+            var nextDay = new DateTimeOffset(to.AddDays(1).ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+
+            query = query.Where(tournament => tournament.StartsAt < nextDay);
+        }
+
+        if (request.PrizeMin is { } prizeMin)
+        {
+            query = query.Where(tournament => tournament.PrizePool.Amount >= prizeMin);
+        }
+
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
             var pattern = request.Search.Trim().ToLowerInvariant();

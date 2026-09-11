@@ -60,6 +60,15 @@
   }
 }
 
+.page-title--compact .page-title__heading {
+  font-size: $fs-display-md;
+  overflow-wrap: anywhere;
+
+  @media (max-width: $bp-sm - 1px) {
+    font-size: $fs-display-sm;
+  }
+}
+
 .page-title__sub {
   display: block;
   margin-top: -8px;

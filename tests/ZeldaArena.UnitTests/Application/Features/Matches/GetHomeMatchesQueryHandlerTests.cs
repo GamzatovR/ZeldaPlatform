@@ -1,4 +1,5 @@
-﻿using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
+﻿using ZeldaArena.Application.Common.Models.Esports;
+using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches;
 using ZeldaArena.Domain.Enums;
 using ZeldaArena.Domain.Esports;
 using ZeldaArena.UnitTests.Application.TestDoubles;
@@ -82,7 +83,7 @@ public class GetHomeMatchesQueryHandlerTests
             .Validate(new GetHomeMatchesQuery())
             .IsValid.ShouldBeTrue();
 
-    private static async Task<IReadOnlyList<HomeMatchDto>> Handle(GetHomeMatchesQuery query)
+    private static async Task<IReadOnlyList<MatchCardDto>> Handle(GetHomeMatchesQuery query)
     {
         var handler = new GetHomeMatchesQueryHandler(
             new InMemoryReadRepository<Match>(Schedule()),

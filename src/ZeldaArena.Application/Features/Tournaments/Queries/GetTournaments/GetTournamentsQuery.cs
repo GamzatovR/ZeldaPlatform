@@ -22,5 +22,11 @@ public sealed record GetTournamentsQuery
     /// <summary>Турниры, начинающиеся не раньше указанной даты.</summary>
     public DateOnly? From { get; init; }
 
+    /// <summary>Турниры, начинающиеся не позже указанной даты (включительно).</summary>
+    public DateOnly? To { get; init; }
+
+    /// <summary>Призовой фонд не меньше указанного (docs/SPEC.md §9.3, п. 3).</summary>
+    public decimal? PrizeMin { get; init; }
+
     public string? Search { get; init; }
 }

@@ -30,11 +30,10 @@ public sealed class EnableAuthenticatorModel(
     public string SharedKey { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Разметка QR-кода. Строится здесь из ссылки otpauth://, поэтому в Html.Raw
-    /// попадает только то, что сгенерировал сам сервер, — пользовательских данных
-    /// в ней нет (docs/SPEC.md §15).
+    /// QR-код ссылки otpauth:// картинкой в data-URI: строится на сервере и работает
+    /// без JavaScript, а в разметку попадает как <c>&lt;img&gt;</c>, без <c>Html.Raw</c> (§15).
     /// </summary>
-    public string QrCodeSvg { get; private set; } = string.Empty;
+    public string QrCodeDataUri { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken) =>
         await LoadSetupAsync(cancellationToken) ? Page() : NotFound();
@@ -73,7 +72,7 @@ public sealed class EnableAuthenticatorModel(
         }
 
         SharedKey = setup.SharedKey;
-        QrCodeSvg = QrCodeRenderer.ToSvg(setup.AuthenticatorUri);
+        QrCodeDataUri = QrCodeRenderer.ToSvgDataUri(setup.AuthenticatorUri);
 
         return true;
     }

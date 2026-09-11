@@ -1,0 +1,65 @@
+// Панель фильтров списка. Макета у списков нет (docs/design/README.md,
+// «Экраны, которых в макете НЕТ»), поэтому панель собрана из полей формы
+// и кнопок дизайн-системы (§9, §10). Это обычная GET-форма: состояние фильтра
+// попадает в URL, переживает F5 и работает без JavaScript (§9.1, §10.2).
+
+.filters {
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+
+  .form-control,
+  .form-select {
+    background-color: var(--color-surface-sunken);
+  }
+
+  .form-label {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--fs-base);
+    letter-spacing: $ls-tight;
+    text-transform: uppercase;
+  }
+}
+
+.filters__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.filters__reset {
+  color: var(--color-text-muted);
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+// Итог выборки над списком: сколько найдено.
+.list-summary {
+  margin-bottom: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--fs-lg);
+  text-transform: uppercase;
+}
+
+// Действия над списком — над панелью фильтров: «Создать команду» и подсказка к ней.
+.list-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.list-toolbar__hint {
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-xs);
+}

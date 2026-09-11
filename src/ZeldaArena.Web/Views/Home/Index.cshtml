@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Extensions
 @model ZeldaArena.Web.Models.Home.HomeViewModel
 @inject IHtmlLocalizer<SharedResource> T
 @{
@@ -14,8 +15,8 @@
     в выданном шаблоне нет (docs/design/design-system.md §1, §13).
 
     Секции, которых здесь пока нет и которые придут со своими сценариями:
-    витрина товаров — Фаза 7, топ-команды — Фаза 6, бегущая строка live-матчей —
-    Фаза 10. Заглушек под них не ставим.
+    витрина товаров — Фаза 7, бегущая строка live-матчей — Фаза 10. Заглушек под них
+    не ставим. Топ-команды — с Фазы 6, по блоку участников pages/tournament.html.
 *@
 
 <section class="hero">
@@ -84,7 +85,44 @@
     </div>
 </section>
 
-<section class="section">
+@if (Model.TopTeams.Count > 0)
+{
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">@T["home.teams_sub"]</span>
+                <h2>@T["home.teams_title"]</h2>
+            </div>
+
+            <div class="row g-4">
+                @foreach (var team in Model.TopTeams)
+                {
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <article class="entity-card">
+                            <avatar image="@Url.StoredFile(team.LogoPath)" name="@team.Name" />
+
+                            <h3 class="entity-card__name">
+                                <a asp-controller="Teams" asp-action="Details" asp-route-slug="@team.Slug">@team.Name</a>
+                            </h3>
+
+                            <p class="entity-card__caption">@team.Tag · @team.CountryCode</p>
+
+                            <ul class="entity-card__tags">
+                                <li><span class="badge-token badge-token--accent">@T["tournament.rating", team.Rating]</span></li>
+                            </ul>
+                        </article>
+                    </div>
+                }
+            </div>
+
+            <div class="hero__actions mt-4">
+                <a class="btn-ghost" asp-controller="Teams" asp-action="Index">@T["home.teams_all"]</a>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="section section--surface">
     <div class="container">
         <div class="section-title">
             <span class="sub-title">@T["home.subscribe_sub"]</span>

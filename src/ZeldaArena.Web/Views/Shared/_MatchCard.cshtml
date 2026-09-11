@@ -1,25 +1,29 @@
 @using Microsoft.AspNetCore.Mvc.Localization
-@using ZeldaArena.Application.Features.Matches.Queries.GetHomeMatches
-@model HomeMatchDto
+@using ZeldaArena.Application.Common.Models.Esports
+@using ZeldaArena.Web.Extensions
+@model MatchCardDto
 @inject IHtmlLocalizer<SharedResource> T
 
 @*
     Карточка матча по .single-matches-box макета (docs/design/design-system.md §11).
-    Переиспользуется страницами турнира и расписания в Фазе 6.
+    Одна на все списки: главная, вкладки турнира, расписание, история команды и игрока.
 
-    Блок счёта помечен aria-live: в Фазе 10 счёт начнёт приходить по SignalR (§11),
-    и смена числа без этого осталась бы незамеченной для скринридера.
+    data-match-id и aria-live на счёте — под Фазу 10: счёт начнёт приходить по SignalR (§11),
+    клиент найдёт все карточки матча на странице по идентификатору, а смену числа
+    услышит скринридер.
 *@
-<article class="match-card">
+<article class="match-card" data-match-id="@Model.Id">
     <div class="row align-items-center">
         <div class="col-lg-5">
             <div class="match-card__team">
                 @if (Model.TeamALogoPath is not null)
                 {
-                    <img src="@Model.TeamALogoPath" alt="" loading="lazy" />
+                    <img src="@Url.StoredFile(Model.TeamALogoPath)" alt="" loading="lazy" />
                 }
                 <div class="match-card__content">
-                    <h3 class="match-card__name">@Model.TeamAName</h3>
+                    <h3 class="match-card__name">
+                        <a asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamASlug">@Model.TeamAName</a>
+                    </h3>
                 </div>
             </div>
         </div>
@@ -30,9 +34,12 @@
                 {
                     <span class="badge-token badge-token--live">@T["match.live"]</span>
                 }
+                else
+                {
+                    <span class="badge-token">@T[EnumResourceKeys.For(Model.Status)]</span>
+                }
 
-                <ul class="match-card__score" aria-live="polite"
-                    aria-label="@T["match.score"]">
+                <ul class="match-card__score" aria-live="polite" aria-label="@T["match.score"]" data-match-score>
                     <li>@Model.ScoreA</li>
                     <li>@Model.ScoreB</li>
                 </ul>
@@ -40,6 +47,10 @@
                 <time class="match-card__meta" datetime="@Model.ScheduledAt.ToString("O")">
                     @Model.ScheduledAt.ToLocalTime().ToString("g")
                 </time>
+
+                <a class="match-card__link" asp-controller="Matches" asp-action="Details" asp-route-id="@Model.Id">
+                    @T["match.details"]<span class="visually-hidden">: @Model.TeamAName @T["match.vs"] @Model.TeamBName</span>
+                </a>
             </div>
         </div>
 
@@ -47,10 +58,12 @@
             <div class="match-card__team match-card__team--right">
                 @if (Model.TeamBLogoPath is not null)
                 {
-                    <img src="@Model.TeamBLogoPath" alt="" loading="lazy" />
+                    <img src="@Url.StoredFile(Model.TeamBLogoPath)" alt="" loading="lazy" />
                 }
                 <div class="match-card__content">
-                    <h3 class="match-card__name">@Model.TeamBName</h3>
+                    <h3 class="match-card__name">
+                        <a asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamBSlug">@Model.TeamBName</a>
+                    </h3>
                 </div>
             </div>
         </div>

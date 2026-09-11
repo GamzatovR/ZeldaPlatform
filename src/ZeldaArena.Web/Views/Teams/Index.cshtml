@@ -1,0 +1,83 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Teams.Queries.GetTeams
+@using ZeldaArena.Domain.Constants
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Teams.TeamListViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["team.list_title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["team.list_title"].Value, T["team.list_sub"].Value);
+    var filter = Model.Filter;
+    var sort = TeamSorting.Map.Resolve(filter.Sort);
+}
+
+@*
+    Список команд (docs/SPEC.md §9.3, п. 6). Тот же механизм, что у турниров:
+    GET-форма, состояние в адресе, partial-список под Фазу 8 (§10.2).
+
+    Кнопка «Создать команду» видна всем: у кого нет подписки, её отказ фича-гейта
+    уведёт на тарифы с объяснением (§7.3) — это и есть сценарий демонстрации §19.
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section">
+    <div class="container">
+        <div class="list-toolbar">
+            <a class="btn-solid" asp-action="Create">
+                <icon name="@IconNames.Plus" /> @T["team.create_cta"]
+            </a>
+            <feature-gate feature="@FeatureCodes.TeamCreate" when-missing>
+                <span class="list-toolbar__hint">@T["team.create_hint"]</span>
+            </feature-gate>
+        </div>
+
+        <form class="filters" method="get" asp-action="Index" role="search" data-filter-form
+              aria-label="@T["filter.title"]">
+            <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <label class="form-label" for="search">@T["filter.search"]</label>
+                    <input class="form-control" id="search" name="search" type="search"
+                           value="@filter.Search" maxlength="@GetTeamsQueryValidator.MaxSearchLength"
+                           placeholder="@T["team.search_placeholder"]" />
+                </div>
+                <div class="col-6 col-md-3 col-lg-3">
+                    <label class="form-label" for="region">@T["tournament.region"]</label>
+                    <select class="form-select" id="region" name="region">
+                        <option value="">@T["filter.any"]</option>
+                        @foreach (var region in Enum.GetValues<Region>())
+                        {
+                            <option value="@region" selected="@(filter.Region == region)">@T[EnumResourceKeys.For(region)]</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label" for="ratingMin">@T["team.rating_min"]</label>
+                    <input class="form-control" id="ratingMin" name="ratingMin" type="number" min="0" step="50"
+                           value="@filter.RatingMin" />
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label class="form-label" for="sort">@T["filter.sort"]</label>
+                    <select class="form-select" id="sort" name="sort">
+                        @foreach (var key in TeamSorting.Map.Keys)
+                        {
+                            <option value="@key" selected="@(key == sort)">@T["team.sort." + key]</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters__actions">
+                <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+            </div>
+        </form>
+
+        <div id="team-list" data-list>
+            <partial name="_TeamList" model="Model.Result" />
+        </div>
+    </div>
+</section>
