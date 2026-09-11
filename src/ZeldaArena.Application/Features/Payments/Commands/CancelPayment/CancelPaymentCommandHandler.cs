@@ -1,22 +1,28 @@
 using MediatR;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Application.Common.Models.Identity;
+using ZeldaArena.Application.Features.Orders;
 using ZeldaArena.Domain.Billing;
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Enums;
+using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.CancelPayment;
 
 /// <summary>
-/// Отменяет неоплаченный платёж и убирает заявку на подписку, которая была всего лишь
-/// носителем выбранного тарифа (docs/SPEC.md §7.6).
+/// Отменяет неоплаченный платёж (docs/SPEC.md §7.6) вместе с тем, ради чего он заводился:
+/// заявка на подписку удаляется — она была только носителем выбранного тарифа, —
+/// заказ отменяется и возвращает остаток (docs/adr/ADR-0009).
 /// </summary>
 public sealed class CancelPaymentCommandHandler(
     ICurrentUserService currentUser,
     IRepository<Payment> payments,
     IRepository<Subscription> subscriptions,
+    IRepository<Order> orders,
+    OrderCancellation orderCancellation,
     IUnitOfWork unitOfWork)
     : IRequestHandler<CancelPaymentCommand, Result>
 {
@@ -59,7 +65,26 @@ public sealed class CancelPaymentCommandHandler(
             }
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        if (payment.OrderId is { } orderId)
+        {
+            var order = await orders.GetByIdAsync(orderId, cancellationToken).ConfigureAwait(false);
+
+            if (order is { Status: OrderStatus.Pending })
+            {
+                await orderCancellation.CancelAsync(order, returnItemsToCart: true, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (ConcurrencyConflictException)
+        {
+            // Возврат остатка столкнулся с чужим оформлением того же товара: ничего
+            // не сохранено, платёж по-прежнему ждёт кода — отмену можно повторить.
+            return Result.Failure(BillingErrors.ConcurrentChange);
+        }
 
         return Result.Success();
     }

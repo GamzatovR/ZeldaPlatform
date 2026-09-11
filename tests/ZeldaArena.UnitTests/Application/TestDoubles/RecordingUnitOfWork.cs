@@ -1,3 +1,4 @@
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
@@ -15,9 +16,18 @@ internal sealed class RecordingUnitOfWork : IUnitOfWork
 
     public int SaveChangesCalls { get; private set; }
 
+    /// <summary>Следующее сохранение упадёт на конфликте токена — как при гонке за последней единицей.</summary>
+    public bool ConflictOnNextSave { get; set; }
+
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         SaveChangesCalls++;
+
+        if (ConflictOnNextSave)
+        {
+            ConflictOnNextSave = false;
+            throw new ConcurrencyConflictException();
+        }
 
         return Task.FromResult(0);
     }

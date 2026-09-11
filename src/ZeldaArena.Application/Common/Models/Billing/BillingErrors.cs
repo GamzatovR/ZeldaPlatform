@@ -65,6 +65,14 @@ public static class BillingErrors
     public static readonly Error CardDeclined =
         new("payment.card_declined", "Карта отклонена.");
 
+    /// <summary>
+    /// Платёж или то, что он оплачивает, изменили параллельно — вторая вкладка, отмена
+    /// заказа, фоновая служба (docs/SPEC.md §15: конфликт конкурентности). Ничего не
+    /// сохранено, код не израсходован: достаточно обновить страницу и повторить.
+    /// </summary>
+    public static readonly Error ConcurrentChange =
+        new("payment.concurrent_change", "Платёж одновременно изменён в другой вкладке.");
+
     public static readonly Error SubscriptionNotFound =
         new("subscription.not_found", "Подписка не найдена.");
 

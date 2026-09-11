@@ -5,12 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 
+using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Application.Features.Payments.Commands.CancelPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ResendPaymentCode;
 using ZeldaArena.Application.Features.Payments.Commands.StartSubscriptionPayment;
 using ZeldaArena.Application.Features.Payments.Queries.GetPaymentState;
 using ZeldaArena.Application.Features.Subscriptions.Queries.GetSubscriptionPlans;
+using ZeldaArena.Domain.Common;
+using ZeldaArena.Domain.Enums;
 using ZeldaArena.Web.Authorization;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Billing;
@@ -19,8 +22,9 @@ using ZeldaArena.Web.RateLimiting;
 namespace ZeldaArena.Web.Controllers;
 
 /// <summary>
-/// Мнимая оплата подписки (docs/SPEC.md §7.6): реквизиты → письмо с кодом →
-/// подтверждение.
+/// Мнимая оплата (docs/SPEC.md §7.6): реквизиты → письмо с кодом → подтверждение.
+/// Реквизиты подписки вводятся здесь, реквизиты заказа — на странице оформления
+/// (<see cref="CheckoutController"/>); ввод кода, повторная отправка и отмена у них общие.
 ///
 /// Пока это обычные формы. AJAX-эндпоинты <c>POST /api/payments</c> и
 /// <c>/api/payments/{id}/confirm</c> из §10.1 появятся в Фазе 8 поверх этих же
@@ -37,6 +41,8 @@ public sealed class PaymentController(
     IStringLocalizer<SharedResource> localizer)
     : Controller
 {
+    private const string StatusKey = "StatusMessage";
+
     /// <summary>Форма реквизитов. Ключ идемпотентности выдаётся здесь и живёт до отправки.</summary>
     [HttpGet("card")]
     public async Task<IActionResult> Card(Guid planId, CancellationToken cancellationToken)
@@ -74,11 +80,11 @@ public sealed class PaymentController(
         var result = await sender.Send(
             new StartSubscriptionPaymentCommand(
                 model.PlanId,
-                model.CardNumber,
-                model.ExpiryMonth,
-                model.ExpiryYear,
-                model.Cvv,
-                model.ConfirmationEmail,
+                model.Card.CardNumber,
+                model.Card.ExpiryMonth,
+                model.Card.ExpiryYear,
+                model.Card.Cvv,
+                model.Card.ConfirmationEmail,
                 model.IdempotencyKey),
             cancellationToken);
 
@@ -103,6 +109,12 @@ public sealed class PaymentController(
             return NotFound();
         }
 
+        // Завершённый платёж за заказ вводить нечем: исход виден на странице заказа.
+        if (IsFinishedOrderPayment(state))
+        {
+            return RedirectToAction(nameof(OrdersController.Details), "Orders", new { number = state.OrderNumber });
+        }
+
         return View(ToViewModel(state));
     }
 
@@ -116,25 +128,43 @@ public sealed class PaymentController(
     {
         ArgumentNullException.ThrowIfNull(model);
 
+        Result? result = null;
+
         if (ModelState.IsValid)
         {
-            var result = await sender.Send(
-                new ConfirmPaymentCommand(id, model.ConfirmationCode),
-                cancellationToken);
-
-            if (result.IsSuccess)
-            {
-                return RedirectToAction(nameof(Success));
-            }
-
-            ModelState.AddResultError(result, localizer);
+            result = await sender.Send(new ConfirmPaymentCommand(id, model.ConfirmationCode), cancellationToken);
         }
 
         // Состояние перечитывается: попытка израсходована, и на форме должно быть
         // видно, сколько их осталось.
         var state = await sender.Send(new GetPaymentStateQuery(id), cancellationToken);
 
-        return state is null ? NotFound() : View(ToViewModel(state));
+        if (state is null)
+        {
+            return NotFound();
+        }
+
+        if (result is { IsSuccess: true } && state.Purpose != PaymentPurpose.Order)
+        {
+            return RedirectToAction(nameof(Success));
+        }
+
+        if (state.Purpose == PaymentPurpose.Order && state.OrderNumber is not null)
+        {
+            var orderOutcome = OrderPaymentOutcome(state, result);
+
+            if (orderOutcome is not null)
+            {
+                return orderOutcome;
+            }
+        }
+
+        if (result is { IsFailure: true })
+        {
+            ModelState.AddResultError(result, localizer);
+        }
+
+        return View(ToViewModel(state));
     }
 
     [HttpPost("{id:guid}/resend")]
@@ -144,18 +174,37 @@ public sealed class PaymentController(
     {
         var result = await sender.Send(new ResendPaymentCodeCommand(id), cancellationToken);
 
-        TempData["StatusMessage"] = result.IsSuccess
+        TempData[StatusKey] = result.IsSuccess
             ? localizer["payment.code_sent"].Value
-            : localizer[result.Error.Code].Value;
+            : localizer.ForError(result.Error);
 
         return RedirectToAction(nameof(Confirm), new { id });
     }
 
+    /// <summary>
+    /// Отмена платежа за подписку возвращает к тарифам, за заказ — в корзину: заказ
+    /// отменён, товары вернулись в неё (docs/adr/ADR-0009).
+    /// </summary>
     [HttpPost("{id:guid}/cancel")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(Guid id, CancellationToken cancellationToken)
     {
-        await sender.Send(new CancelPaymentCommand(id), cancellationToken);
+        var state = await sender.Send(new GetPaymentStateQuery(id), cancellationToken);
+        var result = await sender.Send(new CancelPaymentCommand(id), cancellationToken);
+
+        if (state?.Purpose == PaymentPurpose.Order)
+        {
+            if (result.IsSuccess)
+            {
+                TempData[StatusKey] = localizer["order.payment_canceled"].Value;
+                return RedirectToAction(nameof(CartController.Index), "Cart");
+            }
+
+            // Платёж уже завершён (оплачен или отменён раньше) — товары в корзину
+            // не возвращались, и отправлять туда незачем: исход виден на странице заказа.
+            TempData[StatusKey] = "!" + localizer.ForError(result.Error);
+            return RedirectToAction(nameof(OrdersController.Details), "Orders", new { number = state.OrderNumber });
+        }
 
         return RedirectToAction(nameof(SubscriptionController.Index), "Subscription");
     }
@@ -163,8 +212,49 @@ public sealed class PaymentController(
     [HttpGet("success")]
     public IActionResult Success() => View();
 
+    /// <summary>
+    /// Куда отправить покупателя после ввода кода за заказ. <c>null</c> — остаться на форме:
+    /// код неверен, но попытки ещё есть.
+    ///
+    /// «Товары снова в корзине» говорится, только когда этот самый запрос провалил оплату
+    /// (истёкший код, последняя попытка) и тем отменил заказ (docs/adr/ADR-0009). Повторная
+    /// отправка уже обработанного кода — кнопкой «Назад» после оплаты или после отмены —
+    /// ведёт на страницу заказа, где виден его настоящий статус.
+    /// </summary>
+    private RedirectToActionResult? OrderPaymentOutcome(PaymentStateDto state, Result? result)
+    {
+        var details = new { number = state.OrderNumber };
+
+        if (result is { IsSuccess: true } || state.Status == PaymentStatus.Succeeded)
+        {
+            TempData[StatusKey] = localizer["order.paid"].Value;
+            return RedirectToAction(nameof(OrdersController.Details), "Orders", details);
+        }
+
+        if (result is { IsFailure: true }
+            && (result.Error.Code == BillingErrors.CodeExpired.Code || result.Error.Code == BillingErrors.NoAttemptsLeft.Code))
+        {
+            TempData[StatusKey] = "!" + localizer.ForError(result.Error) + " " + localizer["order.items_returned"].Value;
+            return RedirectToAction(nameof(CartController.Index), "Cart");
+        }
+
+        if (state.Status != PaymentStatus.Pending)
+        {
+            TempData[StatusKey] = "!" + (result is { IsFailure: true }
+                ? localizer.ForError(result.Error)
+                : localizer[BillingErrors.PaymentNotPending.Code].Value);
+
+            return RedirectToAction(nameof(OrdersController.Details), "Orders", details);
+        }
+
+        return null;
+    }
+
+    private static bool IsFinishedOrderPayment(PaymentStateDto state) =>
+        state.Purpose == PaymentPurpose.Order && state.OrderNumber is not null && state.Status != PaymentStatus.Pending;
+
     private static ConfirmPaymentViewModel ToViewModel(
-        Application.Common.Models.Billing.PaymentStateDto state) =>
+        PaymentStateDto state) =>
         new()
         {
             PaymentId = state.PaymentId,

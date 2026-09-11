@@ -8,6 +8,7 @@ using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure;
 using ZeldaArena.Infrastructure.Persistence.Ef;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Middleware;
 using ZeldaArena.Web.RateLimiting;
 using ZeldaArena.Web.Services;
 
@@ -47,6 +48,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
 builder.Services.AddScoped<IBillingEmailSender, BillingEmailSender>();
 
+// Гостевая корзина опознаётся по подписанной куке — это знание слоя представления,
+// сценарии получают уже проверенный идентификатор (docs/SPEC.md §14.1).
+builder.Services.AddScoped<IGuestCartIdentity, CookieGuestCartIdentity>();
+
 // Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
 // адреса страниц — знание слоя представления.
 // Статические политики §8.1 плюс динамические Feature:{code} (§7.3).
@@ -74,7 +79,8 @@ if (app.Environment.IsDevelopment())
 // Порядок middleware зафиксирован в docs/SPEC.md §14.1:
 // Exception → HSTS/HTTPS → SecurityHeaders → CorrelationId → StaticFiles + Compression →
 // Routing → RateLimiter → Localization → Authentication → Authorization → CartCookie → Endpoints.
-// Собственные middleware добавляются в Фазе 11 строго в этих позициях.
+// Собственные middleware добавляются строго в этих позициях: CartCookie — с Фазы 7,
+// остальные — в Фазе 11.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -88,6 +94,10 @@ app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// После аутентификации: слиянию гостевой корзины нужен уже известный пользователь.
+// После маршрутизации: кука выдаётся только страницам, а не статическим файлам.
+app.UseMiddleware<CartCookieMiddleware>();
 
 app.MapStaticAssets();
 

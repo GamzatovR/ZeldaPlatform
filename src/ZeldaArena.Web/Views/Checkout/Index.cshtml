@@ -1,0 +1,128 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Web.Extensions
+@using ZeldaArena.Web.Models.Layout
+@model ZeldaArena.Web.Models.Checkout.CheckoutViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["checkout.title"].Value;
+
+    var pageTitle = new PageTitleViewModel(T["checkout.title"].Value, T["checkout.sub"].Value);
+}
+
+@*
+    Оформление (docs/SPEC.md §9.3, п. 14), по docs/design/pages/checkout.html:
+    слева адрес доставки (.billing-details), справа состав заказа и оплата
+    (.order-details). Поле кода из письма — на следующем шаге, общем с оплатой
+    подписки (§7.6, шаг 3; README макета: «форму оплаты дополнить полем ввода кода»).
+
+    Суммы здесь только для сверки: заказ собирается из корзины на сервере,
+    из формы не принимается ни цена, ни состав (§15).
+*@
+<partial name="_PageTitle" model="pageTitle" />
+
+<section class="section checkout">
+    <div class="container">
+        <form method="post" asp-controller="Checkout" asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="mb-4"></div>
+
+            <input type="hidden" asp-for="IdempotencyKey" />
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <div class="form-card checkout__block">
+                        <h2 class="checkout__title">@T["checkout.shipping"]</h2>
+
+                        <div class="form-group">
+                            <label asp-for="Recipient" class="form-label"></label>
+                            <input asp-for="Recipient" class="form-control" autocomplete="name" />
+                            <span asp-validation-for="Recipient"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" autocomplete="tel" />
+                            <span asp-validation-for="Phone"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 form-group">
+                                <label asp-for="Country" class="form-label"></label>
+                                <input asp-for="Country" class="form-control" autocomplete="country-name" />
+                                <span asp-validation-for="Country"></span>
+                            </div>
+                            <div class="col-12 col-md-6 form-group">
+                                <label asp-for="City" class="form-label"></label>
+                                <input asp-for="City" class="form-control" autocomplete="address-level2" />
+                                <span asp-validation-for="City"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-8 form-group">
+                                <label asp-for="Street" class="form-label"></label>
+                                <input asp-for="Street" class="form-control" autocomplete="street-address" />
+                                <span asp-validation-for="Street"></span>
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label asp-for="PostalCode" class="form-label"></label>
+                                <input asp-for="PostalCode" class="form-control" autocomplete="postal-code" />
+                                <span asp-validation-for="PostalCode"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="form-card checkout__block">
+                        <h2 class="checkout__title">@T["checkout.your_order"]</h2>
+
+                        <div class="table-responsive">
+                            <table class="table table-token checkout__table">
+                                <caption class="visually-hidden">@T["checkout.your_order"]</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">@T["cart.col_product"]</th>
+                                        <th scope="col" class="text-end">@T["cart.col_total"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var line in Model.Cart.Lines)
+                                    {
+                                        <tr>
+                                            <td>@line.Name × @line.Quantity</td>
+                                            <td class="text-end">@MoneyText.Format(line.LineTotal, line.Currency)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">@T["cart.subtotal"]</th>
+                                        <td class="text-end checkout__total">@MoneyText.Format(Model.Cart.Subtotal, Model.Cart.Currency)</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <h2 class="checkout__title mt-4">@T["checkout.payment"]</h2>
+
+                        <div class="alert-token" role="status">@T["payment.card_hint"]</div>
+
+                        <partial name="_CardFields" for="Card" />
+
+                        <button type="submit" class="btn-solid btn-block">@T["checkout.place_order"]</button>
+
+                        <p class="checkout__note">@T["checkout.note"]</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <p class="mt-4">
+            <a class="link-underline" asp-controller="Cart" asp-action="Index">@T["checkout.back_to_cart"]</a>
+        </p>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

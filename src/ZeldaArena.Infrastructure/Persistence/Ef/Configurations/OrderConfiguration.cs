@@ -45,8 +45,10 @@ public sealed class OrderConfiguration : EntityConfiguration<Order>
             .HasForeignKey(item => item.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Позиции нужны при отмене: по ним возвращается остаток на склад.
         builder.Navigation(order => order.Items)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
 
         // Индекс под фильтр истории заказов (docs/SPEC.md §10.2).
         builder.HasIndex(order => new { order.UserId, order.Status, order.PlacedAt });

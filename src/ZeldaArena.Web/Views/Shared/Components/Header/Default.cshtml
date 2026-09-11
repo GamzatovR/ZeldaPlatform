@@ -47,6 +47,9 @@
                     <span class="badge-token badge-token--premium">@T["nav.premium"]</span>
                 }
 
+                @* Корзина есть и у гостя: она живёт по подписанной куке (§14.1). *@
+                @await Component.InvokeAsync("MiniCart")
+
                 @if (Model.IsAuthenticated)
                 {
                     <div class="site-menu" data-menu>
@@ -65,6 +68,9 @@
                             </li>
                             <li class="site-menu__item">
                                 <a class="site-menu__link" asp-area="" asp-controller="MyTeam" asp-action="Index">@T["nav.my_team"]</a>
+                            </li>
+                            <li class="site-menu__item">
+                                <a class="site-menu__link" asp-area="" asp-controller="Orders" asp-action="Index">@T["nav.orders"]</a>
                             </li>
                             <li class="site-menu__item">
                                 @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@

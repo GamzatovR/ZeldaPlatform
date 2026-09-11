@@ -13,6 +13,7 @@ internal sealed class RecordingBillingEmailSender : IBillingEmailSender
     {
         PaymentCode,
         Receipt,
+        OrderReceipt,
         SubscriptionExpired,
     }
 
@@ -53,6 +54,19 @@ internal sealed class RecordingBillingEmailSender : IBillingEmailSender
         return Task.CompletedTask;
     }
 
+    public Task SendOrderReceiptAsync(
+        string email,
+        string? displayName,
+        string orderNumber,
+        decimal amount,
+        string currency,
+        CancellationToken cancellationToken = default)
+    {
+        _letters.Add(new Letter(LetterKind.OrderReceipt, email, null, orderNumber, null) { Amount = amount });
+
+        return Task.CompletedTask;
+    }
+
     public Task SendSubscriptionExpiredAsync(
         string email,
         string? displayName,
@@ -64,10 +78,14 @@ internal sealed class RecordingBillingEmailSender : IBillingEmailSender
         return Task.CompletedTask;
     }
 
+    /// <summary>Письмо. <c>PlanName</c> — тариф в письмах подписки, номер заказа — в чеке заказа.</summary>
     internal sealed record Letter(
         LetterKind Kind,
         string To,
         string? Code,
         string? PlanName,
-        DateTimeOffset? Moment);
+        DateTimeOffset? Moment)
+    {
+        public decimal? Amount { get; init; }
+    }
 }

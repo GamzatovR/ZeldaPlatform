@@ -16,6 +16,23 @@ public sealed class EfRepository<TEntity>(AppDbContext context) : IRepository<TE
     public Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         context.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
+    public async Task<IReadOnlyList<TEntity>> GetByIdsAsync(
+        IReadOnlyCollection<Guid> ids,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(ids);
+
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        return await context.Set<TEntity>()
+            .Where(entity => ids.Contains(entity.Id))
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+    }
+
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default) =>
         await context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
 

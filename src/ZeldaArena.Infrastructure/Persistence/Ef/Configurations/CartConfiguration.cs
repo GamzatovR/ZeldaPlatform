@@ -30,7 +30,12 @@ public sealed class CartConfiguration : EntityConfiguration<Cart>
             .HasForeignKey(item => item.CartId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Позиции — часть агрегата: по ним Cart.AddItem решает, увеличить ли количество
+        // или завести строку. Без AutoInclude репозиторий отдавал бы корзину пустой,
+        // и повторное добавление падало бы на уникальном (CartId, ProductId) — ровно
+        // так в Фазе 4 ломалась привязка фич к тарифу.
         builder.Navigation(cart => cart.Items)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
     }
 }

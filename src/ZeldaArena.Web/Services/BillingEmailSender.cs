@@ -55,6 +55,20 @@ public sealed class BillingEmailSender(
         return SendAsync(email, displayName, "email.payment_receipt.subject", body, cancellationToken);
     }
 
+    public Task SendOrderReceiptAsync(
+        string email,
+        string? displayName,
+        string orderNumber,
+        decimal amount,
+        string currency,
+        CancellationToken cancellationToken = default) =>
+        SendAsync(
+            email,
+            displayName,
+            "email.order_receipt.subject",
+            Format("email.order_receipt.body", orderNumber, FormatMoney(amount, currency)),
+            cancellationToken);
+
     public Task SendSubscriptionExpiredAsync(
         string email,
         string? displayName,

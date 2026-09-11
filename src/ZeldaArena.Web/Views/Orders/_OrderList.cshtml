@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders
+@using ZeldaArena.Web.Extensions
+@model PagedResult<OrderListItemDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Результат фильтра заказов; в Фазе 8 его вернёт AJAX-эндпоинт истории заказов. *@
+@if (Model.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["order.empty"]</p>
+        <a class="btn-solid" asp-controller="Shop" asp-action="Index">@T["cart.to_shop"]</a>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", Model.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token orders-table">
+            <caption class="visually-hidden">@T["order.list_title"]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@T["order.number"]</th>
+                    <th scope="col">@T["order.placed_at"]</th>
+                    <th scope="col">@T["order.status"]</th>
+                    <th scope="col">@T["order.items"]</th>
+                    <th scope="col" class="text-end">@T["order.total"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.Items)
+                {
+                    <tr>
+                        <td><a asp-controller="Orders" asp-action="Details" asp-route-number="@order.Number">@order.Number</a></td>
+                        <td><time datetime="@order.PlacedAt.ToString("O")">@order.PlacedAt.ToLocalTime().ToString("g")</time></td>
+                        <td><span class="@OrderStatusBadge.CssFor(order.Status)">@T[EnumResourceKeys.For(order.Status)]</span></td>
+                        <td>@order.ItemCount</td>
+                        <td class="text-end">@MoneyText.Format(order.Total, order.Currency)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}

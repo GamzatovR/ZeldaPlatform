@@ -1,4 +1,7 @@
 using ZeldaArena.Application.Common.Models.Billing;
+using ZeldaArena.Application.Features.Carts;
+using ZeldaArena.Application.Features.Orders;
+using ZeldaArena.Application.Features.Payments;
 using ZeldaArena.Application.Features.Payments.Commands.CancelPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ResendPaymentCode;
@@ -7,6 +10,7 @@ using ZeldaArena.Application.Features.Payments.Queries.GetPaymentState;
 using ZeldaArena.Domain.Billing;
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Constants;
+using ZeldaArena.Domain.Shop;
 using ZeldaArena.Domain.ValueObjects;
 using ZeldaArena.UnitTests.Application.TestDoubles;
 
@@ -56,6 +60,16 @@ internal sealed class PaymentScenarioFixture
 
     public InMemoryRepository<Subscription> Subscriptions { get; } = new();
 
+    /// <summary>
+    /// Заказов в сценариях подписки нет, но хендлеры оплаты общие для обоих назначений
+    /// (§7.6); сценарии заказа проверяются отдельно, на <c>ShopWorld</c>.
+    /// </summary>
+    public InMemoryRepository<Order> Orders { get; } = new();
+
+    public InMemoryRepository<Product> Products { get; } = new();
+
+    public InMemoryRepository<Cart> Carts { get; } = new();
+
     public StubPaymentGateway Gateway { get; } = new();
 
     public FixedConfirmationCodeProtector Codes { get; } = new();
@@ -84,13 +98,8 @@ internal sealed class PaymentScenarioFixture
         new StartSubscriptionPaymentCommandHandler(
             CurrentUser(),
             Plans,
-            Payments,
             Subscriptions,
-            new InMemoryReadRepository<Payment>(Payments.Entities),
-            new InMemoryQueryExecutor(),
-            Gateway,
-            Codes,
-            Email,
+            Initiator(),
             UnitOfWork,
             Clock())
         .Handle(
@@ -111,6 +120,8 @@ internal sealed class PaymentScenarioFixture
             Subscriptions,
             new InMemoryReadRepository<Subscription>(Subscriptions.Entities),
             Plans,
+            Orders,
+            OrderCancellation(),
             new InMemoryQueryExecutor(),
             Codes,
             Email,
@@ -134,13 +145,15 @@ internal sealed class PaymentScenarioFixture
             CancellationToken.None);
 
     public Task<Result> CancelAsync(Guid? paymentId = null) =>
-        new CancelPaymentCommandHandler(CurrentUser(), Payments, Subscriptions, UnitOfWork)
+        new CancelPaymentCommandHandler(CurrentUser(), Payments, Subscriptions, Orders, OrderCancellation(), UnitOfWork)
             .Handle(new CancelPaymentCommand(paymentId ?? SinglePayment.Id), CancellationToken.None);
 
     public Task<PaymentStateDto?> StateAsync(Guid? paymentId = null) =>
         new GetPaymentStateQueryHandler(
             CurrentUser(),
             new InMemoryReadRepository<Payment>(Payments.Entities),
+            new InMemoryReadRepository<Order>(Orders.Entities),
+            new InMemoryQueryExecutor(),
             Clock())
         .Handle(
             new GetPaymentStateQuery(paymentId ?? SinglePayment.Id),
@@ -162,6 +175,30 @@ internal sealed class PaymentScenarioFixture
 
     private StubCurrentUserService CurrentUser() =>
         new() { UserId = SignedInUserId ?? UserId, UserName = "player" };
+
+    private PaymentInitiator Initiator() =>
+        new(
+            Payments,
+            new InMemoryReadRepository<Payment>(Payments.Entities),
+            new InMemoryQueryExecutor(),
+            Gateway,
+            Codes,
+            Email,
+            Clock());
+
+    private OrderCancellation OrderCancellation() =>
+        new(
+            Products,
+            Payments,
+            new InMemoryReadRepository<Payment>(Payments.Entities),
+            new CartLocator(
+                CurrentUser(),
+                new StubGuestCartIdentity(),
+                Carts,
+                new InMemoryReadRepository<Cart>(Carts.Entities),
+                new InMemoryQueryExecutor()),
+            new InMemoryQueryExecutor(),
+            Clock());
 
     private FixedDateTimeProvider Clock() => new(_now);
 }

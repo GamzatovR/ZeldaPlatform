@@ -1,0 +1,135 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Carts
+@using ZeldaArena.Application.Features.Carts.Queries.GetCart
+@using ZeldaArena.Web.Constants
+@using ZeldaArena.Web.Extensions
+@model CartDto
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Каждое действие — своя маленькая POST-форма: «−» и «+» отправляют готовое
+    новое количество, поэтому корзина работает и без JavaScript (§9.1). Итог
+    и признаки проблем пришли с сервера; здесь ничего не вычисляется.
+*@
+@if (Model.IsEmpty)
+{
+    <div class="empty-state">
+        <p>@T["cart.empty"]</p>
+        <a class="btn-solid" asp-controller="Shop" asp-action="Index">@T["cart.to_shop"]</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-token cart-table">
+            <caption class="visually-hidden">@T["cart.title"]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@T["cart.col_product"]</th>
+                    <th scope="col">@T["cart.col_price"]</th>
+                    <th scope="col">@T["cart.col_quantity"]</th>
+                    <th scope="col">@T["cart.col_total"]</th>
+                    <th scope="col"><span class="visually-hidden">@T["cart.col_actions"]</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Lines)
+                {
+                    var image = Url.ProductImage(line.ImagePath);
+                    var quantityId = $"quantity-{line.ProductId:N}";
+
+                    <tr class="@(line.Problem == CartLineProblem.None ? null : "cart-table__row--problem")" data-cart-line="@line.ProductId">
+                        <td>
+                            <div class="cart-table__product">
+                                @if (image is not null)
+                                {
+                                    <img class="cart-table__image" src="@image" alt="" width="80" height="80" loading="lazy" />
+                                }
+                                <span>@line.Name</span>
+                            </div>
+
+                            @switch (line.Problem)
+                            {
+                                case CartLineProblem.Unavailable:
+                                    <p class="cart-table__problem" role="note">@T["cart.product_unavailable"]</p>
+                                    break;
+                                case CartLineProblem.OutOfStock:
+                                    <p class="cart-table__problem" role="note">@T["cart.out_of_stock"]</p>
+                                    break;
+                                case CartLineProblem.InsufficientStock:
+                                    <p class="cart-table__problem" role="note">@T["cart.insufficient_stock", line.StockQuantity]</p>
+                                    break;
+                            }
+                        </td>
+                        <td>@MoneyText.Format(line.UnitPrice, line.Currency)</td>
+                        <td>
+                            @if (line.IsActive && line.StockQuantity > 0)
+                            {
+                                <div class="input-counter">
+                                    <form method="post" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                        <input type="hidden" name="Quantity" value="@(line.Quantity - 1)" />
+                                        <button class="input-counter__step" type="submit" disabled="@(line.Quantity <= 1)"
+                                                aria-label="@T["cart.decrease", line.Name]">
+                                            <icon name="@IconNames.Minus" />
+                                        </button>
+                                    </form>
+
+                                    <form class="input-counter__field" method="post" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                        <label class="visually-hidden" for="@quantityId">@T["cart.quantity_of", line.Name]</label>
+                                        <input id="@quantityId" name="Quantity" type="number" inputmode="numeric"
+                                               min="1" max="@line.MaxQuantity" value="@line.Quantity" required />
+                                        <button class="visually-hidden-focusable input-counter__apply" type="submit">@T["cart.apply_quantity"]</button>
+                                    </form>
+
+                                    <form method="post" asp-controller="Cart" asp-action="ChangeQuantity" asp-route-productId="@line.ProductId">
+                                        <input type="hidden" name="Quantity" value="@(line.Quantity + 1)" />
+                                        <button class="input-counter__step" type="submit" disabled="@(line.Quantity >= line.MaxQuantity)"
+                                                aria-label="@T["cart.increase", line.Name]">
+                                            <icon name="@IconNames.Plus" />
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                @line.Quantity
+                            }
+                        </td>
+                        <td>@MoneyText.Format(line.LineTotal, line.Currency)</td>
+                        <td>
+                            <form method="post" asp-controller="Cart" asp-action="Remove" asp-route-productId="@line.ProductId">
+                                <button class="btn-ghost btn-ghost--sm" type="submit" aria-label="@T["cart.remove_of", line.Name]">
+                                    <icon name="@IconNames.Trash" />
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cart-summary">
+        <dl class="cart-summary__totals">
+            <dt>@T["cart.items_count"]</dt>
+            <dd>@Model.ItemCount</dd>
+            <dt>@T["cart.subtotal"]</dt>
+            <dd class="cart-summary__total">@MoneyText.Format(Model.Subtotal, Model.Currency)</dd>
+        </dl>
+
+        <div class="cart-summary__actions">
+            <a class="btn-ghost" asp-controller="Shop" asp-action="Index">@T["cart.continue_shopping"]</a>
+
+            @if (Model.CanCheckout)
+            {
+                @* Гостя вход вернёт сюда же, а корзина к тому времени вольётся в его (§14.1). *@
+                <a class="btn-solid" asp-controller="Checkout" asp-action="Index">@T["cart.checkout"]</a>
+            }
+            else
+            {
+                <span class="btn-solid is-disabled" aria-disabled="true">@T["cart.checkout"]</span>
+                <p class="cart-summary__hint">@T["cart.checkout_blocked"]</p>
+            }
+        </div>
+    </div>
+}

@@ -23,7 +23,7 @@ public sealed record StartSubscriptionPaymentCommand(
     string Cvv,
     string ConfirmationEmail,
     string IdempotencyKey)
-    : ICommand<StartPaymentResult>, IAuditableRequest
+    : ICommand<StartPaymentResult>, IAuditableRequest, ICardPaymentDetails
 {
     public string AuditEntityType => BillingAudit.Payment;
 

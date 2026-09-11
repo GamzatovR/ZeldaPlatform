@@ -14,9 +14,9 @@
     переносятся: они держатся на owl.carousel, wow.js и cursor.js, которых
     в выданном шаблоне нет (docs/design/design-system.md §1, §13).
 
-    Секции, которых здесь пока нет и которые придут со своими сценариями:
-    витрина товаров — Фаза 7, бегущая строка live-матчей — Фаза 10. Заглушек под них
-    не ставим. Топ-команды — с Фазы 6, по блоку участников pages/tournament.html.
+    Бегущая строка live-матчей придёт в Фазе 10 со своим сценарием, заглушки под неё
+    не ставим. Топ-команды — с Фазы 6, по блоку участников pages/tournament.html;
+    витрина товаров — с Фазы 7, по блоку магазина pages/home.html.
 *@
 
 <section class="hero">
@@ -122,7 +122,36 @@
     </section>
 }
 
-<section class="section section--surface">
+@if (Model.Products.Count > 0)
+{
+    <section class="section section--surface" id="shop">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">@T["home.shop_sub"]</span>
+                <h2>@T["home.shop_title"]</h2>
+            </div>
+
+            @* Исход «в корзину» с витрины: форма карточки возвращает на главную. *@
+            <partial name="_StatusMessage" />
+
+            <div class="row g-4">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <vc:product-card product="product" return-fragment="shop" />
+                    </div>
+                }
+            </div>
+
+            <div class="hero__actions mt-4">
+                <a class="btn-ghost" asp-controller="Shop" asp-action="Index">@T["home.shop_all"]</a>
+            </div>
+        </div>
+    </section>
+}
+
+@* Фоны секций чередуются: витрина магазина перед этой секцией — на поверхности. *@
+<section class="section">
     <div class="container">
         <div class="section-title">
             <span class="sub-title">@T["home.subscribe_sub"]</span>

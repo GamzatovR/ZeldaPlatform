@@ -17,6 +17,11 @@ internal sealed class InMemoryRepository<TEntity>(params TEntity[] entities) : I
     public Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
         Task.FromResult(_entities.Find(entity => entity.Id == id));
 
+    public Task<IReadOnlyList<TEntity>> GetByIdsAsync(
+        IReadOnlyCollection<Guid> ids,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<TEntity>>([.. _entities.Where(entity => ids.Contains(entity.Id))]);
+
     public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _entities.Add(entity);
