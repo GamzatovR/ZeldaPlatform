@@ -29,6 +29,16 @@ public sealed class GetTournamentsQueryValidator : AbstractValidator<GetTourname
             .When(query => query.Status.HasValue)
             .WithMessage("Неизвестный статус турнира.");
 
+        RuleFor(query => query.PrizeMin)
+            .GreaterThanOrEqualTo(0)
+            .When(query => query.PrizeMin.HasValue)
+            .WithMessage("Призовой фонд не может быть отрицательным.");
+
+        RuleFor(query => query.To)
+            .GreaterThanOrEqualTo(query => query.From)
+            .When(query => query.From.HasValue && query.To.HasValue)
+            .WithMessage("Дата «по» не может быть раньше даты «с».");
+
         RuleFor(query => query.Region)
             .IsInEnum()
             .When(query => query.Region.HasValue)

@@ -1,0 +1,44 @@
+// Страница сущности: вводный блок с мета-строкой и тематические блоки ниже.
+// Из .tournament-details-desc макета (pages/tournament.html) — общий для турнира,
+// команды, игрока и матча, чтобы четыре страницы не расходились в ритме.
+
+.details-desc {
+  margin-bottom: var(--space-8);
+}
+
+.details-desc__lead {
+  max-width: 820px;
+  margin-top: var(--space-5);
+  color: var(--color-text-muted);
+}
+
+.details-block {
+  margin-bottom: var(--space-8);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.details-block__title {
+  margin-bottom: var(--space-5);
+  font-size: var(--fs-5xl);
+  font-weight: $fw-bold;
+  letter-spacing: $ls-wide;
+
+  @media (max-width: $bp-md - 1px) {
+    font-size: $fs-5xl-sm;
+  }
+}
+
+// Плашка состояния сущности над содержимым: «на модерации», «только чтение».
+.details-notice {
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-family: var(--font-prose);
+  font-size: var(--fs-sm);
+}

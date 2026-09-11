@@ -691,4 +691,217 @@
   <data name="pagination.page" xml:space="preserve">
     <value>Страница {0}</value>
   </data>
+  <data name="enum.match_status.scheduled" xml:space="preserve">
+    <value>Запланирован</value>
+  </data>
+  <data name="enum.match_status.live" xml:space="preserve">
+    <value>Идёт</value>
+  </data>
+  <data name="enum.match_status.finished" xml:space="preserve">
+    <value>Завершён</value>
+  </data>
+  <data name="enum.match_status.postponed" xml:space="preserve">
+    <value>Перенесён</value>
+  </data>
+  <data name="enum.match_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="enum.tournament_status.announced" xml:space="preserve">
+    <value>Анонсирован</value>
+  </data>
+  <data name="enum.tournament_status.ongoing" xml:space="preserve">
+    <value>Идёт</value>
+  </data>
+  <data name="enum.tournament_status.finished" xml:space="preserve">
+    <value>Завершён</value>
+  </data>
+  <data name="enum.tournament_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="enum.tournament_tier.s" xml:space="preserve">
+    <value>Tier S</value>
+  </data>
+  <data name="enum.tournament_tier.a" xml:space="preserve">
+    <value>Tier A</value>
+  </data>
+  <data name="enum.tournament_tier.b" xml:space="preserve">
+    <value>Tier B</value>
+  </data>
+  <data name="enum.tournament_tier.c" xml:space="preserve">
+    <value>Tier C</value>
+  </data>
+  <data name="enum.region.global" xml:space="preserve">
+    <value>Весь мир</value>
+  </data>
+  <data name="enum.region.europe" xml:space="preserve">
+    <value>Европа</value>
+  </data>
+  <data name="enum.region.cis" xml:space="preserve">
+    <value>СНГ</value>
+  </data>
+  <data name="enum.region.north_america" xml:space="preserve">
+    <value>Северная Америка</value>
+  </data>
+  <data name="enum.region.south_america" xml:space="preserve">
+    <value>Южная Америка</value>
+  </data>
+  <data name="enum.region.asia" xml:space="preserve">
+    <value>Азия</value>
+  </data>
+  <data name="enum.region.oceania" xml:space="preserve">
+    <value>Океания</value>
+  </data>
+  <data name="enum.player_role.attacker" xml:space="preserve">
+    <value>Атакующий</value>
+  </data>
+  <data name="enum.player_role.defender" xml:space="preserve">
+    <value>Защитник</value>
+  </data>
+  <data name="enum.player_role.support" xml:space="preserve">
+    <value>Поддержка</value>
+  </data>
+  <data name="enum.player_role.flex" xml:space="preserve">
+    <value>Универсал</value>
+  </data>
+  <data name="enum.player_role.coach" xml:space="preserve">
+    <value>Тренер</value>
+  </data>
+  <data name="enum.player_role.substitute" xml:space="preserve">
+    <value>Запасной</value>
+  </data>
+  <data name="enum.match_list_state.all" xml:space="preserve">
+    <value>Все матчи</value>
+  </data>
+  <data name="enum.match_list_state.upcoming" xml:space="preserve">
+    <value>Предстоящие</value>
+  </data>
+  <data name="enum.match_list_state.past" xml:space="preserve">
+    <value>Прошедшие</value>
+  </data>
+  <data name="nav.tournaments" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="nav.schedule" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
+  <data name="nav.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="nav.players" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="filter.title" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="filter.any" xml:space="preserve">
+    <value>Любой</value>
+  </data>
+  <data name="filter.search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="filter.search_placeholder" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="filter.sort" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="filter.apply" xml:space="preserve">
+    <value>Показать</value>
+  </data>
+  <data name="filter.reset" xml:space="preserve">
+    <value>Сбросить всё</value>
+  </data>
+  <data name="filter.found" xml:space="preserve">
+    <value>Найдено: {0}</value>
+  </data>
+  <data name="filter.empty" xml:space="preserve">
+    <value>По этим условиям ничего не нашлось. Попробуйте ослабить фильтр или сбросить его.</value>
+  </data>
+  <data name="tournament.list_title" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="tournament.list_sub" xml:space="preserve">
+    <value>Все турниры ZeldaArena</value>
+  </data>
+  <data name="tournament.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="tournament.region" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="tournament.from" xml:space="preserve">
+    <value>Начало с</value>
+  </data>
+  <data name="tournament.to" xml:space="preserve">
+    <value>Начало по</value>
+  </data>
+  <data name="tournament.prize_min" xml:space="preserve">
+    <value>Призовой от</value>
+  </data>
+  <data name="tournament.prize" xml:space="preserve">
+    <value>Призовой фонд</value>
+  </data>
+  <data name="tournament.dates" xml:space="preserve">
+    <value>Даты</value>
+  </data>
+  <data name="tournament.tier" xml:space="preserve">
+    <value>Уровень</value>
+  </data>
+  <data name="tournament.participants" xml:space="preserve">
+    <value>Участников: {0}</value>
+  </data>
+  <data name="tournament.featured" xml:space="preserve">
+    <value>Главный турнир</value>
+  </data>
+  <data name="tournament.sort.date_desc" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="tournament.sort.date_asc" xml:space="preserve">
+    <value>Сначала старые</value>
+  </data>
+  <data name="tournament.sort.prize_desc" xml:space="preserve">
+    <value>Призовой по убыванию</value>
+  </data>
+  <data name="tournament.sort.prize_asc" xml:space="preserve">
+    <value>Призовой по возрастанию</value>
+  </data>
+  <data name="tournament.sort.name_asc" xml:space="preserve">
+    <value>По названию</value>
+  </data>
+  <data name="tournament.details_sub" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="tournament.rules" xml:space="preserve">
+    <value>Регламент</value>
+  </data>
+  <data name="tournament.matches" xml:space="preserve">
+    <value>Матчи турнира</value>
+  </data>
+  <data name="tournament.matches_empty" xml:space="preserve">
+    <value>В этой вкладке матчей нет.</value>
+  </data>
+  <data name="tournament.teams" xml:space="preserve">
+    <value>Команды-участницы</value>
+  </data>
+  <data name="tournament.teams_empty" xml:space="preserve">
+    <value>Состав участников ещё не объявлен.</value>
+  </data>
+  <data name="tournament.seed" xml:space="preserve">
+    <value>Посев {0}</value>
+  </data>
+  <data name="tournament.placement" xml:space="preserve">
+    <value>Место: {0}</value>
+  </data>
+  <data name="tournament.rating" xml:space="preserve">
+    <value>Рейтинг {0}</value>
+  </data>
+  <data name="match.best_of" xml:space="preserve">
+    <value>Bo{0}</value>
+  </data>
+  <data name="match.details" xml:space="preserve">
+    <value>Подробнее о матче</value>
+  </data>
+  <data name="match.vs" xml:space="preserve">
+    <value>против</value>
+  </data>
 </root>

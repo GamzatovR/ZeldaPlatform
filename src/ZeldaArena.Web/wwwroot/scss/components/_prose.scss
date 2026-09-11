@@ -1,0 +1,56 @@
+// Связный текст из базы: регламент турнира и тело новости. Оба приходят
+// размеченным HTML, прошедшим HtmlSanitizer на входе (docs/SPEC.md §15), —
+// поэтому стили навешиваются на теги внутри, а не на классы, которых там нет.
+// Образец — .article-content макета (pages/match.html).
+
+.prose {
+  max-width: 820px;
+  color: var(--color-text-muted);
+  font-family: var(--font-prose);
+  font-size: var(--fs-sm);
+  line-height: $lh-prose;
+
+  h2,
+  h3,
+  h4 {
+    margin: var(--space-6) 0 var(--space-3);
+    font-family: var(--font-body);
+    letter-spacing: $ls-tight;
+  }
+
+  h2 {
+    font-size: var(--fs-4xl);
+  }
+
+  h3 {
+    font-size: var(--fs-3xl);
+  }
+
+  ul,
+  ol {
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-5);
+  }
+
+  li {
+    margin-bottom: var(--space-1);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  blockquote {
+    margin: var(--space-5) 0;
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--color-accent);
+    color: var(--color-text);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+}

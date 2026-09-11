@@ -1,0 +1,37 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@model TournamentListItemDto
+@inject IHtmlLocalizer<SharedResource> T
+
+@* Карточка турнира в списке: .entity-card на тех же токенах, что команды и игроки. *@
+<article class="entity-card">
+    <avatar image="@Url.StoredFile(Model.LogoPath)" name="@Model.Name" />
+
+    <h2 class="entity-card__name">
+        <a asp-controller="Tournaments" asp-action="Details" asp-route-slug="@Model.Slug">@Model.Name</a>
+    </h2>
+
+    <p class="entity-card__caption">
+        <time datetime="@Model.StartsAt.ToString("O")">@Model.StartsAt.ToLocalTime().ToString("d")</time>
+        —
+        <time datetime="@Model.EndsAt.ToString("O")">@Model.EndsAt.ToLocalTime().ToString("d")</time>
+    </p>
+
+    <p class="entity-card__prize">
+        @T["tournament.prize"]: <strong>@($"{Model.PrizePoolAmount:N0} {Model.PrizePoolCurrency}")</strong>
+    </p>
+
+    <ul class="entity-card__tags">
+        <li>
+            <span class="badge-token @(Model.Status == TournamentStatus.Ongoing ? "badge-token--live" : null)">@T[EnumResourceKeys.For(Model.Status)]</span>
+        </li>
+        <li><span class="badge-token">@T[EnumResourceKeys.For(Model.Tier)]</span></li>
+        <li><span class="badge-token">@T[EnumResourceKeys.For(Model.Region)]</span></li>
+        @if (Model.IsFeatured)
+        {
+            <li><span class="badge-token badge-token--premium">@T["tournament.featured"]</span></li>
+        }
+    </ul>
+</article>

@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments
+@model PagedResult<TournamentListItemDto>
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Результат фильтра: итог, сетка и пагинация. Отдельный partial, потому что
+    в Фазе 8 его же вернёт GET /api/tournaments (docs/SPEC.md §10.1, сценарий 1),
+    и страница подменит только этот блок.
+*@
+@if (Model.TotalCount == 0)
+{
+    <p class="empty-state">@T["filter.empty"]</p>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", Model.TotalCount]</p>
+
+    <div class="row g-4">
+        @foreach (var tournament in Model.Items)
+        {
+            <div class="col-12 col-sm-6 col-lg-4">
+                <partial name="_TournamentCard" model="tournament" />
+            </div>
+        }
+    </div>
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}
