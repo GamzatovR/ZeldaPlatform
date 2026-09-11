@@ -958,4 +958,22 @@
   <data name="stats.rating" xml:space="preserve">
     <value>Рейтинг</value>
   </data>
+  <data name="schedule.title" xml:space="preserve">
+    <value>Расписание</value>
+  </data>
+  <data name="schedule.sub" xml:space="preserve">
+    <value>Матчи по дням</value>
+  </data>
+  <data name="schedule.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="schedule.all_tournaments" xml:space="preserve">
+    <value>Все турниры</value>
+  </data>
+  <data name="schedule.status" xml:space="preserve">
+    <value>Статус матча</value>
+  </data>
+  <data name="schedule.ahead" xml:space="preserve">
+    <value>Впереди</value>
+  </data>
 </root>

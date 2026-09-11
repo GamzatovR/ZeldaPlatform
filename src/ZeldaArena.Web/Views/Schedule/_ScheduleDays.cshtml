@@ -1,0 +1,58 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Matches.Queries.GetSchedule
+@using ZeldaArena.Domain.Enums
+@using ZeldaArena.Web.Extensions
+@model ScheduleDto
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Дни расписания. Строка матча — .single-stream-schedule-box макета: слева время,
+    в центре пара команд и турнир, вся строка — ссылка на страницу матча.
+    Отменённый матч зачёркнут, как «Not Streaming» в макете, но статус написан
+    и словами: цвет и зачёркивание — не единственные признаки (§9.1).
+*@
+@if (Model.TotalCount == 0)
+{
+    <p class="empty-state">@T["filter.empty"]</p>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", Model.TotalCount]</p>
+
+    foreach (var day in Model.Days)
+    {
+        <section class="schedule-day" aria-labelledby="day-@day.Day.ToString("yyyy-MM-dd")">
+            <h2 class="schedule-day__title" id="day-@day.Day.ToString("yyyy-MM-dd")">
+                <time datetime="@day.Day.ToString("yyyy-MM-dd")">@day.Day.ToString("D")</time>
+            </h2>
+
+            <div class="row g-3">
+                @foreach (var match in day.Matches)
+                {
+                    <div class="col-12 col-lg-6">
+                        <article class="schedule-box @(match.Status == MatchStatus.Canceled ? "schedule-box--canceled" : null)"
+                                 data-match-id="@match.Id">
+                            <time class="schedule-box__time" datetime="@match.ScheduledAt.ToString("O")">
+                                @match.ScheduledAt.ToString("HH:mm") <small>UTC</small>
+                            </time>
+
+                            <div class="schedule-box__content">
+                                <span class="schedule-box__tournament">@match.TournamentName</span>
+
+                                <h3 class="schedule-box__teams">
+                                    <a class="schedule-box__link" asp-controller="Matches" asp-action="Details" asp-route-id="@match.Id">
+                                        @match.TeamAName <span class="schedule-box__score" data-match-score>@match.ScoreA : @match.ScoreB</span> @match.TeamBName
+                                    </a>
+                                </h3>
+
+                                <span class="badge-token @(match.IsLive ? "badge-token--live" : null)">@T[EnumResourceKeys.For(match.Status)]</span>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <pagination page="@Model.Page" total-pages="@Model.TotalPages" />
+}
