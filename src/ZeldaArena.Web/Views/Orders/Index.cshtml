@@ -38,7 +38,8 @@
                 </div>
                 <div class="col-12 col-md-4">
                     <label class="form-label" for="sort">@T["filter.sort"]</label>
-                    <select class="form-select" id="sort" name="sort">
+                    <select class="form-select" id="sort" name="sort"
+                            data-default="@OrderSorting.Map.DefaultKey" data-no-chip>
                         @foreach (var key in OrderSorting.Map.Keys)
                         {
                             <option value="@key" selected="@(key == sort)">@T["order.sort." + key]</option>
@@ -47,7 +48,8 @@
                 </div>
                 <div class="col-12 col-md-4">
                     <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
-                    <select class="form-select" id="pageSize" name="pageSize">
+                    <select class="form-select" id="pageSize" name="pageSize"
+                            data-default="@PageSizes.Default" data-no-chip>
                         @foreach (var size in PageSizes.Allowed)
                         {
                             <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
@@ -56,13 +58,16 @@
                 </div>
             </div>
 
+            <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+                 aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
             <div class="filters__actions">
                 <button class="btn-solid" type="submit">@T["filter.apply"]</button>
-                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+                <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
             </div>
         </form>
 
-        <div id="order-list" data-list>
+        <div id="order-list" data-list data-api="@Url.Action("Index", "OrdersApi", new { area = "Api" })">
             <partial name="_OrderList" model="Model.Result" />
         </div>
     </div>

@@ -19,9 +19,9 @@ namespace ZeldaArena.Web.RateLimiting;
 /// Важно при выборе порогов: атрибут висит на странице целиком, поэтому лимит
 /// расходует и открытие формы, а не только отправка. Один осмысленный заход — это
 /// минимум два запроса, и пороги заданы с учётом этого. Уточнить до «только POST»
-/// можно будет в Фазе 8, когда формы аккаунта получат AJAX-эндпоинты.
+/// можно, если формы аккаунта получат AJAX-эндпоинты; в Фазе 8 они остались формами.
 ///
-/// Комментарии и чат получат свои политики в Фазе 10.
+/// Чат матча получит свою политику в Фазе 10.
 /// </summary>
 public static class RateLimitPolicies
 {
@@ -35,6 +35,9 @@ public static class RateLimitPolicies
 
     /// <summary>Подтверждение и повторная отправка кода.</summary>
     public const string PaymentConfirm = "payment-confirm";
+
+    /// <summary>Remote-проверка занятости адреса на форме регистрации (§10.1, сценарий 11).</summary>
+    public const string EmailCheck = "account-email-check";
 
     private static readonly TimeSpan Window = TimeSpan.FromMinutes(5);
 
@@ -75,6 +78,11 @@ public static class RateLimitPolicies
             // тот защищает один платёж от перебора, эта политика — сервер
             // от перебора по многим платежам сразу.
             AddFixedWindow(options, PaymentConfirm, permitLimit: 20);
+
+            // Remote-проверка уходит на каждую правку поля после первой ошибки, поэтому
+            // порог выше, чем у форм: человек, исправляющий опечатку, в него не упрётся,
+            // а перебор адресов — упрётся.
+            AddFixedWindow(options, EmailCheck, permitLimit: 60);
         });
 
         return services;

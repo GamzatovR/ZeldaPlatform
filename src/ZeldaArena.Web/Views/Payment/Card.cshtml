@@ -12,8 +12,8 @@
     Шаг 1 мнимой оплаты (docs/SPEC.md §7.6). Макета у страницы нет — карточка
     формы взята из .login-form, как предписывает docs/design/design-system.md.
 
-    Форма обычная, без AJAX: перевод оплаты на fetch — Фаза 8. Без JavaScript
-    она обязана работать и сейчас (§9.1).
+    С JavaScript форму отправляет ajax-form.js в POST /api/payments (§10.1, сценарий 7);
+    без него это обычная форма, и она обязана работать (§9.1).
 *@
 <partial name="_PageTitle" model="pageTitle" />
 
@@ -33,7 +33,7 @@
 
                     <div class="alert-token" role="status">@Localizer["payment.card_hint"]</div>
 
-                    <form method="post">
+                    <form method="post" data-ajax-form="@Url.Action("Start", "PaymentsApi", new { area = "Api" })">
                         <div asp-validation-summary="ModelOnly" class="mb-3"></div>
 
                         <input type="hidden" asp-for="PlanId" />

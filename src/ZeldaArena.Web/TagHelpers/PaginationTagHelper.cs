@@ -18,8 +18,8 @@ namespace ZeldaArena.Web.TagHelpers;
 /// Каждая ссылка — полный адрес текущей страницы, в котором заменён только номер:
 /// фильтр и сортировка сохраняются, а ссылку на третью страницу можно переслать
 /// и открыть в новой вкладке (§10.2, «источник истины — URL»). Без JavaScript
-/// это обычные ссылки; в Фазе 8 клиент перехватит их по <c>data-pagination</c>
-/// и будет подгружать partial с <c>history.pushState</c>, не меняя разметки.
+/// это обычные ссылки; с ним <c>ajax-list.js</c> перехватывает их по
+/// <c>data-pagination</c> и подгружает partial с <c>history.pushState</c>.
 /// </summary>
 [HtmlTargetElement("pagination", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localizer) : TagHelper
@@ -147,10 +147,16 @@ public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localiz
     /// <summary>
     /// Текущий адрес с заменённым номером. Первая страница — без параметра: у одного
     /// состояния списка должен быть один адрес, иначе закладки и кэш двоятся.
+    ///
+    /// Список, отданный из Areas/Api, рисуется в ответ на <c>/api/…</c>; путь страницы
+    /// тогда приходит в <see cref="ListViewData.PagePath"/>, а параметры фильтра —
+    /// те же, что у запроса.
     /// </summary>
     private string UrlFor(int number)
     {
         var request = ViewContext.HttpContext.Request;
+        var path = ViewContext.ViewData[ListViewData.PagePath] as string
+            ?? request.PathBase + request.Path;
         var query = request.Query
             .Where(pair => !string.Equals(pair.Key, PageParameter, StringComparison.OrdinalIgnoreCase))
             .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
@@ -160,7 +166,7 @@ public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localiz
             query[PageParameter] = new StringValues(number.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
 
-        return request.PathBase + request.Path + QueryString.Create(query);
+        return path + QueryString.Create(query);
     }
 
     private TagBuilder Icon(string name)

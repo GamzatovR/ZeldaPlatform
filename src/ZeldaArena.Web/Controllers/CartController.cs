@@ -21,7 +21,7 @@ namespace ZeldaArena.Web.Controllers;
 ///
 /// Сейчас это обычные POST-формы с переходом обратно (PRG) — прогрессивное улучшение
 /// §9.1: корзина обязана работать без JavaScript. AJAX-эндпоинты
-/// <c>POST/PATCH/DELETE /api/cart/items</c> Фазы 8 встанут поверх тех же команд.
+/// <c>POST/PATCH/DELETE /api/cart/items</c> работают поверх тех же команд.
 /// </summary>
 [Route("cart")]
 public sealed class CartController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller

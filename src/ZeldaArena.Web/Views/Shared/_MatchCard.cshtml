@@ -22,7 +22,7 @@
                 }
                 <div class="match-card__content">
                     <h3 class="match-card__name">
-                        <a asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamASlug">@Model.TeamAName</a>
+                        <a asp-area="" asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamASlug">@Model.TeamAName</a>
                     </h3>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     @Model.ScheduledAt.ToLocalTime().ToString("g")
                 </time>
 
-                <a class="match-card__link" asp-controller="Matches" asp-action="Details" asp-route-id="@Model.Id">
+                <a class="match-card__link" asp-area="" asp-controller="Matches" asp-action="Details" asp-route-id="@Model.Id">
                     @T["match.details"]<span class="visually-hidden">: @Model.TeamAName @T["match.vs"] @Model.TeamBName</span>
                 </a>
             </div>
@@ -62,7 +62,7 @@
                 }
                 <div class="match-card__content">
                     <h3 class="match-card__name">
-                        <a asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamBSlug">@Model.TeamBName</a>
+                        <a asp-area="" asp-controller="Teams" asp-action="Details" asp-route-slug="@Model.TeamBSlug">@Model.TeamBName</a>
                     </h3>
                 </div>
             </div>

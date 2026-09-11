@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using ZeldaArena.Application.Features.Shop.Queries.GetProducts;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Models.Shop;
 
 namespace ZeldaArena.Web.ViewComponents;
@@ -20,7 +21,10 @@ public sealed class ProductCardViewComponent : ViewComponent
     public IViewComponentResult Invoke(ProductListItemDto product, string? returnFragment = null)
     {
         // Вернуться туда же, откуда добавляли: каталог с тем же фильтром и страницей.
-        var returnUrl = Request.Path + Request.QueryString
+        // Список из Areas/Api рисуется в ответ на /api/…, и путь страницы тогда
+        // приходит в ViewData — иначе без JavaScript вернуло бы на голый фрагмент.
+        var path = ViewData[ListViewData.PagePath] as string ?? Request.Path.Value;
+        var returnUrl = path + Request.QueryString
             + (string.IsNullOrEmpty(returnFragment) ? string.Empty : "#" + returnFragment);
 
         return View(new ProductCardViewModel(product, returnUrl));

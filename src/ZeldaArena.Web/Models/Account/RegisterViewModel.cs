@@ -1,6 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Mvc;
+
+using ZeldaArena.Application.Common.Validation;
 using ZeldaArena.Domain.Constants;
+using ZeldaArena.Web.Areas.Api.Controllers;
 
 namespace ZeldaArena.Web.Models.Account;
 
@@ -10,8 +14,16 @@ namespace ZeldaArena.Web.Models.Account;
 /// </summary>
 public sealed class RegisterViewModel
 {
+    /// <remarks>
+    /// Занятость адреса проверяется ещё до отправки — Remote-запросом к Areas/Api
+    /// (docs/SPEC.md §10.1, сценарий 11). Предел длины повторяет серверное правило:
+    /// иначе адрес, пропущенный формой, отвергла бы FluentValidation.
+    /// </remarks>
     [Required(ErrorMessage = "Укажите адрес электронной почты.")]
+    [StringLength(AccountValidationRules.MaxEmailLength, ErrorMessage = "Адрес не длиннее {1} символов.")]
     [EmailAddress(ErrorMessage = "Адрес электронной почты указан неверно.")]
+    [Remote("CheckEmail", "AccountApi", ApiControllerBase.AreaName,
+        ErrorMessage = "Этот адрес электронной почты уже занят.")]
     [Display(Name = "Адрес электронной почты")]
     public string Email { get; set; } = string.Empty;
 

@@ -5,7 +5,7 @@
 @model PagedResult<TeamListItemDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@* Результат фильтра команд; в Фазе 8 его же вернёт GET /api/teams (§10.1, сценарий 1). *@
+@* Результат фильтра команд; его же возвращает GET /api/teams (§10.1, сценарий 1). *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["filter.empty"]</p>
@@ -22,7 +22,7 @@ else
                     <avatar image="@Url.StoredFile(team.LogoPath)" name="@team.Name" />
 
                     <h2 class="entity-card__name">
-                        <a asp-controller="Teams" asp-action="Details" asp-route-slug="@team.Slug">@team.Name</a>
+                        <a asp-area="" asp-controller="Teams" asp-action="Details" asp-route-slug="@team.Slug">@team.Name</a>
                     </h2>
 
                     <p class="entity-card__caption">@team.Tag · @team.CountryCode</p>

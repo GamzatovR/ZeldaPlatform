@@ -14,7 +14,7 @@
 @*
     Расписание (docs/SPEC.md §9.3, п. 2) по docs/design/pages/schedule.html:
     строки .single-stream-schedule-box, сгруппированные по дням. Фильтр — GET-форма,
-    адрес и есть состояние (§10.2); в Фазе 8 клиент подменит только #schedule-days.
+    адрес и есть состояние (§10.2); с JavaScript ajax-list.js подменяет только #schedule-days.
 *@
 <partial name="_PageTitle" model="pageTitle" />
 
@@ -44,13 +44,16 @@
                 </div>
             </div>
 
+            <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+                 aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
             <div class="filters__actions">
                 <button class="btn-solid" type="submit">@T["filter.apply"]</button>
-                <a class="filters__reset" asp-action="Index">@T["filter.reset"]</a>
+                <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
             </div>
         </form>
 
-        <div id="schedule-days" data-list>
+        <div id="schedule-days" data-list data-api="@Url.Action("Index", "ScheduleApi", new { area = "Api" })">
             <partial name="_ScheduleDays" model="Model.Schedule" />
         </div>
     </div>

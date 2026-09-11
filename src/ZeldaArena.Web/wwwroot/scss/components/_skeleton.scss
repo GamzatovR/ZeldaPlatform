@@ -1,0 +1,42 @@
+// Скелетон списка на время AJAX-загрузки (docs/SPEC.md §9.1). Подставляется
+// ajax-list.js, только если ответ задержался: на быстром ответе мигание
+// заглушки хуже, чем её отсутствие.
+
+.skeleton-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+.skeleton-token {
+  min-height: 12rem;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-raised) 25%,
+    var(--color-surface) 50%,
+    var(--color-surface-raised) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-md);
+  animation: skeleton-shimmer 1.2s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// Пока идёт запрос, старый список ещё виден, но показано, что он устарел.
+[data-list][aria-busy="true"] {
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 
+using ZeldaArena.Web.Areas.Api;
+
 namespace ZeldaArena.Web.Authorization;
 
 /// <summary>
@@ -36,7 +38,8 @@ public sealed class FeatureAccessDeniedHandler : IAuthorizationMiddlewareResultH
         // значит потерять пользователя, у которого подписка уже есть.
         if (featureCode is null
             || context.User.Identity?.IsAuthenticated != true
-            || PrefersJson(context.Request))
+            || PrefersJson(context.Request)
+            || ApiRequest.Is(context.Request))
         {
             return _default.HandleAsync(next, context, policy, authorizeResult);
         }
@@ -63,8 +66,8 @@ public sealed class FeatureAccessDeniedHandler : IAuthorizationMiddlewareResultH
                 ?.FeatureCode;
 
     /// <summary>
-    /// Задел под Фазу 8: эндпоинты Areas/Api отвечают ProblemDetails, и редирект
-    /// на HTML-страницу сломал бы вызывающий их fetch (§10.1).
+    /// Клиент, ждущий JSON, и любой запрос к Areas/Api получают код ответа: редирект
+    /// на HTML-страницу тарифов сломал бы вызывающий их fetch (§10.1).
     /// </summary>
     private static bool PrefersJson(HttpRequest request) =>
         request.Headers.Accept.Any(value =>

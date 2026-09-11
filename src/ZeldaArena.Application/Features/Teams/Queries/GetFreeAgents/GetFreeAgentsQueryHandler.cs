@@ -7,7 +7,7 @@ namespace ZeldaArena.Application.Features.Teams.Queries.GetFreeAgents;
 
 /// <summary>
 /// Верхняя граница выборки — чтобы выпадающий список не превратился в выгрузку
-/// всей базы игроков. Поиска по списку нет: это задача Фазы 8 вместе с AJAX.
+/// всей базы игроков. Поиска по списку нет: в §10.1 такого сценария нет.
 /// </summary>
 public sealed class GetFreeAgentsQueryHandler(
     IReadRepository<Player> players,

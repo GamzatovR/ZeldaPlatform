@@ -10,7 +10,7 @@
     <avatar image="@Url.StoredFile(Model.LogoPath)" name="@Model.Name" />
 
     <h2 class="entity-card__name">
-        <a asp-controller="Tournaments" asp-action="Details" asp-route-slug="@Model.Slug">@Model.Name</a>
+        <a asp-area="" asp-controller="Tournaments" asp-action="Details" asp-route-slug="@Model.Slug">@Model.Name</a>
     </h2>
 
     <p class="entity-card__caption">

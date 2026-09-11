@@ -10,8 +10,8 @@
 
 @*
     Корзина (docs/SPEC.md §9.3, п. 13), по docs/design/pages/cart.html. Таблица вынесена
-    в partial с data-cart: в Фазе 8 AJAX-изменение количества вернёт её же целиком
-    с пересчитанным итогом (§10.1, сценарий 6).
+    в partial с data-cart: после AJAX-изменения количества GET /api/cart возвращает её же
+    целиком с пересчитанным на сервере итогом (§10.1, сценарий 6).
 *@
 <partial name="_PageTitle" model="pageTitle" />
 
@@ -19,7 +19,7 @@
     <div class="container">
         <partial name="_StatusMessage" />
 
-        <div id="cart" data-cart>
+        <div id="cart" data-cart data-api="@Url.Action("Index", "CartApi", new { area = "Api" })">
             <partial name="_CartTable" model="Model" />
         </div>
     </div>
