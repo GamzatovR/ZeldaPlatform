@@ -1558,4 +1558,13 @@
   <data name="email.order_receipt.body" xml:space="preserve">
     <value>Оплата прошла. Заказ {0}, сумма {1}. Заказ и его статус — в разделе «Мои заказы».</value>
   </data>
+  <data name="payment.concurrent_change" xml:space="preserve">
+    <value>Платёж одновременно изменён в другой вкладке. Обновите страницу и повторите.</value>
+  </data>
+  <data name="order.concurrent_change" xml:space="preserve">
+    <value>Заказ одновременно изменён в другой вкладке. Обновите страницу и повторите.</value>
+  </data>
+  <data name="cart.line_limit" xml:space="preserve">
+    <value>Не больше {0} шт. одного товара в корзине.</value>
+  </data>
 </root>

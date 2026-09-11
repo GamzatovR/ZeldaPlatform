@@ -46,6 +46,14 @@ public static class ShopErrors
     public static readonly Error StockChanged =
         new("checkout.stock_changed", "Пока вы оформляли заказ, остаток на складе изменился. Проверьте корзину.");
 
+    /// <summary>Заказ или остаток его товаров изменили параллельно; ничего не сохранено.</summary>
+    public static readonly Error OrderChangedConcurrently =
+        new("order.concurrent_change", "Заказ одновременно изменён в другой вкладке.");
+
+    /// <summary>Шаблон «Не больше {0} шт. одного товара» — предел строки корзины.</summary>
+    public static Error LineLimit(int limit) =>
+        new Error("cart.line_limit", $"Не больше {limit} шт. одного товара в корзине.").WithArguments(limit);
+
     public static readonly Error OrderNotFound =
         new("order.not_found", "Заказ не найден.");
 

@@ -239,6 +239,20 @@ public class CartScenarioTests
         _world.Carts.Entities.ShouldBeEmpty();
     }
 
+    /// <summary>Повторные добавления складываются, но строка не растёт выше предела.</summary>
+    [Fact]
+    public async Task Repeated_adds_stop_at_the_line_limit()
+    {
+        var plenty = _world.AddProduct("Korok Mini", 3490m, stock: 500);
+
+        (await AddAsync(plenty.Id, 60)).IsSuccess.ShouldBeTrue();
+
+        var result = await AddAsync(plenty.Id, 60);
+
+        result.Error.ShouldBe(ShopErrors.LineLimit(CartStockCheck.MaxQuantityPerLine));
+        _world.CartOf(anonymousId: Guest)!.Items.Single().Quantity.ShouldBe(60);
+    }
+
     [Fact]
     public void Validators_reject_quantities_outside_the_line_limit()
     {

@@ -5,6 +5,7 @@ using ZeldaArena.Application.Common.Models.Shop;
 using ZeldaArena.Application.Features.Orders;
 using ZeldaArena.Application.Features.Orders.Commands.PlaceOrder;
 using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
+using ZeldaArena.Application.Features.Payments;
 using ZeldaArena.Domain.Billing;
 using ZeldaArena.Domain.Constants;
 using ZeldaArena.Domain.Enums;
@@ -366,9 +367,74 @@ public class OrderScenarioTests
         _shop.SingleOrder.Status.ShouldBe(OrderStatus.Pending);
     }
 
+    /// <summary>
+    /// «Назад» после оплаты и повторная отправка того же кода: заказ остаётся оплаченным,
+    /// ответ — «уже обработан», а не отмена и не второй чек.
+    /// </summary>
+    [Fact]
+    public async Task Resubmitting_the_code_after_payment_changes_nothing()
+    {
+        var order = await _shop.BuyAsync(_keyboard);
+
+        (await _shop.ConfirmAsync(_shop.Codes.Code)).Error.ShouldBe(BillingErrors.AlreadyProcessed);
+
+        order.Status.ShouldBe(OrderStatus.Paid);
+        _keyboard.StockQuantity.ShouldBe(4);
+        _shop.Email.Count(RecordingBillingEmailSender.LetterKind.OrderReceipt).ShouldBe(1);
+    }
+
+    /// <summary>Параллельное изменение при подтверждении — понятный отказ, чек не уходит.</summary>
+    [Fact]
+    public async Task A_concurrent_change_while_confirming_is_answered_politely()
+    {
+        await _shop.AddToCartAsync(_keyboard);
+        await _shop.PlaceAsync();
+        _shop.World.UnitOfWork.ConflictOnNextSave = true;
+
+        (await _shop.ConfirmAsync(_shop.Codes.Code)).Error.ShouldBe(BillingErrors.ConcurrentChange);
+        _shop.Email.Count(RecordingBillingEmailSender.LetterKind.OrderReceipt).ShouldBe(0);
+    }
+
+    /// <summary>
+    /// Отдельными тестами: в памяти нет отката транзакции, и после первой неудачной
+    /// отмены сущности уже изменены — второй вызов увидел бы закрытый платёж.
+    /// </summary>
+    [Fact]
+    public async Task A_concurrent_change_while_canceling_the_order_is_answered_politely()
+    {
+        await _shop.AddToCartAsync(_keyboard);
+        await _shop.PlaceAsync();
+        _shop.World.UnitOfWork.ConflictOnNextSave = true;
+
+        (await _shop.CancelOrderAsync(_shop.SingleOrder.Number)).Error.ShouldBe(ShopErrors.OrderChangedConcurrently);
+    }
+
+    [Fact]
+    public async Task A_concurrent_change_while_canceling_the_payment_is_answered_politely()
+    {
+        await _shop.AddToCartAsync(_keyboard);
+        await _shop.PlaceAsync();
+        _shop.World.UnitOfWork.ConflictOnNextSave = true;
+
+        (await _shop.CancelPaymentAsync()).Error.ShouldBe(BillingErrors.ConcurrentChange);
+    }
+
+    /// <summary>Одно правило срока на форму и серверный валидатор (форма больше не пропускает истёкшую карту в 500).</summary>
+    [Fact]
+    public void Current_month_card_is_valid_and_last_year_is_expired()
+    {
+        var today = DateTime.UtcNow;
+
+        CardPaymentRules.IsExpired(today.Month, today.Year).ShouldBeFalse();
+        CardPaymentRules.IsExpired(12, today.Year - 1).ShouldBeTrue();
+        CardPaymentRules.IsExpired(13, today.Year).ShouldBeTrue();
+        CardPaymentRules.IsExpired(1, 0).ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData("1234")]
     [InlineData("   ")]
+    [InlineData("   12")]
     public void A_too_short_phone_is_rejected_before_the_domain(string phone) =>
         new PlaceOrderCommandValidator().Validate(OrderScenarioFixture.Command(phone: phone))
             .Errors.ShouldContain(failure => failure.PropertyName == nameof(PlaceOrderCommand.Phone));

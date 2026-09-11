@@ -1,5 +1,6 @@
 using MediatR;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Application.Common.Models.Identity;
@@ -61,9 +62,19 @@ public sealed class ConfirmPaymentCommandHandler(
             return Result.Failure(BillingErrors.PaymentNotFound);
         }
 
-        return payment.Purpose == PaymentPurpose.Order
-            ? await ConfirmOrderPaymentAsync(payment, request.ConfirmationCode, cancellationToken).ConfigureAwait(false)
-            : await ConfirmSubscriptionPaymentAsync(payment, request.ConfirmationCode, userId, cancellationToken).ConfigureAwait(false);
+        try
+        {
+            return payment.Purpose == PaymentPurpose.Order
+                ? await ConfirmOrderPaymentAsync(payment, request.ConfirmationCode, cancellationToken).ConfigureAwait(false)
+                : await ConfirmSubscriptionPaymentAsync(payment, request.ConfirmationCode, userId, cancellationToken).ConfigureAwait(false);
+        }
+        catch (ConcurrencyConflictException)
+        {
+            // Заказ, остаток или подписку изменили параллельно: вторая вкладка, отмена
+            // заказа, фоновая служба. Сохранение откатилось целиком, попытка не израсходована,
+            // письма не ушли — покупатель повторит ввод, а не увидит ошибку сервера.
+            return Result.Failure(BillingErrors.ConcurrentChange);
+        }
     }
 
     private async Task<Result> ConfirmSubscriptionPaymentAsync(

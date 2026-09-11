@@ -36,6 +36,13 @@ public sealed class AddCartItemCommandHandler(
             return Result.Failure<CartSummaryDto>(error);
         }
 
+        // Валидатор ограничивает одно добавление, но повторные добавления складываются.
+        // Строку больше предела поле количества в корзине уже не смогло бы показать.
+        if (alreadyInCart + request.Quantity > CartStockCheck.MaxQuantityPerLine)
+        {
+            return Result.Failure<CartSummaryDto>(ShopErrors.LineLimit(CartStockCheck.MaxQuantityPerLine));
+        }
+
         cart ??= await locator.GetOrCreateAsync(owner, cancellationToken).ConfigureAwait(false);
         cart.AddItem(product!, request.Quantity);
 

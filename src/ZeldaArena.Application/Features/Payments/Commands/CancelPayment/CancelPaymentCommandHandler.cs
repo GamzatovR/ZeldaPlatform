@@ -1,5 +1,6 @@
 using MediatR;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Billing;
 using ZeldaArena.Application.Common.Models.Identity;
@@ -74,7 +75,16 @@ public sealed class CancelPaymentCommandHandler(
             }
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (ConcurrencyConflictException)
+        {
+            // Возврат остатка столкнулся с чужим оформлением того же товара: ничего
+            // не сохранено, платёж по-прежнему ждёт кода — отмену можно повторить.
+            return Result.Failure(BillingErrors.ConcurrentChange);
+        }
 
         return Result.Success();
     }

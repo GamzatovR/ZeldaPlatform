@@ -1,5 +1,6 @@
 using MediatR;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Application.Common.Models.Identity;
 using ZeldaArena.Application.Common.Models.Shop;
@@ -56,7 +57,17 @@ public sealed class CancelOrderCommandHandler(
         }
 
         await cancellation.CancelAsync(order, returnItemsToCart: false, cancellationToken).ConfigureAwait(false);
-        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        try
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (ConcurrencyConflictException)
+        {
+            // Заказ оплатили в соседней вкладке или остаток его товара изменило чужое
+            // оформление: ничего не сохранено, страница заказа покажет актуальный статус.
+            return Result.Failure(ShopErrors.OrderChangedConcurrently);
+        }
 
         return Result.Success();
     }
