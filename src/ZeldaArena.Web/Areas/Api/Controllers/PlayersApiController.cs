@@ -21,6 +21,6 @@ public sealed class PlayersApiController(ISender sender, IStringLocalizer<Shared
         return ListPartial(
             "~/Views/Players/_PlayerList.cshtml",
             result,
-            Url.Action(nameof(PlayersController.Index), "Players", new { area = string.Empty }));
+            PageUrl(nameof(PlayersController.Index), "Players"));
     }
 }

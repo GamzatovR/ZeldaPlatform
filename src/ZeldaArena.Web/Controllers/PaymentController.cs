@@ -17,6 +17,7 @@ using ZeldaArena.Domain.Enums;
 using ZeldaArena.Web.Authorization;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Billing;
+using ZeldaArena.Web.Payments;
 using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Controllers;
@@ -26,10 +27,10 @@ namespace ZeldaArena.Web.Controllers;
 /// Реквизиты подписки вводятся здесь, реквизиты заказа — на странице оформления
 /// (<see cref="CheckoutController"/>); ввод кода, повторная отправка и отмена у них общие.
 ///
-/// Пока это обычные формы. AJAX-эндпоинты <c>POST /api/payments</c> и
-/// <c>/api/payments/{id}/confirm</c> из §10.1 появятся в Фазе 8 поверх этих же
-/// хендлеров, страница перестанет перезагружаться, а логика не изменится.
-/// Форма при этом продолжит работать без JavaScript — прогрессивное улучшение §9.1.
+/// Это обычные формы. С JavaScript их отправку перехватывает ajax-form.js и шлёт
+/// в <c>POST /api/payments</c> и <c>/api/payments/{id}/confirm</c> (§10.1) — те же
+/// хендлеры и то же правило исхода (<see cref="PaymentConfirmationOutcome"/>). Без
+/// JavaScript формы работают как раньше — прогрессивное улучшение §9.1.
 ///
 /// Покупка закрыта политикой подтверждённой почты: §8.2 требует подтверждённого
 /// адреса перед оплатой.
@@ -144,19 +145,21 @@ public sealed class PaymentController(
             return NotFound();
         }
 
-        if (result is { IsSuccess: true } && state.Purpose != PaymentPurpose.Order)
+        var outcome = PaymentConfirmationOutcome.Resolve(state, result, localizer);
+
+        if (outcome.StatusMessage is not null)
         {
-            return RedirectToAction(nameof(Success));
+            TempData[StatusKey] = outcome.StatusMessage;
         }
 
-        if (state.Purpose == PaymentPurpose.Order && state.OrderNumber is not null)
+        switch (outcome.Step)
         {
-            var orderOutcome = OrderPaymentOutcome(state, result);
-
-            if (orderOutcome is not null)
-            {
-                return orderOutcome;
-            }
+            case PaymentNextStep.SubscriptionActivated:
+                return RedirectToAction(nameof(Success));
+            case PaymentNextStep.OrderDetails:
+                return RedirectToAction(nameof(OrdersController.Details), "Orders", new { number = state.OrderNumber });
+            case PaymentNextStep.Cart:
+                return RedirectToAction(nameof(CartController.Index), "Cart");
         }
 
         if (result is { IsFailure: true })
@@ -211,44 +214,6 @@ public sealed class PaymentController(
 
     [HttpGet("success")]
     public IActionResult Success() => View();
-
-    /// <summary>
-    /// Куда отправить покупателя после ввода кода за заказ. <c>null</c> — остаться на форме:
-    /// код неверен, но попытки ещё есть.
-    ///
-    /// «Товары снова в корзине» говорится, только когда этот самый запрос провалил оплату
-    /// (истёкший код, последняя попытка) и тем отменил заказ (docs/adr/ADR-0009). Повторная
-    /// отправка уже обработанного кода — кнопкой «Назад» после оплаты или после отмены —
-    /// ведёт на страницу заказа, где виден его настоящий статус.
-    /// </summary>
-    private RedirectToActionResult? OrderPaymentOutcome(PaymentStateDto state, Result? result)
-    {
-        var details = new { number = state.OrderNumber };
-
-        if (result is { IsSuccess: true } || state.Status == PaymentStatus.Succeeded)
-        {
-            TempData[StatusKey] = localizer["order.paid"].Value;
-            return RedirectToAction(nameof(OrdersController.Details), "Orders", details);
-        }
-
-        if (result is { IsFailure: true }
-            && (result.Error.Code == BillingErrors.CodeExpired.Code || result.Error.Code == BillingErrors.NoAttemptsLeft.Code))
-        {
-            TempData[StatusKey] = "!" + localizer.ForError(result.Error) + " " + localizer["order.items_returned"].Value;
-            return RedirectToAction(nameof(CartController.Index), "Cart");
-        }
-
-        if (state.Status != PaymentStatus.Pending)
-        {
-            TempData[StatusKey] = "!" + (result is { IsFailure: true }
-                ? localizer.ForError(result.Error)
-                : localizer[BillingErrors.PaymentNotPending.Code].Value);
-
-            return RedirectToAction(nameof(OrdersController.Details), "Orders", details);
-        }
-
-        return null;
-    }
 
     private static bool IsFinishedOrderPayment(PaymentStateDto state) =>
         state.Purpose == PaymentPurpose.Order && state.OrderNumber is not null && state.Status != PaymentStatus.Pending;

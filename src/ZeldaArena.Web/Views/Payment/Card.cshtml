@@ -33,7 +33,7 @@
 
                     <div class="alert-token" role="status">@Localizer["payment.card_hint"]</div>
 
-                    <form method="post">
+                    <form method="post" data-ajax-form="@Url.Action("Start", "PaymentsApi", new { area = "Api" })">
                         <div asp-validation-summary="ModelOnly" class="mb-3"></div>
 
                         <input type="hidden" asp-for="PlanId" />

@@ -27,7 +27,7 @@ public sealed class TournamentsApiController(ISender sender, IStringLocalizer<Sh
         return ListPartial(
             "~/Views/Tournaments/_TournamentList.cshtml",
             result,
-            Url.Action(nameof(TournamentsController.Index), "Tournaments", new { area = string.Empty }));
+            PageUrl(nameof(TournamentsController.Index), "Tournaments"));
     }
 
     /// <summary>
@@ -55,6 +55,6 @@ public sealed class TournamentsApiController(ISender sender, IStringLocalizer<Sh
         return ListPartial(
             "~/Views/Tournaments/_TournamentMatches.cshtml",
             matches,
-            Url.Action(nameof(TournamentsController.Details), "Tournaments", new { area = string.Empty, slug }));
+            PageUrl(nameof(TournamentsController.Details), "Tournaments", new { slug }));
     }
 }

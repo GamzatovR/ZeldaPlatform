@@ -21,6 +21,6 @@ public sealed class ShopApiController(ISender sender, IStringLocalizer<SharedRes
         return ListPartial(
             "~/Views/Shop/_ProductList.cshtml",
             result,
-            Url.Action(nameof(ShopController.Index), "Shop", new { area = string.Empty }));
+            PageUrl(nameof(ShopController.Index), "Shop"));
     }
 }

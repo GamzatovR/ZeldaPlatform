@@ -45,6 +45,18 @@ public abstract class ApiControllerBase(IStringLocalizer<SharedResource> localiz
         return PartialView(viewName, model);
     }
 
+    /// <summary>
+    /// Адрес страницы сайта, куда клиент перейдёт после операции. Область указана явно:
+    /// из Areas/Api без неё адрес строился бы в области Api и не находился.
+    /// </summary>
+    protected string PageUrl(string action, string controller, object? values = null)
+    {
+        var routeValues = new RouteValueDictionary(values) { ["area"] = string.Empty };
+
+        return Url.Action(action, controller, routeValues)
+            ?? throw new InvalidOperationException($"Нет маршрута к {controller}.{action}.");
+    }
+
     /// <summary>Отказ сценария: текст на языке пользователя плюс код для клиента.</summary>
     protected ObjectResult Failure(Error error, int statusCode = StatusCodes.Status400BadRequest)
     {

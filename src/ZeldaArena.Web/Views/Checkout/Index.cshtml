@@ -22,7 +22,8 @@
 
 <section class="section checkout">
     <div class="container">
-        <form method="post" asp-controller="Checkout" asp-action="Index">
+        <form method="post" asp-controller="Checkout" asp-action="Index"
+              data-ajax-form="@Url.Action("Place", "OrdersApi", new { area = "Api" })">
             <div asp-validation-summary="ModelOnly" class="mb-4"></div>
 
             <input type="hidden" asp-for="IdempotencyKey" />

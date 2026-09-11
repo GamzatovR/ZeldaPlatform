@@ -25,6 +25,6 @@ public sealed class ScheduleApiController(ISender sender, IStringLocalizer<Share
         return ListPartial(
             "~/Views/Schedule/_ScheduleDays.cshtml",
             schedule,
-            Url.Action(nameof(ScheduleController.Index), "Schedule", new { area = string.Empty }));
+            PageUrl(nameof(ScheduleController.Index), "Schedule"));
     }
 }

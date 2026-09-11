@@ -21,6 +21,6 @@ public sealed class TeamsApiController(ISender sender, IStringLocalizer<SharedRe
         return ListPartial(
             "~/Views/Teams/_TeamList.cshtml",
             result,
-            Url.Action(nameof(TeamsController.Index), "Teams", new { area = string.Empty }));
+            PageUrl(nameof(TeamsController.Index), "Teams"));
     }
 }
