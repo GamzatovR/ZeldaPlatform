@@ -1567,4 +1567,7 @@
   <data name="cart.line_limit" xml:space="preserve">
     <value>Не больше {0} шт. одного товара в корзине.</value>
   </data>
+  <data name="api.concurrent_change" xml:space="preserve">
+    <value>Данные одновременно изменены другим запросом. Обновите страницу и повторите.</value>
+  </data>
 </root>

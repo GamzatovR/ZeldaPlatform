@@ -1,11 +1,18 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using ZeldaArena.Web.Constants
 @inject IHtmlLocalizer<SharedResource> T
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 <!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    @*
+        Антифоржери-токен для AJAX (docs/SPEC.md §10.1, §15): http.js кладёт его
+        в заголовок RequestVerificationToken каждого изменяющего запроса.
+    *@
+    <meta name="request-verification-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
     <title>@ViewData["Title"] — @T["brand.name"]</title>
 
     @*

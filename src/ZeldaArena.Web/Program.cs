@@ -7,6 +7,7 @@ using ZeldaArena.Application;
 using ZeldaArena.Application.Common.Interfaces;
 using ZeldaArena.Infrastructure;
 using ZeldaArena.Infrastructure.Persistence.Ef;
+using ZeldaArena.Web.Areas.Api;
 using ZeldaArena.Web.Authorization;
 using ZeldaArena.Web.Middleware;
 using ZeldaArena.Web.RateLimiting;
@@ -65,6 +66,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.LogoutPath = "/Identity/Account/Logout";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
+    // fetch к Areas/Api получает 401/403, а не HTML страницы входа (§10.1).
+    options.AnswerApiWithStatusCodes();
 });
 
 var app = builder.Build();
