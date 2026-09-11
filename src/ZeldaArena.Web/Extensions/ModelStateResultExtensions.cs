@@ -32,8 +32,6 @@ public static class ModelStateResultExtensions
             return;
         }
 
-        // Отсутствующий ключ ResourceManager возвращает как есть, поэтому незакрытый
-        // перевод даст код ошибки вместо пустой строки — это заметно при вычитке.
-        modelState.AddModelError(string.Empty, localizer[result.Error.Code]);
+        modelState.AddModelError(string.Empty, localizer.ForError(result.Error));
     }
 }

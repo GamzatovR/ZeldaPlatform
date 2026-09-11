@@ -13,6 +13,15 @@ public interface IRepository<TEntity>
 {
     Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Несколько сущностей одним запросом. Оформление заказа и слияние корзин меняют
+    /// остаток у каждого товара позиции, и загрузка по одному давала бы запрос на строку
+    /// (docs/SPEC.md §16, проверка на N+1). Отсутствующие идентификаторы пропускаются.
+    /// </summary>
+    Task<IReadOnlyList<TEntity>> GetByIdsAsync(
+        IReadOnlyCollection<Guid> ids,
+        CancellationToken cancellationToken = default);
+
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     void Remove(TEntity entity);

@@ -1,4 +1,5 @@
 using ZeldaArena.Application.Common.Models.Billing;
+using ZeldaArena.Application.Features.Payments;
 using ZeldaArena.Application.Features.Payments.Commands.CancelPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 using ZeldaArena.Application.Features.Payments.Commands.ResendPaymentCode;
@@ -84,13 +85,8 @@ internal sealed class PaymentScenarioFixture
         new StartSubscriptionPaymentCommandHandler(
             CurrentUser(),
             Plans,
-            Payments,
             Subscriptions,
-            new InMemoryReadRepository<Payment>(Payments.Entities),
-            new InMemoryQueryExecutor(),
-            Gateway,
-            Codes,
-            Email,
+            Initiator(),
             UnitOfWork,
             Clock())
         .Handle(
@@ -162,6 +158,16 @@ internal sealed class PaymentScenarioFixture
 
     private StubCurrentUserService CurrentUser() =>
         new() { UserId = SignedInUserId ?? UserId, UserName = "player" };
+
+    private PaymentInitiator Initiator() =>
+        new(
+            Payments,
+            new InMemoryReadRepository<Payment>(Payments.Entities),
+            new InMemoryQueryExecutor(),
+            Gateway,
+            Codes,
+            Email,
+            Clock());
 
     private FixedDateTimeProvider Clock() => new(_now);
 }

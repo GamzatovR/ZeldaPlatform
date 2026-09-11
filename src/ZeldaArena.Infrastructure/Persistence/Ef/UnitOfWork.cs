@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
@@ -9,8 +10,21 @@ namespace ZeldaArena.Infrastructure.Persistence.Ef;
 /// </summary>
 public sealed class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
-        context.SaveChangesAsync(cancellationToken);
+    /// <summary>
+    /// Конфликт токена конкурентности (xmin) переводится в исключение Application:
+    /// сценарий должен уметь ответить на гонку, не зная про EF Core.
+    /// </summary>
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (DbUpdateConcurrencyException exception)
+        {
+            throw new ConcurrencyConflictException(exception.Message, exception);
+        }
+    }
 
     public async Task<TResult> ExecuteInTransactionAsync<TResult>(
         Func<CancellationToken, Task<TResult>> operation,
