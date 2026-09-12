@@ -8,7 +8,7 @@ namespace ZeldaArena.Web.Models.Account;
 /// Серверная проверка выполняется всегда — FluentValidation в ValidationBehavior.
 ///
 /// Отдельный тип, а не команда из Application: доменные сущности и команды
-/// из HTTP-запроса не биндятся (CLAUDE.md).
+/// из HTTP-запроса не биндятся (docs/CONVENTIONS.md).
 /// </summary>
 public sealed class LoginViewModel
 {

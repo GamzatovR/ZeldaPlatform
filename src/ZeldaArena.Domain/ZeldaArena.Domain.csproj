@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>ZeldaArena.Domain</RootNamespace>
-    <!-- Ядро собирается без предупреждений (CLAUDE.md, «Стиль кода»). -->
+    <!-- Ядро собирается без предупреждений (docs/CONVENTIONS.md, «Стиль кода»). -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 

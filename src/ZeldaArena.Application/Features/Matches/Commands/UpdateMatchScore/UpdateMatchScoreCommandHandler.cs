@@ -13,7 +13,7 @@ namespace ZeldaArena.Application.Features.Matches.Commands.UpdateMatchScore;
 /// Хендлер делает ровно одно: находит матч, просит его изменить счёт и сохраняет.
 ///
 /// Проверок формата серии здесь нет — они внутри Match.UpdateScore, единственного
-/// способа изменить счёт (CLAUDE.md). Рассылки в SignalR здесь тоже нет: сущность
+/// способа изменить счёт (docs/CONVENTIONS.md). Рассылки в SignalR здесь тоже нет: сущность
 /// поднимает MatchScoreChangedEvent, интерсептор рассылает его после сохранения,
 /// обработчик события зовёт IRealtimeNotifier. Это пример SRP из docs/SPEC.md §5.5.
 ///

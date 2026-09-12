@@ -5,6 +5,7 @@
 создание собственной команды и расширенную статистику.
 
 Полное техническое задание — [`docs/SPEC.md`](docs/SPEC.md).
+Соглашения по архитектуре, коду и безопасности — [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md).
 Ход работ — [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
 ## Стек
@@ -62,7 +63,7 @@ tests/
   ZeldaArena.UnitTests/          домен и Application
   ZeldaArena.ArchitectureTests/  правило зависимостей (docs/SPEC.md §5.2)
 deploy/                       docker-compose и конфигурация развёртывания
-docs/                         ТЗ, ADR, макеты, журнал прогресса
+docs/                         ТЗ, соглашения, ADR, макеты, журнал прогресса
 ```
 
 Правило зависимостей: `Domain ← Application ← Infrastructure`, `Web` ссылается на

@@ -4,7 +4,7 @@ namespace ZeldaArena.Application.Features.Admin.Dashboard.Queries.GetAdminDashbo
 
 /// <summary>
 /// Размеры блоков приходят из кода, а не от пользователя, но соглашение
-/// «запрос + хендлер + валидатор» действует без исключений (CLAUDE.md).
+/// «запрос + хендлер + валидатор» действует без исключений (docs/CONVENTIONS.md).
 /// </summary>
 public sealed class GetAdminDashboardQueryValidator : AbstractValidator<GetAdminDashboardQuery>
 {

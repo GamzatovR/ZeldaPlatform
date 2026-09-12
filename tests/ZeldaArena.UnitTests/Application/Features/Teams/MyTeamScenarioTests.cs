@@ -21,7 +21,7 @@ namespace ZeldaArena.UnitTests.Application.Features.Teams;
 /// одному атрибуту на действии:
 /// <list type="bullet">
 ///   <item>чужую команду не правит никто (IDOR, §15);</item>
-///   <item>после истечения подписки команда видна, но не правится (CLAUDE.md);</item>
+///   <item>после истечения подписки команда видна, но не правится (docs/CONVENTIONS.md);</item>
 ///   <item>игрок не состоит в двух командах одновременно (§15).</item>
 /// </list>
 /// </summary>
@@ -133,7 +133,7 @@ public class MyTeamScenarioTests
         _mine.ActiveRoster.ShouldContain(entry => entry.PlayerId == player.Id);
     }
 
-    /// <summary>Состав историчен: уход закрывает запись датой, а не удаляет её (CLAUDE.md).</summary>
+    /// <summary>Состав историчен: уход закрывает запись датой, а не удаляет её (docs/CONVENTIONS.md).</summary>
     [Fact]
     public async Task Removing_a_player_closes_the_roster_entry()
     {

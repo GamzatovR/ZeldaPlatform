@@ -6,7 +6,7 @@ namespace ZeldaArena.Infrastructure.Email;
 /// (docs/SPEC.md §7.6).
 ///
 /// Пароль читается из конфигурации, но в репозиторий не попадает: секреты живут
-/// в User Secrets и переменных окружения (§16, CLAUDE.md «Безопасность»).
+/// в User Secrets и переменных окружения (§16, docs/CONVENTIONS.md «Безопасность»).
 /// </summary>
 public sealed class EmailOptions
 {

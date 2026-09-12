@@ -2,7 +2,7 @@ namespace ZeldaArena.Web.Constants;
 
 /// <summary>
 /// Имена символов спрайта <c>wwwroot/img/icons.svg</c>. Константы, а не строковые
-/// литералы по разметке (CLAUDE.md, «Стиль кода»): опечатка в <c>&lt;icon name&gt;</c>
+/// литералы по разметке (docs/CONVENTIONS.md, «Стиль кода»): опечатка в <c>&lt;icon name&gt;</c>
 /// не даёт ни ошибки сборки, ни исключения в рантайме — иконка просто не рисуется.
 ///
 /// Соответствие именам классов макета — docs/design/design-system.md §12.

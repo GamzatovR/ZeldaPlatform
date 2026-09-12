@@ -4,7 +4,7 @@ namespace ZeldaArena.ArchitectureTests;
 
 /// <summary>
 /// <c>Html.Raw</c> — только для <c>RulesHtml</c> и <c>BodyHtml</c>, прошедших HtmlSanitizer
-/// на входе (docs/SPEC.md §15, §20 пункт 8; CLAUDE.md, «Безопасность»).
+/// на входе (docs/SPEC.md §15, §20 пункт 8; docs/CONVENTIONS.md, «Безопасность»).
 ///
 /// Razor кодирует всё, что выводит, и единственный способ вернуть в разметку чужой HTML —
 /// явный <c>Html.Raw</c>. Поэтому достаточно следить за ним одним: вызов над любым

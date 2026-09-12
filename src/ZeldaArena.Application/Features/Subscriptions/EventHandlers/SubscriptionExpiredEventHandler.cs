@@ -22,7 +22,7 @@ namespace ZeldaArena.Application.Features.Subscriptions.EventHandlers;
 ///
 /// Команда пользователя при этом остаётся в целости, но её редактирование
 /// закрывается отсутствием фичи <c>team.create</c> — решение зафиксировано
-/// в CLAUDE.md, раздел «При неопределённости».
+/// в docs/CONVENTIONS.md, раздел «При неопределённости».
 /// </summary>
 public sealed class SubscriptionExpiredEventHandler(
     IUserAccountService userAccounts,

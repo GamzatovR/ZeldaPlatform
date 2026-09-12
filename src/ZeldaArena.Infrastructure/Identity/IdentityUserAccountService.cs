@@ -13,7 +13,7 @@ namespace ZeldaArena.Infrastructure.Identity;
 /// Класс сознательно тонкий: он переводит вызовы и результаты, но не принимает решений.
 /// Правила «блокированного не пускать», «письмо отправить после регистрации», «после
 /// смены пароля разлогинить остальных» живут в хендлерах Application, иначе
-/// бизнес-логика расползлась бы по инфраструктуре (CLAUDE.md).
+/// бизнес-логика расползлась бы по инфраструктуре (docs/CONVENTIONS.md).
 /// </summary>
 public sealed class IdentityUserAccountService(
     UserManager<ApplicationUser> userManager,

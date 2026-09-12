@@ -107,7 +107,7 @@ public class Match : BaseEntity, IAuditableEntity
     }
 
     /// <summary>
-    /// Единственный способ изменить счёт (CLAUDE.md). Завершённый матч не редактируется,
+    /// Единственный способ изменить счёт (docs/CONVENTIONS.md). Завершённый матч не редактируется,
     /// счёт не может выйти за формат серии, каждое изменение порождает доменное событие.
     /// </summary>
     public void UpdateScore(int scoreA, int scoreB)

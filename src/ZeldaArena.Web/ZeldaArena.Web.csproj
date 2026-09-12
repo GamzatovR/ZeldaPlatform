@@ -36,7 +36,7 @@
     <None Include="wwwroot\scss\**" />
   </ItemGroup>
 
-  <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (CLAUDE.md, «Команды»). -->
+  <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (docs/CONVENTIONS.md, «Команды»). -->
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>

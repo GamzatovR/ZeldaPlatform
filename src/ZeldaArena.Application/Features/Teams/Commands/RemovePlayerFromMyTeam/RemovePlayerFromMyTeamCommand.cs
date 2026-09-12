@@ -5,7 +5,7 @@ namespace ZeldaArena.Application.Features.Teams.Commands.RemovePlayerFromMyTeam;
 
 /// <summary>
 /// Убрать игрока из состава. Запись состава закрывается датой ухода, а не удаляется:
-/// состав историчен (CLAUDE.md), и прошлые матчи обязаны показывать тех, кто в них играл.
+/// состав историчен (docs/CONVENTIONS.md), и прошлые матчи обязаны показывать тех, кто в них играл.
 /// </summary>
 public sealed record RemovePlayerFromMyTeamCommand(Guid TeamId, Guid PlayerId) : ICommand, IAuditableRequest
 {

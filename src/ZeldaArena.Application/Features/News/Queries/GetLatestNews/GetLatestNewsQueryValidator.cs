@@ -5,7 +5,7 @@ namespace ZeldaArena.Application.Features.News.Queries.GetLatestNews;
 /// <summary>
 /// Ограничение размера ленты — та же роль, что и у валидатора витрины матчей:
 /// каждый сценарий получает валидатор, даже когда параметр приходит из кода
-/// (CLAUDE.md, «Архитектурные правила»).
+/// (docs/CONVENTIONS.md, «Архитектурные правила»).
 /// </summary>
 public sealed class GetLatestNewsQueryValidator : AbstractValidator<GetLatestNewsQuery>
 {

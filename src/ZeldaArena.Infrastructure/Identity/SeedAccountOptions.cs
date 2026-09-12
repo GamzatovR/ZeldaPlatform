@@ -11,7 +11,7 @@ public sealed class SeedAccountOptions
     /// <summary>
     /// В разработке задаётся в appsettings.Development.json — это фикстура, а не секрет.
     /// В любой другой среде приходит переменной окружения SeedAccounts__Admin__Password
-    /// (§16, CLAUDE.md «Безопасность»).
+    /// (§16, docs/CONVENTIONS.md «Безопасность»).
     /// </summary>
     public string Password { get; set; } = string.Empty;
 
