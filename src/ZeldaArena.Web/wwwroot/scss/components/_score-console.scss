@@ -41,17 +41,52 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
+  margin-bottom: var(--space-5);
 
   form {
     margin: 0;
   }
 
+  // Крупнее строчной кнопки таблицы: по ней попадают во время матча, в том числе
+  // на сенсорном экране. Нижняя граница 44px — размер цели из рекомендаций WCAG.
   button {
     width: 100%;
+    min-height: 44px;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--fs-2xl);
   }
 }
 
+// На узком экране пять колонок не помещаются, и название команды рассыпается
+// в столбик по букве. Названия уходят строкой выше своих счетов.
 @media (max-width: $bp-sm - 1px) {
+  .score-console__board {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    row-gap: var(--space-1);
+  }
+
+  // Все пять ячеек табло — span'ы, поэтому раскладка по порядку, а не по типу:
+  // название, счёт, двоеточие, счёт, название.
+  .score-console__board > :nth-child(1) {
+    grid-area: 1 / 1;
+  }
+
+  .score-console__board > :nth-child(2) {
+    grid-area: 2 / 1;
+  }
+
+  .score-console__board > :nth-child(3) {
+    grid-area: 2 / 2;
+  }
+
+  .score-console__board > :nth-child(4) {
+    grid-area: 2 / 3;
+  }
+
+  .score-console__board > :nth-child(5) {
+    grid-area: 1 / 3;
+  }
+
   .score-console__score {
     font-size: $fs-5xl-sm;
   }
