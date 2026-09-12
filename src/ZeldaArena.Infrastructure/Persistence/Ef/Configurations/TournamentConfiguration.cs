@@ -45,8 +45,12 @@ public sealed class TournamentConfiguration : EntityConfiguration<Tournament>
             .HasForeignKey(match => match.TournamentId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Состав участников — часть агрегата: по нему AddTeam и RemoveTeam решают, есть ли
+        // уже такая команда. Без AutoInclude турнир из GetByIdAsync приходил бы с пустым
+        // составом — та же ловушка, что с фичами тарифа (Фаза 4) и составом команды (Фаза 6).
         builder.Navigation(tournament => tournament.Participants)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .AutoInclude();
         builder.Navigation(tournament => tournament.Matches)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
     }

@@ -1,0 +1,71 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+    var sort = Model.Sort;
+    var defaultSort = AdminTournamentSorting.Map.DefaultKey;
+}
+
+@* Результат фильтра турниров; его же возвращает GET /api/admin/tournaments. Область
+   в ссылках указана явно: из Areas/Api без неё адрес строился бы не туда (Фаза 8). *@
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.tournaments"]</caption>
+            <thead>
+                <tr>
+                    <sortable-header asc="@AdminTournamentSorting.NameAscending" desc="@AdminTournamentSorting.NameDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.common.name"]</sortable-header>
+                    <th scope="col">@T["admin.common.status"]</th>
+                    <th scope="col">@T["admin.common.region"]</th>
+                    <sortable-header asc="@AdminTournamentSorting.DateAscending" desc="@AdminTournamentSorting.DateDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.tournament.dates"]</sortable-header>
+                    <sortable-header asc="@AdminTournamentSorting.PrizeAscending" desc="@AdminTournamentSorting.PrizeDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.tournament.prize"]</sortable-header>
+                    <th scope="col">@T["admin.tournament.teams"]</th>
+                    <th scope="col">@T["admin.tournament.matches"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tournament in result.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Tournaments" asp-action="Edit" asp-route-id="@tournament.Id">@tournament.Name</a>
+                            @if (tournament.IsFeatured)
+                            {
+                                <span class="badge-token badge-token--accent">@T["admin.tournament.featured"]</span>
+                            }
+                            <div class="admin-table__muted">@T[EnumResourceKeys.For(tournament.Tier)]</div>
+                        </td>
+                        <td>
+                            <span class="badge-token @(tournament.Status == TournamentStatus.Ongoing ? "badge-token--live" : string.Empty)">@T[EnumResourceKeys.For(tournament.Status)]</span>
+                        </td>
+                        <td>@T[EnumResourceKeys.For(tournament.Region)]</td>
+                        <td>
+                            <time datetime="@tournament.StartsAt.ToString("O")">@tournament.StartsAt.ToString("dd.MM.yyyy")</time>
+                            — <time datetime="@tournament.EndsAt.ToString("O")">@tournament.EndsAt.ToString("dd.MM.yyyy")</time>
+                        </td>
+                        <td>@MoneyText.Format(tournament.PrizePool, tournament.Currency)</td>
+                        <td>@tournament.ParticipantCount</td>
+                        <td>@tournament.MatchCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

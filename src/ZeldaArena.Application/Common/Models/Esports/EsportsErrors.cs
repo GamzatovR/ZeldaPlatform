@@ -32,4 +32,16 @@ public static class EsportsErrors
     /// <summary>Игрок не может состоять в двух командах одновременно (§15).</summary>
     public static readonly Error PlayerInAnotherTeam =
         new("player.already_in_team", "Игрок уже состоит в другой команде.");
+
+    public static readonly Error TournamentNotFound =
+        new("tournament.not_found", "Турнир не найден.");
+
+    public static readonly Error TournamentHasMatches =
+        new("tournament.has_matches", "У турнира есть матчи — удалить его нельзя, можно отменить.");
+
+    public static readonly Error ParticipantHasMatches =
+        new("tournament.participant_has_matches", "У команды есть матчи в этом турнире — убрать её нельзя.");
+
+    public static readonly Error TeamNotApproved =
+        new("tournament.team_not_approved", "Команда ещё не одобрена и не может участвовать в турнирах.");
 }

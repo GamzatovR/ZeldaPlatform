@@ -1669,4 +1669,163 @@
   <data name="table.sort_descending" xml:space="preserve">
     <value> — сортировать по убыванию</value>
   </data>
+  <data name="admin.nav.tournaments" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="admin.common.name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="admin.common.region" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="admin.common.actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="admin.back_to_list" xml:space="preserve">
+    <value>К списку</value>
+  </data>
+  <data name="admin.create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="admin.save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="admin.add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="admin.saved" xml:space="preserve">
+    <value>Изменения сохранены.</value>
+  </data>
+  <data name="admin.delete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="admin.delete_confirm" xml:space="preserve">
+    <value>Удалить безвозвратно?</value>
+  </data>
+  <data name="admin.delete_yes" xml:space="preserve">
+    <value>Да, удалить</value>
+  </data>
+  <data name="admin.open_on_site" xml:space="preserve">
+    <value>Открыть на сайте</value>
+  </data>
+  <data name="admin.tournament.create" xml:space="preserve">
+    <value>Создать турнир</value>
+  </data>
+  <data name="admin.tournament.created" xml:space="preserve">
+    <value>Турнир создан.</value>
+  </data>
+  <data name="admin.tournament.status_changed" xml:space="preserve">
+    <value>Статус турнира изменён.</value>
+  </data>
+  <data name="admin.tournament.team_added" xml:space="preserve">
+    <value>Команда добавлена в турнир.</value>
+  </data>
+  <data name="admin.tournament.team_removed" xml:space="preserve">
+    <value>Команда убрана из турнира.</value>
+  </data>
+  <data name="admin.tournament.deleted" xml:space="preserve">
+    <value>Турнир удалён.</value>
+  </data>
+  <data name="admin.tournament.dates" xml:space="preserve">
+    <value>Даты</value>
+  </data>
+  <data name="admin.tournament.prize" xml:space="preserve">
+    <value>Призовой фонд</value>
+  </data>
+  <data name="admin.tournament.teams" xml:space="preserve">
+    <value>Команд</value>
+  </data>
+  <data name="admin.tournament.matches" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="admin.tournament.featured" xml:space="preserve">
+    <value>Избранный</value>
+  </data>
+  <data name="admin.tournament.rules_hint" xml:space="preserve">
+    <value>Разрешены заголовки, абзацы, списки, выделение, ссылки и таблицы. Остальная разметка удаляется при сохранении.</value>
+  </data>
+  <data name="admin.tournament.transition.start" xml:space="preserve">
+    <value>Начать турнир</value>
+  </data>
+  <data name="admin.tournament.transition.finish" xml:space="preserve">
+    <value>Завершить турнир</value>
+  </data>
+  <data name="admin.tournament.transition.cancel" xml:space="preserve">
+    <value>Отменить турнир</value>
+  </data>
+  <data name="admin.tournament.details" xml:space="preserve">
+    <value>Карточка турнира</value>
+  </data>
+  <data name="admin.tournament.participants" xml:space="preserve">
+    <value>Участники</value>
+  </data>
+  <data name="admin.tournament.no_participants" xml:space="preserve">
+    <value>Участников пока нет.</value>
+  </data>
+  <data name="admin.tournament.team" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="admin.tournament.seed_and_placement" xml:space="preserve">
+    <value>Посев и место</value>
+  </data>
+  <data name="admin.tournament.seed" xml:space="preserve">
+    <value>Посев</value>
+  </data>
+  <data name="admin.tournament.placement" xml:space="preserve">
+    <value>Место</value>
+  </data>
+  <data name="admin.tournament.remove_team" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="admin.tournament.add_team" xml:space="preserve">
+    <value>Добавить команду</value>
+  </data>
+  <data name="admin.tournament.roster_closed" xml:space="preserve">
+    <value>Состав закрыт: турнир завершён или отменён.</value>
+  </data>
+  <data name="admin.tournament.delete" xml:space="preserve">
+    <value>Удалить турнир</value>
+  </data>
+  <data name="admin.tournament.cannot_delete" xml:space="preserve">
+    <value>Матчей у турнира: {0}. Удалить его нельзя — можно только отменить.</value>
+  </data>
+  <data name="tournament.not_found" xml:space="preserve">
+    <value>Турнир не найден.</value>
+  </data>
+  <data name="tournament.has_matches" xml:space="preserve">
+    <value>У турнира есть матчи — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="tournament.participant_has_matches" xml:space="preserve">
+    <value>У команды есть матчи в этом турнире — убрать её нельзя.</value>
+  </data>
+  <data name="tournament.team_not_approved" xml:space="preserve">
+    <value>Команда ещё не одобрена и не может участвовать в турнирах.</value>
+  </data>
+  <data name="tournament.ends_before_starts" xml:space="preserve">
+    <value>Турнир не может закончиться раньше, чем начнётся.</value>
+  </data>
+  <data name="tournament.cannot_start" xml:space="preserve">
+    <value>Начать можно только анонсированный турнир.</value>
+  </data>
+  <data name="tournament.cannot_finish" xml:space="preserve">
+    <value>Завершить можно только идущий турнир.</value>
+  </data>
+  <data name="tournament.finished_is_read_only" xml:space="preserve">
+    <value>Завершённый турнир отменить нельзя.</value>
+  </data>
+  <data name="tournament.roster_is_closed" xml:space="preserve">
+    <value>Состав участников закрыт: турнир уже завершён или отменён.</value>
+  </data>
+  <data name="tournament.team_already_participates" xml:space="preserve">
+    <value>Команда уже участвует в этом турнире.</value>
+  </data>
+  <data name="tournament.team_not_found" xml:space="preserve">
+    <value>Команда не участвует в этом турнире.</value>
+  </data>
+  <data name="tournament_team.invalid_seed" xml:space="preserve">
+    <value>Посев начинается с единицы.</value>
+  </data>
+  <data name="tournament_team.invalid_placement" xml:space="preserve">
+    <value>Место начинается с первого.</value>
+  </data>
 </root>

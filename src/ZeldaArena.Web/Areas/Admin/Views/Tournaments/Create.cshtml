@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.tournament.create"].Value;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.tournament.create"]</h1>
+    <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+</div>
+
+<div class="form-card admin-form">
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_TournamentFields" model="Model" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.create"]</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}

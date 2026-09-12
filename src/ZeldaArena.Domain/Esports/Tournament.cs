@@ -175,20 +175,28 @@ public class Tournament : BaseEntity, IAuditableEntity
         return participant;
     }
 
+    /// <summary>
+    /// Состав доигранного или отменённого турнира — история: убрать из него команду
+    /// значило бы переписать итоги, поэтому он закрыт так же, как для добавления.
+    /// </summary>
     public void RemoveTeam(Guid teamId)
     {
-        var participant = _participants.SingleOrDefault(item => item.TeamId == teamId);
-
         InvariantViolationException.ThrowIf(
-            participant is null,
-            "tournament.team_not_found",
-            "Команда не участвует в этом турнире.");
+            Status is TournamentStatus.Finished or TournamentStatus.Canceled,
+            "tournament.roster_is_closed",
+            "Состав участников закрыт: турнир уже завершён или отменён.");
 
-        _participants.Remove(participant!);
+        var participant = FindParticipant(teamId);
+
+        _participants.Remove(participant);
     }
 
+    public void ChangeSeed(Guid teamId, int seed) => FindParticipant(teamId).ChangeSeed(seed);
+
     /// <summary>Итоговое место команды. Проставляется, когда турнир доигран.</summary>
-    public void SetPlacement(Guid teamId, int placement)
+    public void SetPlacement(Guid teamId, int placement) => FindParticipant(teamId).SetPlacement(placement);
+
+    private TournamentTeam FindParticipant(Guid teamId)
     {
         var participant = _participants.SingleOrDefault(item => item.TeamId == teamId);
 
@@ -197,7 +205,7 @@ public class Tournament : BaseEntity, IAuditableEntity
             "tournament.team_not_found",
             "Команда не участвует в этом турнире.");
 
-        participant!.SetPlacement(placement);
+        return participant!;
     }
 
     private static string? Normalize(string? value) =>

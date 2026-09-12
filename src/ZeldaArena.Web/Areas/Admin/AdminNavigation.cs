@@ -16,5 +16,6 @@ public static class AdminNavigation
     public static IReadOnlyList<AdminNavItem> Items { get; } =
     [
         new("admin.nav.dashboard", "Dashboard", IconNames.Grid, PolicyNames.ModeratorOrAdmin),
+        new("admin.nav.tournaments", "Tournaments", IconNames.Trophy, PolicyNames.CanManageCatalog),
     ];
 }
