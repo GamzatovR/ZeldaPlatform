@@ -51,6 +51,9 @@ public static class EsportsErrors
     public static readonly Error ParticipantHasMatches =
         new("tournament.participant_has_matches", "У команды есть матчи в этом турнире — убрать её нельзя.");
 
+    public static readonly Error TeamHasHistory =
+        new("team.has_history", "У команды есть матчи, турниры или история состава — удалить её нельзя.");
+
     public static readonly Error TeamNotApproved =
         new("tournament.team_not_approved", "Команда ещё не одобрена и не может участвовать в турнирах.");
 }

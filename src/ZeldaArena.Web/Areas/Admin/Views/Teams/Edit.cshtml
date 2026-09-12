@@ -1,0 +1,160 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Teams.TeamEditViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var team = Model.Team;
+    ViewData["Title"] = team.Name;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@team.Name</h1>
+    <div class="row-actions">
+        @if (team.IsApproved)
+        {
+            <span class="badge-token badge-token--success">@T["admin.team.approved_filter"]</span>
+        }
+        else
+        {
+            <span class="badge-token badge-token--premium">@T["admin.team.awaiting"]</span>
+        }
+        @if (team.IsApproved)
+        {
+            <a class="link-underline" asp-area="" asp-controller="Teams" asp-action="Details" asp-route-slug="@team.Slug" target="_blank" rel="noopener">@T["admin.open_on_site"]</a>
+        }
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="moderation-title">
+    <h2 class="admin-panel__title" id="moderation-title">@T["admin.team.moderation"]</h2>
+
+    <p class="admin-panel__empty">
+        @(team.IsUserOwned ? T["admin.team.user_owned_notice"] : T["admin.team.official_notice"])
+    </p>
+
+    <form method="post" asp-action="SetApproval" asp-route-id="@team.Id">
+        <input type="hidden" name="isApproved" value="@(!team.IsApproved)" />
+        <button class="@(team.IsApproved ? "btn-ghost" : "btn-solid") btn-solid--sm" type="submit">
+            @(team.IsApproved ? T["admin.team.revoke"] : T["admin.team.approve"])
+        </button>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="team-profile-title">
+    <h2 class="admin-panel__title" id="team-profile-title">@T["admin.team.profile"]</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@team.Id" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_TeamFields" for="Form" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" id="roster" aria-labelledby="roster-title">
+    <h2 class="admin-panel__title" id="roster-title">@T["admin.team.roster"] (@team.Roster.Count)</h2>
+
+    @if (team.Roster.Count == 0)
+    {
+        <p class="admin-panel__empty">@T["admin.team.empty_roster"]</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-token admin-table">
+                <caption class="visually-hidden">@T["admin.team.roster"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@T["admin.team.player"]</th>
+                        <th scope="col">@T["admin.team.role"]</th>
+                        <th scope="col">@T["admin.team.joined_at"]</th>
+                        <th scope="col"><span class="visually-hidden">@T["admin.common.actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in team.Roster)
+                    {
+                        var formId = "roster-" + player.PlayerId.ToString("N");
+                        <tr>
+                            <td>@player.Nickname</td>
+                            <td>
+                                <form class="inline-form" id="@formId" method="post"
+                                      asp-action="ChangeRole" asp-route-id="@team.Id" asp-route-playerId="@player.PlayerId">
+                                    <label class="visually-hidden" for="@(formId)-role">@T["admin.team.role"]</label>
+                                    <select class="form-select" id="@(formId)-role" name="role">
+                                        @foreach (var role in Enum.GetValues<PlayerRole>())
+                                        {
+                                            <option value="@role" selected="@(player.Role == role)">@T[EnumResourceKeys.For(role)]</option>
+                                        }
+                                    </select>
+                                    <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.save"]</button>
+                                </form>
+                            </td>
+                            <td><time datetime="@player.JoinedAt.ToString("O")">@player.JoinedAt.ToString("dd.MM.yyyy")</time></td>
+                            <td>
+                                <form method="post" asp-action="RemovePlayer" asp-route-id="@team.Id" asp-route-playerId="@player.PlayerId">
+                                    <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.team.remove_player"]</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (team.FreeAgents.Count > 0)
+    {
+        <form class="inline-form admin-section" method="post" asp-action="AddPlayer" asp-route-id="@team.Id">
+            <label class="form-label" for="add-player">@T["admin.team.add_player"]</label>
+            <select class="form-select" id="add-player" name="playerId" required>
+                @foreach (var agent in team.FreeAgents)
+                {
+                    <option value="@agent.Id">@agent.Nickname</option>
+                }
+            </select>
+            <label class="visually-hidden" for="add-role">@T["admin.team.role"]</label>
+            <select class="form-select" id="add-role" name="role">
+                @foreach (var role in Enum.GetValues<PlayerRole>())
+                {
+                    <option value="@role">@T[EnumResourceKeys.For(role)]</option>
+                }
+            </select>
+            <button class="btn-solid btn-solid--sm" type="submit">@T["admin.add"]</button>
+        </form>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.team.no_free_agents"]</p>
+    }
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="team-danger-title">
+    <h2 class="admin-panel__title" id="team-danger-title">@T["admin.delete"]</h2>
+
+    @if (team.CanDelete)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.team.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@team.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.team.cannot_delete"]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}

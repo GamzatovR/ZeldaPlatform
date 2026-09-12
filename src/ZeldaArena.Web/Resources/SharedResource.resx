@@ -1924,4 +1924,103 @@
   <data name="match.even_best_of" xml:space="preserve">
     <value>Формат серии должен быть нечётным.</value>
   </data>
+  <data name="admin.nav.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="admin.team.create" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="admin.team.created" xml:space="preserve">
+    <value>Команда создана.</value>
+  </data>
+  <data name="admin.team.create_notice" xml:space="preserve">
+    <value>Команда, заведённая администрацией, одобрена сразу и не принадлежит подписчику.</value>
+  </data>
+  <data name="admin.team.profile" xml:space="preserve">
+    <value>Профиль команды</value>
+  </data>
+  <data name="admin.team.moderation" xml:space="preserve">
+    <value>Модерация</value>
+  </data>
+  <data name="admin.team.awaiting" xml:space="preserve">
+    <value>Ждёт одобрения</value>
+  </data>
+  <data name="admin.team.approved_filter" xml:space="preserve">
+    <value>Одобрена</value>
+  </data>
+  <data name="admin.team.approve" xml:space="preserve">
+    <value>Одобрить</value>
+  </data>
+  <data name="admin.team.revoke" xml:space="preserve">
+    <value>Снять одобрение</value>
+  </data>
+  <data name="admin.team.approved" xml:space="preserve">
+    <value>Команда одобрена.</value>
+  </data>
+  <data name="admin.team.revoked" xml:space="preserve">
+    <value>Одобрение снято: команда скрыта с сайта.</value>
+  </data>
+  <data name="admin.team.user_owned" xml:space="preserve">
+    <value>Создана подписчиком</value>
+  </data>
+  <data name="admin.team.user_owned_notice" xml:space="preserve">
+    <value>Команду создал подписчик. Пока она не одобрена, её не видно на сайте и она не может участвовать в турнирах.</value>
+  </data>
+  <data name="admin.team.official_notice" xml:space="preserve">
+    <value>Команда заведена администрацией.</value>
+  </data>
+  <data name="admin.team.rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="admin.team.roster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
+  <data name="admin.team.empty_roster" xml:space="preserve">
+    <value>В составе пока никого нет.</value>
+  </data>
+  <data name="admin.team.player" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="admin.team.role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="admin.team.joined_at" xml:space="preserve">
+    <value>В составе с</value>
+  </data>
+  <data name="admin.team.add_player" xml:space="preserve">
+    <value>Добавить игрока</value>
+  </data>
+  <data name="admin.team.remove_player" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="admin.team.player_added" xml:space="preserve">
+    <value>Игрок добавлен в состав.</value>
+  </data>
+  <data name="admin.team.player_removed" xml:space="preserve">
+    <value>Игрок убран из состава.</value>
+  </data>
+  <data name="admin.team.no_free_agents" xml:space="preserve">
+    <value>Свободных игроков нет: все состоят в командах.</value>
+  </data>
+  <data name="admin.team.delete" xml:space="preserve">
+    <value>Удалить команду</value>
+  </data>
+  <data name="admin.team.deleted" xml:space="preserve">
+    <value>Команда удалена.</value>
+  </data>
+  <data name="admin.team.cannot_delete" xml:space="preserve">
+    <value>У команды есть матчи, турниры или история состава — удалить её нельзя. Снимите одобрение, чтобы скрыть её с сайта.</value>
+  </data>
+  <data name="team.has_history" xml:space="preserve">
+    <value>У команды есть матчи, турниры или история состава — удалить её нельзя.</value>
+  </data>
+  <data name="team.negative_rating" xml:space="preserve">
+    <value>Рейтинг команды не может быть отрицательным.</value>
+  </data>
+  <data name="team.player_already_in_roster" xml:space="preserve">
+    <value>Игрок уже в составе этой команды.</value>
+  </data>
+  <data name="team.player_not_in_roster" xml:space="preserve">
+    <value>Игрока нет в составе этой команды.</value>
+  </data>
 </root>
