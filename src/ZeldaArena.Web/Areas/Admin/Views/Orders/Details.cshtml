@@ -1,0 +1,161 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Orders.Commands.ChangeOrderStatus
+@using ZeldaArena.Application.Features.Admin.Orders.Queries.GetOrderForAdmin
+@model AdminOrderDetailsDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = Model.Number;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@Model.Number</h1>
+    <div class="row-actions">
+        <span class="@OrderStatusBadge.CssFor(Model.Status)">@T[EnumResourceKeys.For(Model.Status)]</span>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="order-status-title">
+    <h2 class="admin-panel__title" id="order-status-title">@T["admin.order.actions"]</h2>
+
+    @*
+        Отмена оплаченного заказа возвращает остаток на склад и переводит платёж
+        в «возвращён» (docs/adr/ADR-0010). Отправленный заказ не отменяется:
+        его возвращают, а возвратов в проекте нет (§1).
+    *@
+    <div class="row-actions">
+        @if (Model.CanShip)
+        {
+            <form method="post" asp-action="ChangeStatus" asp-route-number="@Model.Number">
+                <input type="hidden" name="transition" value="@OrderTransition.Ship" />
+                <button class="btn-solid btn-solid--sm" type="submit">@T["admin.order.ship"]</button>
+            </form>
+        }
+
+        @if (Model.CanComplete)
+        {
+            <form method="post" asp-action="ChangeStatus" asp-route-number="@Model.Number">
+                <input type="hidden" name="transition" value="@OrderTransition.Complete" />
+                <button class="btn-solid btn-solid--sm" type="submit">@T["admin.order.complete"]</button>
+            </form>
+        }
+
+        @if (Model.CanCancel)
+        {
+            <details class="confirm-inline">
+                <summary class="btn-ghost btn-ghost--sm">@T["admin.order.cancel"]</summary>
+                <div class="confirm-inline__panel">
+                    <span>@T["admin.order.cancel_confirm"]</span>
+                    <form method="post" asp-action="ChangeStatus" asp-route-number="@Model.Number">
+                        <input type="hidden" name="transition" value="@OrderTransition.Cancel" />
+                        <button class="btn-solid btn-solid--sm" type="submit">@T["admin.order.cancel_yes"]</button>
+                    </form>
+                </div>
+            </details>
+        }
+
+        @if (!Model.CanShip && !Model.CanComplete && !Model.CanCancel)
+        {
+            <p class="admin-panel__empty">@T["admin.order.no_actions"]</p>
+        }
+    </div>
+</section>
+
+<div class="admin-panels">
+    <section class="admin-panel" aria-labelledby="order-items-title">
+        <h2 class="admin-panel__title" id="order-items-title">@T["order.items"]</h2>
+
+        <div class="table-responsive">
+            <table class="table table-token admin-table">
+                <caption class="visually-hidden">@T["order.items"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@T["admin.common.name"]</th>
+                        <th scope="col">@T["admin.order.unit_price"]</th>
+                        <th scope="col">@T["admin.order.quantity"]</th>
+                        <th scope="col" class="text-end">@T["order.total"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@MoneyText.Format(item.UnitPrice, Model.Currency)</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-end">@MoneyText.Format(item.LineTotal, Model.Currency)</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">@T["order.total"]</td>
+                        <td class="text-end">@MoneyText.Format(Model.Total, Model.Currency)</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="order-delivery-title">
+        <h2 class="admin-panel__title" id="order-delivery-title">@T["admin.order.delivery"]</h2>
+
+        <dl class="admin-definitions">
+            <dt>@T["admin.order.recipient"]</dt>
+            <dd>@Model.Recipient</dd>
+            <dt>@T["admin.order.phone"]</dt>
+            <dd>@Model.Phone</dd>
+            <dt>@T["admin.order.address"]</dt>
+            <dd>@Model.Address</dd>
+            @if (Model.CustomerEmail is not null)
+            {
+                <dt>@T["admin.order.email"]</dt>
+                <dd>@Model.CustomerEmail</dd>
+            }
+            <dt>@T["order.placed_at"]</dt>
+            <dd><time datetime="@Model.PlacedAt.ToString("O")">@Model.PlacedAt.ToString("dd.MM.yyyy HH:mm")</time> UTC</dd>
+            @if (Model.PaidAt is { } paidAt)
+            {
+                <dt>@T["admin.order.paid_at"]</dt>
+                <dd><time datetime="@paidAt.ToString("O")">@paidAt.ToString("dd.MM.yyyy HH:mm")</time> UTC</dd>
+            }
+        </dl>
+    </section>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="order-payments-title">
+    <h2 class="admin-panel__title" id="order-payments-title">@T["admin.order.payments"]</h2>
+
+    @* От карты в базе есть только последние четыре цифры и платёжная система (§7.6). *@
+    @if (Model.Payments.Count == 0)
+    {
+        <p class="admin-panel__empty">@T["admin.order.no_payments"]</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-token admin-table">
+                <caption class="visually-hidden">@T["admin.order.payments"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@T["admin.common.status"]</th>
+                        <th scope="col">@T["admin.order.amount"]</th>
+                        <th scope="col">@T["admin.order.card"]</th>
+                        <th scope="col">@T["admin.order.created_at"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var payment in Model.Payments)
+                    {
+                        <tr>
+                            <td>@T[EnumResourceKeys.For(payment.Status)]</td>
+                            <td>@MoneyText.Format(payment.Amount, payment.Currency)</td>
+                            <td>@payment.CardBrand ····@payment.CardLast4</td>
+                            <td><time datetime="@payment.CreatedAt.ToString("O")">@payment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</time></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

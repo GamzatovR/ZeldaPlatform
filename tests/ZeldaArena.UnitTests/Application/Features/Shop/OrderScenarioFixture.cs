@@ -1,5 +1,6 @@
-using ZeldaArena.Application.Common.Models;
+﻿using ZeldaArena.Application.Common.Models;
 using ZeldaArena.Application.Common.Models.Billing;
+using ZeldaArena.Application.Features.Admin.Orders.Commands.ChangeOrderStatus;
 using ZeldaArena.Application.Features.Carts;
 using ZeldaArena.Application.Features.Carts.Commands.AddCartItem;
 using ZeldaArena.Application.Features.Orders;
@@ -155,6 +156,19 @@ internal sealed class OrderScenarioFixture
 
         return Orders.Entities.Single(order => order.Id == orderId);
     }
+
+    /// <summary>Действие администратора над заказом: отправить, завершить, отменить (Фаза 9).</summary>
+    public Task<Result> ChangeStatusAsync(string number, OrderTransition transition) =>
+        new ChangeOrderStatusCommandHandler(
+                new InMemoryReadRepository<Order>(Orders.Entities),
+                Orders,
+                Payments,
+                new InMemoryReadRepository<Payment>(Payments.Entities),
+                Cancellation(),
+                new InMemoryQueryExecutor(),
+                Clock(),
+                World.UnitOfWork)
+            .Handle(new ChangeOrderStatusCommand(number, transition), CancellationToken.None);
 
     public static PlaceOrderCommand Command(string idempotencyKey = "checkout-1", string phone = "+7 900 000-00-00") =>
         new(

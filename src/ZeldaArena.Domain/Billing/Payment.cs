@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 using ZeldaArena.Domain.Common;
@@ -225,6 +225,22 @@ public class Payment : BaseEntity, IAuditableEntity
 
         Status = PaymentStatus.Failed;
         FailureReason = reason;
+    }
+
+    /// <summary>
+    /// Возврат денег: администратор отменил оплаченный заказ (docs/adr/ADR-0010).
+    /// Возвращается только успешный платёж — вернуть можно лишь то, что получено.
+    /// </summary>
+    public void Refund(DateTimeOffset refundedAt)
+    {
+        InvariantViolationException.ThrowIf(
+            Status != PaymentStatus.Succeeded,
+            "payment.cannot_refund",
+            $"Вернуть можно только успешный платёж, текущий статус — {Status}.");
+
+        Status = PaymentStatus.Refunded;
+        FailureReason = "payment.refunded";
+        UpdatedAt = refundedAt;
     }
 
     public void CancelByUser()

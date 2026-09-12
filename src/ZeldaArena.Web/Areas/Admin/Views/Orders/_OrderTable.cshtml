@@ -1,0 +1,56 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Orders.Queries.GetOrdersForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Orders.OrderIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+    var sort = Model.Sort;
+    var defaultSort = AdminOrderSorting.Map.DefaultKey;
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.orders"]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@T["order.number"]</th>
+                    <sortable-header asc="@AdminOrderSorting.PlacedAscending" desc="@AdminOrderSorting.PlacedDescending"
+                                     current="@sort" default="@defaultSort">@T["order.placed_at"]</sortable-header>
+                    <th scope="col">@T["admin.order.recipient"]</th>
+                    <th scope="col">@T["order.status"]</th>
+                    <th scope="col">@T["order.items"]</th>
+                    <sortable-header asc="@AdminOrderSorting.TotalAscending" desc="@AdminOrderSorting.TotalDescending"
+                                     current="@sort" default="@defaultSort">@T["order.total"]</sortable-header>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in result.Items)
+                {
+                    <tr>
+                        <td><a asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-number="@order.Number">@order.Number</a></td>
+                        <td><time datetime="@order.PlacedAt.ToString("O")">@order.PlacedAt.ToString("dd.MM.yyyy HH:mm")</time></td>
+                        <td>
+                            @order.Recipient
+                            <div class="admin-table__muted">@order.City</div>
+                        </td>
+                        <td><span class="@OrderStatusBadge.CssFor(order.Status)">@T[EnumResourceKeys.For(order.Status)]</span></td>
+                        <td>@order.ItemCount</td>
+                        <td>@MoneyText.Format(order.Total, order.Currency)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

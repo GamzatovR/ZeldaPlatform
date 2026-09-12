@@ -1,0 +1,57 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Admin.Orders.Queries.GetOrdersForAdmin
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Orders.OrderIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.nav.orders"].Value;
+    var filter = Model.Filter;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.nav.orders"]</h1>
+</div>
+
+<form class="filters" method="get" asp-action="Index" role="search" data-filter-form aria-label="@T["filter.title"]">
+    <input type="hidden" name="sort" value="@Model.Sort" data-list-state data-default="@AdminOrderSorting.Map.DefaultKey" />
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="search">@T["admin.order.search"]</label>
+            <input class="form-control" id="search" name="search" type="search" value="@filter.Search"
+                   maxlength="@GetOrdersForAdminQueryValidator.MaxSearchLength" />
+        </div>
+        <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="status">@T["order.status"]</label>
+            <select class="form-select" id="status" name="status">
+                <option value="">@T["filter.any"]</option>
+                @foreach (var status in Enum.GetValues<OrderStatus>())
+                {
+                    <option value="@status" selected="@(filter.Status == status)">@T[EnumResourceKeys.For(status)]</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
+            <select class="form-select" id="pageSize" name="pageSize" data-default="@PageSizes.Default" data-no-chip>
+                @foreach (var size in PageSizes.Allowed)
+                {
+                    <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+         aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
+    <div class="filters__actions">
+        <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+        <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
+    </div>
+</form>
+
+<div id="order-table" data-list data-api="@Url.Action("Orders", "AdminShopApi", new { area = "Api" })">
+    <partial name="_OrderTable" model="Model" />
+</div>
