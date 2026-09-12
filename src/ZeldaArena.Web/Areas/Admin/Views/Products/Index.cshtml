@@ -1,0 +1,121 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Admin.Shop.Queries.GetProductsForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Shop.ProductIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.nav.products"].Value;
+    var filter = Model.Filter;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.nav.products"]</h1>
+    <a class="btn-solid btn-solid--sm" asp-action="Create">@T["admin.product.create"]</a>
+</div>
+
+<form class="filters" method="get" asp-action="Index" role="search" data-filter-form aria-label="@T["filter.title"]">
+    <input type="hidden" name="sort" value="@Model.Sort" data-list-state data-default="@AdminProductSorting.Map.DefaultKey" />
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="search">@T["filter.search"]</label>
+            <input class="form-control" id="search" name="search" type="search" value="@filter.Search"
+                   maxlength="@GetProductsForAdminQueryValidator.MaxSearchLength" />
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="categoryId">@T["admin.product.category"]</label>
+            <select class="form-select" id="categoryId" name="categoryId">
+                <option value="">@T["filter.any"]</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id" selected="@(filter.CategoryId == category.Id)">@category.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label" for="isActive">@T["admin.common.status"]</label>
+            <select class="form-select" id="isActive" name="isActive">
+                <option value="">@T["filter.any"]</option>
+                <option value="true" selected="@(filter.IsActive == true)">@T["admin.product.on_sale"]</option>
+                <option value="false" selected="@(filter.IsActive == false)">@T["admin.product.off_sale"]</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label" for="outOfStock">@T["admin.product.stock"]</label>
+            <select class="form-select" id="outOfStock" name="outOfStock">
+                <option value="">@T["filter.any"]</option>
+                <option value="true" selected="@(filter.OutOfStock == true)">@T["admin.product.out_of_stock"]</option>
+                <option value="false" selected="@(filter.OutOfStock == false)">@T["admin.product.in_stock"]</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-2">
+            <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
+            <select class="form-select" id="pageSize" name="pageSize" data-default="@PageSizes.Default" data-no-chip>
+                @foreach (var size in PageSizes.Allowed)
+                {
+                    <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+         aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
+    <div class="filters__actions">
+        <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+        <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
+    </div>
+</form>
+
+<div id="product-table" data-list data-api="@Url.Action("Products", "AdminShopApi", new { area = "Api" })">
+    <partial name="_ProductTable" model="Model" />
+</div>
+
+@* Категории — плоский справочник (§6), поэтому правятся здесь же. *@
+<section class="admin-panel admin-section" id="categories" aria-labelledby="categories-title">
+    <h2 class="admin-panel__title" id="categories-title">@T["admin.category.title"]</h2>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.category.title"]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@T["admin.common.name"]</th>
+                    <th scope="col">@T["admin.category.products"]</th>
+                    <th scope="col"><span class="visually-hidden">@T["admin.common.actions"]</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Categories)
+                {
+                    var rowId = "category-" + category.Id.ToString("N");
+                    <tr>
+                        <td>
+                            <form class="inline-form" method="post" asp-action="RenameCategory" asp-route-id="@category.Id">
+                                <label class="visually-hidden" for="@(rowId)-name">@T["admin.common.name"]</label>
+                                <input class="form-control" id="@(rowId)-name" name="name" value="@category.Name" required maxlength="128" />
+                                <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.save"]</button>
+                            </form>
+                        </td>
+                        <td>@category.ProductCount</td>
+                        <td>
+                            @if (category.ProductCount == 0)
+                            {
+                                <form method="post" asp-action="DeleteCategory" asp-route-id="@category.Id">
+                                    <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.delete"]</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <form class="inline-form admin-section" method="post" asp-action="CreateCategory">
+        <label class="form-label" for="new-category">@T["admin.category.create"]</label>
+        <input class="form-control" id="new-category" name="name" required maxlength="128" />
+        <button class="btn-solid btn-solid--sm" type="submit">@T["admin.add"]</button>
+    </form>
+</section>

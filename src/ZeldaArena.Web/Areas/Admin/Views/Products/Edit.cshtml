@@ -1,0 +1,60 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Shop.ProductEditViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var product = Model.Product;
+    ViewData["Title"] = product.Name;
+    ViewData["Categories"] = Model.Categories;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@product.Name</h1>
+    <div class="row-actions">
+        <span class="badge-token @(product.IsActive ? "badge-token--success" : string.Empty)">
+            @(product.IsActive ? T["admin.product.on_sale"] : T["admin.product.off_sale"])
+        </span>
+        <span class="admin-table__muted">@product.Sku</span>
+        <a class="link-underline" asp-area="" asp-controller="Shop" asp-action="Index" target="_blank" rel="noopener">@T["admin.open_on_site"]</a>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="product-title">
+    <h2 class="admin-panel__title" id="product-title">@T["admin.product.card"]</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@product.Id" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_ProductFields" for="Form" view-data="ViewData" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="product-danger-title">
+    <h2 class="admin-panel__title" id="product-danger-title">@T["admin.delete"]</h2>
+
+    @if (product.CanDelete)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.product.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@product.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.product.cannot_delete", product.OrderCount]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}

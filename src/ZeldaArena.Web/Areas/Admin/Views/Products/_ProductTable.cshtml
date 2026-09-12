@@ -1,0 +1,65 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Shop.Queries.GetProductsForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Shop.ProductIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+    var sort = Model.Sort;
+    var defaultSort = AdminProductSorting.Map.DefaultKey;
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.products"]</caption>
+            <thead>
+                <tr>
+                    <sortable-header asc="@AdminProductSorting.NameAscending" desc="@AdminProductSorting.NameDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.common.name"]</sortable-header>
+                    <th scope="col">@T["admin.product.category"]</th>
+                    <sortable-header asc="@AdminProductSorting.PriceAscending" desc="@AdminProductSorting.PriceDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.plan.price"]</sortable-header>
+                    <sortable-header asc="@AdminProductSorting.StockAscending" desc="@AdminProductSorting.StockDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.product.stock"]</sortable-header>
+                    <th scope="col">@T["admin.common.status"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in result.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">@product.Name</a>
+                            <div class="admin-table__muted">@product.Sku</div>
+                        </td>
+                        <td>@product.CategoryName</td>
+                        <td>@MoneyText.Format(product.Price, product.Currency)</td>
+                        <td>
+                            @product.StockQuantity
+                            @if (product.StockQuantity == 0)
+                            {
+                                <span class="badge-token badge-token--accent">@T["admin.product.out_of_stock"]</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge-token @(product.IsActive ? "badge-token--success" : string.Empty)">
+                                @(product.IsActive ? T["admin.product.on_sale"] : T["admin.product.off_sale"])
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

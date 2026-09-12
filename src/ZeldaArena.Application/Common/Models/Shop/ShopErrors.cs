@@ -1,4 +1,4 @@
-using ZeldaArena.Domain.Common;
+﻿using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Common.Models.Shop;
 
@@ -12,6 +12,21 @@ namespace ZeldaArena.Application.Common.Models.Shop;
 /// </summary>
 public static class ShopErrors
 {
+    public static readonly Error CategoryNotFound =
+        new("category.not_found", "Категория не найдена.");
+
+    public static readonly Error CategoryNameTaken =
+        new("category.name_taken", "Категория с таким названием уже есть.");
+
+    public static readonly Error CategoryNotEmpty =
+        new("category.not_empty", "В категории есть товары — сначала перенесите их в другую.");
+
+    public static readonly Error SkuTaken =
+        new("product.sku_taken", "Товар с таким артикулом уже есть.");
+
+    public static readonly Error ProductHasOrders =
+        new("product.has_orders", "Товар уже покупали — удалить его нельзя, можно снять с продажи.");
+
     public static readonly Error ProductNotFound =
         new("shop.product_not_found", "Товар не найден.");
 
