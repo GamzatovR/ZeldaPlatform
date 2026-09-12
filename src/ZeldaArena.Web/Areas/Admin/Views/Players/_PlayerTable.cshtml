@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Players.Queries.GetPlayersForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Players.PlayerIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.players"]</caption>
+            <thead>
+                <tr>
+                    <sortable-header asc="@AdminPlayerSorting.NicknameAscending" desc="@AdminPlayerSorting.NicknameDescending"
+                                     current="@Model.Sort" default="@AdminPlayerSorting.Map.DefaultKey">@T["admin.player.nickname"]</sortable-header>
+                    <th scope="col">@T["admin.player.name"]</th>
+                    <th scope="col">@T["admin.team.role"]</th>
+                    <th scope="col">@T["admin.player.country"]</th>
+                    <th scope="col">@T["admin.player.team"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var player in result.Items)
+                {
+                    <tr>
+                        <td><a asp-area="Admin" asp-controller="Players" asp-action="Edit" asp-route-id="@player.Id">@player.Nickname</a></td>
+                        <td>@player.FullName</td>
+                        <td>@T[EnumResourceKeys.For(player.Role)]</td>
+                        <td>@player.CountryCode</td>
+                        <td>@(player.TeamName ?? string.Empty)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

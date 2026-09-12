@@ -1,0 +1,59 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Players.PlayerEditViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var player = Model.Player;
+    ViewData["Title"] = player.Nickname;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@player.Nickname</h1>
+    <div class="row-actions">
+        @if (player.TeamName is not null)
+        {
+            <span class="badge-token">@player.TeamName</span>
+        }
+        <a class="link-underline" asp-area="" asp-controller="Players" asp-action="Details" asp-route-slug="@player.Slug" target="_blank" rel="noopener">@T["admin.open_on_site"]</a>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="player-profile-title">
+    <h2 class="admin-panel__title" id="player-profile-title">@T["admin.player.profile"]</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@player.Id" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_PlayerFields" for="Form" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="player-danger-title">
+    <h2 class="admin-panel__title" id="player-danger-title">@T["admin.delete"]</h2>
+
+    @if (player.CanDelete)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.player.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@player.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.player.cannot_delete"]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}
