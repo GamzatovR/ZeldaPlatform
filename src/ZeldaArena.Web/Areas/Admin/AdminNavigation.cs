@@ -17,5 +17,6 @@ public static class AdminNavigation
     [
         new("admin.nav.dashboard", "Dashboard", IconNames.Grid, PolicyNames.ModeratorOrAdmin),
         new("admin.nav.tournaments", "Tournaments", IconNames.Trophy, PolicyNames.CanManageCatalog),
+        new("admin.nav.matches", "Matches", IconNames.Controller, PolicyNames.CanManageCatalog),
     ];
 }

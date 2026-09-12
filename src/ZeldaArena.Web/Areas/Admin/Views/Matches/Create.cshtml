@@ -1,0 +1,104 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Matches.MatchCreateViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.match.create"].Value;
+    var form = Model.Form;
+    var teams = Model.Options.Teams;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.match.create"]</h1>
+    <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+</div>
+
+@*
+    Турнир выбирается первым шагом: команды матча — только его участники. Форма выбора
+    турнира — обычная GET-форма с кнопкой, поэтому шаг работает и без JavaScript (§9.1).
+*@
+<div class="form-card admin-form">
+    <form method="get" asp-action="Create" class="admin-section">
+        <div class="inline-form">
+            <label class="form-label" for="tournamentId">@T["admin.match.tournament"]</label>
+            <select class="form-select" id="tournamentId" name="tournamentId">
+                <option value="">@T["admin.match.choose_tournament"]</option>
+                @foreach (var tournament in Model.Options.Tournaments)
+                {
+                    <option value="@tournament.Id" selected="@(form.TournamentId == tournament.Id)">@tournament.Name</option>
+                }
+            </select>
+            <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.match.choose"]</button>
+        </div>
+    </form>
+
+    @if (form.TournamentId == Guid.Empty)
+    {
+        <p class="admin-panel__empty">@T["admin.match.choose_tournament_first"]</p>
+    }
+    else if (teams.Count < 2)
+    {
+        <p class="admin-panel__empty">@T["admin.match.not_enough_teams"]</p>
+    }
+    else
+    {
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+            <input type="hidden" asp-for="Form.TournamentId" />
+
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Form.TeamAId" class="form-label"></label>
+                    <select asp-for="Form.TeamAId" class="form-select">
+                        @foreach (var team in teams)
+                        {
+                            <option value="@team.Id">@team.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Form.TeamAId"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Form.TeamBId" class="form-label"></label>
+                    <select asp-for="Form.TeamBId" class="form-select">
+                        @foreach (var team in teams)
+                        {
+                            <option value="@team.Id">@team.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Form.TeamBId"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Form.ScheduledAt" class="form-label"></label>
+                    <input asp-for="Form.ScheduledAt" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="Form.ScheduledAt"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="Form.BestOf" class="form-label"></label>
+                    <select asp-for="Form.BestOf" class="form-select">
+                        @foreach (var format in ZeldaArena.Web.Areas.Admin.Models.Matches.MatchFormViewModel.SeriesFormats)
+                        {
+                            <option value="@format">Bo@format</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Form.BestOf"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Form.StreamUrl" class="form-label"></label>
+                    <input asp-for="Form.StreamUrl" class="form-control" type="url" />
+                    <span asp-validation-for="Form.StreamUrl"></span>
+                </div>
+            </div>
+
+            <div class="admin-form__actions">
+                <button class="btn-solid" type="submit">@T["admin.create"]</button>
+            </div>
+        </form>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

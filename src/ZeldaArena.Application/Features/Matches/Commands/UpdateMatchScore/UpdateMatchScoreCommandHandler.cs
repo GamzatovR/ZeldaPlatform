@@ -1,6 +1,9 @@
 using MediatR;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
+using ZeldaArena.Application.Common.Models.Esports;
+using ZeldaArena.Application.Common.Rules;
 using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Esports;
 
@@ -14,18 +17,18 @@ namespace ZeldaArena.Application.Features.Matches.Commands.UpdateMatchScore;
 /// поднимает MatchScoreChangedEvent, интерсептор рассылает его после сохранения,
 /// обработчик события зовёт IRealtimeNotifier. Это пример SRP из docs/SPEC.md §5.5.
 ///
-/// Отсутствие матча — ожидаемый исход, поэтому Result, а не исключение. Нарушение
-/// инварианта, наоборот, исключение: значит, до сущности дошёл запрос, который вообще
-/// не должен был дойти. В Фазе 11 оно превратится в локализованный ответ 409 (§14.1).
+/// Отсутствие матча и нарушение инварианта — ожидаемые исходы, поэтому <c>Result</c>:
+/// и то и другое достижимо обычным пультом (вкладка, открытая до завершения матча).
+///
+/// Устаревший пульт ловится сверкой ожидаемого счёта: она отвечает конфликтом ещё
+/// до правки, тогда как токен конкурентности (xmin) поймал бы только одновременные
+/// сохранения. Оба рубежа нужны — второй модератор мог успеть и сохранить, и уйти.
 /// </summary>
 public sealed class UpdateMatchScoreCommandHandler(
     IRepository<Match> matches,
     IUnitOfWork unitOfWork)
     : IRequestHandler<UpdateMatchScoreCommand, Result>
 {
-    public static readonly Error MatchNotFound =
-        new("match.not_found", "Матч не найден.");
-
     public async Task<Result> Handle(
         UpdateMatchScoreCommand request,
         CancellationToken cancellationToken)
@@ -37,10 +40,21 @@ public sealed class UpdateMatchScoreCommandHandler(
 
         if (match is null)
         {
-            return Result.Failure(MatchNotFound);
+            return Result.Failure(EsportsErrors.MatchNotFound);
         }
 
-        match.UpdateScore(request.ScoreA, request.ScoreB);
+        if ((request.ExpectedScoreA is { } expectedA && expectedA != match.ScoreA)
+            || (request.ExpectedScoreB is { } expectedB && expectedB != match.ScoreB))
+        {
+            throw new ConcurrencyConflictException();
+        }
+
+        var result = DomainRules.Apply(() => match.UpdateScore(request.ScoreA, request.ScoreB));
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

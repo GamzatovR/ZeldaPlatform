@@ -1,0 +1,155 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Matches.Commands.ChangeMatchStatus
+@model ZeldaArena.Web.Areas.Admin.Models.Matches.MatchConsoleViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var match = Model.Match;
+    ViewData["Title"] = $"{match.TeamAName} — {match.TeamBName}";
+}
+
+@*
+    Пульт счёта (docs/SPEC.md §9.4 п. 3, §11). Каждая кнопка — обычная форма: без
+    JavaScript пульт работает переходами, с ним admin-console.js отправляет ту же форму
+    в /api/admin/matches и перерисовывает счёт на месте.
+
+    В скрытых полях уходит счёт, который модератор видит сейчас: сервер сверит его
+    с текущим и ответит конфликтом, если матч правил кто-то ещё (§15).
+*@
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@match.TeamAName — @match.TeamBName</h1>
+    <div class="row-actions">
+        <span class="badge-token @(match.IsLive ? "badge-token--live" : string.Empty)" data-console-status>@T[EnumResourceKeys.For(match.Status)]</span>
+        <a class="link-underline" asp-area="" asp-controller="Matches" asp-action="Details" asp-route-id="@match.Id" target="_blank" rel="noopener">@T["admin.open_on_site"]</a>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+@{
+    // Одно представление состояния на первую отрисовку и на ответы API (MatchConsoleState).
+    var consoleState = System.Text.Json.JsonSerializer.Serialize(
+        ZeldaArena.Web.Areas.Admin.Models.Matches.MatchConsoleState.From(match),
+        new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+}
+
+<section class="admin-panel admin-section score-console" aria-labelledby="score-title"
+         data-console data-state="@consoleState"
+         data-api="@Url.Action("Score", "AdminMatchesApi", new { area = "Api", id = match.Id })"
+         data-status-api="@Url.Action("ChangeStatus", "AdminMatchesApi", new { area = "Api", id = match.Id })">
+    <h2 class="admin-panel__title" id="score-title">@T["admin.match.console"]</h2>
+
+    <p class="admin-panel__empty">@T["admin.match.series", match.BestOf, match.WinsRequired]</p>
+
+    <div class="score-console__board" aria-live="polite" data-console-board>
+        <span class="score-console__team">@match.TeamAName</span>
+        <span class="score-console__score" data-console-score-a>@match.ScoreA</span>
+        <span class="score-console__separator" aria-hidden="true">:</span>
+        <span class="score-console__score" data-console-score-b>@match.ScoreB</span>
+        <span class="score-console__team">@match.TeamBName</span>
+    </div>
+
+    @if (match.IsLive)
+    {
+        <div class="score-console__controls">
+            @foreach (var (side, delta, team) in new[]
+            {
+                ("a", 1, match.TeamAName),
+                ("a", -1, match.TeamAName),
+                ("b", 1, match.TeamBName),
+                ("b", -1, match.TeamBName),
+            })
+            {
+                var scoreA = side == "a" ? match.ScoreA + delta : match.ScoreA;
+                var scoreB = side == "b" ? match.ScoreB + delta : match.ScoreB;
+                var disabled = scoreA < 0 || scoreB < 0;
+
+                <form method="post" asp-action="Score" asp-route-id="@match.Id" data-console-form>
+                    <input type="hidden" name="scoreA" value="@scoreA" />
+                    <input type="hidden" name="scoreB" value="@scoreB" />
+                    <input type="hidden" name="expectedScoreA" value="@match.ScoreA" data-console-expected-a />
+                    <input type="hidden" name="expectedScoreB" value="@match.ScoreB" data-console-expected-b />
+                    <button class="@(delta > 0 ? "btn-solid" : "btn-ghost") btn-solid--sm" type="submit" disabled="@disabled"
+                            data-console-side="@side" data-console-delta="@delta">
+                        @(delta > 0 ? "+1" : "−1")
+                        <span class="visually-hidden">@team</span>
+                    </button>
+                </form>
+            }
+        </div>
+    }
+
+    <div class="row-actions admin-section">
+        @if (match.CanStart)
+        {
+            <form method="post" asp-action="ChangeStatus" asp-route-id="@match.Id" data-console-status-form>
+                <input type="hidden" name="transition" value="@MatchTransition.Start" />
+                <button class="btn-solid btn-solid--sm" type="submit">@T["admin.match.transition.start"]</button>
+            </form>
+        }
+
+        @if (match.IsLive)
+        {
+            <form method="post" asp-action="ChangeStatus" asp-route-id="@match.Id" data-console-status-form>
+                <input type="hidden" name="transition" value="@MatchTransition.Finish" />
+                <button class="btn-solid btn-solid--sm" type="submit" disabled="@(!match.CanFinish)" data-console-finish>@T["admin.match.transition.finish"]</button>
+            </form>
+        }
+
+        @if (match.Status != ZeldaArena.Domain.Enums.MatchStatus.Finished && match.Status != ZeldaArena.Domain.Enums.MatchStatus.Canceled)
+        {
+            <form method="post" asp-action="ChangeStatus" asp-route-id="@match.Id" data-console-status-form>
+                <input type="hidden" name="transition" value="@MatchTransition.Cancel" />
+                <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.match.transition.cancel"]</button>
+            </form>
+        }
+    </div>
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="settings-title">
+    <h2 class="admin-panel__title" id="settings-title">@T["admin.match.settings"]</h2>
+
+    <form method="post" asp-action="Console" asp-route-id="@match.Id">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <label asp-for="Settings.ScheduledAt" class="form-label"></label>
+                <input asp-for="Settings.ScheduledAt" class="form-control" type="datetime-local" />
+                <span asp-validation-for="Settings.ScheduledAt"></span>
+            </div>
+            <div class="col-12 col-md-6">
+                <label asp-for="Settings.StreamUrl" class="form-label"></label>
+                <input asp-for="Settings.StreamUrl" class="form-control" type="url" />
+                <span asp-validation-for="Settings.StreamUrl"></span>
+            </div>
+        </div>
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="match-danger-title">
+    <h2 class="admin-panel__title" id="match-danger-title">@T["admin.delete"]</h2>
+
+    @if (match.CanDelete)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.match.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@match.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.match.cannot_delete"]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

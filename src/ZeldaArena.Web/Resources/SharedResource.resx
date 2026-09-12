@@ -1828,4 +1828,100 @@
   <data name="tournament_team.invalid_placement" xml:space="preserve">
     <value>Место начинается с первого.</value>
   </data>
+  <data name="admin.nav.matches" xml:space="preserve">
+    <value>Матчи</value>
+  </data>
+  <data name="admin.match.create" xml:space="preserve">
+    <value>Назначить матч</value>
+  </data>
+  <data name="admin.match.created" xml:space="preserve">
+    <value>Матч назначен.</value>
+  </data>
+  <data name="admin.match.console" xml:space="preserve">
+    <value>Пульт счёта</value>
+  </data>
+  <data name="admin.match.settings" xml:space="preserve">
+    <value>Время и трансляция</value>
+  </data>
+  <data name="admin.match.score_saved" xml:space="preserve">
+    <value>Счёт изменён.</value>
+  </data>
+  <data name="admin.match.status_changed" xml:space="preserve">
+    <value>Статус матча изменён.</value>
+  </data>
+  <data name="admin.match.deleted" xml:space="preserve">
+    <value>Матч удалён.</value>
+  </data>
+  <data name="admin.match.delete" xml:space="preserve">
+    <value>Удалить матч</value>
+  </data>
+  <data name="admin.match.cannot_delete" xml:space="preserve">
+    <value>Матч уже начинался или у него есть статистика — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="admin.match.series" xml:space="preserve">
+    <value>Формат серии: Bo{0}. До победы — {1}.</value>
+  </data>
+  <data name="admin.match.transition.start" xml:space="preserve">
+    <value>Начать матч</value>
+  </data>
+  <data name="admin.match.transition.finish" xml:space="preserve">
+    <value>Завершить матч</value>
+  </data>
+  <data name="admin.match.transition.cancel" xml:space="preserve">
+    <value>Отменить матч</value>
+  </data>
+  <data name="admin.match.choose_tournament" xml:space="preserve">
+    <value>Выберите турнир</value>
+  </data>
+  <data name="admin.match.choose" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
+  <data name="admin.match.choose_tournament_first" xml:space="preserve">
+    <value>Сначала выберите турнир: играть могут только его участники.</value>
+  </data>
+  <data name="admin.match.not_enough_teams" xml:space="preserve">
+    <value>В турнире меньше двух участников — сначала добавьте команды в его состав.</value>
+  </data>
+  <data name="match.not_found" xml:space="preserve">
+    <value>Матч не найден.</value>
+  </data>
+  <data name="match.has_history" xml:space="preserve">
+    <value>Матч уже начинался — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="match.team_not_in_tournament" xml:space="preserve">
+    <value>Обе команды должны участвовать в турнире.</value>
+  </data>
+  <data name="match.cannot_start" xml:space="preserve">
+    <value>Начать можно только запланированный матч.</value>
+  </data>
+  <data name="match.not_live" xml:space="preserve">
+    <value>Действие доступно только для идущего матча.</value>
+  </data>
+  <data name="match.finished_is_read_only" xml:space="preserve">
+    <value>Завершённый матч не редактируется.</value>
+  </data>
+  <data name="match.no_winner_yet" xml:space="preserve">
+    <value>Ни одна команда ещё не набрала нужного числа побед.</value>
+  </data>
+  <data name="match.negative_score" xml:space="preserve">
+    <value>Счёт не может быть отрицательным.</value>
+  </data>
+  <data name="match.score_exceeds_wins_required" xml:space="preserve">
+    <value>Счёт выходит за формат серии.</value>
+  </data>
+  <data name="match.score_exceeds_best_of" xml:space="preserve">
+    <value>Сумма счетов выходит за формат серии.</value>
+  </data>
+  <data name="match.cannot_postpone" xml:space="preserve">
+    <value>Перенести можно только запланированный матч.</value>
+  </data>
+  <data name="match.cannot_reschedule" xml:space="preserve">
+    <value>Изменить время можно только у запланированного матча.</value>
+  </data>
+  <data name="match.same_team" xml:space="preserve">
+    <value>Команда не может играть сама с собой.</value>
+  </data>
+  <data name="match.even_best_of" xml:space="preserve">
+    <value>Формат серии должен быть нечётным.</value>
+  </data>
 </root>

@@ -36,6 +36,15 @@ public static class EsportsErrors
     public static readonly Error TournamentNotFound =
         new("tournament.not_found", "Турнир не найден.");
 
+    public static readonly Error MatchNotFound =
+        new("match.not_found", "Матч не найден.");
+
+    public static readonly Error MatchHasHistory =
+        new("match.has_history", "Матч уже начинался — удалить его нельзя, можно отменить.");
+
+    public static readonly Error TeamNotInTournament =
+        new("match.team_not_in_tournament", "Обе команды должны участвовать в турнире.");
+
     public static readonly Error TournamentHasMatches =
         new("tournament.has_matches", "У турнира есть матчи — удалить его нельзя, можно отменить.");
 

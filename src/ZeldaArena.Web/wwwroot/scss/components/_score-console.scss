@@ -1,0 +1,68 @@
+// Пульт счёта матча (docs/SPEC.md §9.4 п. 3). Крупное табло: модератор смотрит
+// на него во время матча, а не вчитывается. Кнопки крупные по той же причине —
+// и потому что по ним попадают на сенсорном экране.
+
+.score-console__board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  background-color: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.score-console__team {
+  color: var(--color-text-muted);
+  font-size: var(--fs-xl);
+  font-weight: $fw-semibold;
+  letter-spacing: $ls-tight;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.score-console__score {
+  min-width: 1.6em;
+  color: var(--color-text);
+  font-size: var(--fs-6xl);
+  font-weight: $fw-bold;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-console__separator {
+  color: var(--color-text-dim);
+  font-size: var(--fs-4xl);
+}
+
+.score-console__controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+
+  form {
+    margin: 0;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+@media (max-width: $bp-sm - 1px) {
+  .score-console__score {
+    font-size: $fs-5xl-sm;
+  }
+
+  .score-console__team {
+    font-size: var(--fs-base);
+  }
+}
+
+@media (min-width: $bp-lg) {
+  .score-console__controls {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

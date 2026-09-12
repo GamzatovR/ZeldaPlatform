@@ -1,8 +1,9 @@
-using NSubstitute;
+﻿using NSubstitute;
 
+using ZeldaArena.Application.Common.Exceptions;
 using ZeldaArena.Application.Common.Interfaces;
+using ZeldaArena.Application.Common.Models.Esports;
 using ZeldaArena.Application.Features.Matches.Commands.UpdateMatchScore;
-using ZeldaArena.Domain.Common.Exceptions;
 using ZeldaArena.Domain.Esports;
 using ZeldaArena.Domain.Events;
 using ZeldaArena.UnitTests.Application.TestDoubles;
@@ -64,13 +65,14 @@ public class UpdateMatchScoreCommandHandlerTests
             CancellationToken.None);
 
         result.IsFailure.ShouldBeTrue();
-        result.Error.ShouldBe(UpdateMatchScoreCommandHandler.MatchNotFound);
+        result.Error.ShouldBe(EsportsErrors.MatchNotFound);
         unitOfWork.SaveChangesCalls.ShouldBe(0);
     }
 
     /// <summary>
-    /// Правило формата серии остаётся за сущностью. Хендлер его не повторяет,
-    /// поэтому исключение домена доходит наружу и в Фазе 11 станет ответом 409.
+    /// Правило формата серии остаётся за сущностью; хендлер его не повторяет,
+    /// а превращает отказ домена в отказ сценария — пульт показывает сообщение,
+    /// а не ошибку сервера.
     /// </summary>
     [Fact]
     public async Task Score_beyond_the_series_format_is_rejected_by_the_entity()
@@ -78,12 +80,11 @@ public class UpdateMatchScoreCommandHandlerTests
         var match = LiveBo3();
         var unitOfWork = new RecordingUnitOfWork();
 
-        var exception = await Should.ThrowAsync<InvariantViolationException>(() =>
-            Handler(match, unitOfWork).Handle(
-                new UpdateMatchScoreCommand(match.Id, 3, 0),
-                CancellationToken.None));
+        var result = await Handler(match, unitOfWork).Handle(
+            new UpdateMatchScoreCommand(match.Id, 3, 0),
+            CancellationToken.None);
 
-        exception.Code.ShouldBe("match.score_exceeds_wins_required");
+        result.Error.Code.ShouldBe("match.score_exceeds_wins_required");
         unitOfWork.SaveChangesCalls.ShouldBe(0);
     }
 
@@ -94,12 +95,45 @@ public class UpdateMatchScoreCommandHandlerTests
         match.UpdateScore(2, 0);
         match.Finish(Now.AddHours(1));
 
-        var exception = await Should.ThrowAsync<InvariantViolationException>(() =>
-            Handler(match, new RecordingUnitOfWork()).Handle(
-                new UpdateMatchScoreCommand(match.Id, 2, 1),
+        var result = await Handler(match, new RecordingUnitOfWork()).Handle(
+            new UpdateMatchScoreCommand(match.Id, 2, 1),
+            CancellationToken.None);
+
+        result.Error.Code.ShouldBe("match.finished_is_read_only");
+    }
+
+    /// <summary>
+    /// Пульт, открытый до чужой правки, не должен затирать её счёт (docs/SPEC.md §15).
+    /// </summary>
+    [Fact]
+    public async Task Stale_console_conflicts_instead_of_overwriting()
+    {
+        var match = LiveBo3();
+        match.UpdateScore(1, 0);
+        var unitOfWork = new RecordingUnitOfWork();
+
+        await Should.ThrowAsync<ConcurrencyConflictException>(() =>
+            Handler(match, unitOfWork).Handle(
+                new UpdateMatchScoreCommand(match.Id, 0, 1, ExpectedScoreA: 0, ExpectedScoreB: 0),
                 CancellationToken.None));
 
-        exception.Code.ShouldBe("match.finished_is_read_only");
+        match.ScoreA.ShouldBe(1);
+        match.ScoreB.ShouldBe(0);
+        unitOfWork.SaveChangesCalls.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task Console_that_sees_the_current_score_saves()
+    {
+        var match = LiveBo3();
+        match.UpdateScore(1, 0);
+
+        var result = await Handler(match, new RecordingUnitOfWork()).Handle(
+            new UpdateMatchScoreCommand(match.Id, 1, 1, ExpectedScoreA: 1, ExpectedScoreB: 0),
+            CancellationToken.None);
+
+        result.IsSuccess.ShouldBeTrue();
+        match.ScoreB.ShouldBe(1);
     }
 
     private static UpdateMatchScoreCommandHandler Handler(Match match, IUnitOfWork unitOfWork)
