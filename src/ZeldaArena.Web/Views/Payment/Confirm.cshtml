@@ -7,11 +7,7 @@
     var pageTitle = new PageTitleViewModel(Localizer["payment.confirm_title"].Value);
 }
 
-@*
-    Шаг 3 мнимой оплаты: ввод кода из письма (docs/SPEC.md §7.6).
-    Адрес показан маскированным, самого кода в разметке нет и быть не может —
-    в базе от него хранится только хеш.
-*@
+@* Шаг 3 мнимой оплаты. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="auth">

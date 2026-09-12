@@ -7,11 +7,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Teams.Commands.DeleteTeam;
 
-/// <summary>
-/// Проверки дают внятный отказ; схема страхует их ограничением <c>Restrict</c>
-/// на <c>Matches → Teams</c> и <c>TournamentTeams → Teams</c> (docs/SPEC.md §6).
-/// Состав команда знает сама: <c>RosterEntries</c> входит в её агрегат.
-/// </summary>
 public sealed class DeleteTeamCommandHandler(
     IRepository<Team> teams,
     IReadRepository<Match> matches,

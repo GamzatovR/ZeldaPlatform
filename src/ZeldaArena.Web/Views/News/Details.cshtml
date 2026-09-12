@@ -9,11 +9,7 @@
     var pageTitle = new PageTitleViewModel(Model.Title, T["news.sub"].Value, Compact: true);
 }
 
-@*
-    Новость (docs/SPEC.md §9.3, п. 11). Отдельного макета статьи в шаблоне нет —
-    тело набрано стилями .article-content со страницы матча (pages/match.html) через .prose.
-    Комментариев нет: сценарий 10 §10.1 — Приоритет B (§17), срезан.
-*@
+@* Новость. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">
@@ -42,7 +38,7 @@
                 <p class="details-desc__lead">@Model.Summary</p>
             }
 
-            @* Одно из двух разрешённых мест Html.Raw: тело новости проходит HtmlSanitizer на входе (§15). *@
+            @* Одно из двух разрешённых мест Html.Raw: тело новости проходит HtmlSanitizer на входе. *@
             <div class="prose news-article__body">@Html.Raw(Model.BodyHtml)</div>
 
             <p class="news-article__back">

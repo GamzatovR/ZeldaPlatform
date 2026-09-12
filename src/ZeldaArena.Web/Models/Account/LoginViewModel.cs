@@ -2,14 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ZeldaArena.Web.Models.Account;
 
-/// <summary>
-/// Клиентский уровень двухуровневой валидации (docs/SPEC.md §15): DataAnnotations
-/// плюс jquery-validation-unobtrusive подсвечивают поля не отправляя форму.
-/// Серверная проверка выполняется всегда — FluentValidation в ValidationBehavior.
-///
-/// Отдельный тип, а не команда из Application: доменные сущности и команды
-/// из HTTP-запроса не биндятся (CLAUDE.md).
-/// </summary>
 public sealed class LoginViewModel
 {
     [Required(ErrorMessage = "Укажите адрес электронной почты.")]

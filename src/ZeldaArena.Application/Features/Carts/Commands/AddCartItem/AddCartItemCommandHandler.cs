@@ -7,10 +7,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts.Commands.AddCartItem;
 
-/// <summary>
-/// Повторное добавление того же товара увеличивает количество позиции, поэтому остаток
-/// проверяется по сумме «уже в корзине + добавляемое», а не по одному добавлению.
-/// </summary>
 public sealed class AddCartItemCommandHandler(
     CartLocator locator,
     IReadRepository<Product> products,

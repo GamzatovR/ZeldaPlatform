@@ -3,7 +3,7 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetTeams;
 
-/// <summary>Разрешённые сортировки списка команд — whitelist из docs/SPEC.md §15.</summary>
+/// <summary>Разрешённые сортировки списка команд — whitelist из.</summary>
 public static class TeamSorting
 {
     public const string RatingDescending = "rating_desc";

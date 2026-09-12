@@ -12,11 +12,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers.Admin;
 
-/// <summary>
-/// Таблица команд и одобрение без перезагрузки (docs/SPEC.md §10.1, сценарий 12).
-/// После одобрения клиент перерисовывает таблицу событием <c>list:refresh</c>:
-/// строка меняет и метку, и набор кнопок, и решает это сервер.
-/// </summary>
 [Route("api/admin/teams")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class AdminTeamsApiController(ISender sender, IStringLocalizer<SharedResource> localizer)

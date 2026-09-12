@@ -13,14 +13,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers.Admin;
 
-/// <summary>
-/// Таблица матчей и пульт счёта без перезагрузки (docs/SPEC.md §10.1, сценарий 12).
-///
-/// Пульт отдаёт всё состояние матча, а не «счёт принят»: кнопки «Завершить» и «Отменить»
-/// зависят от счёта и статуса, и решать, что теперь доступно, должен сервер. Правка
-/// устаревшим пультом отвечает 409 через <c>ConcurrencyConflictException</c>
-/// и <c>ApiExceptionFilter</c> — тем же кодом, что гонка за товаром в Фазе 8.
-/// </summary>
 [Route("api/admin/matches")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class AdminMatchesApiController(ISender sender, IStringLocalizer<SharedResource> localizer)

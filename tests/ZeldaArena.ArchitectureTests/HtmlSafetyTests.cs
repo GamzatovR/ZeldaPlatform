@@ -2,16 +2,6 @@ using System.Text.RegularExpressions;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// <c>Html.Raw</c> — только для <c>RulesHtml</c> и <c>BodyHtml</c>, прошедших HtmlSanitizer
-/// на входе (docs/SPEC.md §15, §20 пункт 8; CLAUDE.md, «Безопасность»).
-///
-/// Razor кодирует всё, что выводит, и единственный способ вернуть в разметку чужой HTML —
-/// явный <c>Html.Raw</c>. Поэтому достаточно следить за ним одним: вызов над любым
-/// другим значением — это XSS, дожидающийся первого пользователя с тегом &lt;script&gt;
-/// в нике или описании команды. Проверка по исходникам, как у <see cref="BillingRuleTests"/>:
-/// нарушение — конкретная строка, и поймать её надо в момент появления.
-/// </summary>
 public partial class HtmlSafetyTests
 {
     /// <summary>Поля, прошедшие HtmlSanitizer на входе, — единственные, кому разрешён сырой вывод.</summary>
@@ -26,14 +16,10 @@ public partial class HtmlSafetyTests
             .ToArray();
 
         offenders.ShouldBeEmpty(
-            "Html.Raw разрешён только для RulesHtml и BodyHtml, прошедших HtmlSanitizer (docs/SPEC.md §15). "
+            "Html.Raw разрешён только для RulesHtml и BodyHtml, прошедших HtmlSanitizer. "
             + $"Нарушения: {string.Join("; ", offenders)}");
     }
 
-    /// <summary>
-    /// Правило не вакуумное: на страницах турнира и новости Html.Raw есть, и тест обязан
-    /// их видеть. Иначе опечатка в регулярном выражении сделала бы проверку вечнозелёной.
-    /// </summary>
     [Fact]
     public void The_rule_sees_the_legitimate_calls() =>
         Views().SelectMany(view => RawCalls(view.Text)).Count().ShouldBeGreaterThanOrEqualTo(2);

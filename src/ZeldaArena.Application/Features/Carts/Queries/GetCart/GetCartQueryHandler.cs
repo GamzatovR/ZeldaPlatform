@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts.Queries.GetCart;
 
-/// <summary>
-/// Позиции и товары — одним запросом с JOIN, корзина владельца — подзапросом
-/// (docs/SPEC.md §16, без N+1). Сортировка по названию, а не по времени добавления:
-/// строка не должна прыгать по таблице после изменения количества.
-/// </summary>
 public sealed class GetCartQueryHandler(
     CartLocator locator,
     IReadRepository<CartItem> cartItems,

@@ -2,13 +2,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Domain.Common.Entities;
 
-/// <summary>
-/// Персональное уведомление пользователя. Хранится в PostgreSQL, потому что колокольчик
-/// со счётчиком непрочитанных обязан переживать перезагрузку страницы (docs/SPEC.md §11).
-///
-/// Текст не хранится: в PayloadJson лежат подстановки, а перевод собирается на клиенте
-/// по типу уведомления и текущей культуре (§9.5).
-/// </summary>
+/// <summary>Персональное уведомление пользователя.</summary>
 public class Notification : BaseEntity
 {
     private Notification()

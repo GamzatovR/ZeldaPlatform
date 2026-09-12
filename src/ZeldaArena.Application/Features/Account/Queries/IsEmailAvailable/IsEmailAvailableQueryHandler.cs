@@ -4,11 +4,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Application.Features.Account.Queries.IsEmailAvailable;
 
-/// <summary>
-/// Адрес свободен, если на него не заведена ни одна учётная запись. Сравнение
-/// регистронезависимое — его делает Identity по нормализованному адресу, тем же
-/// способом, каким регистрация потом отвергла бы занятый адрес.
-/// </summary>
 public sealed class IsEmailAvailableQueryHandler(IUserAccountService userAccounts)
     : IRequestHandler<IsEmailAvailableQuery, bool>
 {

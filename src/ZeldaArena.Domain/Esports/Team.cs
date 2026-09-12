@@ -5,10 +5,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Киберспортивная команда. <see cref="OwnerUserId"/> заполнен, если команду создал
-/// подписчик с фичей <c>team.create</c>; у команд из сида владельца нет (docs/SPEC.md §4).
-/// </summary>
+/// <summary>Киберспортивная команда.</summary>
 public class Team : BaseEntity, IAuditableEntity
 {
     public const int MinRating = 0;
@@ -52,9 +49,7 @@ public class Team : BaseEntity, IAuditableEntity
 
     public IEnumerable<RosterEntry> ActiveRoster => _rosterEntries.Where(entry => entry.IsActive);
 
-    /// <summary>
-    /// Команда, заведённая администратором или сидом: сразу одобрена, владельца нет.
-    /// </summary>
+    /// <summary>Команда, заведённая администратором или сидом.</summary>
     public static Team Create(
         Slug slug,
         string name,
@@ -66,11 +61,7 @@ public class Team : BaseEntity, IAuditableEntity
         string? description = null) =>
         CreateInternal(slug, name, tag, country, region, rating, foundedAt, description, null, true);
 
-    /// <summary>
-    /// Команда, созданная подписчиком (фича <c>team.create</c>). Наличие фичи проверяет
-    /// хендлер через IEntitlementService — сущность о подписках не знает (docs/SPEC.md §8.1).
-    /// Публикуется только после одобрения модератором.
-    /// </summary>
+    /// <summary>Команда, созданная подписчиком (фича team.create).</summary>
     public static Team CreateByUser(
         Guid ownerUserId,
         Slug slug,
@@ -124,12 +115,7 @@ public class Team : BaseEntity, IAuditableEntity
         Rating = rating;
     }
 
-    /// <summary>
-    /// Добавляет игрока в состав. Внутри команды у игрока не может быть двух открытых записей.
-    /// Запрет состоять сразу в двух разных командах — правило между агрегатами: сущность
-    /// не видит чужие составы (docs/SPEC.md §15). Его проверяет сценарий добавления игрока,
-    /// а частичный уникальный индекс по открытым записям закрывает гонку двух запросов.
-    /// </summary>
+    /// <summary>Добавляет игрока в состав.</summary>
     public RosterEntry AddPlayer(Guid playerId, PlayerRole role, DateTimeOffset joinedAt)
     {
         InvariantViolationException.ThrowIf(

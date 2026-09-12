@@ -10,10 +10,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers.Admin;
 
-/// <summary>
-/// Таблица турниров без перезагрузки (§10.1, сценарий 3): тот же partial и тот же
-/// сценарий, что у страницы <c>/admin/tournaments</c>.
-/// </summary>
 [Route("api/admin/tournaments")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class AdminTournamentsApiController(ISender sender, IStringLocalizer<SharedResource> localizer)

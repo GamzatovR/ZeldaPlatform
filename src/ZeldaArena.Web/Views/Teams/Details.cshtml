@@ -12,15 +12,6 @@
     var pageTitle = new PageTitleViewModel(team.Name, team.Tag, Compact: true);
 }
 
-@*
-    Страница команды (docs/SPEC.md §9.3, п. 7) по docs/design/pages/team.html:
-    .team-details-desc с описанием, счётчики .team-meta, состав .player-list.
-
-    Кнопки Follow нет: сценарий 9 §10.1 — Приоритет B (§17), срезан.
-    Расширенная статистика — за функцией stats.advanced: данные сюда приходят только
-    от сценария, который сам проверил право (§7.3), а <feature-gate> лишь выбирает,
-    показать таблицы или призыв оформить подписку.
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

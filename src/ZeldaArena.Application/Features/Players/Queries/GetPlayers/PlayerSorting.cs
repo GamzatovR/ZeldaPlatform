@@ -3,7 +3,7 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Players.Queries.GetPlayers;
 
-/// <summary>Разрешённые сортировки списка игроков — whitelist из docs/SPEC.md §15.</summary>
+/// <summary>Разрешённые сортировки списка игроков — whitelist из.</summary>
 public static class PlayerSorting
 {
     public const string NicknameAscending = "nickname_asc";

@@ -4,7 +4,7 @@ using ZeldaArena.Application.Common.Models.Identity;
 
 namespace ZeldaArena.Application.Features.Admin.Users.Queries.GetUsersForAdmin;
 
-/// <summary>Таблица пользователей — <c>/admin/users</c> (docs/SPEC.md §9.4, п. 10).</summary>
+/// <summary>Таблица пользователей — <c>/admin/users</c>.</summary>
 public sealed record GetUsersForAdminQuery : FilterBase, IQuery<PagedResult<AdminUserRowDto>>
 {
     public string? Search { get; init; }

@@ -7,10 +7,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetMyTeam;
 
-/// <summary>
-/// Команда ищется только среди своих: чужой идентификатор в адресе даёт «команды нет»,
-/// а не чужой кабинет (защита от IDOR, docs/SPEC.md §15).
-/// </summary>
 public sealed class GetMyTeamQueryHandler(
     IReadRepository<Team> teams,
     IReadRepository<RosterEntry> rosterEntries,

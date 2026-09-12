@@ -8,16 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
-/// <summary>
-/// Наполняет базу демонстрационными данными. Идемпотентен: каждый набор ищется
-/// по естественному ключу (код тарифа, слаг, артикул), добавляется только недостающее,
-/// повторный запуск ничего не меняет.
-///
-/// Пользователей и роли заводит IdentitySeeder, он отрабатывает раньше
-/// (docs/adr/ADR-0006). Новостям нужен автор с внешним ключом на AspNetUsers,
-/// поэтому они сеются здесь, после него. Подписки — тоже: демо-пользователей
-/// заводит IdentitySeeder. Заказы — Фаза 7.
-/// </summary>
 public sealed class DatabaseSeeder(
     AppDbContext context,
     TimeProvider timeProvider,
@@ -34,12 +24,6 @@ public sealed class DatabaseSeeder(
         await SeedSubscriptionsAsync(now, cancellationToken);
     }
 
-    /// <summary>
-    /// Новости сеются последними: автором становится первый заведённый пользователь,
-    /// то есть администратор из IdentitySeeder. Если учётных записей нет вовсе —
-    /// такое бывает на боевом сервере, где сид аккаунтов выключен, — новости
-    /// пропускаются, а не падают на внешнем ключе.
-    /// </summary>
     private async Task SeedNewsAsync(DateTimeOffset now, CancellationToken cancellationToken)
     {
         if (await context.NewsArticles.AnyAsync(cancellationToken))
@@ -70,14 +54,6 @@ public sealed class DatabaseSeeder(
             articles.Count(article => article.IsPublished));
     }
 
-    /// <summary>
-    /// Раздаёт подписки демо-пользователям: активная, истёкшая и никакой
-    /// (docs/SPEC.md §6). Три состояния нужны, чтобы фича-гейт было видно вживую:
-    /// у первого платные функции открыты, у второго закрыты, третий их и не покупал.
-    ///
-    /// Идемпотентно: подписка ищется по пользователю, повторный запуск ничего
-    /// не добавляет и не продлевает уже выданное.
-    /// </summary>
     private async Task SeedSubscriptionsAsync(DateTimeOffset now, CancellationToken cancellationToken)
     {
         var plan = await context.Plans
@@ -253,7 +229,7 @@ public sealed class DatabaseSeeder(
         if (newTeams.Count > 0)
         {
             // Игроки и записи состава заводятся вместе с командой: состав историчен,
-            // и без него команда была бы пустой карточкой (docs/SPEC.md §6).
+            // и без него команда была бы пустой карточкой.
             var players = EsportsSeedData.PlayersWithRosters(newTeams, now);
 
             context.Teams.AddRange(newTeams);

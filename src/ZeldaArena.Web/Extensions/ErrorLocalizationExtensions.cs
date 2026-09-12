@@ -4,10 +4,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Web.Extensions;
 
-/// <summary>
-/// Текст ошибки сценария на языке пользователя. Код — ключ ресурса, аргументы
-/// подставляются в шаблон: «На складе осталось {0} шт.» (docs/SPEC.md §15).
-/// </summary>
 public static class ErrorLocalizationExtensions
 {
     public static string ForError(this IStringLocalizer localizer, Error error)

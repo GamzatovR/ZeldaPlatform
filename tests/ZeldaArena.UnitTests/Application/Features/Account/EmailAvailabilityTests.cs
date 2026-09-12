@@ -4,7 +4,7 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Account;
 
-/// <summary>Remote-проверка занятости адреса на форме регистрации (docs/SPEC.md §10.1, сценарий 11).</summary>
+/// <summary>Remote-проверка занятости адреса на форме регистрации.</summary>
 public class EmailAvailabilityTests
 {
     private const string Email = "player@zeldaarena.test";
@@ -27,10 +27,6 @@ public class EmailAvailabilityTests
         (await Check(Email)).ShouldBeFalse();
     }
 
-    /// <summary>
-    /// Пробел, прилипший при вставке адреса, не должен выдать занятый адрес за свободный:
-    /// регистрация отвергла бы его уже после отправки формы.
-    /// </summary>
     [Fact]
     public async Task Surrounding_spaces_do_not_hide_a_taken_address()
     {
@@ -55,10 +51,6 @@ public class EmailAvailabilityTests
         new IsEmailAvailableQueryValidator().Validate(new IsEmailAvailableQuery(email)).IsValid.ShouldBeFalse();
     }
 
-    /// <summary>
-    /// Формат адреса проверяет своё правило формы; Remote-запрос с опечаткой в адресе
-    /// должен получить ответ «свободен», а не ошибку запроса, иначе поле зависнет.
-    /// </summary>
     [Fact]
     public void Malformed_address_passes_the_validator()
     {

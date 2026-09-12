@@ -2,11 +2,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.Common.Entities;
 
-/// <summary>
-/// Универсальная таблица переводов контента из БД: названия турниров, заголовки
-/// новостей, названия товаров. Новый язык не требует ни миграции, ни правки схемы —
-/// достаточно добавить строки и код культуры в конфиг (docs/SPEC.md §5.4, EP-7).
-/// </summary>
+/// <summary>Универсальная таблица переводов контента из БД.</summary>
 public class ContentTranslation : BaseEntity
 {
     private ContentTranslation()

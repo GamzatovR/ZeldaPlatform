@@ -4,38 +4,8 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Правила разграничения доступа к платным функциям (docs/SPEC.md §7.4, §20 пункт 2,
-/// docs/adr/ADR-0005).
-///
-/// Проверка идёт по исходникам, а не по собранным сборкам, по той же причине,
-/// что и в <see cref="ProjectFileRuleTests"/>: нарушение здесь — это конкретная
-/// строка кода, и поймать её надо в момент появления, а не когда она сработает
-/// на защите.
-///
-/// Зачем это вообще. Роль <c>Premium</c> существует ради бейджа у ника, и соблазн
-/// проверить доступ через неё велик: она рядом, она есть в cookie, она не требует
-/// обращения к базе. Но тогда рассыпается вся расширяемость: снять фичу с тарифа
-/// в админке (EP-4) станет нечем, потому что права будет давать роль, а не набор фич.
-/// </summary>
 public partial class BillingRuleTests
 {
-    /// <summary>
-    /// Файлы, которым положено упоминать роль: там она объявлена, выдаётся, снимается
-    /// и сеется. Проверять их запретом бессмысленно — они и есть исключение.
-    ///
-    /// Отдельно стоит <c>HeaderViewComponent.cs</c>: бейдж у ника — то самое
-    /// единственное применение роли, ради которого она существует (docs/SPEC.md §7.4).
-    /// Отличить «показать бейдж» от «скрыть платный блок» регулярным выражением нельзя,
-    /// поэтому исключение сделано точечно, на один файл. Роль читается ровно один раз
-    /// и уезжает во вьюху булевым флагом <c>ShowPremiumBadge</c>, поэтому сама разметка
-    /// шапки о роли уже не знает и под исключение не попадает. Платные блоки прячет
-    /// <c>&lt;feature-gate&gt;</c>, и правило продолжает следить за всеми остальными
-    /// представлениями.
-    ///
-    /// До Фазы 5 исключением был <c>_LoginPartial.cshtml</c>; вместе с перевёрсткой
-    /// шапки бейдж переехал в компонент, а сам partial удалён.
-    /// </summary>
     private static readonly string[] AllowedToMentionPremium =
     [
         "RoleNames.cs",
@@ -56,15 +26,10 @@ public partial class BillingRuleTests
 
         offenders.ShouldBeEmpty(
             "Доступ к платным функциям проверяется только через IEntitlementService "
-            + "и [RequireFeature]; роль Premium — бейдж для отображения (docs/SPEC.md §7.4). "
+            + "и [RequireFeature]; роль Premium — бейдж для отображения. "
             + $"Нарушения: {string.Join(", ", offenders)}");
     }
 
-    /// <summary>
-    /// Коды фич — константы <c>FeatureCodes</c>, а не литералы по коду (CLAUDE.md).
-    /// Литерал переживает переименование кода молча и оставляет действие открытым
-    /// для всех либо закрытым для всех — заметить это можно будет только вручную.
-    /// </summary>
     [Fact]
     public void Feature_codes_are_never_written_as_literals()
     {
@@ -80,10 +45,6 @@ public partial class BillingRuleTests
             + $"Нарушения: {string.Join(", ", offenders)}");
     }
 
-    /// <summary>
-    /// Обратная сторона: запрет должен ловить настоящее нарушение, а не молчать всегда.
-    /// Без этой проверки опечатка в регулярном выражении сделала бы тест вечнозелёным.
-    /// </summary>
     [Theory]
     [InlineData("if (User.IsInRole(\"Premium\")) { return View(); }")]
     [InlineData("[Authorize(Roles = \"Premium\")]")]
@@ -103,19 +64,9 @@ public partial class BillingRuleTests
     private static bool AuthorisesByPremium(string text) =>
         PremiumAuthorisation().IsMatch(WithoutComments(text));
 
-    /// <summary>
-    /// Комментарии вырезаются перед проверкой: сам запрет описан словами в
-    /// <c>IEntitlementService</c> и <c>ICurrentUserService</c>, и без этого правило
-    /// краснело бы на документации, объясняющей, чего делать нельзя.
-    /// </summary>
     private static string WithoutComments(string text) =>
         Comment().Replace(text, string.Empty);
 
-    /// <summary>
-    /// Ловит три способа проверить доступ ролью: <c>IsInRole</c>, атрибут
-    /// <c>[Authorize(Roles = …)]</c> и <c>RequireRole</c> в политике — как с константой,
-    /// так и со строковым литералом.
-    /// </summary>
     [GeneratedRegex(
         """(IsInRole\s*\(\s*(RoleNames\.Premium|"Premium")|Roles\s*=\s*(RoleNames\.Premium|"Premium")|RequireRole\s*\([^)]*(RoleNames\.Premium|"Premium"))""",
         RegexOptions.None,

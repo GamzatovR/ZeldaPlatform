@@ -5,10 +5,6 @@ using ZeldaArena.Application.Common.Validation;
 
 namespace ZeldaArena.Application.Features.Admin.Players;
 
-/// <summary>
-/// Те же правила, что у формы капитана при добавлении нового игрока в свою команду
-/// (<c>EsportsValidationRules</c>): игрок один, и правила у него одни.
-/// </summary>
 public sealed class PlayerFieldsValidator : AbstractValidator<IPlayerFields>
 {
     public const int MaxBioLength = 4000;

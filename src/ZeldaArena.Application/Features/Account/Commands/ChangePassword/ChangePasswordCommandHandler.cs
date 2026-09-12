@@ -6,16 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.ChangePassword;
 
-/// <summary>
-/// Смена пароля пользователем, который уже вошёл.
-///
-/// Порядок шагов важен. Сначала меняем пароль, затем закрываем прочие сессии
-/// и только потом перевыписываем cookie текущему пользователю: иначе он разлогинил бы
-/// сам себя вместе с остальными (docs/SPEC.md §8.2).
-///
-/// Стамп безопасности сбрасывается явно, хотя UserManager делает это и сам:
-/// требование §8.2 не должно зависеть от внутреннего устройства Identity.
-/// </summary>
 public sealed class ChangePasswordCommandHandler(
     ICurrentUserService currentUser,
     IUserAccountService userAccounts,

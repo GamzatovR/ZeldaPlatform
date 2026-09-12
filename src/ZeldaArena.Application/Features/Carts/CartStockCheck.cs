@@ -4,11 +4,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts;
 
-/// <summary>
-/// Можно ли держать в корзине столько штук товара. Те же условия проверяет
-/// <c>Cart.AddItem</c>, но сущность отвечает исключением — последним рубежом, — а
-/// пользователь должен увидеть сообщение: «На складе осталось 3 шт.» (docs/SPEC.md §15).
-/// </summary>
 public static class CartStockCheck
 {
     public const int MaxQuantityPerLine = 99;

@@ -10,13 +10,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Двухфакторная аутентификация по TOTP (docs/SPEC.md §8.2).
-///
-/// Приложение-аутентификатор получает секрет через ссылку otpauth:// — её строит
-/// этот класс, потому что формат ссылки задан спецификацией Key Uri Format
-/// и является деталью реализации TOTP, а не решением уровня сценария.
-/// </summary>
+/// <summary>Двухфакторная аутентификация по TOTP.</summary>
 public sealed class IdentityTwoFactorService(UserManager<ApplicationUser> userManager)
     : ITwoFactorService
 {
@@ -43,9 +37,7 @@ public sealed class IdentityTwoFactorService(UserManager<ApplicationUser> userMa
 
         if (string.IsNullOrEmpty(key))
         {
-            // Ключа ещё нет — заводим. Повторный заход на страницу настройки покажет
-            // тот же ключ, поэтому прерванная настройка продолжается, а не начинается
-            // заново с новым QR-кодом.
+            // Ключа ещё нет — заводим.
             await userManager.ResetAuthenticatorKeyAsync(user).ConfigureAwait(false);
             key = await userManager.GetAuthenticatorKeyAsync(user).ConfigureAwait(false);
         }
@@ -182,10 +174,6 @@ public sealed class IdentityTwoFactorService(UserManager<ApplicationUser> userMa
         return builder.ToString().ToLowerInvariant();
     }
 
-    /// <summary>
-    /// Ссылка формата Key Uri Format. Издатель повторён и в пути, и в параметре:
-    /// первое понимают все аутентификаторы, второе — требование самого формата.
-    /// </summary>
     private static string BuildAuthenticatorUri(string email, string key) =>
         string.Format(
             CultureInfo.InvariantCulture,

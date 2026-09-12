@@ -4,11 +4,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Подписка пользователя на команду, игрока или турнир — источник персональных
-/// уведомлений «матч избранной команды начинается» (docs/SPEC.md §11).
-/// Пара «пользователь + цель» уникальна: повторный Follow не создаёт дубль.
-/// </summary>
 public class Follow : BaseEntity, IAuditableEntity
 {
     private Follow()

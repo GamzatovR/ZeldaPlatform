@@ -3,7 +3,7 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 
-/// <summary>Разрешённые сортировки истории заказов — whitelist из docs/SPEC.md §15.</summary>
+/// <summary>Разрешённые сортировки истории заказов — whitelist из.</summary>
 public static class OrderSorting
 {
     public const string PlacedDescending = "placed_desc";

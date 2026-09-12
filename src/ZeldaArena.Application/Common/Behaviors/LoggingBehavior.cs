@@ -8,15 +8,7 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Application.Common.Behaviors;
 
-/// <summary>
-/// Самый внешний behavior: пишет начало, исход и длительность любого сценария
-/// (docs/SPEC.md §13). Стоит снаружи валидации, поэтому в лог попадает и запрос,
-/// отвергнутый валидатором.
-///
-/// Содержимое запроса здесь не пишется намеренно — только имя, пользователь и время.
-/// Разбор полей с маскированием секретов делает <c>AuditBehavior</c>, и делает его
-/// в одном месте.
-/// </summary>
+/// <summary>Самый внешний behavior.</summary>
 public sealed class LoggingBehavior<TRequest, TResponse>(
     ILogger<LoggingBehavior<TRequest, TResponse>> logger,
     ICurrentUserService currentUser)

@@ -32,10 +32,6 @@ public class SliceValidatorTests
         Tournaments.Validate(new GetTournamentsQuery { Status = (TournamentStatus)99 })
             .IsValid.ShouldBeFalse();
 
-    /// <summary>
-    /// Размер страницы и сортировка не валидируются, а нормализуются: сохранённая
-    /// ссылка обязана открыться и после переименования сортировки (docs/SPEC.md §10.2).
-    /// </summary>
     [Fact]
     public void Unusual_page_size_and_sort_do_not_fail_validation() =>
         Tournaments.Validate(new GetTournamentsQuery { PageSize = 37, Sort = "whatever" })
@@ -59,11 +55,6 @@ public class SliceValidatorTests
         Matches.Validate(new UpdateMatchScoreCommand(Guid.CreateVersion7(), scoreA, scoreB))
             .IsValid.ShouldBeFalse();
 
-    /// <summary>
-    /// Формат серии валидатор не проверяет: для этого нужен BestOf конкретного матча,
-    /// и правило живёт в Match.UpdateScore. Здесь 5:5 — синтаксически допустимая команда,
-    /// которую отвергнет сущность.
-    /// </summary>
     [Fact]
     public void Series_format_is_not_the_validators_business() =>
         Matches.Validate(new UpdateMatchScoreCommand(Guid.CreateVersion7(), 5, 5))

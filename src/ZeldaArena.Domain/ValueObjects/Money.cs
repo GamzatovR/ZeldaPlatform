@@ -5,11 +5,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.ValueObjects;
 
-/// <summary>
-/// Денежная сумма с валютой. Не бывает отрицательной, валюты не смешиваются
-/// (docs/SPEC.md §5.3). В БД раскладывается на два столбца через ComplexProperty,
-/// отдельной таблицы нет (docs/adr/ADR-0003).
-/// </summary>
+/// <summary>Денежная сумма с валютой.</summary>
 public sealed class Money : ValueObject
 {
     public const string DefaultCurrency = "RUB";
@@ -17,10 +13,7 @@ public sealed class Money : ValueObject
     /// <summary>Столько знаков после запятой хранит <c>numeric(18,2)</c>.</summary>
     public const int Scale = 2;
 
-    /// <summary>
-    /// Конструктор для материализации из БД: EF заполняет поля напрямую, минуя проверки.
-    /// Данные, уже лежащие в базе, прошли валидацию при записи.
-    /// </summary>
+    /// <summary>Конструктор для материализации из БД.</summary>
     private Money() => Currency = DefaultCurrency;
 
     public Money(decimal amount, string currency)
@@ -57,9 +50,7 @@ public sealed class Money : ValueObject
         return new Money(Amount + other.Amount, Currency);
     }
 
-    /// <summary>
-    /// Вычитание. Уход в минус запрещён конструктором: скидка не может превысить сумму.
-    /// </summary>
+    /// <summary>Вычитание.</summary>
     public Money Subtract(Money other)
     {
         EnsureSameCurrency(other);

@@ -10,11 +10,6 @@ using ZeldaArena.Web.Controllers;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>
-/// Фильтр и пагинация турниров, вкладки матчей турнира (docs/SPEC.md §10.1, сценарии 1–3).
-/// Запросы те же, что у <see cref="TournamentsController"/>; ответ — тот же partial,
-/// которым страница рисует список, поэтому разметка у обоих путей одна.
-/// </summary>
 [Route("api/tournaments")]
 public sealed class TournamentsApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
     : ApiControllerBase(localizer)
@@ -30,10 +25,6 @@ public sealed class TournamentsApiController(ISender sender, IStringLocalizer<Sh
             PageUrl(nameof(TournamentsController.Index), "Tournaments"));
     }
 
-    /// <summary>
-    /// Вкладка матчей. Турнир адресуется слагом, как и его страница: ссылки пагинации
-    /// внутри вкладки ведут на <c>/tournaments/{slug}?state=…&amp;page=…</c>.
-    /// </summary>
     [HttpGet("{slug}/matches")]
     public async Task<IActionResult> Matches(
         string slug,

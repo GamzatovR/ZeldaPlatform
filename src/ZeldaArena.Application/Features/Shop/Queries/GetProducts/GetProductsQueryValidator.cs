@@ -4,12 +4,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Shop.Queries.GetProducts;
 
-/// <summary>
-/// Как у турниров: настоящие ошибки отвергаются, размер страницы и сортировка
-/// нормализуются молча (§10.2). Перевёрнутый диапазон цен — не ошибка, а пустая
-/// выборка: пустое состояние с подсказкой отвечает на него честнее отказа
-/// (урок Фазы 6 с диапазоном дат).
-/// </summary>
 public sealed class GetProductsQueryValidator : AbstractValidator<GetProductsQuery>
 {
     public GetProductsQueryValidator()

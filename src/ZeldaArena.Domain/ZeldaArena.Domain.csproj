@@ -2,13 +2,10 @@
 
   <PropertyGroup>
     <RootNamespace>ZeldaArena.Domain</RootNamespace>
-    <!-- Ядро собирается без предупреждений (CLAUDE.md, «Стиль кода»). -->
+    <!-- Ядро собирается без предупреждений. -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <!--
-    Зависимостей нет и не будет: Domain использует только BCL (docs/SPEC.md §5.2, правило 1).
-    Нарушение ловится тестом DependencyRuleTests.
-  -->
+  <!-- Зависимостей нет и не будет: Domain использует только BCL, это ловит DependencyRuleTests. -->
 
 </Project>

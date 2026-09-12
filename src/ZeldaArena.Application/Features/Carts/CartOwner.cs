@@ -1,9 +1,5 @@
 namespace ZeldaArena.Application.Features.Carts;
 
-/// <summary>
-/// Чья корзина: вошедшего пользователя или гостя. Ровно одно из двух — так же, как
-/// у самой <c>Cart</c>.
-/// </summary>
 public sealed record CartOwner
 {
     private CartOwner(Guid? userId, Guid? anonymousId)

@@ -2,22 +2,9 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Sentinel-тест из docs/SPEC.md §18. Архитектурные проверки устроены как «нарушителей
-/// нет», поэтому на пустой или несобравшейся сборке они проходят вхолостую. Этот тест
-/// страхует от такой тишины: он требует, чтобы модель предметной области действительно
-/// присутствовала в сборке Domain.
-///
-/// Проверка «есть хоть один тип» тут не годится — в сборке лежит якорь
-/// DomainAssemblyReference, и она прошла бы и на пустом домене. Поэтому считаются
-/// именно наследники BaseEntity и DomainEvent.
-///
-/// Половина условия про слой сценариев живёт в <see cref="ApplicationModelSentinelTests"/>:
-/// она появилась в Фазе 2 вместе с MediatR.
-/// </summary>
 public class DomainModelSentinelTests
 {
-    /// <summary>21 сущность из docs/SPEC.md §6 минус связи с составным ключом.</summary>
+    /// <summary>21 сущность из.</summary>
     private const int ExpectedEntityCount = 20;
 
     private const int ExpectedDomainEventCount = 5;

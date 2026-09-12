@@ -26,8 +26,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      # Архитектурные тесты здесь же: нарушение правила зависимостей роняет CI,
-      # и PR с ним не мержится (docs/SPEC.md §5.2, §16).
+      # Архитектурные тесты здесь же: нарушение правила зависимостей роняет CI.
       - name: Test
         run: dotnet test --configuration Release --no-build --verbosity normal
 

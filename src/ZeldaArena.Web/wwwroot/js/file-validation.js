@@ -1,9 +1,4 @@
-// Клиентская проверка загружаемого изображения для jquery-validation-unobtrusive:
-// расширение из whitelist и размер. Атрибуты data-val-imagefile-* выставляет
-// ImageFileAttribute по тем же правилам, что проверяет сервер (docs/SPEC.md §15).
-//
-// Обычный скрипт, а не ES-модуль: jquery-validation регистрирует адаптеры
-// на глобальном jQuery, и подключается этот файл сразу после него.
+// Клиентская проверка загружаемого изображения для jquery-validation-unobtrusive.
 (function ($) {
   'use strict';
 

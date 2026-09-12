@@ -1,4 +1,4 @@
-// Формы (design-system.md §10). Базовое поведение — от Bootstrap, настроенного
+// Формы. Базовое поведение — от Bootstrap, настроенного
 // переменными в _bootstrap.scss; здесь только то, чего у него нет.
 
 .form-control,
@@ -19,7 +19,7 @@
   margin-bottom: var(--space-5);
 }
 
-// Классы ставит jquery-validation-unobtrusive — своих не изобретаем (§15).
+// Классы ставит jquery-validation-unobtrusive — своих не изобретаем.
 .input-validation-error {
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }

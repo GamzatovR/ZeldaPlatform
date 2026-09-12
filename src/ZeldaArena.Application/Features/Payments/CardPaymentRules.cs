@@ -4,20 +4,8 @@ using ZeldaArena.Application.Common.Validation;
 
 namespace ZeldaArena.Application.Features.Payments;
 
-/// <summary>
-/// Серверная половина двухуровневой валидации реквизитов (docs/SPEC.md §7.6, шаг 1;
-/// §15). Работает и при выключенном JavaScript — это отдельный пункт чек-листа §19.
-///
-/// Сообщения конкретны намеренно: «карта не подходит» заставляет пользователя
-/// перебирать поля вслепую.
-/// </summary>
 public static class CardPaymentRules
 {
-    /// <summary>
-    /// Клиентская часть ключа идемпотентности; форма присылает Guid. Длина ограничена
-    /// так, чтобы вместе с идентификатором владельца ключ помещался в столбец
-    /// (<see cref="PaymentIdempotency"/>, docs/SPEC.md §6).
-    /// </summary>
     public const int MaxIdempotencyKeyLength = PaymentIdempotency.MaxClientKeyLength;
 
     public static void AddCardPaymentRules<T>(this AbstractValidator<T> validator)
@@ -65,15 +53,6 @@ public static class CardPaymentRules
             .WithMessage($"Ключ идемпотентности не длиннее {MaxIdempotencyKeyLength} символов.");
     }
 
-    /// <summary>
-    /// Карта действительна до последнего дня указанного месяца включительно.
-    /// Сегодняшний день берётся у системных часов, потому что валидатор не должен
-    /// зависеть от порта времени: правило про календарь, а не про состояние приложения.
-    ///
-    /// Открыт для формы в Web: правило, которое форма может нарушить без подделки
-    /// запроса, обязано проверяться и на её уровне, иначе отказ валидатора до Фазы 11
-    /// превращается в ошибку сервера. Одно правило на оба уровня — копии разъехались бы.
-    /// </summary>
     public static bool IsExpired(int month, int year) =>
         month is < 1 or > 12
         || year is < 1 or > 9998

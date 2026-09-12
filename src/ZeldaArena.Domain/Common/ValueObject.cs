@@ -1,8 +1,6 @@
 namespace ZeldaArena.Domain.Common;
 
-/// <summary>
-/// Объект-значение: равенство по составу, а не по ссылке.
-/// </summary>
+/// <summary>Объект-значение.</summary>
 public abstract class ValueObject : IEquatable<ValueObject>
 {
     protected abstract IEnumerable<object?> GetEqualityComponents();

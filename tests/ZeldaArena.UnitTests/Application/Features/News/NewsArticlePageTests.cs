@@ -6,7 +6,7 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.News;
 
-/// <summary>Страница новости (docs/SPEC.md §9.3, п. 11) и её счётчик просмотров.</summary>
+/// <summary>Страница новости и её счётчик просмотров.</summary>
 public class NewsArticlePageTests
 {
     private static readonly DateTimeOffset Published = new(2026, 6, 1, 9, 0, 0, TimeSpan.Zero);

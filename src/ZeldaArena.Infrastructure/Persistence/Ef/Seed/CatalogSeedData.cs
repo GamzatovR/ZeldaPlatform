@@ -3,10 +3,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
-/// <summary>
-/// Каталог магазина: 3 плоские категории и 24 товара (docs/SPEC.md §6).
-/// Объёма хватает, чтобы фильтр по категории и цене и пагинация по 12 были видны.
-/// </summary>
 public static class CatalogSeedData
 {
     private const string Keyboards = "keyboards";
@@ -50,11 +46,6 @@ public static class CatalogSeedData
         return products;
     }
 
-    /// <summary>
-    /// В макете четыре фотографии товаров, они и раздаются по кругу. Статический путь
-    /// от корня сайта отличается от имени загруженного файла, поэтому витрина понимает
-    /// оба вида: товарам из админки (Фаза 9) картинку положит <c>IFileStorage</c>.
-    /// </summary>
     private static string ImageFor(int index) => $"/img/shop/products-img{((index - 1) % 4) + 1}.jpg";
 
     private static IEnumerable<(string Category, string Model, decimal Price, int Stock)> Definitions()

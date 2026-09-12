@@ -18,10 +18,6 @@ using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
 namespace ZeldaArena.Infrastructure;
 
-/// <summary>
-/// Composition root инфраструктуры: единственная точка, где Web видит типы этого проекта
-/// (docs/SPEC.md §5.2, правило 3). Реализации портов подключаются здесь начиная с Фазы 1.
-/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
@@ -34,7 +30,7 @@ public static class DependencyInjection
         services.TryAddSingleton(TimeProvider.System);
         services.AddHttpContextAccessor();
 
-        // Кэш прав на платные функции: TTL пять минут (docs/SPEC.md §7.3).
+        // Кэш прав на платные функции: TTL пять минут.
         services.AddMemoryCache();
 
         services.AddScoped<AuditableEntityInterceptor>();
@@ -54,17 +50,14 @@ public static class DependencyInjection
         });
 
         // Identity подключается до портов: реализации ниже опираются на UserManager
-        // и SignInManager, зарегистрированные здесь (docs/SPEC.md §8).
+        // и SignInManager, зарегистрированные здесь.
         services.AddPlatformIdentity(configuration);
 
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
         services.Configure<SeedAccountsOptions>(
             configuration.GetSection(SeedAccountsOptions.SectionName));
 
-        // Перец обязателен и проверяется при старте: без него шестизначный код
-        // защищён одним лишь SHA-256, а это миллион вариантов для перебора
-        // по дампу базы (docs/SPEC.md §7.6). Лучше не подняться, чем тихо
-        // работать с ослабленным хешем.
+        // Перец обязателен и проверяется при старте.
         services.AddOptions<ConfirmationCodeOptions>()
             .Bind(configuration.GetSection(ConfirmationCodeOptions.SectionName))
             .Validate(
@@ -90,7 +83,7 @@ public static class DependencyInjection
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
         services.AddScoped<IEmailSender, SmtpEmailSender>();
 
-        // Мнимая оплата (§7.6). Провайдер меняется одной строкой — ради этого
+        // Мнимая оплата. Провайдер меняется одной строкой — ради этого
         // у порта и есть Key (EP-6).
         services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
         services.AddSingleton<IConfirmationCodeProtector, ConfirmationCodeProtector>();
@@ -99,17 +92,17 @@ public static class DependencyInjection
         services.AddScoped(typeof(IReadRepository<>), typeof(EfReadRepository<>));
         services.AddScoped<INewsRepository, EfNewsRepository>();
 
-        // Загруженные логотипы и аватары (docs/SPEC.md §15): вне wwwroot, под GUID-именем.
+        // Загруженные логотипы и аватары: вне wwwroot, под GUID-именем.
         services.Configure<FileStorageOptions>(configuration.GetSection(FileStorageOptions.SectionName));
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         // Настроенный санитайзер неизменяем и потокобезопасен — один на приложение.
         services.AddSingleton<IHtmlSanitizer, GanssHtmlSanitizer>();
 
-        // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
+        // Фаза 10 заменит эту строку на MongoAuditLogWriter.
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();
 
-        // Раз в час помечает истёкшие подписки (docs/SPEC.md §7.5, п. 4).
+        // Раз в час помечает истёкшие подписки.
         services.AddHostedService<SubscriptionExpirationService>();
         services.AddHostedService<AbandonedOrderExpirationService>();
 

@@ -1,10 +1,6 @@
 namespace ZeldaArena.Domain.Billing;
 
-/// <summary>
-/// Привязка фичи к тарифу. Ключ составной (PlanId, FeatureId), поэтому BaseEntity не наследуется.
-/// Именно эта таблица позволяет вынуть stats.advanced из тарифа Pro и продать её отдельно,
-/// не трогая код (docs/SPEC.md §5.4, EP-4).
-/// </summary>
+/// <summary>Привязка фичи к тарифу.</summary>
 public class PlanFeature
 {
     private PlanFeature()
@@ -15,10 +11,7 @@ public class PlanFeature
 
     public Guid FeatureId { get; private set; }
 
-    /// <summary>
-    /// Параметр фичи: процент скидки, лимит команд и тому подобное.
-    /// Позволяет менять поведение фичи из админки, без деплоя (EP-5).
-    /// </summary>
+    /// <summary>Параметр фичи.</summary>
     public string? Value { get; private set; }
 
     public Plan? Plan { get; private set; }

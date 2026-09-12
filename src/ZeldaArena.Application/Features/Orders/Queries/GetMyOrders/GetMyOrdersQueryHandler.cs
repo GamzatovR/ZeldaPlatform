@@ -6,11 +6,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 
-/// <summary>
-/// Только свои заказы (§15, IDOR): условие на владельца стоит первым и не зависит
-/// от фильтра. Число штук — <c>Sum()</c> внутри проекции: EF Core переводит его
-/// в скалярный подзапрос, а не тянет позиции каждого заказа (§16).
-/// </summary>
 public sealed class GetMyOrdersQueryHandler(
     ICurrentUserService currentUser,
     IReadRepository<Order> orders,

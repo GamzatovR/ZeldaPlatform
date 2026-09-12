@@ -1,6 +1,6 @@
 namespace ZeldaArena.Application.Common.Models.Identity;
 
-/// <summary>Строка таблицы пользователей админки (docs/SPEC.md §9.4, п. 10).</summary>
+/// <summary>Строка таблицы пользователей админки.</summary>
 public sealed record AdminUserRowDto(
     Guid Id,
     string Email,

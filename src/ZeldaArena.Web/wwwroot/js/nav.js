@@ -1,11 +1,4 @@
 // Раскрытие мобильного меню и меню аккаунта.
-//
-// В макете это делали meanmenu и выпадающие меню Bootstrap; ни того, ни другого
-// в выданном шаблоне нет (docs/design/design-system.md §1), поэтому поведение
-// написано заново — и заодно без jQuery, как требует docs/SPEC.md §2.
-//
-// aria-expanded переключается вместе с классом: без него кнопка не сообщает
-// скринридеру, раскрыт список или нет.
 
 function bindToggle(button, panel, openClass) {
   button.addEventListener('click', () => {

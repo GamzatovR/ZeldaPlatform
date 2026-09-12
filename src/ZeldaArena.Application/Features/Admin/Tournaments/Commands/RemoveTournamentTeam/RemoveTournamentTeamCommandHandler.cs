@@ -8,12 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.RemoveTournamentTeam;
 
-/// <summary>
-/// Команду, у которой уже есть матчи в этом турнире, убрать нельзя: матч ссылается
-/// и на турнир, и на команду, и без участника в составе он стал бы историей,
-/// которой противоречит сама сетка. Правило между агрегатами, поэтому оно здесь,
-/// а не в <c>Tournament</c>: матчи в агрегат турнира не загружаются.
-/// </summary>
 public sealed class RemoveTournamentTeamCommandHandler(
     IRepository<Tournament> tournamentRepository,
     IReadRepository<Match> matches,

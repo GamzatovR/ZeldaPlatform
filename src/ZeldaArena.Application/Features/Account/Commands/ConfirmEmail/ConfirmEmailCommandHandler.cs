@@ -5,10 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.ConfirmEmail;
 
-/// <summary>
-/// Проверяет токен подтверждения. Срок жизни и подпись токена — забота Identity,
-/// здесь остаётся только перевод результата.
-/// </summary>
 public sealed class ConfirmEmailCommandHandler(IUserAccountService userAccounts)
     : IRequestHandler<ConfirmEmailCommand, Result>
 {

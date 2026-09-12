@@ -7,16 +7,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.AddFreeAgentToMyTeam;
 
-/// <summary>
-/// «Игрок не может состоять в двух командах одновременно» (docs/SPEC.md §15) — правило
-/// между агрегатами: сущность <c>Team</c> чужих составов не видит, поэтому его проверяет
-/// сценарий и отвечает понятной ошибкой. Два одновременных запроса, каждый из которых
-/// успел увидеть игрока свободным, упрутся в частичный уникальный индекс
-/// <c>IX_RosterEntries_PlayerId_Active</c> — второй не сохранится.
-///
-/// Проверка в хендлере, а не в валидаторе: отказ валидатора до Фазы 11 превращается
-/// в ошибку сервера, а у этого отказа должно быть внятное сообщение на форме.
-/// </summary>
 public sealed class AddFreeAgentToMyTeamCommandHandler(
     IRepository<Team> teamRepository,
     IReadRepository<Player> players,

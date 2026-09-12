@@ -2,15 +2,6 @@ using FluentValidation;
 
 namespace ZeldaArena.Application.Features.Matches.Commands.UpdateMatchScore;
 
-/// <summary>
-/// Проверяет форму запроса: идентификатор задан, счёт неотрицателен и не выходит
-/// за разумные пределы.
-///
-/// Соответствие счёта формату серии здесь не проверяется намеренно: для этого нужно
-/// знать BestOf конкретного матча, а инвариант матча — забота самой сущности
-/// (Match.UpdateScore). Дублирование правила в валидаторе означало бы два места,
-/// где его придётся менять, и одно из них рано или поздно забудут.
-/// </summary>
 public sealed class UpdateMatchScoreCommandValidator : AbstractValidator<UpdateMatchScoreCommand>
 {
     /// <summary>Формат серии в проекте не длиннее Bo7, запас взят с большим избытком.</summary>

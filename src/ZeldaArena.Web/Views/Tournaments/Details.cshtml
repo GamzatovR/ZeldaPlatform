@@ -12,15 +12,6 @@
     var pageTitle = new PageTitleViewModel(tournament.Name, T["tournament.details_sub"].Value, Compact: true);
 }
 
-@*
-    Страница турнира (docs/SPEC.md §9.3, п. 4), свёрстана по docs/design/pages/tournament.html:
-    .tournament-details-desc с мета-строкой, вкладки матчей .matches-tabs, участники
-    .single-top-team-item.
-
-    Вкладки — ссылки с ?state= и якорем на блок матчей: состояние в адресе, F5 и «Назад»
-    работают без JavaScript (§10.2). С JavaScript ajax-list.js подменяет только #tournament-matches
-    ответом GET /api/tournaments/{slug}/matches (§10.1, сценарий 2).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">
@@ -64,7 +55,7 @@
             <section class="details-block" aria-labelledby="rules-title">
                 <h2 class="details-block__title" id="rules-title">@T["tournament.rules"]</h2>
 
-                @* Одно из двух разрешённых мест Html.Raw: регламент проходит HtmlSanitizer на входе (§15). *@
+                @* Одно из двух разрешённых мест Html.Raw: регламент проходит HtmlSanitizer на входе. *@
                 <div class="prose">@Html.Raw(tournament.RulesHtml)</div>
             </section>
         }

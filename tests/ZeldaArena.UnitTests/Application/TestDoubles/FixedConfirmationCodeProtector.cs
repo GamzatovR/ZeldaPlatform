@@ -3,13 +3,6 @@ using ZeldaArena.Application.Common.Models.Billing;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Предсказуемый код подтверждения. Настоящий берётся у криптографического ГСЧ,
-/// и без подмены сценарий подтверждения было бы нечем проверить.
-///
-/// Хеш здесь — сам код с приставкой: сверка в домене сравнивает строки, поэтому
-/// от хеша требуется только детерминированность.
-/// </summary>
 internal sealed class FixedConfirmationCodeProtector(string code = "123456")
     : IConfirmationCodeProtector
 {

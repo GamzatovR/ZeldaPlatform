@@ -12,7 +12,7 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers.Admin;
 
-/// <summary>Таблица пользователей и блокировка без перезагрузки (§10.1, сценарий 12).</summary>
+/// <summary>Таблица пользователей и блокировка без перезагрузки.</summary>
 [Route("api/admin/users")]
 [Authorize(Policy = PolicyNames.AdminOnly)]
 public sealed class AdminUsersApiController(ISender sender, IStringLocalizer<SharedResource> localizer)

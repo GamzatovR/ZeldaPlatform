@@ -6,11 +6,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Права на платные функции — единственное, что решает доступ (docs/SPEC.md §7.1),
-/// поэтому правила отбора проверяются подробно: ошибка здесь либо закрывает
-/// оплаченную функцию, либо раздаёт её даром.
-/// </summary>
 public class EntitlementResolverTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 9, 12, 0, 0, TimeSpan.Zero);
@@ -40,10 +35,6 @@ public class EntitlementResolverTests
         Resolve([subscription], [plan]).Features.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Срок кончился, но фоновая служба ещё не добралась до записи. Доступ обязан
-    /// пропасть по дате, а не по расторопности планировщика (§7.5, п. 4).
-    /// </summary>
     [Fact]
     public void Subscription_past_its_end_date_grants_nothing_even_while_still_marked_active()
     {
@@ -53,10 +44,6 @@ public class EntitlementResolverTests
         Resolve([subscription], [plan], Now.AddDays(1)).Features.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Отказ от автопродления сохраняет доступ до конца оплаченного срока —
-    /// решение зафиксировано в §7.5, п. 5.
-    /// </summary>
     [Fact]
     public void Canceled_auto_renew_keeps_access_until_the_paid_period_ends()
     {
@@ -95,10 +82,6 @@ public class EntitlementResolverTests
         entitlements.Features.Count.ShouldBe(2);
     }
 
-    /// <summary>
-    /// Прямая проверка EP-3: администратор выключает фичу, и доступ пропадает
-    /// у всех, кому её давал тариф, — без правки тарифов и без деплоя.
-    /// </summary>
     [Fact]
     public void Deactivated_feature_stops_granting_access()
     {
@@ -110,10 +93,6 @@ public class EntitlementResolverTests
         Resolve([subscription], [plan]).Features.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Тариф, снятый с продажи, не отбирает права у тех, кто уже заплатил:
-    /// IsActive у плана означает «продаётся», а не «действует».
-    /// </summary>
     [Fact]
     public void Plan_withdrawn_from_sale_keeps_serving_those_who_already_paid()
     {
@@ -136,10 +115,6 @@ public class EntitlementResolverTests
         Resolve([subscription], [plan]).ValueOf(FeatureCodes.TeamCreate).ShouldBe("3");
     }
 
-    /// <summary>
-    /// Две подписки дают одну фичу с разными параметрами. Побеждает та, что действует
-    /// дольше: иначе значение лимита зависело бы от порядка строк в выборке.
-    /// </summary>
     [Fact]
     public void Longer_running_subscription_decides_the_feature_value()
     {

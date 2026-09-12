@@ -4,7 +4,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Admin.Players.Queries.GetPlayersForAdmin;
 
-/// <summary>Таблица игроков — <c>/admin/players</c> (docs/SPEC.md §9.4, п. 5).</summary>
+/// <summary>Таблица игроков — <c>/admin/players</c>.</summary>
 public sealed record GetPlayersForAdminQuery : FilterBase, IQuery<PagedResult<AdminPlayerRowDto>>
 {
     public string? Search { get; init; }

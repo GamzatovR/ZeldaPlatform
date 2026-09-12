@@ -2,14 +2,6 @@ using System.Text;
 
 namespace ZeldaArena.Web.Extensions;
 
-/// <summary>
-/// Ключ ресурса для значения перечисления: <c>MatchStatus.Live</c> → <c>enum.match_status.live</c>.
-///
-/// Названия статусов, ролей и регионов локализуются (docs/SPEC.md §9.5), а вывести
-/// <c>@Model.Status</c> как есть значило бы показать пользователю идентификатор из кода.
-/// Ключ строится по одному правилу, а не перечисляется вручную: новое значение
-/// перечисления без перевода проявится в разметке своим ключом, а не пустым местом.
-/// </summary>
 public static class EnumResourceKeys
 {
     public static string For<TEnum>(TEnum value)

@@ -8,20 +8,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 
-/// <summary>
-/// Рассылает доменные события после сохранения изменений.
-///
-/// Почему после, а не до: до сохранения у только что созданной сущности ещё нет
-/// гарантии, что запись вообще ляжет в базу, и обработчик рассылал бы новости
-/// о несуществующем факте.
-///
-/// Почему интерсептор, а не хендлер: собрать события можно только через change tracker,
-/// а он — деталь EF Core, которой в Application быть не может. Хендлер вызывает
-/// метод сущности и о рассылке не думает (docs/SPEC.md §5.5, SRP).
-///
-/// Накопитель чистится до вызова обработчиков: обработчик вправе снова сохранить
-/// контекст, и без очистки те же события ушли бы по второму кругу.
-/// </summary>
+/// <summary>Рассылает доменные события после сохранения изменений.</summary>
 public sealed class DispatchDomainEventsInterceptor(IPublisher publisher) : SaveChangesInterceptor
 {
     public override async ValueTask<int> SavedChangesAsync(
@@ -37,11 +24,6 @@ public sealed class DispatchDomainEventsInterceptor(IPublisher publisher) : Save
             .ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Синхронное сохранение в приложении не используется (CLAUDE.md: асинхронность
-    /// везде, где есть I/O), но молча терять события, если такой вызов однажды
-    /// появится, нельзя — это была бы неотлаживаемая пропажа.
-    /// </summary>
     public override int SavedChanges(SaveChangesCompletedEventData eventData, int result)
     {
         ArgumentNullException.ThrowIfNull(eventData);

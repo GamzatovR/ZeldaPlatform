@@ -7,10 +7,6 @@ using ZeldaArena.Application.Features.News.Queries.GetNewsArticleBySlug;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Страница новости (docs/SPEC.md §9.3, п. 11). Отдельной ленты нет — новость
-/// открывается из карточки на главной (решение Фазы 6).
-/// </summary>
 [Route("news")]
 public sealed class NewsController(ISender sender) : Controller
 {

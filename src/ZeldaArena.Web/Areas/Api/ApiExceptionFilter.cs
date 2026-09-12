@@ -10,21 +10,6 @@ using ZeldaArena.Application.Common.Exceptions;
 
 namespace ZeldaArena.Web.Areas.Api;
 
-/// <summary>
-/// Исключения сценариев, у которых есть честный ответ клиенту, превращаются
-/// в <see cref="ProblemDetails"/> (docs/SPEC.md §14.2: «в Areas/Api вместо HTML —
-/// ProblemDetails»):
-///
-/// <list type="bullet">
-/// <item>отказ FluentValidation — 400 с ошибками по полям. Испорченная ссылка вроде
-/// <c>?page=0</c> — ошибка клиента, а не сервера;</item>
-/// <item>конфликт параллельных изменений — 409 с просьбой повторить.</item>
-/// </list>
-///
-/// Остальное фильтр не трогает: неожиданное исключение — ошибка сервера, и притворяться
-/// иначе нельзя. Глобальная обработка для HTML-страниц — <c>GlobalExceptionHandlingMiddleware</c>
-/// Фазы 11; этот фильтр действует только внутри области Api.
-/// </summary>
 public sealed class ApiExceptionFilter(
     ProblemDetailsFactory problemDetailsFactory,
     IStringLocalizer<SharedResource> localizer)

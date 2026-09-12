@@ -3,11 +3,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Единица работы, повторяющая семантику настоящей: успех коммитит, исключение
-/// откатывает. Реализация, а не мок, потому что проверяется именно поведение
-/// границы транзакции, а не факт вызова метода.
-/// </summary>
 internal sealed class RecordingUnitOfWork : IUnitOfWork
 {
     public bool Committed { get; private set; }

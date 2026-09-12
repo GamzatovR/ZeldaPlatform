@@ -17,12 +17,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>
-/// Заказы: история с фильтром и пагинацией (docs/SPEC.md §10.1, сценарий 3) и оформление
-/// с созданием платежа и письмом с кодом (сценарий 7). Владельца определяет сценарий —
-/// чужих заказов в ответе нет по построению (§15, IDOR); цены берутся из базы, а не
-/// из формы (§15).
-/// </summary>
 [Authorize]
 [Route("api/orders")]
 public sealed class OrdersApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -48,11 +42,6 @@ public sealed class OrdersApiController(ISender sender, IStringLocalizer<SharedR
             PageUrl(nameof(OrdersController.Index), "Orders"));
     }
 
-    /// <summary>
-    /// Оформление: та же форма и та же команда, что у <see cref="CheckoutController"/>.
-    /// Беда с корзиной — не ошибка формы: покупатель уходит в корзину, где видно,
-    /// какая позиция мешает, с тем же сообщением, что и без JavaScript.
-    /// </summary>
     [HttpPost("")]
     [Authorize(Policy = PolicyNames.EmailConfirmed)]
     [EnableRateLimiting(RateLimitPolicies.PaymentStart)]

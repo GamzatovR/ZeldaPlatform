@@ -4,10 +4,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Web.Models.Account;
 
-/// <summary>
-/// Форма нового пароля. Идентификатор и токен приходят скрытыми полями из ссылки
-/// в письме: без них форма бесполезна, а подделать их нельзя — токен подписан.
-/// </summary>
 public sealed class ResetPasswordViewModel
 {
     public Guid UserId { get; set; }

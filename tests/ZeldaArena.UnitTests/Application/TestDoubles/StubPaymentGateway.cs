@@ -5,10 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Платёжный провайдер, чей ответ задаётся тестом. Заодно запоминает запрос —
-/// так проверяется, что сумма пришла от тарифа, а не из формы.
-/// </summary>
 internal sealed class StubPaymentGateway : IPaymentGateway
 {
     public string Key => "stub";

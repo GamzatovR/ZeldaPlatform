@@ -7,11 +7,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders.Queries.GetOrderDetails;
 
-/// <summary>
-/// Заказ читается сущностью вместе с позициями (AutoInclude — один запрос с JOIN),
-/// а ожидающий платёж — вторым запросом. Два запроса на страницу при любом числе
-/// позиций (§16).
-/// </summary>
 public sealed class GetOrderDetailsQueryHandler(
     ICurrentUserService currentUser,
     IReadRepository<Order> orders,

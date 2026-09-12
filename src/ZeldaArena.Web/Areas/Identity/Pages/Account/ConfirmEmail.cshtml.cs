@@ -9,10 +9,6 @@ using ZeldaArena.Application.Features.Account.Commands.ConfirmEmail;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Переход по ссылке из письма. Обрабатывается на GET: пользователь приходит сюда
-/// кликом в почтовом клиенте, и формы для подтверждения быть не может.
-/// </summary>
 [AllowAnonymous]
 public sealed class ConfirmEmailModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel

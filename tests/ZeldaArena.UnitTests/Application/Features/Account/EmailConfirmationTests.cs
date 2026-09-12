@@ -57,10 +57,6 @@ public class EmailConfirmationTests
             .Token.ShouldBe(_accounts.IssuedTokens[user.Id]);
     }
 
-    /// <summary>
-    /// Ответ одинаков для любого адреса, иначе форма показывала бы, какие адреса
-    /// заведены на портале (docs/SPEC.md §8.2). Письмо при этом не уходит.
-    /// </summary>
     [Theory]
     [InlineData(true)]
     [InlineData(false)]

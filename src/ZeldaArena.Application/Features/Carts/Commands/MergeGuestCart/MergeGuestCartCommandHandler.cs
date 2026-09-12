@@ -6,14 +6,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts.Commands.MergeGuestCart;
 
-/// <summary>
-/// Количества складываются, но не выше остатка; товары, снятые с продажи или
-/// закончившиеся, пропускаются — это правило <c>Cart.MergeFrom</c>. Гостевая корзина
-/// после слияния удаляется: второй раз её содержимое в корзину пользователя не попадёт,
-/// даже если кука почему-то не снимется.
-///
-/// Нечего сливать — не ошибка: гость мог ничего не класть в корзину.
-/// </summary>
 public sealed class MergeGuestCartCommandHandler(
     ICurrentUserService currentUser,
     IGuestCartIdentity guest,
@@ -47,7 +39,7 @@ public sealed class MergeGuestCartCommandHandler(
                 .GetOrCreateAsync(CartOwner.ForUser(userId), cancellationToken)
                 .ConfigureAwait(false);
 
-            // Товары грузятся одним запросом, а не по одному на позицию (§16).
+            // Товары грузятся одним запросом, а не по одному на позицию.
             var productIds = guestCart.Items.Select(item => item.ProductId).ToArray();
             var loaded = await products.GetByIdsAsync(productIds, cancellationToken).ConfigureAwait(false);
 

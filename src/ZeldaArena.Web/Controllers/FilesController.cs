@@ -6,13 +6,6 @@ using ZeldaArena.Application.Features.Files.Queries.GetStoredFile;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Раздача загруженных файлов (docs/SPEC.md §15): хранилище лежит вне <c>wwwroot</c>,
-/// и единственный путь к файлу — через этот контроллер и хранилище, которое проверяет имя.
-///
-/// Имя файла — GUID, и под одним именем содержимое не меняется никогда: новый логотип —
-/// это новый файл. Поэтому кэш на год с <c>immutable</c>, как у версионированной статики (§16).
-/// </summary>
 [Route("files")]
 public sealed class FilesController(ISender sender) : Controller
 {

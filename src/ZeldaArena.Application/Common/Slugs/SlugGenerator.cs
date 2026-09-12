@@ -4,17 +4,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Common.Slugs;
 
-/// <summary>
-/// Слаг для сущности, которую создаёт пользователь: команды подписчика и её игроков.
-///
-/// <see cref="Slug.From"/> оставляет только латиницу и цифры, поэтому «Стражи Хайрула»
-/// превратились бы в пустую строку и команда не создалась бы вовсе. Кириллица
-/// транслитерируется, а если и после этого ничего не осталось (название из одних
-/// иероглифов или эмодзи), берётся запасной текст — тег команды или ник.
-///
-/// Уникальность проверяет вызывающий через функцию <c>isTaken</c>: генератор
-/// не знает, в какой таблице искать, и не должен.
-/// </summary>
 public static class SlugGenerator
 {
     /// <summary>Сколько номеров перебирать до случайного суффикса.</summary>
@@ -23,10 +12,6 @@ public static class SlugGenerator
     /// <summary>Место под суффикс «-50» или «-a1b2c3»; основа обрезается заранее.</summary>
     private const int SuffixReserve = 8;
 
-    /// <summary>
-    /// Слаги, совпадающие с маршрутами: <c>/teams/create</c> — страница создания,
-    /// и команда с таким слагом стала бы недостижима.
-    /// </summary>
     private static readonly HashSet<string> Reserved = new(StringComparer.Ordinal) { "create", "edit", "new" };
 
     private static readonly Dictionary<char, string> Cyrillic = new()
@@ -80,11 +65,6 @@ public static class SlugGenerator
         return builder.ToString();
     }
 
-    /// <summary>
-    /// Первый свободный слаг: сама основа, затем основа с номером, в крайнем случае —
-    /// со случайным суффиксом. Бросает, если ни из текста, ни из запасного текста
-    /// слаг не складывается — валидатор сценария такого не пропускает.
-    /// </summary>
     public static async Task<Slug> UniqueAsync(
         string text,
         string fallback,

@@ -5,11 +5,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.News;
 
-/// <summary>
-/// Хендлер ленты новостей. Порт подменён реализацией, повторяющей семантику
-/// рабочей, а не моком: проверяется результат выборки — что чернового текста
-/// в ленте нет, порядок от свежих к старым и что тело статьи в DTO не уезжает.
-/// </summary>
 public class GetLatestNewsQueryHandlerTests
 {
     private static readonly Guid Author = Guid.NewGuid();
@@ -40,10 +35,6 @@ public class GetLatestNewsQueryHandlerTests
         result.Count.ShouldBe(2);
     }
 
-    /// <summary>
-    /// Тело статьи в карточку не попадает: в ленте оно не нужно, а его вывод
-    /// потребовал бы Html.Raw и санитизации на входе (docs/SPEC.md §15).
-    /// </summary>
     [Fact]
     public void The_list_item_carries_no_html_body() =>
         typeof(NewsListItemDto)

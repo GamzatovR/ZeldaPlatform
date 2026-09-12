@@ -3,17 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace ZeldaArena.Web.Authorization;
 
-/// <summary>
-/// Собирает политику <c>Feature:{code}</c> на лету (docs/SPEC.md §7.3, уровень 2).
-///
-/// Это и есть механизм EP-3: новая платная функция заводится строкой в таблице
-/// Features через админку, а её политика возникает сама, как только на действии
-/// появляется атрибут с кодом. Списка политик, который надо было бы пополнять
-/// при каждой новой функции, не существует.
-///
-/// Всё, что не начинается с префикса, отдаётся провайдеру по умолчанию — статические
-/// политики §8.1 из AuthorizationRegistration продолжают работать без изменений.
-/// </summary>
+/// <summary>Собирает политику Feature:{code} на лету.</summary>
 public sealed class FeaturePolicyProvider(IOptions<AuthorizationOptions> options)
     : IAuthorizationPolicyProvider
 {

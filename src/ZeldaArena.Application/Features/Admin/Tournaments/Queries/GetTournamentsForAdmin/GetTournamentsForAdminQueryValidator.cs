@@ -2,11 +2,6 @@ using FluentValidation;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin;
 
-/// <summary>
-/// Размер страницы и ключ сортировки не проверяются намеренно: их нормализует
-/// <c>FilterBase</c> и <c>SortMap</c>, и сохранённая ссылка откроется и после
-/// переименования сортировки (docs/adr/ADR-0004).
-/// </summary>
 public sealed class GetTournamentsForAdminQueryValidator : AbstractValidator<GetTournamentsForAdminQuery>
 {
     public const int MaxSearchLength = 100;

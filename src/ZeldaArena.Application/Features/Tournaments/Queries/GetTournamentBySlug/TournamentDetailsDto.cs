@@ -2,11 +2,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournamentBySlug;
 
-/// <summary>
-/// Турнир целиком для его страницы. <see cref="RulesHtml"/> — один из двух полей,
-/// которые выводятся через <c>Html.Raw</c>: он проходит HtmlSanitizer на входе
-/// (docs/SPEC.md §15), здесь его уже не чистят.
-/// </summary>
 public sealed record TournamentDetailsDto
 {
     public Guid Id { get; init; }

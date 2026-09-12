@@ -9,11 +9,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.CreateTournament;
 
-/// <summary>
-/// Слаг выводится из названия и дальше не меняется: это адрес страницы турнира,
-/// на него ведут ссылки (решение Фазы 6, docs/adr/ADR-0008). Регламент очищается
-/// санитайзером до сохранения — выводится он через <c>Html.Raw</c> (§15).
-/// </summary>
 public sealed class CreateTournamentCommandHandler(
     IRepository<Tournament> tournamentRepository,
     IReadRepository<Tournament> tournaments,

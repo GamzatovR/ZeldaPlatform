@@ -13,10 +13,6 @@ using ZeldaArena.Web.Models.Home;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Контроллер принимает только <c>ISender</c> (docs/SPEC.md §5.2, правило 4)
-/// и умеет ровно одно: отправить запрос и выбрать представление.
-/// </summary>
 public class HomeController(ISender sender) : Controller
 {
     public async Task<IActionResult> Index(CancellationToken cancellationToken)

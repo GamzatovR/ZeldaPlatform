@@ -1,17 +1,5 @@
 namespace ZeldaArena.Application.Common.Files;
 
-/// <summary>
-/// Определяет формат изображения по magic bytes (docs/SPEC.md §15).
-///
-/// Живёт в Application, а не рядом с хранилищем в Infrastructure: это правило,
-/// а не транспорт. Его читают и сценарий загрузки, отвечающий пользователю понятной
-/// ошибкой, и само хранилище, которое перепроверяет вход. Здесь же его покрывают
-/// unit-тесты — <c>ZeldaArena.UnitTests</c> ссылается только на Domain и Application,
-/// как и в случае <c>EntitlementResolver</c> из Фазы 4.
-///
-/// Расширение имени и заявленный Content-Type подконтрольны клиенту и не значат
-/// ничего: исполняемый файл, переименованный в <c>logo.png</c>, отсюда не пройдёт.
-/// </summary>
 public static class ImageFileInspector
 {
     /// <summary>Сколько байт начала файла нужно, чтобы распознать любой из форматов.</summary>
@@ -48,10 +36,6 @@ public static class ImageFileInspector
         return null;
     }
 
-    /// <summary>
-    /// Читает начало потока и возвращает его позицию на место. Поток обязан поддерживать
-    /// перемотку: загруженный файл ASP.NET Core буферизует, и такой поток её умеет.
-    /// </summary>
     public static async Task<ImageFormat?> DetectAsync(Stream content, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(content);

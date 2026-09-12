@@ -8,7 +8,7 @@ using ZeldaArena.Web.Controllers;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>Фильтр, поиск и пагинация игроков (docs/SPEC.md §10.1, сценарии 1 и 3).</summary>
+/// <summary>Фильтр, поиск и пагинация игроков.</summary>
 [Route("api/players")]
 public sealed class PlayersApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
     : ApiControllerBase(localizer)

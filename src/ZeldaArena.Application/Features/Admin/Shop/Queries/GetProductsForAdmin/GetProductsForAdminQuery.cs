@@ -3,10 +3,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.Application.Features.Admin.Shop.Queries.GetProductsForAdmin;
 
-/// <summary>
-/// Таблица товаров — <c>/admin/products</c> (docs/SPEC.md §9.4, п. 6). В отличие
-/// от каталога показывает и снятые с продажи.
-/// </summary>
 public sealed record GetProductsForAdminQuery : FilterBase, IQuery<PagedResult<AdminProductRowDto>>
 {
     public string? Search { get; init; }

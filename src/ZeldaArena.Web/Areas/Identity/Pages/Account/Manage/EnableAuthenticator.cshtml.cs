@@ -14,11 +14,6 @@ using ZeldaArena.Web.Services;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Подключение аутентификатора (docs/SPEC.md §8.2). Второй фактор включается только
-/// после того, как введённый код сошёлся: иначе неверно настроенное приложение
-/// заперло бы человека снаружи собственной учётной записи.
-/// </summary>
 [Authorize]
 public sealed class EnableAuthenticatorModel(
     ISender sender,
@@ -30,10 +25,6 @@ public sealed class EnableAuthenticatorModel(
 
     public string SharedKey { get; private set; } = string.Empty;
 
-    /// <summary>
-    /// QR-код ссылки otpauth:// картинкой в data-URI: строится на сервере и работает
-    /// без JavaScript, а в разметку попадает как <c>&lt;img&gt;</c>, без <c>Html.Raw</c> (§15).
-    /// </summary>
     public string QrCodeDataUri { get; private set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken) =>

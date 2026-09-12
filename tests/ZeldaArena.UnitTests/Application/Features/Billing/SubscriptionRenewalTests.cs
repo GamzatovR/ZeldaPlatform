@@ -3,11 +3,6 @@ using ZeldaArena.Domain.Events;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Смена тарифа и продление (docs/adr/ADR-0005). Решение зафиксировано так:
-/// оплаченные дни не сгорают, покупка второго тарифа прибавляет срок к текущему
-/// концу и меняет тариф.
-/// </summary>
 public class SubscriptionRenewalTests
 {
     private readonly PaymentScenarioFixture _fixture = new();
@@ -47,10 +42,6 @@ public class SubscriptionRenewalTests
         _fixture.Payments.Entities[^1].SubscriptionId.ShouldBe(subscription.Id);
     }
 
-    /// <summary>
-    /// Истёкшая подписка продлевается от даты оплаты, а не от давно прошедшего конца:
-    /// иначе оплаченный срок начался бы в прошлом.
-    /// </summary>
     [Fact]
     public async Task Renewing_after_a_gap_counts_from_the_payment_date()
     {

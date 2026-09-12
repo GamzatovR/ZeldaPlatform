@@ -1,11 +1,6 @@
 namespace ZeldaArena.Domain.Constants;
 
-/// <summary>
-/// Коды платных функций. Строковых литералов кода фичи в проекте быть не должно:
-/// доступ проверяется только через IEntitlementService по этим константам (CLAUDE.md).
-/// Новая фича добавляется строкой в таблицу Features через админку — константа нужна
-/// лишь тем фичам, на которые ссылается сам код (docs/SPEC.md §5.4, EP-3).
-/// </summary>
+/// <summary>Коды платных функций.</summary>
 public static class FeatureCodes
 {
     /// <summary>Создание своей команды и управление её составом.</summary>

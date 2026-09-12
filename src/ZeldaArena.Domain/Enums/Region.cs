@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Enums;
 
-/// <summary>
-/// Регион турнира или команды. Именно enum, а не строка: по нему фильтруют
-/// (docs/SPEC.md §10.2) и его переводят на оба языка (§9.5).
-/// </summary>
+/// <summary>Регион турнира или команды.</summary>
 public enum Region
 {
     Global = 0,

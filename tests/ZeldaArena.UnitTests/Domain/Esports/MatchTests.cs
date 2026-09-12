@@ -79,7 +79,7 @@ public class MatchTests
     [Fact]
     public void Score_cannot_exceed_wins_required()
     {
-        // В Bo3 победа — это две карты, счёт 3:0 невозможен (docs/SPEC.md §5.3).
+        // В Bo3 победа — это две карты, счёт 3:0 невозможен.
         var match = LiveBo3();
 
         Should.Throw<InvariantViolationException>(() => match.UpdateScore(3, 0))

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 
-/// <summary>Как у остальных списков: размер страницы и сортировка нормализуются молча (§10.2).</summary>
+/// <summary>Как у остальных списков: размер страницы и сортировка нормализуются молча.</summary>
 public sealed class GetMyOrdersQueryValidator : AbstractValidator<GetMyOrdersQuery>
 {
     public GetMyOrdersQueryValidator()

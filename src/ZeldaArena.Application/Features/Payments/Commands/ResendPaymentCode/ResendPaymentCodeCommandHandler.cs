@@ -9,13 +9,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.ResendPaymentCode;
 
-/// <summary>
-/// Выпускает новый код взамен прежнего и высылает его заново (docs/SPEC.md §7.6).
-///
-/// Прежний код перестаёт действовать: <c>Payment.ReissueCode</c> заменяет хеш,
-/// а заодно возвращает счётчик попыток к пяти. Так и задумано — новый код это новая
-/// серия попыток, а злоупотребление ловится паузой в минуту и rate limiting.
-/// </summary>
 public sealed class ResendPaymentCodeCommandHandler(
     ICurrentUserService currentUser,
     IRepository<Payment> payments,

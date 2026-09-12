@@ -5,11 +5,7 @@ using ZeldaArena.Domain.Events;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Матч турнира — главная сущность проекта: его счёт правит модератор в пульте,
-/// а зрители видят изменение мгновенно (docs/SPEC.md §11).
-/// Все переходы состояния идут только через методы этого класса.
-/// </summary>
+/// <summary>Матч турнира — главная сущность проекта.</summary>
 public class Match : BaseEntity, IAuditableEntity
 {
     private readonly List<PlayerMatchStats> _playerStats = [];
@@ -106,10 +102,7 @@ public class Match : BaseEntity, IAuditableEntity
         StartedAt = startedAt;
     }
 
-    /// <summary>
-    /// Единственный способ изменить счёт (CLAUDE.md). Завершённый матч не редактируется,
-    /// счёт не может выйти за формат серии, каждое изменение порождает доменное событие.
-    /// </summary>
+    /// <summary>Единственный способ изменить счёт.</summary>
     public void UpdateScore(int scoreA, int scoreB)
     {
         InvariantViolationException.ThrowIf(
@@ -151,10 +144,7 @@ public class Match : BaseEntity, IAuditableEntity
         Raise(new MatchScoreChangedEvent(Id, TournamentId, ScoreA, ScoreB));
     }
 
-    /// <summary>
-    /// Завершает серию. Победитель выводится из счёта, а не приходит извне,
-    /// поэтому таблица результатов не может разойтись со счётом.
-    /// </summary>
+    /// <summary>Завершает серию.</summary>
     public void Finish(DateTimeOffset endedAt)
     {
         InvariantViolationException.ThrowIf(

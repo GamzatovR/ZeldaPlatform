@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Common;
 
-/// <summary>
-/// Исход операции со значением. Обращение к <see cref="Value"/> у неудачного результата —
-/// ошибка программиста, поэтому бросает исключение, а не возвращает <c>default</c>.
-/// </summary>
+/// <summary>Исход операции со значением.</summary>
 public class Result<TValue> : Result
 {
     private readonly TValue? _value;

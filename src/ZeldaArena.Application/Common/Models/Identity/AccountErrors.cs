@@ -2,21 +2,8 @@
 
 namespace ZeldaArena.Application.Common.Models.Identity;
 
-/// <summary>
-/// Ошибки сценариев аккаунта. Собраны в одном месте, потому что ими пользуются
-/// и хендлеры Application, и переводчик ошибок Identity в Infrastructure: иначе
-/// один и тот же исход назывался бы в двух слоях по-разному.
-///
-/// Error.Code — ключ ресурса, а не готовая фраза (docs/SPEC.md §9.5): текст
-/// подставит IStringLocalizer на слое представления, поле Message остаётся
-/// нейтральным текстом для логов.
-/// </summary>
 public static class AccountErrors
 {
-    /// <summary>
-    /// Единственный ответ на неверную пару логин-пароль, на несуществующий адрес
-    /// и на неверный формат — форма не должна подсказывать, какие адреса заведены.
-    /// </summary>
     public static readonly Error InvalidCredentials =
         new("account.invalid_credentials", "Неверный адрес электронной почты или пароль.");
 
@@ -54,10 +41,6 @@ public static class AccountErrors
     public static readonly Error TwoFactorNotEnabled =
         new("account.two_factor_not_enabled", "Двухфакторная аутентификация не включена.");
 
-    /// <summary>
-    /// Сессия второго фактора живёт в отдельной cookie и истекает: пользователь ввёл
-    /// пароль, ушёл, вернулся через час — вводить пароль придётся заново.
-    /// </summary>
     public static readonly Error TwoFactorSessionExpired =
         new("account.two_factor_session_expired", "Сессия входа истекла, начните заново.");
 

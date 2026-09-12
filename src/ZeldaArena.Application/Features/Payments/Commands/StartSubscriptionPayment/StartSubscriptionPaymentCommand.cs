@@ -4,17 +4,6 @@ using ZeldaArena.Application.Features.Billing;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.StartSubscriptionPayment;
 
-/// <summary>
-/// Первый шаг мнимой оплаты подписки (docs/SPEC.md §7.6, шаги 1–2): реквизиты карты
-/// проверяются, платёж заводится в ожидании, код уходит письмом.
-///
-/// Плательщик в команде не передаётся — он берётся из текущего запроса, как и везде
-/// в сценариях аккаунта: иначе можно было бы оплатить подписку чужому пользователю
-/// или, что хуже, записать чужую карту на себя.
-///
-/// Номер карты и CVV живут ровно до вызова платёжного провайдера. В аудит они
-/// не попадут: имена полей закрыты <c>SensitiveProperties</c>.
-/// </summary>
 public sealed record StartSubscriptionPaymentCommand(
     Guid PlanId,
     string CardNumber,

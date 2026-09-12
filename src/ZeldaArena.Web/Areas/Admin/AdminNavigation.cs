@@ -4,13 +4,6 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.Areas.Admin;
 
-/// <summary>
-/// Боковое меню админки (docs/SPEC.md §9.4: «единый _AdminLayout с боковым меню»).
-///
-/// Пунктов ровно столько, сколько есть разделов: ссылка на контроллер, которого ещё нет,
-/// роняет отрисовку всей страницы (урок Фазы 3, docs/PROGRESS.md). Каждый раздел
-/// Фазы 9 добавляет свой пункт вместе со своим контроллером.
-/// </summary>
 public static class AdminNavigation
 {
     public static IReadOnlyList<AdminNavItem> Items { get; } =

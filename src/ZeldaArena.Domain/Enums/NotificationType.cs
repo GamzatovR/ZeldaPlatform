@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Enums;
 
-/// <summary>
-/// Повод уведомления. Клиенту уходит именно тип и payload, а не готовый текст:
-/// перевод выполняется на стороне браузера (docs/SPEC.md §9.5, §11).
-/// </summary>
+/// <summary>Повод уведомления.</summary>
 public enum NotificationType
 {
     SubscriptionActivated = 0,

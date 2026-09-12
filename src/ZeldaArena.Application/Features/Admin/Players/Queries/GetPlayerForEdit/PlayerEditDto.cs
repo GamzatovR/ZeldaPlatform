@@ -31,9 +31,5 @@ public sealed record PlayerEditDto
 
     public int StatsCount { get; init; }
 
-    /// <summary>
-    /// Удалить можно игрока без истории: не состоял в командах и не имеет статистики
-    /// (docs/adr/ADR-0010).
-    /// </summary>
     public bool CanDelete => RosterEntryCount == 0 && StatsCount == 0;
 }

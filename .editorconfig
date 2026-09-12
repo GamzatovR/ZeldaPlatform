@@ -389,7 +389,7 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 
 ##
-## ZeldaArena — правила поверх шаблона (docs/CLAUDE.md, раздел «Стиль кода»)
+## ZeldaArena — правила поверх шаблона
 ##
 
 [*.{yml,yaml}]

@@ -8,7 +8,7 @@ using ZeldaArena.Web.Controllers;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>Фильтр, сортировка и пагинация каталога (docs/SPEC.md §10.1, сценарий 4).</summary>
+/// <summary>Фильтр, сортировка и пагинация каталога.</summary>
 [Route("api/shop")]
 public sealed class ShopApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
     : ApiControllerBase(localizer)

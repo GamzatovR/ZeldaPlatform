@@ -61,10 +61,6 @@ else
                                 <div class="admin-table__muted">@T["admin.team.user_owned"]</div>
                             }
 
-                            @*
-                                Без JavaScript это обычная форма с возвратом на список;
-                                с ним admin-actions.js отправит её в API и перерисует таблицу.
-                            *@
                             <form class="row-actions" method="post"
                                   asp-area="Admin" asp-controller="Teams" asp-action="SetApproval" asp-route-id="@team.Id"
                                   asp-route-returnUrl="@listUrl"

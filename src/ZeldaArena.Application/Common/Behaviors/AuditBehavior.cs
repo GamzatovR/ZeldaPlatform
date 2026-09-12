@@ -11,18 +11,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Common.Behaviors;
 
-/// <summary>
-/// Аудит действий пользователя (docs/SPEC.md §13): кто, что, над чем, с какого адреса
-/// и чем кончилось. Пишутся только команды, помеченные <see cref="IAuditableRequest"/>.
-///
-/// Стоит снаружи транзакции сознательно. Во-первых, аудит уезжает в MongoDB (§12)
-/// и в транзакции PostgreSQL не участвует — попытка объединить их дала бы ложное
-/// ощущение атомарности. Во-вторых, запись обязана появиться и при неуспехе: попытка
-/// сделать то, на что нет прав, для разбора инцидента интереснее удавшегося действия.
-///
-/// Сбой самой записи аудита команду не роняет: пользователь не должен получать ошибку
-/// из-за недоступного журнала.
-/// </summary>
+/// <summary>Аудит действий пользователя.</summary>
 public sealed class AuditBehavior<TRequest, TResponse>(
     IAuditLogWriter auditLogWriter,
     ICurrentUserService currentUser,
@@ -59,10 +48,6 @@ public sealed class AuditBehavior<TRequest, TResponse>(
         }
     }
 
-    /// <summary>
-    /// Команда возвращает <see cref="Result"/>, поэтому отказ по бизнес-правилу виден
-    /// без исключения — в аудит он попадает как неуспех с кодом ошибки.
-    /// </summary>
     private static (bool Succeeded, string? FailureReason) Outcome(TResponse response) =>
         response is Result { IsFailure: true } result
             ? (false, result.Error.Code)

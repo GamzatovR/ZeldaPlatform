@@ -11,11 +11,7 @@
     var pageTitle = new PageTitleViewModel(T["team.create_title"].Value, T["team.create_sub"].Value);
 }
 
-@*
-    Создание своей команды — главная платная функция (docs/SPEC.md §4, §9.3 п. 8).
-    Макета нет: карточка формы взята из .login-form, как предписывает docs/design/README.md.
-    Сюда пускает только [RequireFeature(team.create)]; без подписки отказ уводит на тарифы (§7.3).
-*@
+@* Создание своей команды — главная платная функция. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="auth">

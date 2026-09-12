@@ -2,11 +2,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Domain.Billing;
 
-/// <summary>
-/// Платная функция. Ключ всей системы доступа: код никогда не спрашивает,
-/// какой у пользователя тариф, — только есть ли у него фича (docs/SPEC.md §8.1).
-/// Новая фича добавляется строкой в этой таблице через админку, без правки кода (EP-3).
-/// </summary>
+/// <summary>Платная функция.</summary>
 public class Feature : BaseEntity
 {
     private readonly List<PlanFeature> _planFeatures = [];

@@ -7,15 +7,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Players.Queries.GetPlayers;
 
-/// <summary>
-/// Текущая команда игрока — коррелированный подзапрос по открытой записи состава,
-/// а не навигация: EF Core переводит его в скалярный подзапрос той же выборки,
-/// а названия команд страницы приходят одним вторым запросом (§16, без N+1).
-/// В памяти всё это исполняется так же, как в SQL.
-///
-/// Команда, ждущая одобрения модератором, публично не показывается нигде
-/// (docs/adr/ADR-0008): её игроки в списке выглядят свободными, фильтр по ней пуст.
-/// </summary>
 public sealed class GetPlayersQueryHandler(
     IReadRepository<Player> players,
     IReadRepository<RosterEntry> rosterEntries,

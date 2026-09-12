@@ -5,10 +5,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Учётные записи в памяти. Проверка пароля здесь честная только по совпадению строк —
-/// хеширование это забота Identity, и подменять его в тестах хендлеров незачем.
-/// </summary>
 internal sealed class InMemoryUserAccountService : IUserAccountService
 {
     private readonly Dictionary<Guid, UserAccountDto> _users = [];

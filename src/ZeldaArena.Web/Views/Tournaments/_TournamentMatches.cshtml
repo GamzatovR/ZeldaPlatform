@@ -4,10 +4,7 @@
 @model PagedResult<MatchCardDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Матчи выбранной вкладки. Отдельный partial: его же возвращает
-    GET /api/tournaments/{slug}/matches (docs/SPEC.md §10.1, сценарий 2).
-*@
+@* Матчи выбранной вкладки. *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["tournament.matches_empty"]</p>

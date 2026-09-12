@@ -8,11 +8,6 @@
     var pageTitle = new PageTitleViewModel(T["cart.title"].Value, T["cart.sub"].Value);
 }
 
-@*
-    Корзина (docs/SPEC.md §9.3, п. 13), по docs/design/pages/cart.html. Таблица вынесена
-    в partial с data-cart: после AJAX-изменения количества GET /api/cart возвращает её же
-    целиком с пересчитанным на сервере итогом (§10.1, сценарий 6).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

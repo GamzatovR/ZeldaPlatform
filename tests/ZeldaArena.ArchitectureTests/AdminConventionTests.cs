@@ -10,13 +10,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Доступ в админку задан одним соглашением на всю область (docs/SPEC.md §8.1,
-/// docs/adr/ADR-0010): <c>AdminAreaConvention</c> вешает политику и второй фактор.
-/// Соглашение находит контроллеры по базовому классу, поэтому эти правила следят,
-/// чтобы новый контроллер не оказался мимо него — забытая защита не даёт ни ошибки
-/// сборки, ни исключения, страница просто открывается кому попало.
-/// </summary>
 public class AdminConventionTests
 {
     private static readonly Assembly Web = typeof(AdminControllerBase).Assembly;
@@ -51,11 +44,6 @@ public class AdminConventionTests
             + $"и её запросов должны быть одни правила доступа. Нарушения: {string.Join(", ", offenders)}");
     }
 
-    /// <summary>
-    /// Разделы, закрытые и для модератора (§8.1): пользователи, деньги, магазин.
-    /// Соглашение даёт только <c>ModeratorOrAdmin</c>, остальное — атрибут на контроллере,
-    /// и забыть его нельзя.
-    /// </summary>
     [Theory]
     [InlineData("UsersController", PolicyNames.AdminOnly)]
     [InlineData("ProductsController", PolicyNames.AdminOnly)]
@@ -72,13 +60,9 @@ public class AdminConventionTests
             .Select(attribute => attribute.Policy)
             .ToArray();
 
-        declared.ShouldContain(policy, $"{controller} обязан объявить политику {policy} (docs/SPEC.md §8.1).");
+        declared.ShouldContain(policy, $"{controller} обязан объявить политику {policy}.");
     }
 
-    /// <summary>
-    /// Область объявлена на базовом классе; контроллер, объявивший её сам, обошёл бы
-    /// базовый класс, а вместе с ним и соглашение.
-    /// </summary>
     [Fact]
     public void Admin_area_is_declared_once_on_the_base_class()
     {
@@ -96,10 +80,6 @@ public class AdminConventionTests
         offenders.ShouldBeEmpty($"Область объявляет AdminControllerBase. Нарушения: {string.Join(", ", offenders)}");
     }
 
-    /// <summary>
-    /// Машины состояний async-методов и замыкания лежат в том же пространстве имён,
-    /// но контроллерами не являются: компилятор помечает их <c>CompilerGenerated</c>.
-    /// </summary>
     private static bool IsController(Type type) =>
         type.IsClass
         && !type.IsAbstract

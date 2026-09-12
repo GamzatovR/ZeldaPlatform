@@ -2,16 +2,6 @@
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Иконки — SVG-спрайт (docs/design/design-system.md §12), и опечатка в имени символа
-/// ничего не ломает: <c>&lt;use href="#serach"&gt;</c> собирается, не бросает исключение
-/// и просто не рисует ничего. Заметить это можно было бы только глазами и только
-/// на той странице, где иконка встречается, — поэтому проверка автоматическая.
-///
-/// Правило двустороннее. Константа без символа — невидимая иконка на странице.
-/// Символ без константы — мёртвый вес в файле, который раздаётся каждому посетителю
-/// и противоречит §16: переносим только то, что реально используется.
-/// </summary>
 public partial class IconSpriteTests
 {
     [Fact]
@@ -34,11 +24,6 @@ public partial class IconSpriteTests
             + $"{string.Join(", ", orphans)}");
     }
 
-    /// <summary>
-    /// Обратная сторона: проверка должна что-то находить. Пустой спрайт или пустой
-    /// список констант сделал бы оба теста вечнозелёными — ровно та вакуумность,
-    /// от которой страхует sentinel-тест из §5.2.
-    /// </summary>
     [Fact]
     public void The_sprite_and_the_constants_are_not_empty()
     {
@@ -51,12 +36,6 @@ public partial class IconSpriteTests
             .Matches(File.ReadAllText(SpritePath()))
             .Select(match => match.Groups[1].Value)];
 
-    /// <summary>
-    /// Константы читаются из исходника, а не через рефлексию: <c>ZeldaArena.Web</c>
-    /// в архитектурных тестах уже загружается, но <c>SpritePath</c> — тоже строковая
-    /// константа этого класса, и её выборка вместе с именами иконок дала бы ложное
-    /// расхождение. Разбор исходника позволяет взять ровно объявления иконок.
-    /// </summary>
     private static string[] ConstantNames() =>
         [.. IconConstant()
             .Matches(File.ReadAllText(Path.Combine(WebRoot(), "Constants", "IconNames.cs")))
@@ -76,10 +55,6 @@ public partial class IconSpriteTests
         matchTimeoutMilliseconds: 2000)]
     private static partial Regex SymbolId();
 
-    /// <summary>
-    /// Только объявления вида <c>public const string Search = "search";</c>.
-    /// <c>SpritePath</c> под шаблон не подходит: его значение начинается со слэша.
-    /// </summary>
     [GeneratedRegex(
         """public\s+const\s+string\s+\w+\s*=\s*"([a-z][a-z0-9-]*)"\s*;""",
         RegexOptions.None,

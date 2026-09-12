@@ -5,17 +5,7 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Кэш прав на платные функции: TTL пять минут по docs/SPEC.md §7.3.
-///
-/// Права спрашивают на каждом защищённом действии и на каждом &lt;feature-gate&gt;
-/// в разметке — без кэша страница с тремя блоками давала бы три обращения к базе.
-///
-/// «Сбросить всем» сделано счётчиком поколения в ключе, а не обходом записей:
-/// <see cref="IMemoryCache"/> не умеет перечислять ключи, а держать рядом список
-/// значило бы вести второй, расходящийся с ним источник истины. Смена поколения
-/// делает все прежние ключи недостижимыми, и старые записи уходят по TTL сами.
-/// </summary>
+/// <summary>Кэш прав на платные функции.</summary>
 public sealed class EntitlementCache(IMemoryCache cache) : IEntitlementCacheInvalidator
 {
     private static readonly TimeSpan Lifetime = TimeSpan.FromMinutes(5);

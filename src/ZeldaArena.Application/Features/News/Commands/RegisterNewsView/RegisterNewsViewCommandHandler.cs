@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.News.Commands.RegisterNewsView;
 
-/// <summary>
-/// Счёт просмотров приблизительный: два одновременных чтения могут записать одно
-/// и то же значение. Для счётчика популярности это приемлемо, а блокировка строки
-/// ради каждого просмотра стоила бы дороже, чем потерянная единица.
-/// </summary>
 public sealed class RegisterNewsViewCommandHandler(INewsRepository news, IUnitOfWork unitOfWork)
     : IRequestHandler<RegisterNewsViewCommand, Result>
 {

@@ -1,12 +1,6 @@
 @model ZeldaArena.Web.Models.Billing.CardDetailsInputModel
 
-@*
-    Реквизиты карты (docs/SPEC.md §7.6, шаг 1) — общие для оплаты подписки и заказа.
-    Подключается как <partial name="_CardFields" for="Card" />: for задаёт префикс
-    имён полей, и привязка модели находит их во вложенном свойстве.
-
-    autocomplete off: реквизиты не должны оседать в браузере (§7.6).
-*@
+@* Реквизиты карты — общие для оплаты подписки и заказа. *@
 <div class="form-group">
     <label asp-for="CardNumber" class="form-label"></label>
     <input asp-for="CardNumber" class="form-control" autocomplete="off" inputmode="numeric" />

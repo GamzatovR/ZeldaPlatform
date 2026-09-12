@@ -1,9 +1,4 @@
-// Кнопки макета: .default-btn и .optional-btn (design-system.md §9).
-// Bootstrap-овские .btn не подключены — у макета своя геометрия и своя заливка
-// псевдоэлементом, накрывать её каскадом было бы хуже, чем написать свою.
-//
-// Асимметричный вертикальный padding (15px сверху, 9px снизу) — не опечатка:
-// так компенсируется высокая базовая линия Teko.
+// Кнопки макета: .default-btn и .optional-btn.
 
 %btn-base {
   position: relative;
@@ -50,7 +45,7 @@
 
   padding: 15px var(--space-8) 9px;
   // Заливка на тон темнее акцента: белый текст на #fc0820 даёт 4.04:1
-  // при требуемых 4.5:1 (design-system.md §3).
+  // при требуемых 4.5:1.
   background-color: var(--color-accent-strong);
   color: var(--color-text);
 

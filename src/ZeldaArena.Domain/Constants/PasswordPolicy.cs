@@ -1,13 +1,6 @@
 namespace ZeldaArena.Domain.Constants;
 
-/// <summary>
-/// Требования к паролю из docs/SPEC.md §8.2.
-///
-/// Живут в Domain, потому что нужны сразу двум слоям: FluentValidation в Application
-/// проверяет их до хендлера и даёт конкретное сообщение (§15), а Identity
-/// в Infrastructure настраивает по ним PasswordOptions. Разъехавшись, эти два места
-/// дали бы пароль, который форма принимает, а Identity отвергает.
-/// </summary>
+/// <summary>Требования к паролю.</summary>
 public static class PasswordPolicy
 {
     public const int MinimumLength = 10;

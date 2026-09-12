@@ -3,15 +3,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
-/// <summary>
-/// Десять новостей портала (docs/SPEC.md §6). В сид Фазы 1 они не попали: у новости
-/// обязателен автор с внешним ключом на AspNetUsers, а пользователи появились
-/// только в Фазе 3.
-///
-/// Разметка тела заведомо безопасная — те же теги, что пропускает HtmlSanitizer
-/// на входе в Фазе 11 (§15). Это единственное место, где HTML попадает в базу
-/// в обход санитайзера, и оно под контролем.
-/// </summary>
 public static class NewsSeedData
 {
     /// <summary>Одна новость из десяти остаётся черновиком: список должен уметь их прятать.</summary>

@@ -18,14 +18,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Оформление заказа (docs/SPEC.md §9.3, п. 14): адрес и реквизиты одной формой,
-/// дальше — общий для всех покупок ввод кода из письма (<see cref="PaymentController"/>).
-///
-/// Закрыто политикой подтверждённой почты: §8.2 требует подтверждённого адреса
-/// перед оформлением заказа. Гость попадает сюда после входа, и его корзина к этому
-/// моменту уже влита в пользовательскую (<c>CartCookieMiddleware</c>).
-/// </summary>
 [Authorize(Policy = PolicyNames.EmailConfirmed)]
 [Route("checkout")]
 public sealed class CheckoutController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller

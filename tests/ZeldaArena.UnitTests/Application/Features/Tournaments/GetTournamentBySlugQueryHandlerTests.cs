@@ -6,11 +6,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Tournaments;
 
-/// <summary>
-/// Названия команд-участниц здесь пустые: навигационное свойство <c>TournamentTeam.Team</c>
-/// заполняет EF Core. Проверяется то, что от него не зависит, — поиск по слагу, порядок
-/// участников и то, что проекция исполняется вне EF Core без падения.
-/// </summary>
 public class GetTournamentBySlugQueryHandlerTests
 {
     private static readonly DateTimeOffset Start = new(2026, 6, 1, 0, 0, 0, TimeSpan.Zero);

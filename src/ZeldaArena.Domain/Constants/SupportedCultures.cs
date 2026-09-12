@@ -1,15 +1,6 @@
 namespace ZeldaArena.Domain.Constants;
 
-/// <summary>
-/// Языки интерфейса: ru по умолчанию и en (docs/SPEC.md §9.5).
-///
-/// Список нужен не только представлению: выбранный язык хранится в профиле
-/// пользователя и в переводах контента (ContentTranslations), поэтому проверять
-/// его приходится и на сервере, в валидаторах Application.
-///
-/// Новый язык (EP-7) добавляется строкой сюда, файлом .resx и кодом культуры
-/// в конфигурации — ядра это не касается.
-/// </summary>
+/// <summary>Языки интерфейса.</summary>
 public static class SupportedCultures
 {
     public const string Russian = "ru";

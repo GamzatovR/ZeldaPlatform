@@ -4,11 +4,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Billing;
 
-/// <summary>
-/// Тариф — это просто набор фич плюс цена и срок. Прав сам по себе не даёт:
-/// доступ определяется фичами, поэтому новый тариф не требует ни строчки кода
-/// (docs/SPEC.md §8.1, §8.2).
-/// </summary>
+/// <summary>Тариф — это просто набор фич плюс цена и срок.</summary>
 public class Plan : BaseEntity, IAuditableEntity
 {
     private readonly List<PlanFeature> _planFeatures = [];

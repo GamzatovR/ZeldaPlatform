@@ -40,7 +40,7 @@ public sealed class ProductConfiguration : EntityConfiguration<Product>
             .HasForeignKey(product => product.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Индекс под фильтр магазина: категория, наличие, цена (docs/SPEC.md §10.2).
+        // Индекс под фильтр магазина: категория, наличие, цена.
         builder.HasIndex(product => new { product.CategoryId, product.IsActive });
         builder.HasIndex(product => product.IsActive);
     }

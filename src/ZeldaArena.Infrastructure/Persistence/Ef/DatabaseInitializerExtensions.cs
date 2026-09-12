@@ -6,10 +6,6 @@ using ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Применение миграций и сид при старте. Вызывается из Program.cs — единственного
-/// места в Web, где допустимы типы Infrastructure (docs/SPEC.md §5.2, правило 3).
-/// </summary>
 public static class DatabaseInitializerExtensions
 {
     public static async Task MigrateAndSeedAsync(
@@ -24,7 +20,7 @@ public static class DatabaseInitializerExtensions
         await context.Database.MigrateAsync(cancellationToken);
 
         // Роли и учётные записи идут первыми: новость требует автора с внешним ключом
-        // на AspNetUsers, поэтому предметный сид без них не пройдёт (docs/SPEC.md §6).
+        // на AspNetUsers, поэтому предметный сид без них не пройдёт.
         var identitySeeder = scope.ServiceProvider.GetRequiredService<IdentitySeeder>();
         await identitySeeder.SeedAsync(cancellationToken);
 

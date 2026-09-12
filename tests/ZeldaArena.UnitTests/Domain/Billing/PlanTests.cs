@@ -39,7 +39,7 @@ public class PlanTests
     [Fact]
     public void Feature_can_be_revoked_which_is_the_core_of_EP4()
     {
-        // Снять stats.advanced с тарифа Pro и продать отдельно — сценарий защиты (docs/SPEC.md §5.4).
+        // Снять stats.advanced с тарифа Pro и продать отдельно — сценарий защиты.
         var plan = ProMonth();
         var teamCreate = Guid.CreateVersion7();
         var statsAdvanced = Guid.CreateVersion7();

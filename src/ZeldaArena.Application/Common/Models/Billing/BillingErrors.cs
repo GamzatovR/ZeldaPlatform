@@ -2,15 +2,6 @@
 
 namespace ZeldaArena.Application.Common.Models.Billing;
 
-/// <summary>
-/// Ошибки сценариев подписки и оплаты. Собраны в одном месте по образцу
-/// <c>AccountErrors</c>: коды служат ключами ресурсов (docs/SPEC.md §9.5), поэтому
-/// незакрытый перевод виден как код, а не как пустая строка.
-///
-/// Часть кодов совпадает с теми, что уже возвращает домен (<c>payment.code_expired</c>,
-/// <c>payment.no_attempts_left</c>) — это намеренно: у одного исхода один ключ,
-/// независимо от того, кто его обнаружил.
-/// </summary>
 public static class BillingErrors
 {
     public static readonly Error PlanNotFound =
@@ -59,26 +50,12 @@ public static class BillingErrors
     public static readonly Error AlreadyProcessed =
         new("payment.already_processed", "Платёж уже обработан.");
 
-    /// <summary>
-    /// Повторная отправка кода ограничена минутой (§7.6, шаг 3). Ограничение
-    /// на уровне сценария, а не только rate limiting: иначе его обошёл бы
-    /// второй браузер того же пользователя.
-    /// </summary>
     public static readonly Error ResendTooSoon =
         new("payment.resend_too_soon", "Новый код можно запросить не чаще раза в минуту.");
 
-    /// <summary>
-    /// Единственный ответ на любую негодную карту. Что именно не так — номер, срок
-    /// или CVV — знает валидатор формы; отказ авторизации подробностей не раскрывает.
-    /// </summary>
     public static readonly Error CardDeclined =
         new("payment.card_declined", "Карта отклонена.");
 
-    /// <summary>
-    /// Платёж или то, что он оплачивает, изменили параллельно — вторая вкладка, отмена
-    /// заказа, фоновая служба (docs/SPEC.md §15: конфликт конкурентности). Ничего не
-    /// сохранено, код не израсходован: достаточно обновить страницу и повторить.
-    /// </summary>
     public static readonly Error ConcurrentChange =
         new("payment.concurrent_change", "Платёж одновременно изменён в другой вкладке.");
 

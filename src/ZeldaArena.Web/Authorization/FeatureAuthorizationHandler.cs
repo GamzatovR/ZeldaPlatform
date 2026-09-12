@@ -6,13 +6,7 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Web.Authorization;
 
-/// <summary>
-/// Проверяет платную функцию через <see cref="IEntitlementService"/> — единственный
-/// допустимый источник истины о правах (docs/SPEC.md §7.3, §20 пункт 2).
-///
-/// Порт объявлен в Application, поэтому правило 3 §5.2 не нарушено: типов
-/// Infrastructure здесь нет, реализацию подставляет composition root.
-/// </summary>
+/// <summary>Проверяет платную функцию через IEntitlementService — единственный допустимый источник истины о правах.</summary>
 public sealed class FeatureAuthorizationHandler(IEntitlementService entitlements)
     : AuthorizationHandler<FeatureRequirement>
 {

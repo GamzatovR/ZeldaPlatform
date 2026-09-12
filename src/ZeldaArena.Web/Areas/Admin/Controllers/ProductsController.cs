@@ -20,10 +20,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Товары и категории — <c>/admin/products</c> (docs/SPEC.md §9.4, п. 6). Магазин —
-/// только администратор: в правах модератора по §8.1 его нет (docs/adr/ADR-0010).
-/// </summary>
 [Route("admin/products")]
 [Authorize(Policy = PolicyNames.AdminOnly)]
 public sealed class ProductsController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -183,7 +179,7 @@ public sealed class ProductsController(ISender sender, IStringLocalizer<SharedRe
     }
 
     // ─── Категории ───────────────────────────────────────────────────────────
-    // Плоский справочник (§6), поэтому живёт на той же странице, что и товары.
+    // Плоский справочник, поэтому живёт на той же странице, что и товары.
 
     [HttpPost("categories")]
     public async Task<IActionResult> CreateCategory(string name, CancellationToken cancellationToken)

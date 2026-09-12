@@ -4,7 +4,7 @@ using ZeldaArena.Application.Features.Orders;
 
 namespace ZeldaArena.Application.Features.Admin.Shop.Commands.CreateProduct;
 
-/// <summary>Новый товар (docs/SPEC.md §9.4, п. 6).</summary>
+/// <summary>Новый товар.</summary>
 public sealed record CreateProductCommand : ICommand<Guid>, IAuditableRequest, IProductFields
 {
     public required string Sku { get; init; }

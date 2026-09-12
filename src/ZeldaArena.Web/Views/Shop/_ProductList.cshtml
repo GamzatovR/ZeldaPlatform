@@ -4,7 +4,7 @@
 @model PagedResult<ProductListItemDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@* Результат фильтра магазина; его же возвращает GET /api/shop/products (§10.1, сценарий 4). *@
+@* Результат фильтра магазина; его же возвращает GET /api/shop/products. *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["shop.empty"]</p>

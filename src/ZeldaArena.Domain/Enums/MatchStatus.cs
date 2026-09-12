@@ -1,6 +1,6 @@
 namespace ZeldaArena.Domain.Enums;
 
-/// <summary>Состояние матча. Названия локализуются через SharedResource (docs/SPEC.md §9.5).</summary>
+/// <summary>Состояние матча. Названия локализуются через SharedResource.</summary>
 public enum MatchStatus
 {
     Scheduled = 0,

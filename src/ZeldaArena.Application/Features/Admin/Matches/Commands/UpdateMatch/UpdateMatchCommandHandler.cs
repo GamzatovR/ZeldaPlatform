@@ -9,12 +9,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Matches.Commands.UpdateMatch;
 
-/// <summary>
-/// Время меняется двумя разными методами сущности: у запланированного матча это
-/// перенос времени (<c>Reschedule</c>), у уже отложенного — повторная отсрочка
-/// (<c>Postpone</c>), которая сохраняет статус «перенесён». Идущий и завершённый
-/// матч времени не меняет — так решает сущность.
-/// </summary>
 public sealed class UpdateMatchCommandHandler(
     IRepository<Match> matches,
     IUnitOfWork unitOfWork)

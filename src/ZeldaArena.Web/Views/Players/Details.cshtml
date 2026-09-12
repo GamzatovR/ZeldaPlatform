@@ -13,11 +13,6 @@
     var pageTitle = new PageTitleViewModel(player.Nickname, current?.TeamName ?? T["player.free_agent"].Value, Compact: true);
 }
 
-@*
-    Страница игрока (docs/SPEC.md §9.3, п. 10) по docs/design/pages/player.html:
-    .player-details-desc с мета-строкой, ниже — статистика, история составов, матчи.
-    Расширенная статистика — за stats.advanced, как на странице команды (§7.3).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

@@ -4,11 +4,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
-/// <summary>
-/// Тарифы и фичи из docs/SPEC.md §8.2. Тарифы различаются только сроком и ценой —
-/// набор фич у них одинаковый, и это осознанно: на защите одна фича снимается
-/// с тарифа Pro и выносится в отдельную услугу прямо из админки (EP-4).
-/// </summary>
 public static class BillingSeedData
 {
     public static IReadOnlyList<Feature> Features() =>

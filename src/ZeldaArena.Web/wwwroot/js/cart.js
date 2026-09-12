@@ -1,13 +1,4 @@
-// Корзина без перезагрузки (docs/SPEC.md §10.1, сценарии 5 и 6).
-//
-// Формы остаются формами: без JavaScript они уходят обычным POST (§9.1). Здесь
-// отправка перехватывается и уходит в Areas/Api:
-//   form[data-add-to-cart="/api/cart/items"]      — «в корзину» с карточки товара;
-//   [data-cart][data-api="/api/cart"]              — таблица корзины;
-//   form[data-cart-quantity="{id}"]                — PATCH /api/cart/items/{id};
-//   form[data-cart-remove="{id}"]                  — DELETE /api/cart/items/{id}.
-// Цену и итог клиент не считает: после операции таблица перерисовывается partial'ом
-// с сервера (§15, «цены всегда пересчитываются на сервере»).
+// Корзина без перезагрузки.
 
 import { request, reportError } from './http.js';
 import { showToast } from './toast.js';

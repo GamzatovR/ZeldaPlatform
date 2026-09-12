@@ -2,10 +2,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Санитайзер-заглушка: помечает вход, чтобы тест видел, что HTML прошёл через порт,
-/// и вырезает &lt;script&gt; — настоящую очистку проверяет сквозной прогон на Ganss.Xss.
-/// </summary>
 internal sealed class StubHtmlSanitizer : IHtmlSanitizer
 {
     public const string Mark = "<!--sanitized-->";

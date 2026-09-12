@@ -3,11 +3,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Порт чтения над последовательностью в памяти. Читает источник при каждом запросе,
-/// а не снимок на момент создания — как база: запись, сохранённая одним шагом сценария,
-/// видна следующему шагу того же сценария.
-/// </summary>
 internal sealed class InMemoryReadRepository<TEntity>(IEnumerable<TEntity> entities)
     : IReadRepository<TEntity>
     where TEntity : BaseEntity

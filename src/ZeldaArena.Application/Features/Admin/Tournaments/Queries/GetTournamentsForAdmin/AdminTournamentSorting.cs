@@ -3,11 +3,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin;
 
-/// <summary>
-/// Whitelist сортировки таблицы турниров (§10.2): ключ из адреса выбирает готовое
-/// выражение, имя поля в запрос не попадает никогда. Ключи — пары по возрастанию
-/// и убыванию: их переключает <c>&lt;sortable-header&gt;</c>.
-/// </summary>
 public static class AdminTournamentSorting
 {
     public const string DateDescending = "date_desc";

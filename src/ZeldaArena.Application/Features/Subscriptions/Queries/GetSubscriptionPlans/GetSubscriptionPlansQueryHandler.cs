@@ -5,13 +5,6 @@ using ZeldaArena.Domain.Billing;
 
 namespace ZeldaArena.Application.Features.Subscriptions.Queries.GetSubscriptionPlans;
 
-/// <summary>
-/// Отдаёт тарифы, которые продаются, вместе с их фичами.
-///
-/// Выключенные фичи в состав не попадают: обещать функцию, которая никому ничего
-/// не открывает, нельзя (§7.3). Проекция собирается сразу в DTO и целиком уезжает
-/// в SQL (§16).
-/// </summary>
 public sealed class GetSubscriptionPlansQueryHandler(
     IReadRepository<Plan> plans,
     IQueryExecutor queryExecutor)

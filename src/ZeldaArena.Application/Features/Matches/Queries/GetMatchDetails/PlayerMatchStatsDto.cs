@@ -1,6 +1,6 @@
 namespace ZeldaArena.Application.Features.Matches.Queries.GetMatchDetails;
 
-/// <summary>Показатели игрока за матч (docs/SPEC.md §6, <c>PlayerMatchStats</c>).</summary>
+/// <summary>Показатели игрока за матч.</summary>
 public sealed record PlayerMatchStatsDto
 {
     public Guid PlayerId { get; init; }

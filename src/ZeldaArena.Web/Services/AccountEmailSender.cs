@@ -6,18 +6,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Web.Services;
 
-/// <summary>
-/// Собирает письма аккаунта и отдаёт их транспорту <see cref="IEmailSender"/>.
-///
-/// Живёт в Web, а не в Infrastructure, по двум причинам: текст письма берётся
-/// из тех же ресурсов, что и текст страниц (docs/SPEC.md §9.5), а абсолютная ссылка
-/// строится по таблице маршрутов, которую знает только слой представления.
-/// Application видит один лишь порт <see cref="IAccountEmailSender"/>, поэтому
-/// правило зависимостей §5.2 не нарушено.
-///
-/// Токены подставляются в ссылку и больше никуда: в лог уходит только адресат и тема,
-/// об этом заботится <c>SmtpEmailSender</c> (§13).
-/// </summary>
 public sealed class AccountEmailSender(
     IEmailSender emailSender,
     IStringLocalizer<SharedResource> localizer,
@@ -101,10 +89,6 @@ public sealed class AccountEmailSender(
             actionUrl: null,
             cancellationToken);
 
-    /// <summary>
-    /// Одна точка сборки письма. Действие необязательно: уведомления о смене пароля
-    /// и адреса ничего не предлагают нажать, они только сообщают о случившемся.
-    /// </summary>
     private Task SendAsync(
         string to,
         string? displayName,
@@ -128,10 +112,6 @@ public sealed class AccountEmailSender(
     private string Format(string key, params object[] arguments) =>
         string.Format(CultureInfo.CurrentCulture, localizer[key], arguments);
 
-    /// <summary>
-    /// Ссылка обязана быть абсолютной: относительный адрес в почтовом клиенте
-    /// никуда не ведёт.
-    /// </summary>
     private string BuildLink(string page, object values)
     {
         var httpContext = httpContextAccessor.HttpContext

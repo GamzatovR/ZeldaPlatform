@@ -4,11 +4,7 @@
     var pageTitle = new PageTitleViewModel(T["manage.title"].Value);
 }
 
-@*
-    Кабинет: слева навигация по разделам, справа содержимое.
-    Макета у кабинета нет (docs/SPEC.md §9.3 п. 17) — собран из тех же токенов
-    и компонентов, что и остальные страницы (docs/design/design-system.md).
-*@
+@* Кабинет. *@
 <partial name="/Views/Shared/_PageTitle.cshtml" model="pageTitle" />
 
 <section class="account">

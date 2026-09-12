@@ -7,13 +7,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Admin.Billing.Commands.CreateFeature;
 
-/// <summary>
-/// Заводит новую платную функцию (EP-3).
-///
-/// Кэш прав здесь не сбрасывается: новая функция ещё ни к одному тарифу
-/// не привязана и ничьих прав не меняет. Сброс сделает SetPlanFeatures,
-/// когда её кому-нибудь выдадут.
-/// </summary>
 public sealed class CreateFeatureCommandHandler(
     IRepository<Feature> features,
     IReadRepository<Feature> featuresForRead,

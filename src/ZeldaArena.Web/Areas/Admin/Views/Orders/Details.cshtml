@@ -18,11 +18,6 @@
 <section class="admin-panel admin-section" aria-labelledby="order-status-title">
     <h2 class="admin-panel__title" id="order-status-title">@T["admin.order.actions"]</h2>
 
-    @*
-        Отмена оплаченного заказа возвращает остаток на склад и переводит платёж
-        в «возвращён» (docs/adr/ADR-0010). Отправленный заказ не отменяется:
-        его возвращают, а возвратов в проекте нет (§1).
-    *@
     <div class="row-actions">
         @if (Model.CanShip)
         {
@@ -126,7 +121,7 @@
 <section class="admin-panel admin-section" aria-labelledby="order-payments-title">
     <h2 class="admin-panel__title" id="order-payments-title">@T["admin.order.payments"]</h2>
 
-    @* От карты в базе есть только последние четыре цифры и платёжная система (§7.6). *@
+    @* От карты в базе есть только последние четыре цифры и платёжная система. *@
     @if (Model.Payments.Count == 0)
     {
         <p class="admin-panel__empty">@T["admin.order.no_payments"]</p>

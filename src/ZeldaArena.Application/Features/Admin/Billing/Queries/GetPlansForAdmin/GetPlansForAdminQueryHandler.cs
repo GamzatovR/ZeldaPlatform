@@ -6,9 +6,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Admin.Billing.Queries.GetPlansForAdmin;
 
-/// <summary>
-/// Отдаёт тарифы с их фичами и числом действующих подписок.
-/// </summary>
 public sealed class GetPlansForAdminQueryHandler(
     IReadRepository<Plan> plans,
     IReadRepository<Subscription> subscriptions,

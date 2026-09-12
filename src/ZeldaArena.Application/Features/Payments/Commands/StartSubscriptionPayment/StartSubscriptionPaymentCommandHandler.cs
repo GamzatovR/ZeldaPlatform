@@ -9,13 +9,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.StartSubscriptionPayment;
 
-/// <summary>
-/// Заводит платёж за подписку и высылает код (docs/SPEC.md §7.6).
-///
-/// Сумма берётся у тарифа, а не из запроса: цену считает сервер, значения с клиента
-/// не принимаются (§15). По той же причине здесь нет ни поля суммы, ни поля валюты.
-/// Общие шаги — идемпотентность, карта, код, письмо — у <see cref="PaymentInitiator"/>.
-/// </summary>
 public sealed class StartSubscriptionPaymentCommandHandler(
     ICurrentUserService currentUser,
     IReadRepository<Plan> plans,
@@ -70,11 +63,7 @@ public sealed class StartSubscriptionPaymentCommandHandler(
             return Result.Failure<StartPaymentResult>(authorization.Error);
         }
 
-        // Заявка на подписку заводится до оплаты: платёж хранит сумму и ссылку
-        // на подписку, но не тариф (§6), а при подтверждении кода тариф нужен —
-        // у него берутся срок и цена. Прав такая запись не даёт: она в статусе
-        // Pending. Если оплата не состоится, её удалит тот же сценарий, который
-        // объявит платёж неудачным.
+        // Заявка на подписку заводится до оплаты.
         var reserved = Subscription.Reserve(userId, plan, clock.UtcNow);
 
         await subscriptions.AddAsync(reserved, cancellationToken).ConfigureAwait(false);

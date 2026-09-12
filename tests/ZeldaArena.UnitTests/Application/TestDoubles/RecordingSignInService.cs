@@ -3,11 +3,6 @@ using ZeldaArena.Application.Common.Models.Identity;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Вход, который отвечает заранее заданным исходом и запоминает вызовы.
-/// Проверять здесь нечего — вся логика lockout и второго фактора внутри Identity;
-/// тестам хендлеров важно только, что они правильно разбирают исход.
-/// </summary>
 internal sealed class RecordingSignInService : ISignInService
 {
     public SignInOutcome PasswordOutcome { get; set; } = SignInOutcome.Succeeded;

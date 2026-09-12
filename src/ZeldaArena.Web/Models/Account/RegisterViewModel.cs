@@ -8,17 +8,8 @@ using ZeldaArena.Web.Areas.Api.Controllers;
 
 namespace ZeldaArena.Web.Models.Account;
 
-/// <summary>
-/// Форма регистрации. Требования к паролю продублированы здесь для подсказки
-/// в браузере; источник истины — PasswordPolicy и FluentValidation на сервере.
-/// </summary>
 public sealed class RegisterViewModel
 {
-    /// <remarks>
-    /// Занятость адреса проверяется ещё до отправки — Remote-запросом к Areas/Api
-    /// (docs/SPEC.md §10.1, сценарий 11). Предел длины повторяет серверное правило:
-    /// иначе адрес, пропущенный формой, отвергла бы FluentValidation.
-    /// </remarks>
     [Required(ErrorMessage = "Укажите адрес электронной почты.")]
     [StringLength(AccountValidationRules.MaxEmailLength, ErrorMessage = "Адрес не длиннее {1} символов.")]
     [EmailAddress(ErrorMessage = "Адрес электронной почты указан неверно.")]

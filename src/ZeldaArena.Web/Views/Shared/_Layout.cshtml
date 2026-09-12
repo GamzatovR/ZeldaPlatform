@@ -8,18 +8,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    @*
-        Антифоржери-токен для AJAX (docs/SPEC.md §10.1, §15): http.js кладёт его
-        в заголовок RequestVerificationToken каждого изменяющего запроса.
-    *@
+    @* Антифоржери-токен для AJAX. *@
     <meta name="request-verification-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
     <title>@ViewData["Title"] — @T["brand.name"]</title>
 
-    @*
-        Teko и Poppins — шрифты макета; их файлов в шаблоне нет, поэтому пока
-        Google Fonts. Перевод на самостоятельный хостинг и CSP под шрифты —
-        Фаза 11 (docs/design/design-system.md §4).
-    *@
+    @* Teko и Poppins — шрифты макета; их файлов в шаблоне нет, поэтому пока Google Fonts. *@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet"
@@ -30,7 +23,7 @@
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>
-    @* Обход клавиатурой: в макете пропуска к содержимому нет (§9.1). *@
+    @* Обход клавиатурой: в макете пропуска к содержимому нет. *@
     <a class="skip-link" href="#main">@T["a11y.skip_to_content"]</a>
 
     @await Component.InvokeAsync("Header")
@@ -41,12 +34,7 @@
 
     @await Component.InvokeAsync("Footer")
 
-    @*
-        Тосты AJAX (docs/SPEC.md §10.1): регион объявлен заранее, чтобы aria-live
-        сработал на первом же сообщении. Тексты по кодам ответа — здесь, из ресурсов,
-        а не строками в JavaScript (§9.5). Шаблон с {0} берётся через .Value: IHtmlLocalizer
-        подставил бы аргументы при выводе и упал бы на их отсутствии.
-    *@
+    @* Тосты AJAX. *@
     <div class="toast-region" data-toasts role="status" aria-live="polite"
          data-close-label="@T["toast.close"]"
          data-msg-unauthorized="@T["toast.unauthorized"]"
@@ -56,7 +44,7 @@
          data-msg-server="@T["toast.server_error"]"
          data-msg-network="@T["toast.network"]"></div>
 
-    @* Скелетон списка на время загрузки (§9.1); подставляет ajax-list.js. *@
+    @* Скелетон списка на время загрузки; подставляет ajax-list.js. *@
     <template id="list-skeleton">
         <div class="skeleton-list" aria-hidden="true">
             @for (var i = 0; i < 6; i++)
@@ -70,13 +58,7 @@
         <icon name="@IconNames.ArrowUp" label="@T["a11y.back_to_top"]" />
     </button>
 
-    @*
-        Скрипты — ES-модули (docs/SPEC.md §2). Из 14 файлов шаблона в макете
-        лежит только main.js, поэтому поведение написано заново и переносится
-        лишь то, что действительно используется (CLAUDE.md, «Работа с макетами»).
-        jQuery подключается страницами форм ради jquery-validation-unobtrusive
-        и только там — секция Scripts.
-    *@
+    @* Скрипты — ES-модули. *@
     <script type="module" src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

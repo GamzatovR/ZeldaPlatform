@@ -7,21 +7,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Admin;
 
-/// <summary>
-/// Доступ ко всей админке в одном месте (docs/SPEC.md §8.1: «доступ в Area Admin —
-/// через соглашение на всю область»).
-///
-/// Каждый контроллер области и каждый эндпоинт <c>/api/admin</c> получает политику
-/// <see cref="PolicyNames.ModeratorOrAdmin"/> и фильтр второго фактора для администратора
-/// (§8.2). Разделы, закрытые и для модератора (пользователи, тарифы, магазин), добавляют
-/// свою политику атрибутом на контроллер; политики складываются по «И», поэтому атрибут
-/// может только сузить доступ, но не расширить его.
-///
-/// Цель соглашения — наследники <see cref="AdminControllerBase"/> и
-/// <see cref="AdminApiControllerBase"/>, а заодно любой контроллер с областью Admin:
-/// архитектурный тест требует базовый класс, а здесь страховка на случай, если
-/// тест однажды ослабят.
-/// </summary>
 public sealed class AdminAreaConvention : IControllerModelConvention
 {
     public void Apply(ControllerModel controller)

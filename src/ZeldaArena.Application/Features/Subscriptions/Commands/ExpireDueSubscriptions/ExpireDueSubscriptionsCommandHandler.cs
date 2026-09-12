@@ -9,18 +9,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Subscriptions.Commands.ExpireDueSubscriptions;
 
-/// <summary>
-/// Переводит закончившиеся подписки в статус Expired (docs/SPEC.md §7.5, п. 4).
-///
-/// Доступ к платным функциям пропадает не здесь, а по дате: <c>Subscription.IsActiveAt</c>
-/// сравнивает <c>EndsAt</c> с текущим моментом, поэтому опоздание службы на час прав
-/// не продлевает. Эта команда нужна ради того, что от даты не выводится: событие,
-/// снятие роли Premium и письмо.
-///
-/// Порция ограничена: за час их накапливаются единицы, а на первом запуске после
-/// долгого простоя ограничение не даст открыть транзакцию на всю таблицу. Остаток
-/// доберётся следующим запуском.
-/// </summary>
 public sealed class ExpireDueSubscriptionsCommandHandler(
     IReadRepository<Subscription> subscriptionsForRead,
     IRepository<Subscription> subscriptions,
@@ -61,8 +49,6 @@ public sealed class ExpireDueSubscriptionsCommandHandler(
                 .ConfigureAwait(false);
 
             // Между выборкой и загрузкой подписку могли отозвать или продлить.
-            // Expire в обоих случаях бросил бы исключение и уронил бы весь пакет,
-            // поэтому те же два условия проверяются заранее.
             if (subscription is not { Status: SubscriptionStatus.Active } || subscription.EndsAt > now)
             {
                 continue;

@@ -1,11 +1,5 @@
 namespace ZeldaArena.Application.Features.Admin.Dashboard.Queries.GetAdminDashboard;
 
-/// <summary>
-/// Деловые показатели дашборда — только для администратора (docs/SPEC.md §8.1).
-///
-/// Выручка — сумма подтверждённых платежей: и за подписки, и за заказы. Возвращённый
-/// платёж (отмена оплаченного заказа) в неё не входит — деньги ушли обратно покупателю.
-/// </summary>
 public sealed record AdminBusinessFiguresDto
 {
     public int UserCount { get; init; }

@@ -22,10 +22,6 @@ public class GetStoredFileQueryHandlerTests
     public async Task Unknown_file_is_not_found() =>
         (await Handle("0123456789abcdef0123456789abcdef.png")).ShouldBeNull();
 
-    /// <summary>
-    /// Чужое имя — «файла нет», а не исключение: иначе опечатка в ссылке
-    /// оборачивалась бы ошибкой сервера.
-    /// </summary>
     [Theory]
     [InlineData("../appsettings.json")]
     [InlineData("..%2Fappsettings.json")]

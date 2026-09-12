@@ -7,19 +7,7 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Единая пагинация всех списков (docs/SPEC.md §10.3, <c>&lt;pagination&gt;</c>):
-///
-/// <code>
-/// &lt;pagination page="@Model.Result.Page" total-pages="@Model.Result.TotalPages" /&gt;
-/// </code>
-///
-/// Каждая ссылка — полный адрес текущей страницы, в котором заменён только номер:
-/// фильтр и сортировка сохраняются, а ссылку на третью страницу можно переслать
-/// и открыть в новой вкладке (§10.2, «источник истины — URL»). Без JavaScript
-/// это обычные ссылки; с ним <c>ajax-list.js</c> перехватывает их по
-/// <c>data-pagination</c> и подгружает partial с <c>history.pushState</c>.
-/// </summary>
+/// <summary>Единая пагинация всех списков.</summary>
 [HtmlTargetElement("pagination", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localizer) : TagHelper
 {
@@ -143,11 +131,6 @@ public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localiz
         return link;
     }
 
-    /// <summary>
-    /// Текущий адрес с заменённым номером (<see cref="ListUrl"/>). Первая страница — без
-    /// параметра: у одного состояния списка должен быть один адрес, иначе закладки
-    /// и кэш двоятся.
-    /// </summary>
     private string UrlFor(int number) =>
         ListUrl.Build(ViewContext, new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase)
         {

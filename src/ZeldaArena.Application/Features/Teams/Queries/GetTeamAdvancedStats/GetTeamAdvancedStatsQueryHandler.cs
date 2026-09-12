@@ -10,14 +10,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetTeamAdvancedStats;
 
-/// <summary>
-/// Сначала право, потом данные: без функции <c>stats.advanced</c> ни одного запроса
-/// к статистике не уходит.
-///
-/// Агрегаты считает база (<c>GROUP BY</c>), имена подтягиваются вторым запросом
-/// по готовому списку идентификаторов — четыре запроса на страницу, сколько бы
-/// матчей ни сыграла команда (docs/SPEC.md §16).
-/// </summary>
 public sealed class GetTeamAdvancedStatsQueryHandler(
     IReadRepository<PlayerMatchStats> stats,
     IReadRepository<Player> players,

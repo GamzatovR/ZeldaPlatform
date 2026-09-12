@@ -25,10 +25,6 @@ public class SignInCommandHandlerTests
         _accounts.RecordedSignIns.ShouldBe([user.Id]);
     }
 
-    /// <summary>
-    /// «Нужен второй фактор» — успех сценария, а не отказ: пароль подошёл, и страница
-    /// обязана перейти к вводу кода, а не показать ошибку (docs/SPEC.md §8.2).
-    /// </summary>
     [Fact]
     public async Task Two_factor_requirement_is_a_success()
     {
@@ -41,9 +37,6 @@ public class SignInCommandHandlerTests
         result.Value.ShouldBe(SignInOutcome.RequiresTwoFactor);
     }
 
-    /// <summary>
-    /// Второй фактор ещё не пройден, значит вход не состоялся: отметку о нём ставить рано.
-    /// </summary>
     [Fact]
     public async Task Two_factor_requirement_does_not_record_a_sign_in()
     {
@@ -55,10 +48,6 @@ public class SignInCommandHandlerTests
         _accounts.RecordedSignIns.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Неудача возвращается через Result, а не исключением, — только так AuditBehavior
-    /// запишет неудачный вход в журнал, чего прямо требует §8.2.
-    /// </summary>
     [Theory]
     [InlineData(SignInOutcome.Failed, "account.invalid_credentials")]
     [InlineData(SignInOutcome.LockedOut, "account.locked_out")]
@@ -74,10 +63,6 @@ public class SignInCommandHandlerTests
         result.Error.Code.ShouldBe(errorCode);
     }
 
-    /// <summary>
-    /// Ответ на незнакомый адрес неотличим от ответа на неверный пароль: иначе форма
-    /// входа становится средством перебора заведённых адресов.
-    /// </summary>
     [Fact]
     public async Task Unknown_email_looks_exactly_like_a_wrong_password()
     {
@@ -88,10 +73,6 @@ public class SignInCommandHandlerTests
         result.Error.Code.ShouldBe(AccountErrors.InvalidCredentials.Code);
     }
 
-    /// <summary>
-    /// Заблокированный администратором не получает cookie даже на время одного запроса:
-    /// проверка идёт до обращения к SignInManager.
-    /// </summary>
     [Fact]
     public async Task Blocked_user_is_refused_before_the_password_is_checked()
     {

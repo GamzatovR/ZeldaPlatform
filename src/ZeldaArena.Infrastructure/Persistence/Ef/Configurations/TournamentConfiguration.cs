@@ -29,7 +29,7 @@ public sealed class TournamentConfiguration : EntityConfiguration<Tournament>
                 .IsFixedLength();
         });
 
-        // Индексы под фильтры списка турниров (docs/SPEC.md §10.2).
+        // Индексы под фильтры списка турниров.
         builder.HasIndex(tournament => new { tournament.Status, tournament.StartsAt });
         builder.HasIndex(tournament => new { tournament.Region, tournament.Status });
         builder.HasIndex(tournament => tournament.IsFeatured);
@@ -39,15 +39,13 @@ public sealed class TournamentConfiguration : EntityConfiguration<Tournament>
             .HasForeignKey(participant => participant.TournamentId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Restrict: удаление турнира не должно каскадом стирать историю матчей (docs/SPEC.md §6).
+        // Restrict: удаление турнира не должно каскадом стирать историю матчей.
         builder.HasMany(tournament => tournament.Matches)
             .WithOne(match => match.Tournament)
             .HasForeignKey(match => match.TournamentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Состав участников — часть агрегата: по нему AddTeam и RemoveTeam решают, есть ли
-        // уже такая команда. Без AutoInclude турнир из GetByIdAsync приходил бы с пустым
-        // составом — та же ловушка, что с фичами тарифа (Фаза 4) и составом команды (Фаза 6).
+        // Состав участников — часть агрегата.
         builder.Navigation(tournament => tournament.Participants)
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();

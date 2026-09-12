@@ -1,10 +1,6 @@
 @model ZeldaArena.Web.Models.Layout.PageTitleViewModel
 
-@*
-    Шапка внутренней страницы (docs/design/design-system.md §11).
-    Заголовок дублируется в атрибут title — на нём держится glitch-эффект макета:
-    псевдоэлементы берут текст через content: attr(title).
-*@
+@* Шапка внутренней страницы. *@
 <section class="page-title @(Model.Compact ? "page-title--compact" : null)">
     <div class="container">
         @if (!string.IsNullOrWhiteSpace(Model.SubTitle))

@@ -3,7 +3,7 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Shop.Queries.GetProducts;
 
-/// <summary>Разрешённые сортировки каталога — whitelist из docs/SPEC.md §15, ключи из §10.2.</summary>
+/// <summary>Разрешённые сортировки каталога — whitelist.</summary>
 public static class ProductSorting
 {
     public const string Newest = "newest";

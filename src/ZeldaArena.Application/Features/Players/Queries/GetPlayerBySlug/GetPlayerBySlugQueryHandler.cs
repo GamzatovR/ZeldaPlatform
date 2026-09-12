@@ -7,13 +7,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Players.Queries.GetPlayerBySlug;
 
-/// <summary>
-/// Четыре запроса на страницу: профиль, история составов, агрегаты статистики
-/// (считает база) и последние матчи (§16, без N+1).
-///
-/// История составов показывает только одобренные команды — команда на модерации
-/// публично не существует (docs/adr/ADR-0008).
-/// </summary>
 public sealed class GetPlayerBySlugQueryHandler(
     IReadRepository<Player> players,
     IReadRepository<RosterEntry> rosterEntries,

@@ -1,14 +1,4 @@
-// Bootstrap 5 из исходных SCSS: подключаются только те части, которые проект
-// действительно использует. Собранного CSS Bootstrap в проекте нет — иначе
-// в бандл уехали бы карусели, тултипы и офф-канвасы, а §16 требует обратного.
-//
-// Здесь именно @import, а не @use: в Bootstrap 5.3 файл _variables.scss на строке 494
-// вызывает миксин _assert-ascending из _functions.scss, то есть рассчитывает на общую
-// область имён @import. С @use сборка падает на «Undefined mixin». Переход на @use
-// возможен только вместе с переходом на Bootstrap 6.
-//
-// Настройка идёт переменными до @import "variables" — так задумано самим Bootstrap.
-// Переопределять его правила каскадом и !important в проекте запрещено (CLAUDE.md).
+// Bootstrap 5 из исходных SCSS.
 
 @import "bootstrap/scss/functions";
 
@@ -26,7 +16,7 @@ $enable-important-utilities: false;
 
 $prefix: bs-;
 
-// Сетка и контейнер (design-system.md §7, §8)
+// Сетка и контейнер
 $grid-breakpoints: (
   xs: 0,
   sm: $bp-sm,
@@ -77,12 +67,12 @@ $border-radius-lg: rem($radius-md);
 $transition-base: all $transition-fast ease-in-out;
 
 // Фокус: макет гасит обводку (`:focus { outline: 0 !important }`), что прямо
-// нарушает §9.1. Возвращаем видимое кольцо акцентным цветом.
+// нарушает Возвращаем видимое кольцо акцентным цветом.
 $focus-ring-width: rem(2px);
 $focus-ring-opacity: 1;
 $focus-ring-color: $color-accent;
 
-// Поля ввода (design-system.md §10)
+// Поля ввода
 $input-bg: $color-surface-raised;
 $input-disabled-bg: $color-surface;
 $input-color: $color-text;
@@ -118,7 +108,7 @@ $form-select-indicator-color: $color-text;
 $form-feedback-invalid-color: $color-accent;
 $form-feedback-valid-color: $color-success;
 
-// Таблицы (design-system.md §11)
+// Таблицы
 $table-color: $color-text;
 $table-bg: transparent;
 $table-border-color: $color-border;
@@ -127,21 +117,13 @@ $table-cell-padding-x: rem($space-3);
 $table-striped-bg: $color-surface;
 $table-hover-bg: $color-surface-raised;
 
-// Выпадающего меню и мобильной раскладки здесь нет сознательно: и то и другое
-// раскрывается своим скриптом (layout/_header.scss), поэтому части dropdown
-// и transitions не подключены.
+// Выпадающего меню и мобильной раскладки здесь нет сознательно.
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
-
-// ─── Части, которые реально используются ──────────────────────────────────────
-// Списка «на будущее» здесь нет сознательно: каждая новая часть добавляется
-// той фазой, которой она понадобилась, и вместе с разметкой, которая её просит.
-// Что подключено не будет: buttons, pagination, badge (свои по макету),
-// carousel, tooltip, popover, offcanvas, accordion, spinners (не нужны вовсе).
 
 @import "bootstrap/scss/root"; // --bs-* переменные, на них опираются grid и forms
 @import "bootstrap/scss/reboot";

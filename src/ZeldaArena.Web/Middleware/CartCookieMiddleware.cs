@@ -8,19 +8,7 @@ using ZeldaArena.Application.Features.Carts.Commands.MergeGuestCart;
 
 namespace ZeldaArena.Web.Middleware;
 
-/// <summary>
-/// Гостевая корзина (docs/SPEC.md §14.1, п. 4): выдаёт и проверяет подписанный
-/// <c>AnonymousId</c>, а на первом запросе после входа вливает гостевую корзину
-/// в пользовательскую.
-///
-/// Кука подписана Data Protection, а не хранит голый Guid: подставив чужой
-/// идентификатор, можно было бы читать и менять чужую корзину. Подделанная или
-/// испорченная кука просто не принимается — гость получает новую, пустую корзину.
-///
-/// Слияние делается здесь, а не в сценариях входа: путей входа три (пароль, второй
-/// фактор, код восстановления), а место, где одновременно известны и пользователь,
-/// и гостевая кука, — одно.
-/// </summary>
+/// <summary>Гостевая корзина.</summary>
 public sealed class CartCookieMiddleware(
     RequestDelegate next,
     IDataProtectionProvider dataProtection,
@@ -111,10 +99,6 @@ public sealed class CartCookieMiddleware(
         }
     }
 
-    /// <summary>
-    /// Кука выдаётся на первом визите, а строка корзины в базе — только при первом
-    /// добавлении товара (<c>CartLocator.GetOrCreateAsync</c>).
-    /// </summary>
     private static Guid Issue(HttpContext context, IDataProtector protector)
     {
         var id = Guid.CreateVersion7();

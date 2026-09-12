@@ -1,11 +1,5 @@
 namespace ZeldaArena.Application.Common.Models.Billing;
 
-/// <summary>
-/// Маскирование адреса для страницы ввода кода (docs/SPEC.md §7.6, шаг 2).
-///
-/// Пользователь должен узнать свой ящик и понять, куда смотреть, но полный адрес
-/// возвращать незачем: страницу может открыть тот, кто заглянул в чужой браузер.
-/// </summary>
 public static class MaskedEmail
 {
     public static string Of(string email)

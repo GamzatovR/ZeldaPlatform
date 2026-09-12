@@ -5,10 +5,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.ValueObjects;
 
-/// <summary>
-/// Часть URL, однозначно указывающая на сущность: <c>/tournaments/zelda-masters-2025</c>.
-/// Только строчные латинские буквы, цифры и дефис. Уникален в пределах таблицы (docs/SPEC.md §6).
-/// </summary>
+/// <summary>Часть URL, однозначно указывающая на сущность.</summary>
 public sealed class Slug : ValueObject
 {
     public const int MaxLength = 128;
@@ -17,10 +14,7 @@ public sealed class Slug : ValueObject
 
     public string Value { get; }
 
-    /// <summary>
-    /// Нормализует произвольный текст: регистр вниз, разделители — в дефис,
-    /// недопустимые символы отбрасываются, дефисы схлопываются.
-    /// </summary>
+    /// <summary>Нормализует произвольный текст.</summary>
     public static Slug From(string value)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(value);

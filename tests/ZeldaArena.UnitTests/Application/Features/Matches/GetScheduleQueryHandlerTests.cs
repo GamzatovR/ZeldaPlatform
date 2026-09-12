@@ -6,10 +6,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Matches;
 
-/// <summary>
-/// Расписание (docs/SPEC.md §9.3, п. 2): по умолчанию — что впереди, по дням,
-/// ближайшее первым; прошедшее открывается фильтром статуса.
-/// </summary>
 public class GetScheduleQueryHandlerTests
 {
     private static readonly DateTimeOffset Today = new(2026, 6, 15, 10, 0, 0, TimeSpan.Zero);

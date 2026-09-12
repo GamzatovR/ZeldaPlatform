@@ -5,11 +5,6 @@ using ZeldaArena.Application.Common.Validation;
 
 namespace ZeldaArena.Application.Features.Admin.Teams;
 
-/// <summary>
-/// Те же правила профиля команды, что и у сценариев капитана
-/// (<c>EsportsValidationRules</c>): админка не должна принимать то, что отвергает
-/// кабинет владельца, и наоборот.
-/// </summary>
 public sealed class TeamFieldsValidator : AbstractValidator<ITeamFields>
 {
     public TeamFieldsValidator(IDateTimeProvider clock)

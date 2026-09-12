@@ -4,11 +4,6 @@ using ZeldaArena.Application.Common.Validation;
 
 namespace ZeldaArena.Application.Features.Admin.Shop;
 
-/// <summary>
-/// Правила товара. Длины совпадают со столбцами <c>ProductConfiguration</c>, остаток
-/// и цена — с инвариантами <c>Product</c>: форма не должна принимать то, что отвергнет
-/// база или домен.
-/// </summary>
 public sealed class ProductFieldsValidator : AbstractValidator<IProductFields>
 {
     public const int MaxNameLength = 200;

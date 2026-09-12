@@ -7,10 +7,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Teams;
 
-/// <summary>
-/// Платная функция stats.advanced (docs/SPEC.md §7.2). Главное — отказ без права:
-/// разметка может забыть <c>&lt;feature-gate&gt;</c>, сценарий — нет (§7.3).
-/// </summary>
 public class GetTeamAdvancedStatsQueryHandlerTests
 {
     private static readonly Guid Subscriber = Guid.CreateVersion7();

@@ -29,10 +29,6 @@ public class TwoFactorTests
         _twoFactor.IsEnabled(user.Id).ShouldBeTrue();
     }
 
-    /// <summary>
-    /// Cookie перевыписывается: в ней хранится признак прохождения второго фактора,
-    /// и без обновления текущая сессия осталась бы в подвешенном состоянии.
-    /// </summary>
     [Fact]
     public async Task Enabling_refreshes_the_current_session()
     {
@@ -43,10 +39,6 @@ public class TwoFactorTests
         _signIn.RefreshedUsers.ShouldContain(user.Id);
     }
 
-    /// <summary>
-    /// Неверный код не включает второй фактор: иначе неправильно настроенный
-    /// аутентификатор запер бы человека снаружи собственной учётной записи.
-    /// </summary>
     [Fact]
     public async Task Wrong_verification_code_leaves_two_factor_off()
     {
@@ -72,11 +64,6 @@ public class TwoFactorTests
         _twoFactor.WasKeyReset.ShouldBeTrue();
     }
 
-    /// <summary>
-    /// Прямое требование docs/SPEC.md §8.2: для роли Admin второй фактор обязателен.
-    /// Проверка стоит в хендлере, а не только в разметке, — спрятанная кнопка
-    /// эндпоинт не закрывает (§20, пункт 3).
-    /// </summary>
     [Fact]
     public async Task Administrator_cannot_switch_two_factor_off()
     {
@@ -105,10 +92,6 @@ public class TwoFactorTests
         _signIn.RememberDeviceRequested.ShouldBeTrue();
     }
 
-    /// <summary>
-    /// Истёкшая промежуточная сессия и неверный код — разные исходы: в первом случае
-    /// вход надо начинать с пароля, во втором достаточно повторить код.
-    /// </summary>
     [Fact]
     public async Task Expired_intermediate_session_is_not_a_wrong_code()
     {

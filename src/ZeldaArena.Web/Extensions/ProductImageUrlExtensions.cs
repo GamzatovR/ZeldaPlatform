@@ -4,12 +4,6 @@ using ZeldaArena.Application.Common.Files;
 
 namespace ZeldaArena.Web.Extensions;
 
-/// <summary>
-/// Адрес картинки товара. У товаров сида это статический путь от корня сайта
-/// (фотографии из макета), у товаров из админки (Фаза 9) — имя файла в хранилище,
-/// которое раздаёт <c>FilesController</c>. Всё прочее картинкой не считается:
-/// произвольная строка из базы не должна превращаться в чужой URL.
-/// </summary>
 public static class ProductImageUrlExtensions
 {
     private const string StaticImagePrefix = "/img/";

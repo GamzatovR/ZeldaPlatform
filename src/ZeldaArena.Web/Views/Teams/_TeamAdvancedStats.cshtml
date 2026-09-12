@@ -3,10 +3,7 @@
 @model TeamAdvancedStatsDto
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Расширенная статистика команды (stats.advanced). Графики из §7.2 заменены таблицами —
-    это разрешено Приоритетом B (§17) и не тянет в проект библиотеку диаграмм.
-*@
+@* Расширенная статистика команды (stats.advanced). *@
 <h3 class="details-block__subtitle">@T["team.advanced_players"]</h3>
 
 @if (Model.Players.Count == 0)

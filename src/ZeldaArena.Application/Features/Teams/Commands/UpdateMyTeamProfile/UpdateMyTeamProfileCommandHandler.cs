@@ -8,10 +8,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.UpdateMyTeamProfile;
 
-/// <summary>
-/// Слаг при переименовании не меняется: на страницу команды уже могут вести ссылки,
-/// и они не должны ломаться от смены названия (слаг — адрес, а не подпись).
-/// </summary>
 public sealed class UpdateMyTeamProfileCommandHandler(
     IRepository<Team> teamRepository,
     IReadRepository<Team> teams,

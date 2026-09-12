@@ -16,7 +16,7 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>Игроки — <c>/admin/players</c> (docs/SPEC.md §9.4, п. 5).</summary>
+/// <summary>Игроки — <c>/admin/players</c>.</summary>
 [Route("admin/players")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class PlayersController(ISender sender, IStringLocalizer<SharedResource> localizer)

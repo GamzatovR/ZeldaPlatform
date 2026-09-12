@@ -9,15 +9,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Payments;
 
-/// <summary>
-/// Общий путь заведения мнимого платежа (docs/SPEC.md §7.6, шаг 2) для подписки
-/// и заказа: идемпотентность, авторизация карты, код, запись платежа, письмо.
-///
-/// Разбит на шаги, а не собран в один метод, потому что между ними сценарии делают
-/// своё: подписка заводит заявку на тариф, заказ списывает остаток и очищает корзину.
-/// Порядок шагов при этом один: карта проверяется до того, как сценарий что-то
-/// поменяет, — отклонённая карта не должна оставлять за собой ни заявки, ни заказа.
-/// </summary>
 public sealed class PaymentInitiator(
     IRepository<Payment> payments,
     IReadRepository<Payment> paymentsForRead,
@@ -27,12 +18,6 @@ public sealed class PaymentInitiator(
     IBillingEmailSender emailSender,
     IDateTimeProvider clock)
 {
-    /// <summary>
-    /// Идемпотентность (§7.6): повторная отправка формы — обновлённая страница,
-    /// второй клик, возврат по «Назад» — не заводит второй платёж и не шлёт
-    /// второе письмо, а возвращает тот же самый. Владелец зашит в ключ
-    /// (<see cref="PaymentIdempotency"/>), поэтому чужой платёж по нему не найдётся.
-    /// </summary>
     public async Task<StartPaymentResult?> FindExistingAsync(
         Guid userId,
         ICardPaymentDetails details,
@@ -70,10 +55,6 @@ public sealed class PaymentInitiator(
             cancellationToken);
     }
 
-    /// <summary>
-    /// Выпускает код и заводит платёж в ожидании. От карты в платёж попадают только
-    /// последние четыре цифры и платёжная система из <paramref name="authorization"/>.
-    /// </summary>
     public async Task<InitiatedPayment> OpenAsync(
         Guid userId,
         PaymentPurpose purpose,
@@ -107,11 +88,6 @@ public sealed class PaymentInitiator(
         return new InitiatedPayment(payment, code);
     }
 
-    /// <summary>
-    /// Письмо отправляется внутри транзакции команды — по тому же соображению, что
-    /// и при регистрации в Фазе 3: недоступный SMTP обязан откатить и создание платежа,
-    /// иначе пользователь получит запись в ожидании, подтвердить которую нечем.
-    /// </summary>
     public Task SendCodeAsync(
         InitiatedPayment initiated,
         string? displayName,

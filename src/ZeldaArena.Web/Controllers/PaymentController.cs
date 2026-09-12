@@ -23,19 +23,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Мнимая оплата (docs/SPEC.md §7.6): реквизиты → письмо с кодом → подтверждение.
-/// Реквизиты подписки вводятся здесь, реквизиты заказа — на странице оформления
-/// (<see cref="CheckoutController"/>); ввод кода, повторная отправка и отмена у них общие.
-///
-/// Это обычные формы. С JavaScript их отправку перехватывает ajax-form.js и шлёт
-/// в <c>POST /api/payments</c> и <c>/api/payments/{id}/confirm</c> (§10.1) — те же
-/// хендлеры и то же правило исхода (<see cref="PaymentConfirmationOutcome"/>). Без
-/// JavaScript формы работают как раньше — прогрессивное улучшение §9.1.
-///
-/// Покупка закрыта политикой подтверждённой почты: §8.2 требует подтверждённого
-/// адреса перед оплатой.
-/// </summary>
 [Authorize(Policy = PolicyNames.EmailConfirmed)]
 [Route("account/payment")]
 public sealed class PaymentController(
@@ -185,10 +172,6 @@ public sealed class PaymentController(
         return RedirectToAction(nameof(Confirm), new { id });
     }
 
-    /// <summary>
-    /// Отмена платежа за подписку возвращает к тарифам, за заказ — в корзину: заказ
-    /// отменён, товары вернулись в неё (docs/adr/ADR-0009).
-    /// </summary>
     [HttpPost("{id:guid}/cancel")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(Guid id, CancellationToken cancellationToken)

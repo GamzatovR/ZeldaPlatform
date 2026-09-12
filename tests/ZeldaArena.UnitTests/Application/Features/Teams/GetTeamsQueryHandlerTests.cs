@@ -5,7 +5,7 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Teams;
 
-/// <summary>Список команд тем же механизмом, что турниры (docs/SPEC.md §10.2).</summary>
+/// <summary>Список команд тем же механизмом, что турниры.</summary>
 public class GetTeamsQueryHandlerTests
 {
     private readonly EsportsWorld _world = new();

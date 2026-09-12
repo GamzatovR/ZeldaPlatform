@@ -5,10 +5,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Турнир: набор участников и матчей с общим призовым фондом.
-/// Удаление турнира запрещено на уровне схемы (Restrict), иначе каскад стёр бы историю матчей.
-/// </summary>
+/// <summary>Турнир.</summary>
 public class Tournament : BaseEntity, IAuditableEntity
 {
     private readonly List<TournamentTeam> _participants = [];
@@ -36,10 +33,7 @@ public class Tournament : BaseEntity, IAuditableEntity
 
     public TournamentStatus Status { get; private set; }
 
-    /// <summary>
-    /// Регламент в HTML. Выводится через Html.Raw, поэтому очищается HtmlSanitizer
-    /// на входе, в хендлере команды — не при выводе (docs/SPEC.md §15).
-    /// </summary>
+    /// <summary>Регламент в HTML.</summary>
     public string? RulesHtml { get; private set; }
 
     public string? LogoPath { get; private set; }
@@ -175,10 +169,7 @@ public class Tournament : BaseEntity, IAuditableEntity
         return participant;
     }
 
-    /// <summary>
-    /// Состав доигранного или отменённого турнира — история: убрать из него команду
-    /// значило бы переписать итоги, поэтому он закрыт так же, как для добавления.
-    /// </summary>
+    /// <summary>Состав доигранного или отменённого турнира — история.</summary>
     public void RemoveTeam(Guid teamId)
     {
         InvariantViolationException.ThrowIf(

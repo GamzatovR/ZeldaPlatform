@@ -16,17 +16,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Общая обвязка сценариев оплаты: тарифы, репозитории и подменённые порты.
-///
-/// Порты подменены реализациями, а не моками, там где проверяется поведение
-/// (как в Фазах 2 и 3): <see cref="InMemoryRepository{TEntity}"/> действительно
-/// хранит и удаляет, поэтому «заявка на подписку убрана» проверяется по составу
-/// хранилища, а не по факту вызова метода.
-///
-/// Часы сдвигаются между шагами — на них держатся истечение кода и пауза
-/// между отправками.
-/// </summary>
 internal sealed class PaymentScenarioFixture
 {
     public const string ValidCardNumber = "4242424242424242";
@@ -60,10 +49,6 @@ internal sealed class PaymentScenarioFixture
 
     public InMemoryRepository<Subscription> Subscriptions { get; } = new();
 
-    /// <summary>
-    /// Заказов в сценариях подписки нет, но хендлеры оплаты общие для обоих назначений
-    /// (§7.6); сценарии заказа проверяются отдельно, на <c>ShopWorld</c>.
-    /// </summary>
     public InMemoryRepository<Order> Orders { get; } = new();
 
     public InMemoryRepository<Product> Products { get; } = new();

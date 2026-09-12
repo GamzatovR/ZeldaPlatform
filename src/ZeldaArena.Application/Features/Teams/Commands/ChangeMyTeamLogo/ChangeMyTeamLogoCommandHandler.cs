@@ -7,12 +7,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.ChangeMyTeamLogo;
 
-/// <summary>
-/// Старый файл удаляется только после того, как новый логотип сохранён в команде:
-/// упади сохранение — у команды остался бы логотип, которого уже нет на диске.
-/// Новое имя — новый GUID, поэтому кэш браузеров на год (<c>FilesController</c>)
-/// не показывает старую картинку под новым адресом.
-/// </summary>
 public sealed class ChangeMyTeamLogoCommandHandler(
     IRepository<Team> teamRepository,
     IEntitlementService entitlements,

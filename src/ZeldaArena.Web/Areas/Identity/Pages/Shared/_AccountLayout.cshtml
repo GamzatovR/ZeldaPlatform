@@ -4,11 +4,7 @@
     var pageTitle = new PageTitleViewModel(T["account.page_title"].Value);
 }
 
-@*
-    Общая рамка страниц входа, регистрации, восстановления пароля и 2FA.
-    Свёрстано по .login-form из docs/design/pages/login.html — это единственные
-    страницы аккаунта, у которых макет есть (docs/SPEC.md §9.3 п. 16).
-*@
+@* Общая рамка страниц входа, регистрации, восстановления пароля и 2FA. *@
 <partial name="/Views/Shared/_PageTitle.cshtml" model="pageTitle" />
 
 <section class="auth">

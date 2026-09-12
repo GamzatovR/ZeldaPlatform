@@ -8,15 +8,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetTeamBySlug;
 
-/// <summary>
-/// Страница команды за фиксированное число запросов, независимо от размера состава
-/// и истории: профиль, состав, два счётчика, последние и ближайшие матчи
-/// (обязательная проверка на N+1, docs/SPEC.md §16).
-///
-/// Неодобренную команду видит только её владелец. Для остальных её нет — ответ
-/// тот же, что на несуществующий адрес, чтобы по нему нельзя было перебирать
-/// ещё не опубликованные команды (docs/adr/ADR-0008).
-/// </summary>
 public sealed class GetTeamBySlugQueryHandler(
     IReadRepository<Team> teams,
     IReadRepository<RosterEntry> rosterEntries,

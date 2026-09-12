@@ -13,11 +13,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Запрос ссылки для сброса пароля. Итог всегда один и тот же — страница
-/// подтверждения, — независимо от того, заведён такой адрес или нет
-/// (docs/SPEC.md §8.2, нет user enumeration).
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.PasswordRecovery)]
 public sealed class ForgotPasswordModel(ISender sender, IStringLocalizer<SharedResource> localizer)

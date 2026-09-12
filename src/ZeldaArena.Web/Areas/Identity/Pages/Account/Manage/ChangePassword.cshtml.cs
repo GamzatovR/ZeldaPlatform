@@ -12,11 +12,6 @@ using ZeldaArena.Web.Models.Account;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Смена пароля из кабинета. Требует текущий пароль и завершает остальные сессии
-/// (docs/SPEC.md §8.2) — текущая при этом остаётся живой, cookie перевыписывается
-/// в хендлере.
-/// </summary>
 [Authorize]
 public sealed class ChangePasswordModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel

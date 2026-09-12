@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Common;
 
-/// <summary>
-/// Исход операции без возвращаемого значения. Объявлен в Domain по docs/SPEC.md §5.3
-/// и переиспользуется хендлерами Application, чтобы тип результата был один на всё решение.
-/// </summary>
+/// <summary>Исход операции без возвращаемого значения.</summary>
 public class Result
 {
     protected Result(bool isSuccess, Error error)

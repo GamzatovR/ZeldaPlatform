@@ -13,10 +13,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Пользователи — <c>/admin/users</c> (docs/SPEC.md §9.4, п. 10): фильтры, роли,
-/// блокировка. Только администратор: у модератора доступа к пользователям нет (§8.1).
-/// </summary>
 [Route("admin/users")]
 [Authorize(Policy = PolicyNames.AdminOnly)]
 public sealed class UsersController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -58,7 +54,7 @@ public sealed class UsersController(ISender sender, IStringLocalizer<SharedResou
         return Back(returnUrl);
     }
 
-    /// <summary>Возврат к тому же состоянию таблицы: фильтр и страница живут в адресе (§10.2).</summary>
+    /// <summary>Возврат к тому же состоянию таблицы: фильтр и страница живут в адресе.</summary>
     private IActionResult Back(string? returnUrl) =>
         returnUrl is not null && Url.IsLocalUrl(returnUrl)
             ? LocalRedirect(returnUrl)

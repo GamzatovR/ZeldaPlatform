@@ -2,10 +2,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Участие команды в турнире. Ключ составной (TournamentId, TeamId), поэтому
-/// сущность не наследует BaseEntity: собственного идентификатора у связи нет.
-/// </summary>
+/// <summary>Участие команды в турнире.</summary>
 public class TournamentTeam
 {
     private TournamentTeam()

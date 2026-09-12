@@ -26,10 +26,6 @@ public sealed record MyTeamDto
 
     public int Rating { get; init; }
 
-    /// <summary>
-    /// Есть ли сейчас право править команду. Отказ показывается заранее, а не после
-    /// отправки формы, — но сценарии правки проверяют право сами.
-    /// </summary>
     public bool CanEdit { get; init; }
 
     public IReadOnlyList<RosterPlayerDto> Roster { get; init; } = [];

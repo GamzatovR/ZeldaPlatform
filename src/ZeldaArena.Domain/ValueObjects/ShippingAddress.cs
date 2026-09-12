@@ -3,11 +3,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.ValueObjects;
 
-/// <summary>
-/// Адрес доставки. Хранится снапшотом внутри заказа (шесть столбцов таблицы Orders),
-/// а не ссылкой на справочник: адресной книги в проекте нет, и заказ не должен
-/// меняться задним числом вслед за профилем пользователя (docs/SPEC.md §6).
-/// </summary>
+/// <summary>Адрес доставки.</summary>
 public sealed class ShippingAddress : ValueObject
 {
     /// <summary>Конструктор для материализации из БД, см. <see cref="Money"/>.</summary>

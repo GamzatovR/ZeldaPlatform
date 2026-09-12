@@ -7,17 +7,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Admin.Billing.Commands.SetPlanFeatures;
 
-/// <summary>
-/// Перестраивает состав фич тарифа (EP-4) и сбрасывает кэш прав.
-///
-/// Сброс — не деталь, а половина смысла сценария: с пятиминутным TTL доступ
-/// у пользователей менялся бы «когда-нибудь», и демонстрация на защите
-/// не состоялась бы (docs/SPEC.md §7.3).
-///
-/// Сбрасывается всё целиком: кто именно сидит на этом тарифе, мы не выясняем.
-/// Список задетых пользователей — лишний запрос ради операции, которая случается
-/// несколько раз в год.
-/// </summary>
 public sealed class SetPlanFeaturesCommandHandler(
     IRepository<Plan> plans,
     IReadRepository<Feature> features,

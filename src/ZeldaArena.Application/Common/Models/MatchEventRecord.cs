@@ -1,10 +1,5 @@
 namespace ZeldaArena.Application.Common.Models;
 
-/// <summary>
-/// Событие ленты матча (docs/SPEC.md §12, коллекция <c>match_events</c>). Схема гибкая
-/// и намеренно не является доменной сущностью: лента живёт в MongoDB и не участвует
-/// в инвариантах матча.
-/// </summary>
 public sealed record MatchEventRecord
 {
     public string? Id { get; init; }

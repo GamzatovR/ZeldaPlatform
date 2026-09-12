@@ -7,23 +7,12 @@ using ZeldaArena.Application.Common.Messaging;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Вторая половина sentinel-теста из docs/SPEC.md §18, обещанная Фазой 1.
-///
-/// Смысл тот же, что у доменной половины: проверки правила зависимостей устроены как
-/// «нарушителей нет», поэтому на пустой сборке Application они проходили бы вхолостую,
-/// и нарушение осталось бы незамеченным. Этот тест требует, чтобы слой сценариев
-/// действительно содержал сценарии, конвейер и порты.
-///
-/// Границы заданы «не меньше», а не точным числом: каждая следующая фаза добавляет
-/// команды и запросы, и тест не должен краснеть от роста проекта.
-/// </summary>
 public class ApplicationModelSentinelTests
 {
-    /// <summary>Четыре behavior из docs/SPEC.md §5.3: Validation, Audit, Logging, Transaction.</summary>
+    /// <summary>Четыре behavior: Validation, Audit, Logging, Transaction.</summary>
     private const int ExpectedBehaviorCount = 4;
 
-    /// <summary>Порты §5.3; реализуются в разных фазах, но объявлены все сразу.</summary>
+    /// <summary>Порты; реализуются в разных фазах, но объявлены все сразу.</summary>
     private const int ExpectedPortCount = 14;
 
     [Fact]
@@ -74,14 +63,9 @@ public class ApplicationModelSentinelTests
 
         ports.Length.ShouldBeGreaterThanOrEqualTo(
             ExpectedPortCount,
-            $"Портов объявлено {ports.Length}, ожидалось не меньше {ExpectedPortCount} "
-            + "(docs/SPEC.md §5.3).");
+            $"Портов объявлено {ports.Length}, ожидалось не меньше {ExpectedPortCount}.");
     }
 
-    /// <summary>
-    /// Забытый хендлер ломается только в рантайме и только на конкретном сценарии.
-    /// Дешевле поймать его здесь, чем на демонстрации.
-    /// </summary>
     [Fact]
     public void Every_request_should_have_a_handler()
     {
@@ -100,10 +84,6 @@ public class ApplicationModelSentinelTests
         orphans.ShouldBeEmpty($"У этих запросов нет хендлера: {string.Join(", ", orphans)}");
     }
 
-    /// <summary>
-    /// Команда обязана нести маркер <see cref="ICommandBase"/>: без него
-    /// TransactionBehavior её не увидит и сохранение пройдёт вне транзакции.
-    /// </summary>
     [Fact]
     public void Every_command_should_be_marked_for_the_transaction_behavior()
     {

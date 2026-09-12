@@ -24,7 +24,7 @@ public class PaymentTests
         payment.ConfirmationAttemptsLeft.ShouldBe(Payment.MaxAttempts);
         payment.Status.ShouldBe(PaymentStatus.Pending);
 
-        // Полей под полный номер карты и CVV в сущности нет вовсе (docs/SPEC.md §7.6).
+        // Полей под полный номер карты и CVV в сущности нет вовсе.
         typeof(Payment).GetProperties()
             .Select(property => property.Name)
             .ShouldNotContain(name => name.Contains("Cvv", StringComparison.OrdinalIgnoreCase)

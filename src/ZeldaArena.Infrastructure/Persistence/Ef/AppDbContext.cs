@@ -13,14 +13,6 @@ using ZeldaArena.Infrastructure.Persistence.Ef.Converters;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Контекст основной базы (PostgreSQL). Наследует IdentityDbContext, поэтому первая
-/// миграция содержит и семь таблиц AspNet*, и предметную модель — внешние ключи
-/// на пользователя настоящие с самого начала (docs/adr/ADR-0003).
-///
-/// Конфигурации задаются только через IEntityTypeConfiguration и подхватываются
-/// по сборке: правил маппинга внутри самого контекста нет (docs/SPEC.md §6).
-/// </summary>
 public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -83,10 +75,6 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    /// <summary>
-    /// Сквозные соглашения: деньги — numeric(18,2) (docs/SPEC.md §6), объекты-значения
-    /// с одним полем хранятся строкой. Повторять это в каждой конфигурации не нужно.
-    /// </summary>
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         base.ConfigureConventions(configurationBuilder);

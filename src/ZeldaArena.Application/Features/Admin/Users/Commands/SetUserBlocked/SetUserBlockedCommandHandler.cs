@@ -6,10 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Admin.Users.Commands.SetUserBlocked;
 
-/// <summary>
-/// Себя заблокировать нельзя: администратор запер бы сам себя, и вернуть доступ
-/// можно было бы только правкой базы.
-/// </summary>
 public sealed class SetUserBlockedCommandHandler(
     IUserAdministrationService users,
     ICurrentUserService currentUser)

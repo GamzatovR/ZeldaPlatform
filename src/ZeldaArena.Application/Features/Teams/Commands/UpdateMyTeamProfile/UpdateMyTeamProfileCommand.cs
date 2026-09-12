@@ -4,7 +4,7 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.UpdateMyTeamProfile;
 
-/// <summary>Правка профиля своей команды капитаном (docs/SPEC.md §9.3, п. 8).</summary>
+/// <summary>Правка профиля своей команды капитаном.</summary>
 public sealed record UpdateMyTeamProfileCommand : ICommand, IAuditableRequest
 {
     public Guid TeamId { get; init; }

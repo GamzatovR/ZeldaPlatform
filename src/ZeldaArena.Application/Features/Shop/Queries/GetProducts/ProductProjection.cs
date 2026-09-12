@@ -4,10 +4,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Shop.Queries.GetProducts;
 
-/// <summary>
-/// Одна проекция карточки на каталог и витрину главной: одна разметка
-/// <c>ProductCard</c> — одни и те же поля.
-/// </summary>
 public static class ProductProjection
 {
     public static Expression<Func<Product, ProductListItemDto>> ToListItem(IQueryable<ProductCategory> categories) =>

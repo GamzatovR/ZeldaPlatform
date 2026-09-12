@@ -16,11 +16,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Регистрация. Учётная запись создаётся сразу, но войти по ней нельзя, пока
-/// не подтверждён адрес, поэтому после успеха идёт не вход, а страница
-/// «проверьте почту» (docs/SPEC.md §8.2).
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.Register)]
 public sealed class RegisterModel(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -60,12 +55,6 @@ public sealed class RegisterModel(ISender sender, IStringLocalizer<SharedResourc
         return RedirectToPage("./RegisterConfirmation", new { email = Input.Email });
     }
 
-    /// <summary>
-    /// Язык интерфейса берётся из текущей культуры. Неподдерживаемая культура
-    /// заменяется на null, а не отправляется как есть: иначе валидатор отверг бы
-    /// регистрацию за то, что у пользователя система, например, на немецком.
-    /// Переключатель языка и UseRequestLocalization появятся в Фазе 11 (docs/SPEC.md §9.5).
-    /// </summary>
     private static string? CurrentCultureOrDefault()
     {
         var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;

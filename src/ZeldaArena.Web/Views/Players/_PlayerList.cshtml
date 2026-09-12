@@ -5,7 +5,7 @@
 @model PagedResult<PlayerListItemDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@* Результат фильтра игроков; его же возвращает GET /api/players (§10.1, сценарий 1). *@
+@* Результат фильтра игроков; его же возвращает GET /api/players. *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["filter.empty"]</p>

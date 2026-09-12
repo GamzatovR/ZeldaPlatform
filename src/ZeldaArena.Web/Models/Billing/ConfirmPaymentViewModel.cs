@@ -2,10 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ZeldaArena.Web.Models.Billing;
 
-/// <summary>
-/// Ввод кода из письма (docs/SPEC.md §7.6, шаг 3). Остаток попыток и срок действия
-/// приходят от сервера: клиент их не считает и не хранит.
-/// </summary>
 public sealed class ConfirmPaymentViewModel
 {
     public Guid PaymentId { get; set; }

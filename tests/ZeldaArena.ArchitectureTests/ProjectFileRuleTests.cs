@@ -2,20 +2,6 @@ using System.Xml.Linq;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Правило 2 из docs/SPEC.md §5.2 на уровне файлов проекта.
-///
-/// Зачем ещё одна проверка. Существующие смотрят на собранную сборку: одна по типам,
-/// другая по <c>GetReferencedAssemblies</c>. Обе молчат, если запрещённый пакет
-/// подключён, но им пока никто не воспользовался, — компилятор просто не выписывает
-/// ссылку на неиспользуемую сборку. Проверено пробой в Фазе 2: EF Core, добавленный
-/// в ZeldaArena.Application.csproj и не использованный ни одной строкой, обе проверки
-/// пропустили.
-///
-/// Пропущенная ссылка опасна не сама по себе, а тем, что снимает препятствие: следующий,
-/// кто откроет проект, увидит EF Core в списке пакетов и решит, что так и надо.
-/// Эта проверка читает сами файлы проектов, поэтому ловит ссылку в момент появления.
-/// </summary>
 public class ProjectFileRuleTests
 {
     private static readonly string[] ForbiddenPackagePrefixes =
@@ -46,10 +32,6 @@ public class ProjectFileRuleTests
             + $"Найдено: {string.Join(", ", offenders)}");
     }
 
-    /// <summary>
-    /// Domain остаётся на голом BCL: у него нет вообще никаких пакетов, а единственная
-    /// допустимая ссылка на проект — отсутствует.
-    /// </summary>
     [Fact]
     public void Domain_project_should_have_no_dependencies_at_all()
     {
@@ -65,10 +47,6 @@ public class ProjectFileRuleTests
             $"Domain обязан оставаться без зависимостей. Найдено: {string.Join(", ", references)}");
     }
 
-    /// <summary>
-    /// Путь к файлу проекта от каталога сборки тестов: подниматься вверх до решения.
-    /// Так тест не зависит ни от способа запуска, ни от рабочего каталога.
-    /// </summary>
     private static string ProjectFilePath(string project)
     {
         var path = Path.Combine(

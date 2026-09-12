@@ -5,17 +5,7 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Адрес состояния списка: текущий адрес страницы, в котором заменены отдельные
-/// параметры (docs/SPEC.md §10.2, «источник истины — URL»). Им пользуются
-/// <c>&lt;pagination&gt;</c> и <c>&lt;sortable-header&gt;</c>: правило одно, и разойтись
-/// двум копиям — значит получить сортировку, теряющую фильтр, или страницу, теряющую
-/// сортировку.
-///
-/// Список, отданный из Areas/Api, рисуется в ответ на <c>/api/…</c>; путь страницы
-/// тогда приходит в <see cref="ListViewData.PagePath"/>, а параметры фильтра — те же,
-/// что у запроса.
-/// </summary>
+/// <summary>Адрес состояния списка.</summary>
 internal static class ListUrl
 {
     /// <param name="viewContext">Контекст отрисовки: из него берутся путь и текущие параметры.</param>

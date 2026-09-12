@@ -4,10 +4,6 @@ using ZeldaArena.Application.Features.Admin.Matches.Commands.ScheduleMatch;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Matches;
 
-/// <summary>
-/// Назначение матча. Пределы те же, что у <see cref="ScheduleMatchCommandValidator"/>;
-/// нечётность формата серии проверяет сущность, поэтому в списке только Bo1/Bo3/Bo5/Bo7.
-/// </summary>
 public sealed class MatchFormViewModel : IValidatableObject
 {
     public static readonly int[] SeriesFormats = [1, 3, 5, 7];

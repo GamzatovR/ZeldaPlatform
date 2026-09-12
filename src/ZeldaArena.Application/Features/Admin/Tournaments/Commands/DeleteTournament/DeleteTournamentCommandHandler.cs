@@ -7,12 +7,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.DeleteTournament;
 
-/// <summary>
-/// Проверка «матчей нет» — внятный отказ; схема страхует её ограничением Restrict
-/// на <c>Matches → Tournaments</c> (docs/SPEC.md §6). Состав участников уходит вместе
-/// с турниром каскадом: без турнира он ничего не значит. Файл логотипа удаляется
-/// после сохранения — если удаление строки не удалось, логотип остаётся на месте.
-/// </summary>
 public sealed class DeleteTournamentCommandHandler(
     IRepository<Tournament> tournamentRepository,
     IReadRepository<Match> matches,

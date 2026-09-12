@@ -6,19 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace ZeldaArena.Infrastructure.BackgroundJobs;
 
-/// <summary>
-/// Фоновая служба, которая по расписанию отправляет одну команду.
-///
-/// Служба сама ничего не решает: вся работа в команде, которая проходит обычный
-/// конвейер с транзакцией, аудитом и журналом. Здесь только расписание и область
-/// зависимостей — <c>ISender</c> и <c>AppDbContext</c> живут ограниченное время,
-/// а фоновая служба существует всё время работы приложения, поэтому scope
-/// создаётся на каждый запуск.
-///
-/// Исключение гасится намеренно: недоступная на минуту база не должна ронять
-/// приложение целиком. Следующий запуск повторит работу, а незамеченным сбой
-/// не останется — он попадёт в журнал.
-/// </summary>
 public abstract class PeriodicCommandService(
     IServiceScopeFactory scopeFactory,
     ILogger logger)
@@ -27,9 +14,6 @@ public abstract class PeriodicCommandService(
     /// <summary>Как часто запускать команду.</summary>
     protected abstract TimeSpan Interval { get; }
 
-    /// <summary>
-    /// Первый проход отложен: на старте приложение занято миграциями и сидом.
-    /// </summary>
     protected virtual TimeSpan StartupDelay => TimeSpan.FromMinutes(1);
 
     /// <summary>Что писать в журнал, если запуск не удался.</summary>

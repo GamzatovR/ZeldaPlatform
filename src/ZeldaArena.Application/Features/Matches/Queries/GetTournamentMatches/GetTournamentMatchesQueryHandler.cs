@@ -8,13 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Matches.Queries.GetTournamentMatches;
 
-/// <summary>
-/// Порядок зависит от вкладки. Предстоящие — идущие впереди, затем по времени:
-/// кто пришёл смотреть, ищет live. Прошедшие — от свежих к старым: интересен последний
-/// результат. «Все» — хронологически, как сетка турнира.
-///
-/// Сортировки из URL у вкладок нет: порядок — часть смысла вкладки, а не выбор зрителя.
-/// </summary>
 public sealed class GetTournamentMatchesQueryHandler(
     IReadRepository<Match> matches,
     IQueryExecutor queryExecutor)

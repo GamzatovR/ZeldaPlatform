@@ -11,15 +11,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Admin.Orders.Commands.ChangeOrderStatus;
 
-/// <summary>
-/// Отмена переиспользует <see cref="OrderCancellation"/> — тот же код, что отменяет
-/// заказ покупателя и брошенный заказ: остаток возвращается на склад, незавершённые
-/// платежи закрываются. Товары в корзину не возвращаются: заказ отменил не покупатель.
-///
-/// Оплаченный заказ отменяется только администратором (docs/adr/ADR-0009 оставил это
-/// Фазе 9), и тогда успешный платёж переходит в <c>Refunded</c>: деньги вернули,
-/// и в выручке дашборда их быть не должно.
-/// </summary>
 public sealed class ChangeOrderStatusCommandHandler(
     IReadRepository<Order> ordersForRead,
     IRepository<Order> orders,

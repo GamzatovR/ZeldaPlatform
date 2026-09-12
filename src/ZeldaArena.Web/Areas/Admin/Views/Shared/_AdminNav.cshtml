@@ -4,14 +4,7 @@
 @inject IHtmlLocalizer<SharedResource> T
 @inject IAuthorizationService Authorization
 
-@*
-    Пункт виден, только если его политика пропускает текущего пользователя: модератор
-    не видит тарифов и пользователей (§8.1). Это удобство, а не защита — доступ
-    к разделу проверяет политика на самом контроллере.
-
-    IAuthorizationService берётся во вьюхе: ViewComponent может принимать только
-    ISender, IStringLocalizer и ILogger (правило 4 §5.2, распространено в Фазе 5).
-*@
+@* Пункт виден, только если его политика пропускает текущего пользователя. *@
 <nav class="admin-nav">
     <ul class="admin-nav__list">
         @foreach (var item in AdminNavigation.Items)

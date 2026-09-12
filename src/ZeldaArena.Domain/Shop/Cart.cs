@@ -4,11 +4,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Корзина гостя или пользователя. Гостевая опознаётся подписанной кукой AnonymousId,
-/// которую выдаёт CartCookieMiddleware; при входе гостевая корзина сливается
-/// с пользовательской (docs/SPEC.md §14.1).
-/// </summary>
+/// <summary>Корзина гостя или пользователя.</summary>
 public class Cart : BaseEntity, IAuditableEntity
 {
     private readonly List<CartItem> _items = [];
@@ -31,10 +27,7 @@ public class Cart : BaseEntity, IAuditableEntity
 
     public int TotalQuantity => _items.Sum(item => item.Quantity);
 
-    /// <summary>
-    /// Итог считается здесь и только здесь: суммы, приходящие с клиента,
-    /// не принимаются на веру (docs/SPEC.md §20, п. 7).
-    /// </summary>
+    /// <summary>Итог считается здесь и только здесь.</summary>
     public Money Subtotal => new(_items.Sum(item => item.LineTotal), Money.DefaultCurrency);
 
     public static Cart ForUser(Guid userId)
@@ -57,10 +50,7 @@ public class Cart : BaseEntity, IAuditableEntity
         return new Cart { AnonymousId = anonymousId };
     }
 
-    /// <summary>
-    /// Добавляет товар. Цена берётся у товара, а не из запроса, количество проверяется
-    /// по остатку. Повторное добавление увеличивает количество той же позиции.
-    /// </summary>
+    /// <summary>Добавляет товар.</summary>
     public CartItem AddItem(Product product, int quantity)
     {
         ArgumentNullException.ThrowIfNull(product);
@@ -111,10 +101,7 @@ public class Cart : BaseEntity, IAuditableEntity
 
     public void Clear() => _items.Clear();
 
-    /// <summary>
-    /// Слияние гостевой корзины с пользовательской при входе: количества складываются,
-    /// но не выше остатка на складе. Товары, которых уже нет в наличии, пропускаются.
-    /// </summary>
+    /// <summary>Слияние гостевой корзины с пользовательской при входе.</summary>
     public void MergeFrom(Cart guestCart, IReadOnlyDictionary<Guid, Product> products)
     {
         ArgumentNullException.ThrowIfNull(guestCart);

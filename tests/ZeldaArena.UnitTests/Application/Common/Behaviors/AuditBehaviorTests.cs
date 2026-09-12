@@ -36,10 +36,6 @@ public class AuditBehaviorTests
         entry.OccurredAt.ShouldBe(Now);
     }
 
-    /// <summary>
-    /// Отказ по бизнес-правилу приходит как Result, а не исключением, и всё равно
-    /// обязан попасть в журнал (docs/SPEC.md §13).
-    /// </summary>
     [Fact]
     public async Task Business_failure_is_recorded_with_error_code()
     {
@@ -69,10 +65,6 @@ public class AuditBehaviorTests
         writer.Single.FailureReason.ShouldBe("счёт вне формата серии");
     }
 
-    /// <summary>
-    /// Прямое требование docs/SPEC.md §7.6 и §20 пункт 6: номер карты, CVV и код
-    /// подтверждения не попадают в аудит ни при каких обстоятельствах.
-    /// </summary>
     [Fact]
     public async Task Sensitive_fields_are_masked_in_the_payload()
     {

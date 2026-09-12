@@ -6,11 +6,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Заказ магазина. Суммы пересчитываются внутри сущности при каждом изменении состава,
-/// поэтому итог не может разойтись с позициями и не зависит от данных клиента
-/// (docs/SPEC.md §15, §20 п. 7).
-/// </summary>
+/// <summary>Заказ магазина.</summary>
 public class Order : BaseEntity, IAuditableEntity
 {
     private readonly List<OrderItem> _items = [];
@@ -131,10 +127,7 @@ public class Order : BaseEntity, IAuditableEntity
         Status = OrderStatus.Completed;
     }
 
-    /// <summary>
-    /// Отмена возможна, пока заказ не уехал к покупателю. Отправленный и завершённый
-    /// заказ отменяется только возвратом, которого в проекте нет (docs/SPEC.md §1).
-    /// </summary>
+    /// <summary>Отмена возможна, пока заказ не уехал к покупателю.</summary>
     public void Cancel(DateTimeOffset canceledAt)
     {
         InvariantViolationException.ThrowIf(

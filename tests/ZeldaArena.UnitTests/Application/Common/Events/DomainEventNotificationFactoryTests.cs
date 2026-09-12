@@ -5,10 +5,6 @@ namespace ZeldaArena.UnitTests.Application.Common.Events;
 
 public class DomainEventNotificationFactoryTests
 {
-    /// <summary>
-    /// Диспетчер видит события только как DomainEvent. Обёртка обязана получиться
-    /// по фактическому типу, иначе обработчик конкретного события её не поймает.
-    /// </summary>
     [Fact]
     public void Notification_is_built_for_the_concrete_event_type()
     {

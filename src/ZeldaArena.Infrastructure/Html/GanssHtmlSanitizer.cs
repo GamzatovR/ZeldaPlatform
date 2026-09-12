@@ -2,17 +2,6 @@ using Ganss.Xss;
 
 namespace ZeldaArena.Infrastructure.Html;
 
-/// <summary>
-/// Реализация <see cref="Application.Common.Interfaces.IHtmlSanitizer"/> на Ganss.Xss.
-///
-/// Белый список уже умолчаний библиотеки: регламенту и новости нужны заголовки, абзацы,
-/// списки, выделение, ссылки и простые таблицы. Картинок, форм, стилей и классов нет —
-/// внешний вид задаёт <c>.prose</c> сайта, а не автор текста, и чем меньше разрешено,
-/// тем меньше поверхность для подстановки разметки (docs/SPEC.md §15).
-///
-/// Ссылки — только http, https и mailto: <c>javascript:</c> в href — классический обход
-/// санитайзера, который пропускает всё, что похоже на ссылку.
-/// </summary>
 public sealed class GanssHtmlSanitizer : Application.Common.Interfaces.IHtmlSanitizer
 {
     private static readonly string[] AllowedTags =

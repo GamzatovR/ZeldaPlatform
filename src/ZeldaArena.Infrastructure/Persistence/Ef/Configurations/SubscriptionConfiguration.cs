@@ -24,7 +24,7 @@ public sealed class SubscriptionConfiguration : EntityConfiguration<Subscription
             .HasForeignKey(subscription => subscription.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Индексы из docs/SPEC.md §6: проверка прав идёт по (UserId, Status),
+        // Индексы из),
         // фоновая служба ищет истёкшие по EndsAt.
         builder.HasIndex(subscription => new { subscription.UserId, subscription.Status });
         builder.HasIndex(subscription => subscription.EndsAt);

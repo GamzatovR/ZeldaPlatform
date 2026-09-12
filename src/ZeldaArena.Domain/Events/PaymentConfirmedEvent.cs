@@ -3,10 +3,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Domain.Events;
 
-/// <summary>
-/// Оплата подтверждена кодом из письма. Ни номера карты, ни CVV, ни самого кода
-/// в событии нет и быть не может (docs/SPEC.md §7.6).
-/// </summary>
+/// <summary>Оплата подтверждена кодом из письма.</summary>
 public sealed record PaymentConfirmedEvent(
     Guid PaymentId,
     Guid UserId,

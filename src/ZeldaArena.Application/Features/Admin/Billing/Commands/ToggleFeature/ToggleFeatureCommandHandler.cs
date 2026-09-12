@@ -7,10 +7,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Admin.Billing.Commands.ToggleFeature;
 
-/// <summary>
-/// Переключает фичу и сбрасывает кэш прав: доступ обязан измениться сразу,
-/// а не через пять минут TTL (docs/SPEC.md §7.3).
-/// </summary>
 public sealed class ToggleFeatureCommandHandler(
     IRepository<Feature> features,
     IEntitlementCacheInvalidator entitlementCache,

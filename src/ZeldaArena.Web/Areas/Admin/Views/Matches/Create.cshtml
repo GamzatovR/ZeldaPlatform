@@ -12,10 +12,7 @@
     <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
 </div>
 
-@*
-    Турнир выбирается первым шагом: команды матча — только его участники. Форма выбора
-    турнира — обычная GET-форма с кнопкой, поэтому шаг работает и без JavaScript (§9.1).
-*@
+@* Турнир выбирается первым шагом. *@
 <div class="form-card admin-form">
     <form method="get" asp-action="Create" class="admin-section">
         <div class="inline-form">

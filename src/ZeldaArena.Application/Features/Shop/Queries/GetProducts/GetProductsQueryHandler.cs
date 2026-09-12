@@ -7,14 +7,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Shop.Queries.GetProducts;
 
-/// <summary>
-/// Только товары в продаже: снятый с продажи товар не показывается, в корзину его
-/// тоже не положить (<c>Cart.AddItem</c>).
-///
-/// Название категории — коррелированный подзапрос, а не навигация: EF Core переводит
-/// его в скалярный подзапрос той же выборки (§16, без N+1), а в памяти он исполняется
-/// так же, как в SQL, — навигация в тестах была бы пустой.
-/// </summary>
 public sealed class GetProductsQueryHandler(
     IReadRepository<Product> products,
     IReadRepository<ProductCategory> categories,

@@ -6,7 +6,7 @@
     var result = Model.Result;
     // Возврат к тому же состоянию таблицы после действия без JavaScript.
     var listUrl = Url.Action("Index", "Users", new { area = "Admin" }) + Context.Request.QueryString;
-    // Premium вручную не назначается: её выдаёт подписка (docs/SPEC.md §7.4).
+    // Premium вручную не назначается: её выдаёт подписка.
     var assignable = RoleNames.All.Where(role => role != RoleNames.Premium).ToList();
 }
 

@@ -5,11 +5,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Application.Features.Files.Queries.GetStoredFile;
 
-/// <summary>
-/// Content-Type выводится из расширения сохранённого файла, а оно в свою очередь —
-/// из распознанного при загрузке формата. Заявленному клиентом типу веры нет
-/// ни на входе, ни на выходе.
-/// </summary>
 public sealed class GetStoredFileQueryHandler(IFileStorage storage)
     : IRequestHandler<GetStoredFileQuery, StoredFileContent?>
 {

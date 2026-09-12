@@ -14,10 +14,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Платные функции — <c>/admin/features</c> (docs/SPEC.md §9.4, п. 9). Здесь заводится
-/// новая функция (EP-3): строка в базе плюс атрибут на действии, без правки ядра.
-/// </summary>
 [Route("admin/features")]
 [Authorize(Policy = PolicyNames.CanManageBilling)]
 public sealed class FeaturesController(ISender sender, IStringLocalizer<SharedResource> localizer)

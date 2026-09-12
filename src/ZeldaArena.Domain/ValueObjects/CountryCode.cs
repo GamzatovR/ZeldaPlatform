@@ -3,10 +3,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.ValueObjects;
 
-/// <summary>
-/// Код страны ISO 3166-1 alpha-2 («RU», «SE»). Используется у команд и игроков
-/// для флагов и фильтра по стране (docs/SPEC.md §9.3).
-/// </summary>
+/// <summary>Код страны ISO 3166-1 alpha-2 («RU», «SE»).</summary>
 public sealed class CountryCode : ValueObject
 {
     public const int Length = 2;
@@ -29,10 +26,7 @@ public sealed class CountryCode : ValueObject
         return new CountryCode(normalized);
     }
 
-    /// <summary>
-    /// Разбор без исключения — для валидаторов, где негодный ввод это обычный исход,
-    /// а не сбой. Парная к <see cref="From"/>, как и у <see cref="Slug"/>.
-    /// </summary>
+    /// <summary>Разбор без исключения — для валидаторов, где негодный ввод это обычный исход, а не сбой.</summary>
     public static bool TryFrom(string? value, out CountryCode? countryCode)
     {
         try

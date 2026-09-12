@@ -10,9 +10,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Отмена и истечение подписки (docs/SPEC.md §7.5, пп. 4–5).
-/// </summary>
 public class SubscriptionLifecycleTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 9, 12, 0, 0, TimeSpan.Zero);
@@ -20,10 +17,6 @@ public class SubscriptionLifecycleTests
     private readonly Guid _userId = Guid.CreateVersion7();
     private readonly Plan _plan = Plan.Create("pro-month", "Pro", new Money(299m, Money.DefaultCurrency), 30);
 
-    /// <summary>
-    /// Отказ от автопродления сохраняет доступ до конца оплаченного срока: деньги
-    /// уплачены, отбирать функции сразу нечестно.
-    /// </summary>
     [Fact]
     public async Task Cancelling_keeps_the_access_until_the_period_ends()
     {

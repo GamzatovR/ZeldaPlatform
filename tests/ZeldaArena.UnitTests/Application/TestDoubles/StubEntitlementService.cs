@@ -3,11 +3,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Права, выданные тестом явно: пользователь → фича → значение параметра.
-/// Отбор подписок и объединение тарифов проверяются отдельно (<c>EntitlementResolverTests</c>);
-/// здесь важно только, что сценарий спрашивает про фичу и слушается ответа.
-/// </summary>
 internal sealed class StubEntitlementService : IEntitlementService
 {
     private readonly Dictionary<Guid, Dictionary<string, string?>> _grants = [];

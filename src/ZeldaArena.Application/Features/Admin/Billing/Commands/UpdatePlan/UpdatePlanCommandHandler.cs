@@ -9,11 +9,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Admin.Billing.Commands.UpdatePlan;
 
-/// <summary>
-/// Кэш прав сбрасывается после сохранения: цена и срок на действующие права не влияют,
-/// но снятие тарифа с продажи меняет то, что видит пользователь на странице тарифов,
-/// а состав фич правится этим же экраном.
-/// </summary>
 public sealed class UpdatePlanCommandHandler(
     IRepository<Plan> plans,
     IEntitlementCacheInvalidator entitlementCache,

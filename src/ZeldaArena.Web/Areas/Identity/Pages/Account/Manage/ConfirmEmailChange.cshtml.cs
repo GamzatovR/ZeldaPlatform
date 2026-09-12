@@ -9,11 +9,6 @@ using ZeldaArena.Application.Features.Account.Commands.ConfirmEmailChange;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Переход по ссылке из письма на новый адрес. Страница открыта анонимно:
-/// ссылку читают в почтовом клиенте, который вполне может быть в другом браузере,
-/// без сессии. Безопасность держится на подписанном токене, а не на cookie.
-/// </summary>
 [AllowAnonymous]
 public sealed class ConfirmEmailChangeModel(
     ISender sender,

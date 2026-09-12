@@ -25,10 +25,6 @@ public class RegisterUserCommandHandlerTests
         letter.UserId.ShouldBe(user.Id);
     }
 
-    /// <summary>
-    /// Ключевое требование docs/SPEC.md §8.2: пока адрес не подтверждён, войти нельзя.
-    /// Поэтому сразу после регистрации учётная запись обязана быть неподтверждённой.
-    /// </summary>
     [Fact]
     public async Task New_account_starts_unconfirmed()
     {
@@ -63,10 +59,6 @@ public class RegisterUserCommandHandlerTests
         _email.Sent.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Отправка письма идёт внутри транзакции команды, поэтому недоступный SMTP обязан
-    /// уронить сценарий целиком: учётная запись без письма — тупик для пользователя.
-    /// </summary>
     [Fact]
     public async Task Broken_mail_server_fails_the_whole_registration()
     {

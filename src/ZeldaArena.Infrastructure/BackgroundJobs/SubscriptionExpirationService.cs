@@ -7,10 +7,6 @@ using ZeldaArena.Application.Features.Subscriptions.Commands.ExpireDueSubscripti
 
 namespace ZeldaArena.Infrastructure.BackgroundJobs;
 
-/// <summary>
-/// Раз в час помечает истёкшие подписки (docs/SPEC.md §7.5, п. 4). Часовой точности
-/// этой задаче хватает с запасом.
-/// </summary>
 public sealed class SubscriptionExpirationService(
     IServiceScopeFactory scopeFactory,
     ILogger<SubscriptionExpirationService> logger)

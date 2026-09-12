@@ -4,10 +4,6 @@ using ZeldaArena.Application.Features.Payments.Commands.StartSubscriptionPayment
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Серверная половина двухуровневой валидации реквизитов (docs/SPEC.md §7.6, шаг 1;
-/// §15). Она работает и при выключенном JavaScript — отдельный пункт чек-листа §19.
-/// </summary>
 public class CardValidationTests
 {
     private readonly StartSubscriptionPaymentCommandValidator _validator = new();
@@ -38,10 +34,6 @@ public class CardValidationTests
     public void A_mistyped_card_number_is_rejected() =>
         ShouldFail(Command() with { CardNumber = "4242424242424243" }, "CardNumber");
 
-    /// <summary>
-    /// Декабрь прошлого года проходит проверки года и месяца по отдельности,
-    /// поэтому срок проверяется целиком.
-    /// </summary>
     [Fact]
     public void An_expired_card_is_rejected() =>
         ShouldFail(Command() with { ExpiryMonth = 12, ExpiryYear = 2020 }, "ExpiryYear");
@@ -69,7 +61,7 @@ public class CardValidationTests
     public void A_form_without_an_idempotency_key_is_rejected() =>
         ShouldFail(Command() with { IdempotencyKey = "" }, "IdempotencyKey");
 
-    /// <summary>Заведомо негодный код не должен расходовать попытку (§7.6).</summary>
+    /// <summary>Заведомо негодный код не должен расходовать попытку.</summary>
     [Theory]
     [InlineData("12345")]
     [InlineData("1234567")]

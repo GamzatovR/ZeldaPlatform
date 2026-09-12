@@ -7,14 +7,7 @@
     ViewData["Title"] = $"{match.TeamAName} — {match.TeamBName}";
 }
 
-@*
-    Пульт счёта (docs/SPEC.md §9.4 п. 3, §11). Каждая кнопка — обычная форма: без
-    JavaScript пульт работает переходами, с ним admin-console.js отправляет ту же форму
-    в /api/admin/matches и перерисовывает счёт на месте.
-
-    В скрытых полях уходит счёт, который модератор видит сейчас: сервер сверит его
-    с текущим и ответит конфликтом, если матч правил кто-то ещё (§15).
-*@
+@* Пульт счёта. *@
 <div class="admin-toolbar">
     <h1 class="admin-heading">@match.TeamAName — @match.TeamBName</h1>
     <div class="row-actions">

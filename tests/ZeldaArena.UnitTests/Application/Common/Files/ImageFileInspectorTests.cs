@@ -3,10 +3,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Common.Files;
 
-/// <summary>
-/// Формат определяется по содержимому (docs/SPEC.md §15). Расширение и заявленный тип
-/// сюда даже не передаются — проверять их на подмену бессмысленно, они не участвуют.
-/// </summary>
 public class ImageFileInspectorTests
 {
     [Fact]
@@ -38,10 +34,6 @@ public class ImageFileInspectorTests
     public void Empty_content_is_not_an_image() =>
         ImageFileInspector.Detect([]).ShouldBeNull();
 
-    /// <summary>
-    /// После проверки поток сохраняется целиком: если бы проверка съедала заголовок,
-    /// на диск уехал бы файл без сигнатуры.
-    /// </summary>
     [Fact]
     public async Task Detection_returns_the_stream_to_its_start()
     {

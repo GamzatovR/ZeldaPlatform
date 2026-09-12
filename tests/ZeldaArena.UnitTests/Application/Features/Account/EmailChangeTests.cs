@@ -14,10 +14,6 @@ public class EmailChangeTests
     private readonly InMemoryUserAccountService _accounts = new();
     private readonly RecordingAccountEmailSender _email = new();
 
-    /// <summary>
-    /// Два письма — прямое требование docs/SPEC.md §8.2: ссылка уходит на новый адрес,
-    /// уведомление на старый, чтобы захват учётной записи не прошёл незамеченным.
-    /// </summary>
     [Fact]
     public async Task Request_sends_a_link_to_the_new_address_and_a_notice_to_the_old_one()
     {

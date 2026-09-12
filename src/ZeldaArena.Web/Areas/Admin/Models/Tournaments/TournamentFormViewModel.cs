@@ -7,12 +7,6 @@ using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Tournaments;
 
-/// <summary>
-/// Форма турнира — создание и правка. Каждое правило <see cref="TournamentFieldsValidator"/>
-/// продублировано здесь атрибутом или в <see cref="Validate"/>: отказ FluentValidation
-/// до Фазы 11 отвечает 500, и то, что можно ввести обычной формой, обязано вернуться
-/// на неё сообщением (урок Фаз 6–8, docs/PROGRESS.md).
-/// </summary>
 public sealed class TournamentFormViewModel : IValidatableObject
 {
     [Required(ErrorMessage = "Укажите название турнира.")]

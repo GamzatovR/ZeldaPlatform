@@ -8,13 +8,7 @@
     var pageTitle = new PageTitleViewModel(Localizer["payment.card_title"].Value);
 }
 
-@*
-    Шаг 1 мнимой оплаты (docs/SPEC.md §7.6). Макета у страницы нет — карточка
-    формы взята из .login-form, как предписывает docs/design/design-system.md.
-
-    С JavaScript форму отправляет ajax-form.js в POST /api/payments (§10.1, сценарий 7);
-    без него это обычная форма, и она обязана работать (§9.1).
-*@
+@* Шаг 1 мнимой оплаты. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="auth">

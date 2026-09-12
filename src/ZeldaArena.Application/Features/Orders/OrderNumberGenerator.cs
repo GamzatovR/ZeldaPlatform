@@ -6,15 +6,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders;
 
-/// <summary>
-/// Номер заказа вида <c>ZA-2026-048213</c>: год и шесть цифр криптографического ГСЧ.
-///
-/// Не порядковый намеренно. Порядковый номер нужно было бы брать из последовательности
-/// базы, а это сырой SQL (<c>nextval</c>), запрещённый §15; счёт «последний + 1»
-/// ломается на двух одновременных оформлениях. Случайный номер к тому же не выдаёт
-/// объём продаж и не перебирается подряд. Столкновение проверяется перед выдачей,
-/// а от гонки двух одинаковых номеров страхует уникальный индекс на <c>Orders.Number</c>.
-/// </summary>
 public sealed class OrderNumberGenerator(IReadRepository<Order> orders, IQueryExecutor queryExecutor)
 {
     public const string Prefix = "ZA";

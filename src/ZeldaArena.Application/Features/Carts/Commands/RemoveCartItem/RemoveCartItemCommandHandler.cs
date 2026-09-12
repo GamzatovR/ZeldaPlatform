@@ -6,10 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Carts.Commands.RemoveCartItem;
 
-/// <summary>
-/// Удаление не проверяет ни остаток, ни то, продаётся ли товар: снятый с продажи
-/// товар из корзины как раз и нужно уметь убрать.
-/// </summary>
 public sealed class RemoveCartItemCommandHandler(
     CartLocator locator,
     IUnitOfWork unitOfWork)

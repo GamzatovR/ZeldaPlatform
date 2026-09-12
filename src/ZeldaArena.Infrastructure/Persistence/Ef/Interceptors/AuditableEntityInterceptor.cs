@@ -6,14 +6,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Interceptors;
 
-/// <summary>
-/// Проставляет CreatedAt и UpdatedAt у сущностей с <see cref="IAuditableEntity"/>.
-///
-/// Значения пишутся через метаданные EF, а не через сеттеры: у доменных сущностей
-/// публичных сеттеров нет, и появиться они не должны (docs/SPEC.md §5.2, правило 5).
-/// Время берётся из порта <see cref="IDateTimeProvider"/> — единственного источника
-/// времени в приложении, чтобы поведение было проверяемым в тестах.
-/// </summary>
+/// <summary>Проставляет CreatedAt и UpdatedAt у сущностей с IAuditableEntity.</summary>
 public sealed class AuditableEntityInterceptor(IDateTimeProvider dateTimeProvider)
     : SaveChangesInterceptor
 {

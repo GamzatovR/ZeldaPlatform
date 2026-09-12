@@ -7,17 +7,7 @@
     ViewData["Title"] = T["home.title"].Value;
 }
 
-@*
-    Главная (docs/SPEC.md §9.3, страница 1). Свёрстана по docs/design/pages/home.html.
-
-    Слайдер трейлеров, партнёры, награды и подменённый курсор из макета не
-    переносятся: они держатся на owl.carousel, wow.js и cursor.js, которых
-    в выданном шаблоне нет (docs/design/design-system.md §1, §13).
-
-    Бегущая строка live-матчей придёт в Фазе 10 со своим сценарием, заглушки под неё
-    не ставим. Топ-команды — с Фазы 6, по блоку участников pages/tournament.html;
-    витрина товаров — с Фазы 7, по блоку магазина pages/home.html.
-*@
+@* Главная. *@
 
 <section class="hero">
     <div class="container hero__inner">
@@ -47,7 +37,7 @@
 
         @if (Model.Matches.Count == 0)
         {
-            @* Пустое состояние показывается отдельно, а не пустым местом (§10.2). *@
+            @* Пустое состояние показывается отдельно, а не пустым местом. *@
             <p class="empty-state">@T["home.matches_empty"]</p>
         }
         else
