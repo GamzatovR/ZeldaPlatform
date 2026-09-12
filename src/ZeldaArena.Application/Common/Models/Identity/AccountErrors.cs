@@ -1,4 +1,4 @@
-using ZeldaArena.Domain.Common;
+﻿using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Common.Models.Identity;
 
@@ -62,6 +62,18 @@ public static class AccountErrors
         new("account.two_factor_session_expired", "Сессия входа истекла, начните заново.");
 
     /// <summary>Обобщённая неудача Identity, для которой нет своего ключа.</summary>
+    public static readonly Error CannotBlockSelf =
+        new("account.cannot_block_self", "Нельзя заблокировать самого себя.");
+
+    public static readonly Error CannotDemoteSelf =
+        new("account.cannot_demote_self", "Нельзя снять роль администратора с самого себя.");
+
+    public static readonly Error LastAdministrator =
+        new("account.last_administrator", "Это последний администратор — снять роль нельзя.");
+
+    public static readonly Error RoleNotAssignable =
+        new("account.role_not_assignable", "Такую роль назначить нельзя.");
+
     public static readonly Error OperationFailed =
         new("account.operation_failed", "Не удалось выполнить операцию.");
 }

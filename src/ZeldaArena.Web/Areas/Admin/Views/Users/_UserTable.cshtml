@@ -1,0 +1,109 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Domain.Constants
+@model ZeldaArena.Web.Areas.Admin.Models.Users.UserIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+    // Возврат к тому же состоянию таблицы после действия без JavaScript.
+    var listUrl = Url.Action("Index", "Users", new { area = "Admin" }) + Context.Request.QueryString;
+    // Premium вручную не назначается: её выдаёт подписка (docs/SPEC.md §7.4).
+    var assignable = RoleNames.All.Where(role => role != RoleNames.Premium).ToList();
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.users"]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@T["admin.user.email"]</th>
+                    <th scope="col">@T["admin.user.roles"]</th>
+                    <th scope="col">@T["admin.user.security"]</th>
+                    <th scope="col">@T["admin.user.registered"]</th>
+                    <th scope="col">@T["admin.user.access"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in result.Items)
+                {
+                    var rowId = "user-" + user.Id.ToString("N");
+                    <tr>
+                        <td>
+                            @user.Email
+                            @if (user.DisplayName is not null)
+                            {
+                                <div class="admin-table__muted">@user.DisplayName</div>
+                            }
+                        </td>
+                        <td>
+                            <form class="inline-form" method="post"
+                                  asp-area="Admin" asp-controller="Users" asp-action="SetRoles" asp-route-id="@user.Id"
+                                  asp-route-returnUrl="@listUrl">
+                                @foreach (var role in assignable)
+                                {
+                                    var checkboxId = $"{rowId}-{role}";
+                                    <span class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="@checkboxId"
+                                               name="roles" value="@role"
+                                               checked="@user.Roles.Contains(role, StringComparer.OrdinalIgnoreCase)" />
+                                        <label class="form-check-label" for="@checkboxId">@role</label>
+                                    </span>
+                                }
+                                <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.save"]</button>
+                            </form>
+
+                            @if (user.Roles.Contains(RoleNames.Premium, StringComparer.OrdinalIgnoreCase))
+                            {
+                                <span class="badge-token badge-token--premium">@RoleNames.Premium</span>
+                            }
+                        </td>
+                        <td>
+                            @if (user.EmailConfirmed)
+                            {
+                                <span class="badge-token badge-token--success">@T["admin.user.email_confirmed"]</span>
+                            }
+                            @if (user.TwoFactorEnabled)
+                            {
+                                <span class="badge-token">@T["admin.user.two_factor"]</span>
+                            }
+                        </td>
+                        <td>
+                            <time datetime="@user.CreatedAt.ToString("O")">@user.CreatedAt.ToString("dd.MM.yyyy")</time>
+                            @if (user.LastLoginAt is { } lastLogin)
+                            {
+                                <div class="admin-table__muted">@T["admin.user.last_login"]: @lastLogin.ToString("dd.MM.yyyy")</div>
+                            }
+                        </td>
+                        <td>
+                            @if (user.IsBlocked)
+                            {
+                                <span class="badge-token badge-token--accent">@T["admin.user.blocked_filter"]</span>
+                            }
+
+                            <form class="row-actions" method="post"
+                                  asp-area="Admin" asp-controller="Users" asp-action="SetBlocked" asp-route-id="@user.Id"
+                                  asp-route-returnUrl="@listUrl"
+                                  data-admin-action="@Url.Action("SetBlocked", "AdminUsersApi", new { area = "Api", id = user.Id })">
+                                <input type="hidden" name="isBlocked" value="@(!user.IsBlocked)" />
+                                <button class="btn-ghost btn-ghost--sm" type="submit">
+                                    @(user.IsBlocked ? T["admin.user.unblock"] : T["admin.user.block"])
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}
