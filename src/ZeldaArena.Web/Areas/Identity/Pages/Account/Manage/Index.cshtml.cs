@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 using ZeldaArena.Application.Features.Account.Commands.UpdateProfile;
 using ZeldaArena.Application.Features.Account.Queries.GetAccountProfile;
 using ZeldaArena.Domain.Constants;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
 
@@ -79,7 +80,7 @@ public sealed class IndexModel(ISender sender, IStringLocalizer<SharedResource> 
             return await OnGetKeepingInputAsync(cancellationToken);
         }
 
-        TempData["StatusMessage"] = localizer["manage.profile.saved"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["manage.profile.saved"].Value;
 
         return RedirectToPage();
     }

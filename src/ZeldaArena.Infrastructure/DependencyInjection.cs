@@ -8,6 +8,7 @@ using ZeldaArena.Infrastructure.BackgroundJobs;
 using ZeldaArena.Infrastructure.Common;
 using ZeldaArena.Infrastructure.Email;
 using ZeldaArena.Infrastructure.Files;
+using ZeldaArena.Infrastructure.Html;
 using ZeldaArena.Infrastructure.Identity;
 using ZeldaArena.Infrastructure.Logging;
 using ZeldaArena.Infrastructure.Payments;
@@ -83,6 +84,7 @@ public static class DependencyInjection
             provider.GetRequiredService<EntitlementCache>());
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IUserAccountService, IdentityUserAccountService>();
+        services.AddScoped<IUserAdministrationService, IdentityUserAdministrationService>();
         services.AddScoped<IEntitlementService, EntitlementService>();
         services.AddScoped<ISignInService, IdentitySignInService>();
         services.AddScoped<ITwoFactorService, IdentityTwoFactorService>();
@@ -100,6 +102,9 @@ public static class DependencyInjection
         // Загруженные логотипы и аватары (docs/SPEC.md §15): вне wwwroot, под GUID-именем.
         services.Configure<FileStorageOptions>(configuration.GetSection(FileStorageOptions.SectionName));
         services.AddSingleton<IFileStorage, LocalFileStorage>();
+
+        // Настроенный санитайзер неизменяем и потокобезопасен — один на приложение.
+        services.AddSingleton<IHtmlSanitizer, GanssHtmlSanitizer>();
 
         // Фаза 10 заменит эту строку на MongoAuditLogWriter (docs/SPEC.md §12, §13).
         services.AddScoped<IAuditLogWriter, LoggerAuditLogWriter>();

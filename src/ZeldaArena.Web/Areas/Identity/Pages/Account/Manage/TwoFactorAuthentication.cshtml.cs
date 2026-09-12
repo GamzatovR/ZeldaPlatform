@@ -8,6 +8,7 @@ using Microsoft.Extensions.Localization;
 using ZeldaArena.Application.Features.Account.Commands.DisableTwoFactor;
 using ZeldaArena.Application.Features.Account.Commands.GenerateRecoveryCodes;
 using ZeldaArena.Application.Features.Account.Queries.GetTwoFactorStatus;
+using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
@@ -29,7 +30,7 @@ public sealed class TwoFactorAuthenticationModel(
     {
         var result = await sender.Send(new DisableTwoFactorCommand(), cancellationToken);
 
-        TempData["StatusMessage"] = result.IsSuccess
+        TempData[TempDataKeys.StatusMessage] = result.IsSuccess
             ? localizer["manage.two_factor.disabled_notice"].Value
 
             // Восклицательный знак — признак ошибки для _StatusMessage.
@@ -44,7 +45,7 @@ public sealed class TwoFactorAuthenticationModel(
 
         if (result.IsFailure)
         {
-            TempData["StatusMessage"] = "!" + localizer[result.Error.Code].Value;
+            TempData[TempDataKeys.StatusMessage] = "!" + localizer[result.Error.Code].Value;
 
             return RedirectToPage();
         }
@@ -52,7 +53,7 @@ public sealed class TwoFactorAuthenticationModel(
         // Коды показываются один раз, поэтому переносятся на страницу показа
         // через TempData и в адресную строку не попадают.
         TempData["RecoveryCodes"] = string.Join('\n', result.Value.Codes);
-        TempData["StatusMessage"] = localizer["recovery_codes.regenerated"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["recovery_codes.regenerated"].Value;
 
         return RedirectToPage("./ShowRecoveryCodes");
     }

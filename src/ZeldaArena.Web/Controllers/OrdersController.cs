@@ -8,6 +8,7 @@ using ZeldaArena.Application.Features.Orders;
 using ZeldaArena.Application.Features.Orders.Commands.CancelOrder;
 using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 using ZeldaArena.Application.Features.Orders.Queries.GetOrderDetails;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Orders;
 
@@ -24,7 +25,7 @@ namespace ZeldaArena.Web.Controllers;
 [Route("orders")]
 public sealed class OrdersController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     [HttpGet("")]
     public async Task<IActionResult> Index([FromQuery] GetMyOrdersQuery filter, CancellationToken cancellationToken)

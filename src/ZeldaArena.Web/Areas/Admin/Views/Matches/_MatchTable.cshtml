@@ -1,0 +1,55 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Matches.Queries.GetMatchesForAdmin
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Matches.MatchIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.matches"]</caption>
+            <thead>
+                <tr>
+                    <sortable-header asc="@AdminMatchSorting.DateAscending" desc="@AdminMatchSorting.DateDescending"
+                                     current="@Model.Sort" default="@AdminMatchSorting.Map.DefaultKey">@T["admin.match.scheduled_at"]</sortable-header>
+                    <th scope="col">@T["admin.match.tournament"]</th>
+                    <th scope="col">@T["admin.match.teams"]</th>
+                    <th scope="col">@T["admin.match.score"]</th>
+                    <th scope="col">@T["admin.common.status"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in result.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Matches" asp-action="Console" asp-route-id="@match.Id">
+                                <time datetime="@match.ScheduledAt.ToString("O")">@match.ScheduledAt.ToString("dd.MM.yyyy HH:mm")</time> UTC
+                            </a>
+                        </td>
+                        <td>@match.TournamentName</td>
+                        <td>@match.TeamAName — @match.TeamBName</td>
+                        <td>@match.ScoreA : @match.ScoreB <span class="admin-table__muted">Bo@match.BestOf</span></td>
+                        <td>
+                            <span class="badge-token @(match.Status == MatchStatus.Live ? "badge-token--live" : string.Empty)">@T[EnumResourceKeys.For(match.Status)]</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

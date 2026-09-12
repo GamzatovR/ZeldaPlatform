@@ -1,0 +1,73 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Models
+@using ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.nav.tournaments"].Value;
+    var filter = Model.Filter;
+}
+
+@*
+    Таблица турниров (docs/SPEC.md §9.4, п. 2): тот же механизм списков, что на сайте
+    (§10.2) — GET-форма, состояние в адресе, partial под AJAX. Сортировка — по клику
+    на заголовок; её держит скрытое поле формы, чтобы смена фильтра не сбрасывала её.
+*@
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.nav.tournaments"]</h1>
+    <a class="btn-solid btn-solid--sm" asp-action="Create">@T["admin.tournament.create"]</a>
+</div>
+
+<form class="filters" method="get" asp-action="Index" role="search" data-filter-form aria-label="@T["filter.title"]">
+    <input type="hidden" name="sort" value="@Model.Sort" data-list-state data-default="@AdminTournamentSorting.Map.DefaultKey" />
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="search">@T["filter.search"]</label>
+            <input class="form-control" id="search" name="search" type="search" value="@filter.Search"
+                   maxlength="@GetTournamentsForAdminQueryValidator.MaxSearchLength" />
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="status">@T["admin.common.status"]</label>
+            <select class="form-select" id="status" name="status">
+                <option value="">@T["filter.any"]</option>
+                @foreach (var status in Enum.GetValues<TournamentStatus>())
+                {
+                    <option value="@status" selected="@(filter.Status == status)">@T[EnumResourceKeys.For(status)]</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="region">@T["admin.common.region"]</label>
+            <select class="form-select" id="region" name="region">
+                <option value="">@T["filter.any"]</option>
+                @foreach (var region in Enum.GetValues<Region>())
+                {
+                    <option value="@region" selected="@(filter.Region == region)">@T[EnumResourceKeys.For(region)]</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <label class="form-label" for="pageSize">@T["filter.page_size"]</label>
+            <select class="form-select" id="pageSize" name="pageSize" data-default="@PageSizes.Default" data-no-chip>
+                @foreach (var size in PageSizes.Allowed)
+                {
+                    <option value="@size" selected="@(size == filter.NormalizedPageSize)">@size</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="chips" data-filter-chips tabindex="-1" role="group" hidden
+         aria-label="@T["filter.active"]" data-remove-label="@T["filter.remove_chip"]"></div>
+
+    <div class="filters__actions">
+        <button class="btn-solid" type="submit">@T["filter.apply"]</button>
+        <a class="filters__reset" asp-action="Index" data-filter-reset>@T["filter.reset"]</a>
+    </div>
+</form>
+
+<div id="tournament-table" data-list data-api="@Url.Action("Index", "AdminTournamentsApi", new { area = "Api" })">
+    <partial name="_TournamentTable" model="Model" />
+</div>

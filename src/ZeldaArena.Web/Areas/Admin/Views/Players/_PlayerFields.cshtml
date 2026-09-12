@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Files
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Players.PlayerFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+
+<div class="row g-3">
+    <div class="col-12 col-md-6">
+        <label asp-for="Nickname" class="form-label"></label>
+        <input asp-for="Nickname" class="form-control" />
+        <span asp-validation-for="Nickname"></span>
+    </div>
+
+    <div class="col-12 col-md-3">
+        <label asp-for="Role" class="form-label"></label>
+        <select asp-for="Role" class="form-select">
+            @foreach (var role in Enum.GetValues<PlayerRole>())
+            {
+                <option value="@role">@T[EnumResourceKeys.For(role)]</option>
+            }
+        </select>
+        <span asp-validation-for="Role"></span>
+    </div>
+
+    <div class="col-12 col-md-3">
+        <label asp-for="CountryCode" class="form-label"></label>
+        <input asp-for="CountryCode" class="form-control" maxlength="2" />
+        <span asp-validation-for="CountryCode"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="BirthDate" class="form-label"></label>
+        @* Браузер не даст выбрать слишком позднюю дату даже без JavaScript. *@
+        <input asp-for="BirthDate" class="form-control" type="date"
+               max="@ZeldaArena.Web.Areas.Admin.Models.Players.PlayerFormViewModel.LatestBirthDate.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="BirthDate"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Bio" class="form-label"></label>
+        <textarea asp-for="Bio" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Bio"></span>
+    </div>
+
+    <div class="col-12 col-md-8">
+        <label asp-for="Avatar" class="form-label"></label>
+        <input asp-for="Avatar" class="form-control" type="file" accept="@ImageUploadRules.AcceptAttribute" />
+        <span class="form-hint">@T["file.image_hint"]</span>
+        <span asp-validation-for="Avatar"></span>
+    </div>
+
+    @if (Model.CurrentAvatarPath is not null)
+    {
+        <div class="col-12 col-md-4 admin-current-image">
+            <avatar image="@Url.StoredFile(Model.CurrentAvatarPath)" name="@Model.Nickname" />
+            <div class="form-check">
+                <input asp-for="RemoveAvatar" class="form-check-input" />
+                <label asp-for="RemoveAvatar" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+</div>

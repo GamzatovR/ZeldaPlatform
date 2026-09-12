@@ -1,0 +1,102 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> T
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @* Админке поисковики не нужны: страницы закрыты входом, но ссылка может утечь. *@
+    <meta name="robots" content="noindex, nofollow" />
+
+    @* Антифоржери-токен для AJAX админки (§10.1, §15): http.js кладёт его в заголовок. *@
+    <meta name="request-verification-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
+    <title>@ViewData["Title"] — @T["admin.brand"]</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Teko:wght@@400;500;600;700&family=Poppins:wght@@400;500;600&display=swap" />
+
+    @*
+        Общие компоненты — из site.css, собственный каркас админки — из admin.css.
+        Второй файл грузится только здесь: публичные страницы не платят за админку
+        ни байтом (§16).
+    *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <a class="skip-link" href="#main">@T["a11y.skip_to_content"]</a>
+
+    @*
+        Макета админки в шаблоне нет — собственный каркас на тех же токенах
+        (docs/design/README.md, «Экраны, которых в макете НЕТ»). Боковое меню на узком
+        экране сворачивается и раскрывается кнопкой в верхней панели: nav.js тот же,
+        что у шапки сайта. Без JavaScript меню остаётся раскрытым и достижимым.
+    *@
+    <div class="admin-shell">
+        <aside class="admin-sidebar" id="admin-nav" aria-label="@T["admin.nav.label"]">
+            <a class="admin-sidebar__brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <img src="~/img/logo.png" alt="@T["brand.name"]" width="150" height="36" />
+                <span class="admin-sidebar__caption">@T["admin.brand"]</span>
+            </a>
+
+            <partial name="_AdminNav" />
+
+            <div class="admin-sidebar__footer">
+                <a class="admin-nav__link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <icon name="@IconNames.External" />
+                    <span>@T["admin.nav.to_site"]</span>
+                </a>
+                @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@
+                <form asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Content("~/")" method="post">
+                    <button class="admin-nav__link admin-nav__submit" type="submit">
+                        <icon name="@IconNames.Lock" />
+                        <span>@T["nav.logout"]</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button class="admin-topbar__toggle" type="button"
+                        data-nav-toggle aria-expanded="false" aria-controls="admin-nav">
+                    <icon name="@IconNames.Menu" label="@T["nav.toggle"]" />
+                </button>
+                <span class="admin-topbar__title">@ViewData["Title"]</span>
+                <span class="admin-topbar__user">@User.Identity?.Name</span>
+            </header>
+
+            <main id="main" class="admin-content">
+                <partial name="_StatusMessage" />
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    @* Тосты и скелетон — те же контракты, что в _Layout: модули http.js и ajax-list.js общие. *@
+    <div class="toast-region" data-toasts role="status" aria-live="polite"
+         data-close-label="@T["toast.close"]"
+         data-msg-unauthorized="@T["toast.unauthorized"]"
+         data-msg-login="@T["toast.login"]"
+         data-msg-forbidden="@T["toast.forbidden"]"
+         data-msg-too-many="@T["toast.too_many_requests"].Value"
+         data-msg-server="@T["toast.server_error"]"
+         data-msg-network="@T["toast.network"]"></div>
+
+    <template id="list-skeleton">
+        <div class="skeleton-list" aria-hidden="true">
+            @for (var i = 0; i < 6; i++)
+            {
+                <div class="skeleton-token"></div>
+            }
+        </div>
+    </template>
+
+    <script type="module" src="~/js/admin.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

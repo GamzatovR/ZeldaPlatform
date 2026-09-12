@@ -10,6 +10,7 @@ using ZeldaArena.Application.Features.Orders.Commands.PlaceOrder;
 using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 using ZeldaArena.Web.Areas.Api.Models;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Controllers;
 using ZeldaArena.Web.Models.Checkout;
 using ZeldaArena.Web.RateLimiting;
@@ -27,7 +28,7 @@ namespace ZeldaArena.Web.Areas.Api.Controllers;
 public sealed class OrdersApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
     : ApiControllerBase(localizer)
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     private static readonly HashSet<string> CartErrors =
     [

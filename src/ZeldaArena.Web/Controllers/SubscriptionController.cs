@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using ZeldaArena.Application.Features.Subscriptions.Commands.CancelSubscription;
 using ZeldaArena.Application.Features.Subscriptions.Queries.GetMySubscription;
 using ZeldaArena.Application.Features.Subscriptions.Queries.GetSubscriptionPlans;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Models.Billing;
 
 namespace ZeldaArena.Web.Controllers;
@@ -57,7 +58,7 @@ public sealed class SubscriptionController(
     {
         var result = await sender.Send(new CancelSubscriptionCommand(), cancellationToken);
 
-        TempData["StatusMessage"] = result.IsSuccess
+        TempData[TempDataKeys.StatusMessage] = result.IsSuccess
             ? localizer["subscription.cancelled"].Value
             : localizer[result.Error.Code].Value;
 

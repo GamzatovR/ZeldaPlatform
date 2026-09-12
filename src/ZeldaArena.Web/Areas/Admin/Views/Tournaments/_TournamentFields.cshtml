@@ -1,0 +1,96 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Files
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+
+@*
+    Поля карточки турнира — общие для создания и правки. На странице правки partial
+    подключается с for="Form", поэтому имена полей получают префикс и биндятся
+    в TournamentFormViewModel с [Bind(Prefix = "Form")].
+*@
+<div class="row g-3">
+    <div class="col-12">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <label asp-for="Tier" class="form-label"></label>
+        <select asp-for="Tier" class="form-select">
+            @foreach (var tier in Enum.GetValues<TournamentTier>())
+            {
+                <option value="@tier">@T[EnumResourceKeys.For(tier)]</option>
+            }
+        </select>
+        <span asp-validation-for="Tier"></span>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <label asp-for="Region" class="form-label"></label>
+        <select asp-for="Region" class="form-select">
+            @foreach (var region in Enum.GetValues<Region>())
+            {
+                <option value="@region">@T[EnumResourceKeys.For(region)]</option>
+            }
+        </select>
+        <span asp-validation-for="Region"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="PrizePool" class="form-label"></label>
+        <input asp-for="PrizePool" class="form-control" type="number" min="0" max="1000000000" step="1" />
+        <span asp-validation-for="PrizePool"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="StartsAt" class="form-label"></label>
+        <input asp-for="StartsAt" class="form-control" type="datetime-local" />
+        <span asp-validation-for="StartsAt"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="EndsAt" class="form-label"></label>
+        <input asp-for="EndsAt" class="form-control" type="datetime-local" />
+        <span asp-validation-for="EndsAt"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="RulesHtml" class="form-label"></label>
+        <textarea asp-for="RulesHtml" class="form-control" rows="6" spellcheck="false"></textarea>
+        <span class="form-hint">@T["admin.tournament.rules_hint"]</span>
+        <span asp-validation-for="RulesHtml"></span>
+    </div>
+
+    <div class="col-12 col-md-8">
+        <label asp-for="Logo" class="form-label"></label>
+        <input asp-for="Logo" class="form-control" type="file" accept="@ImageUploadRules.AcceptAttribute" />
+        <span class="form-hint">@T["file.image_hint"]</span>
+        <span asp-validation-for="Logo"></span>
+    </div>
+
+    @if (Model.CurrentLogoPath is not null)
+    {
+        <div class="col-12 col-md-4 admin-current-image">
+            <avatar image="@Url.StoredFile(Model.CurrentLogoPath)" name="@Model.Name" />
+            <div class="form-check">
+                <input asp-for="RemoveLogo" class="form-check-input" />
+                <label asp-for="RemoveLogo" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+
+    <div class="col-12">
+        <div class="form-check">
+            <input asp-for="IsFeatured" class="form-check-input" />
+            <label asp-for="IsFeatured" class="form-check-label"></label>
+        </div>
+    </div>
+</div>

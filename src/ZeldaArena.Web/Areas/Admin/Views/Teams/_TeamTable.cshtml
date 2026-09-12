@@ -1,0 +1,85 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Teams.Queries.GetTeamsForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Teams.TeamIndexViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var result = Model.Result;
+    var sort = Model.Sort;
+    var defaultSort = AdminTeamSorting.Map.DefaultKey;
+    var listUrl = Url.Action("Index", "Teams", new { area = "Admin" });
+}
+
+@if (result.TotalCount == 0)
+{
+    <div class="empty-state">
+        <p>@T["filter.empty"]</p>
+    </div>
+}
+else
+{
+    <p class="list-summary" aria-live="polite">@T["filter.found", result.TotalCount]</p>
+
+    <div class="table-responsive">
+        <table class="table table-token admin-table">
+            <caption class="visually-hidden">@T["admin.nav.teams"]</caption>
+            <thead>
+                <tr>
+                    <sortable-header asc="@AdminTeamSorting.NameAscending" desc="@AdminTeamSorting.NameDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.common.name"]</sortable-header>
+                    <th scope="col">@T["admin.common.region"]</th>
+                    <sortable-header asc="@AdminTeamSorting.RatingAscending" desc="@AdminTeamSorting.RatingDescending"
+                                     current="@sort" default="@defaultSort">@T["admin.team.rating"]</sortable-header>
+                    <th scope="col">@T["admin.team.roster"]</th>
+                    <th scope="col">@T["admin.tournament.matches"]</th>
+                    <th scope="col">@T["admin.team.moderation"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var team in result.Items)
+                {
+                    <tr>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Teams" asp-action="Edit" asp-route-id="@team.Id">@team.Name</a>
+                            <div class="admin-table__muted">@team.Tag · @team.CountryCode</div>
+                        </td>
+                        <td>@T[EnumResourceKeys.For(team.Region)]</td>
+                        <td>@team.Rating</td>
+                        <td>@team.RosterCount</td>
+                        <td>@team.MatchCount</td>
+                        <td>
+                            @if (team.IsApproved)
+                            {
+                                <span class="badge-token badge-token--success">@T["admin.team.approved_filter"]</span>
+                            }
+                            else
+                            {
+                                <span class="badge-token badge-token--premium">@T["admin.team.awaiting"]</span>
+                            }
+
+                            @if (team.IsUserOwned)
+                            {
+                                <div class="admin-table__muted">@T["admin.team.user_owned"]</div>
+                            }
+
+                            @*
+                                Без JavaScript это обычная форма с возвратом на список;
+                                с ним admin-actions.js отправит её в API и перерисует таблицу.
+                            *@
+                            <form class="row-actions" method="post"
+                                  asp-area="Admin" asp-controller="Teams" asp-action="SetApproval" asp-route-id="@team.Id"
+                                  asp-route-returnUrl="@listUrl"
+                                  data-admin-action="@Url.Action("SetApproval", "AdminTeamsApi", new { area = "Api", id = team.Id })">
+                                <input type="hidden" name="isApproved" value="@(!team.IsApproved)" />
+                                <button class="btn-ghost btn-ghost--sm" type="submit">
+                                    @(team.IsApproved ? T["admin.team.revoke"] : T["admin.team.approve"])
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <pagination page="@result.Page" total-pages="@result.TotalPages" />
+}

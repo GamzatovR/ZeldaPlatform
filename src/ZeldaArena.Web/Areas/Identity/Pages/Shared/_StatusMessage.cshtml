@@ -7,7 +7,7 @@
     прерывает работу, и перебивать им скринридер не нужно.
 *@
 @{
-    var message = TempData["StatusMessage"] as string;
+    var message = TempData[ZeldaArena.Web.Constants.TempDataKeys.StatusMessage] as string;
     var isError = message is not null && message.StartsWith("!", StringComparison.Ordinal);
 }
 

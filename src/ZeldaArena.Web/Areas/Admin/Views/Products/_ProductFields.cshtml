@@ -1,0 +1,84 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Common.Files
+@using ZeldaArena.Application.Features.Admin.Shop.Queries.GetCategoriesForAdmin
+@model ZeldaArena.Web.Areas.Admin.Models.Shop.ProductFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var categories = (IReadOnlyList<AdminCategoryDto>)ViewData["Categories"]!;
+    var isNew = ViewData["IsNew"] is true;
+}
+
+<div class="row g-3">
+    @if (isNew)
+    {
+        <div class="col-12 col-md-4">
+            <label asp-for="Sku" class="form-label"></label>
+            <input asp-for="Sku" class="form-control" />
+            <span asp-validation-for="Sku"></span>
+        </div>
+    }
+
+    <div class="col-12 col-md-8">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="CategoryId" class="form-label"></label>
+        <select asp-for="CategoryId" class="form-select">
+            @foreach (var category in categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" type="number" min="0" max="1000000" step="1" />
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="StockQuantity" class="form-label"></label>
+        <input asp-for="StockQuantity" class="form-control" type="number" min="0"
+               max="@ZeldaArena.Application.Features.Admin.Shop.ProductFieldsValidator.MaxStock" />
+        <span asp-validation-for="StockQuantity"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <div class="col-12 col-md-8">
+        <label asp-for="Image" class="form-label"></label>
+        <input asp-for="Image" class="form-control" type="file" accept="@ImageUploadRules.AcceptAttribute" />
+        <span class="form-hint">@T["file.image_hint"]</span>
+        <span asp-validation-for="Image"></span>
+    </div>
+
+    @if (Model.CurrentImagePath is not null)
+    {
+        <div class="col-12 col-md-4 admin-current-image">
+            <avatar image="@Url.ProductImage(Model.CurrentImagePath)" name="@Model.Name" />
+            <div class="form-check">
+                <input asp-for="RemoveImage" class="form-check-input" />
+                <label asp-for="RemoveImage" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+
+    @if (!isNew)
+    {
+        <div class="col-12">
+            <div class="form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+</div>

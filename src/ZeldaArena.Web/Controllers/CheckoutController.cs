@@ -10,6 +10,7 @@ using ZeldaArena.Application.Features.Account.Queries.GetAccountProfile;
 using ZeldaArena.Application.Features.Carts.Queries.GetCart;
 using ZeldaArena.Application.Features.Orders.Commands.PlaceOrder;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Billing;
 using ZeldaArena.Web.Models.Checkout;
@@ -29,7 +30,7 @@ namespace ZeldaArena.Web.Controllers;
 [Route("checkout")]
 public sealed class CheckoutController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     private static readonly HashSet<string> CartErrors =
     [

@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Primitives;
 
 using ZeldaArena.Web.Constants;
 
@@ -145,29 +144,17 @@ public sealed class PaginationTagHelper(IStringLocalizer<SharedResource> localiz
     }
 
     /// <summary>
-    /// Текущий адрес с заменённым номером. Первая страница — без параметра: у одного
-    /// состояния списка должен быть один адрес, иначе закладки и кэш двоятся.
-    ///
-    /// Список, отданный из Areas/Api, рисуется в ответ на <c>/api/…</c>; путь страницы
-    /// тогда приходит в <see cref="ListViewData.PagePath"/>, а параметры фильтра —
-    /// те же, что у запроса.
+    /// Текущий адрес с заменённым номером (<see cref="ListUrl"/>). Первая страница — без
+    /// параметра: у одного состояния списка должен быть один адрес, иначе закладки
+    /// и кэш двоятся.
     /// </summary>
-    private string UrlFor(int number)
-    {
-        var request = ViewContext.HttpContext.Request;
-        var path = ViewContext.ViewData[ListViewData.PagePath] as string
-            ?? request.PathBase + request.Path;
-        var query = request.Query
-            .Where(pair => !string.Equals(pair.Key, PageParameter, StringComparison.OrdinalIgnoreCase))
-            .ToDictionary(pair => pair.Key, pair => pair.Value, StringComparer.OrdinalIgnoreCase);
-
-        if (number > 1)
+    private string UrlFor(int number) =>
+        ListUrl.Build(ViewContext, new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase)
         {
-            query[PageParameter] = new StringValues(number.ToString(System.Globalization.CultureInfo.InvariantCulture));
-        }
-
-        return path + QueryString.Create(query);
-    }
+            [PageParameter] = number > 1
+                ? number.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                : null,
+        });
 
     private TagBuilder Icon(string name)
     {

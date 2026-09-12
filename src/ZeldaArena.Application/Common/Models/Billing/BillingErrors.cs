@@ -1,4 +1,4 @@
-using ZeldaArena.Domain.Common;
+﻿using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Common.Models.Billing;
 
@@ -25,6 +25,15 @@ public static class BillingErrors
 
     public static readonly Error PlanCodeTaken =
         new("billing.plan_code_taken", "Тариф с таким кодом уже существует.");
+
+    public static readonly Error PlanHasSubscriptions =
+        new("plan.has_subscriptions", "У тарифа есть подписки — удалить его нельзя, можно снять с продажи.");
+
+    public static readonly Error FeatureInUse =
+        new("feature.in_use", "Функция входит в тариф — сначала уберите её из всех тарифов.");
+
+    public static readonly Error FeatureReferencedByCode =
+        new("feature.referenced_by_code", "На эту функцию ссылается код приложения — удалить её нельзя.");
 
     public static readonly Error FeatureNotFound =
         new("billing.feature_not_found", "Платная функция не найдена.");

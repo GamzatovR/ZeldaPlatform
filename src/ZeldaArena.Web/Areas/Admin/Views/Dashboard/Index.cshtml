@@ -1,0 +1,132 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Dashboard.Queries.GetAdminDashboard
+@model AdminDashboardDto
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.dashboard.title"].Value;
+    var business = Model.Business;
+}
+
+@*
+    Дашборд (docs/SPEC.md §9.4, п. 1). Деловой блок приходит только администратору —
+    у модератора его нет в ответе сценария, а не просто в разметке (§8.1).
+    Последние события аудита — Фаза 10, вместе с хранилищем аудита в MongoDB.
+*@
+<h1 class="admin-heading">@T["admin.dashboard.title"]</h1>
+
+<ul class="stat-tiles">
+    <li class="stat-tile">
+        <span class="stat-tile__value">@Model.LiveMatchCount</span>
+        <span class="stat-tile__label">@T["admin.dashboard.live_matches"]</span>
+    </li>
+    <li class="stat-tile">
+        <span class="stat-tile__value">@Model.TeamsAwaitingApproval</span>
+        <span class="stat-tile__label">@T["admin.dashboard.teams_awaiting"]</span>
+    </li>
+    @if (business is not null)
+    {
+        <li class="stat-tile">
+            <span class="stat-tile__value">@business.UserCount</span>
+            <span class="stat-tile__label">@T["admin.dashboard.users"]</span>
+        </li>
+        <li class="stat-tile">
+            <span class="stat-tile__value">@business.ActiveSubscriptions</span>
+            <span class="stat-tile__label">@T["admin.dashboard.active_subscriptions"]</span>
+        </li>
+        <li class="stat-tile">
+            <span class="stat-tile__value">@MoneyText.Format(business.RevenueLast30Days, business.Currency)</span>
+            <span class="stat-tile__label">@T["admin.dashboard.revenue_30"]</span>
+        </li>
+        <li class="stat-tile">
+            <span class="stat-tile__value">@MoneyText.Format(business.RevenueTotal, business.Currency)</span>
+            <span class="stat-tile__label">@T["admin.dashboard.revenue_total"]</span>
+        </li>
+        <li class="stat-tile">
+            <span class="stat-tile__value">@business.OrdersToShip</span>
+            <span class="stat-tile__label">@T["admin.dashboard.orders_to_ship"]</span>
+        </li>
+    }
+</ul>
+
+<div class="admin-panels">
+    <section class="admin-panel" aria-labelledby="upcoming-title">
+        <h2 class="admin-panel__title" id="upcoming-title">@T["admin.dashboard.upcoming"]</h2>
+
+        @if (Model.UpcomingMatches.Count == 0)
+        {
+            <p class="admin-panel__empty">@T["admin.dashboard.no_matches"]</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-token admin-table">
+                    <caption class="visually-hidden">@T["admin.dashboard.upcoming"]</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">@T["admin.match.scheduled_at"]</th>
+                            <th scope="col">@T["admin.match.tournament"]</th>
+                            <th scope="col">@T["admin.match.teams"]</th>
+                            <th scope="col">@T["admin.match.score"]</th>
+                            <th scope="col">@T["admin.common.status"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var match in Model.UpcomingMatches)
+                        {
+                            <tr>
+                                <td><time datetime="@match.ScheduledAt.ToString("O")">@match.ScheduledAt.ToString("dd.MM HH:mm") UTC</time></td>
+                                <td>@match.TournamentName</td>
+                                <td>
+                                    <a asp-area="" asp-controller="Matches" asp-action="Details" asp-route-id="@match.Id">@match.TeamAName — @match.TeamBName</a>
+                                </td>
+                                <td>@match.ScoreA : @match.ScoreB</td>
+                                <td>
+                                    <span class="badge-token @(match.IsLive ? "badge-token--live" : string.Empty)">@T[EnumResourceKeys.For(match.Status)]</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    @if (business is not null)
+    {
+        <section class="admin-panel" aria-labelledby="orders-title">
+            <h2 class="admin-panel__title" id="orders-title">@T["admin.dashboard.recent_orders"]</h2>
+
+            @if (business.RecentOrders.Count == 0)
+            {
+                <p class="admin-panel__empty">@T["admin.dashboard.no_orders"]</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-token admin-table">
+                        <caption class="visually-hidden">@T["admin.dashboard.recent_orders"]</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">@T["order.number"]</th>
+                                <th scope="col">@T["order.placed_at"]</th>
+                                <th scope="col">@T["order.status"]</th>
+                                <th scope="col" class="text-end">@T["order.total"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in business.RecentOrders)
+                            {
+                                <tr>
+                                    <td>@order.Number</td>
+                                    <td><time datetime="@order.PlacedAt.ToString("O")">@order.PlacedAt.ToString("dd.MM HH:mm") UTC</time></td>
+                                    <td><span class="@OrderStatusBadge.CssFor(order.Status)">@T[EnumResourceKeys.For(order.Status)]</span></td>
+                                    <td class="text-end">@MoneyText.Format(order.Total, order.Currency)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+    }
+</div>

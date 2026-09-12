@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 
 using ZeldaArena.Application.Features.Account.Commands.ChangePassword;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.Account;
 
@@ -45,7 +46,7 @@ public sealed class ChangePasswordModel(ISender sender, IStringLocalizer<SharedR
             return Page();
         }
 
-        TempData["StatusMessage"] = localizer["manage.password.changed"].Value;
+        TempData[TempDataKeys.StatusMessage] = localizer["manage.password.changed"].Value;
 
         return RedirectToPage();
     }

@@ -1,0 +1,61 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Billing.PlanFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    // Код задаётся один раз, при создании: по нему тариф ищут в коде (PlanCodes).
+    var isNew = ViewData["IsNew"] is true;
+}
+
+<div class="row g-3">
+    @if (isNew)
+    {
+        <div class="col-12 col-md-6">
+            <label asp-for="Code" class="form-label"></label>
+            <input asp-for="Code" class="form-control" />
+            <span class="form-hint">@T["admin.plan.code_hint"]</span>
+            <span asp-validation-for="Code"></span>
+        </div>
+    }
+
+    <div class="col-12 col-md-6">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" type="number" min="0" max="1000000" step="1" />
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="DurationDays" class="form-label"></label>
+        <input asp-for="DurationDays" class="form-control" type="number" min="0"
+               max="@ZeldaArena.Application.Features.Admin.Billing.PlanFieldsValidator.MaxDurationDays" />
+        <span class="form-hint">@T["admin.plan.duration_hint"]</span>
+        <span asp-validation-for="DurationDays"></span>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="SortOrder" class="form-label"></label>
+        <input asp-for="SortOrder" class="form-control" type="number" min="0" max="1000" />
+        <span asp-validation-for="SortOrder"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    @if (!isNew)
+    {
+        <div class="col-12">
+            <div class="form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+        </div>
+    }
+</div>

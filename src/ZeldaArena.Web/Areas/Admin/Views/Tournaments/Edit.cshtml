@@ -1,0 +1,161 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Tournaments.Commands.AddTournamentTeam
+@using ZeldaArena.Application.Features.Admin.Tournaments.Commands.ChangeTournamentStatus
+@using ZeldaArena.Domain.Enums
+@model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentEditViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var tournament = Model.Tournament;
+    ViewData["Title"] = tournament.Name;
+
+    // Кнопки перехода — только те, что допустимы из текущего статуса. Это подсказка,
+    // а не защита: переход всё равно проверяет сущность (Tournament.Start/Finish/Cancel).
+    var transitions = tournament.Status switch
+    {
+        TournamentStatus.Announced => new[] { TournamentTransition.Start, TournamentTransition.Cancel },
+        TournamentStatus.Ongoing => new[] { TournamentTransition.Finish, TournamentTransition.Cancel },
+        _ => Array.Empty<TournamentTransition>(),
+    };
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@tournament.Name</h1>
+    <div class="row-actions">
+        <span class="badge-token @(tournament.Status == TournamentStatus.Ongoing ? "badge-token--live" : string.Empty)">@T[EnumResourceKeys.For(tournament.Status)]</span>
+        <a class="link-underline" asp-area="" asp-controller="Tournaments" asp-action="Details" asp-route-slug="@tournament.Slug" target="_blank" rel="noopener">@T["admin.open_on_site"]</a>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+@if (transitions.Length > 0)
+{
+    <section class="admin-panel admin-section" aria-labelledby="status-title">
+        <h2 class="admin-panel__title" id="status-title">@T["admin.common.status"]</h2>
+        <div class="row-actions">
+            @foreach (var transition in transitions)
+            {
+                <form method="post" asp-action="ChangeStatus" asp-route-id="@tournament.Id">
+                    <input type="hidden" name="transition" value="@transition" />
+                    <button class="@(transition == TournamentTransition.Cancel ? "btn-ghost" : "btn-solid") btn-solid--sm" type="submit">@T["admin.tournament.transition." + transition.ToString().ToLowerInvariant()]</button>
+                </form>
+            }
+        </div>
+    </section>
+}
+
+<section class="admin-panel admin-section" aria-labelledby="details-title">
+    <h2 class="admin-panel__title" id="details-title">@T["admin.tournament.details"]</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@tournament.Id" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_TournamentFields" for="Form" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+<section class="admin-panel admin-section" id="participants" aria-labelledby="participants-title">
+    <h2 class="admin-panel__title" id="participants-title">@T["admin.tournament.participants"] (@tournament.Participants.Count)</h2>
+
+    @if (tournament.Participants.Count == 0)
+    {
+        <p class="admin-panel__empty">@T["admin.tournament.no_participants"]</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-token admin-table">
+                <caption class="visually-hidden">@T["admin.tournament.participants"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@T["admin.tournament.team"]</th>
+                        <th scope="col">@T["admin.tournament.seed_and_placement"]</th>
+                        <th scope="col">@T["admin.tournament.matches"]</th>
+                        <th scope="col"><span class="visually-hidden">@T["admin.common.actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var participant in tournament.Participants)
+                    {
+                        var formId = "participant-" + participant.TeamId.ToString("N");
+                        <tr>
+                            <td>@participant.TeamName</td>
+                            <td>
+                                <form class="inline-form" id="@formId" method="post"
+                                      asp-action="UpdateTeam" asp-route-id="@tournament.Id" asp-route-teamId="@participant.TeamId">
+                                    <label class="visually-hidden" for="@(formId)-seed">@T["admin.tournament.seed"]</label>
+                                    <input class="form-control admin-input-narrow" id="@(formId)-seed" name="seed" type="number"
+                                           min="1" max="@AddTournamentTeamCommandValidator.MaxSeed" required value="@participant.Seed" />
+                                    <label class="visually-hidden" for="@(formId)-placement">@T["admin.tournament.placement"]</label>
+                                    <input class="form-control admin-input-narrow" id="@(formId)-placement" name="placement" type="number"
+                                           min="1" max="@AddTournamentTeamCommandValidator.MaxSeed" value="@participant.Placement"
+                                           placeholder="@T["admin.tournament.placement"]" />
+                                    <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.save"]</button>
+                                </form>
+                            </td>
+                            <td>@participant.MatchCount</td>
+                            <td>
+                                @if (tournament.IsRosterOpen && participant.MatchCount == 0)
+                                {
+                                    <form method="post" asp-action="RemoveTeam" asp-route-id="@tournament.Id" asp-route-teamId="@participant.TeamId">
+                                        <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.tournament.remove_team"]</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (tournament.IsRosterOpen && tournament.AvailableTeams.Count > 0)
+    {
+        <form class="inline-form admin-section" method="post" asp-action="AddTeam" asp-route-id="@tournament.Id">
+            <label class="form-label" for="add-team">@T["admin.tournament.add_team"]</label>
+            <select class="form-select" id="add-team" name="teamId" required>
+                @foreach (var team in tournament.AvailableTeams)
+                {
+                    <option value="@team.Id">@team.Name (@team.Tag)</option>
+                }
+            </select>
+            <label class="visually-hidden" for="add-seed">@T["admin.tournament.seed"]</label>
+            <input class="form-control admin-input-narrow" id="add-seed" name="seed" type="number"
+                   min="1" max="@AddTournamentTeamCommandValidator.MaxSeed" required value="@tournament.NextSeed" />
+            <button class="btn-solid btn-solid--sm" type="submit">@T["admin.add"]</button>
+        </form>
+    }
+    else if (!tournament.IsRosterOpen)
+    {
+        <p class="admin-panel__empty">@T["admin.tournament.roster_closed"]</p>
+    }
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="danger-title">
+    <h2 class="admin-panel__title" id="danger-title">@T["admin.delete"]</h2>
+
+    @if (tournament.MatchCount == 0)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.tournament.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@tournament.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.tournament.cannot_delete", tournament.MatchCount]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-validation.js" asp-append-version="true"></script>
+}

@@ -17,6 +17,7 @@ using ZeldaArena.Domain.Common;
 using ZeldaArena.Domain.Constants;
 using ZeldaArena.Domain.Enums;
 using ZeldaArena.Web.Authorization;
+using ZeldaArena.Web.Constants;
 using ZeldaArena.Web.Extensions;
 using ZeldaArena.Web.Models.MyTeam;
 using ZeldaArena.Web.Models.Teams;
@@ -39,7 +40,7 @@ namespace ZeldaArena.Web.Controllers;
 [Route("account/my-team")]
 public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
-    private const string StatusKey = "StatusMessage";
+    private const string StatusKey = TempDataKeys.StatusMessage;
 
     [HttpGet("")]
     public async Task<IActionResult> Index(Guid? team, CancellationToken cancellationToken)

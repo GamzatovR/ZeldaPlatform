@@ -1597,4 +1597,832 @@
   <data name="filter.remove_chip" xml:space="preserve">
     <value>Снять фильтр</value>
   </data>
+  <data name="nav.admin" xml:space="preserve">
+    <value>Админка</value>
+  </data>
+  <data name="admin.brand" xml:space="preserve">
+    <value>Админка</value>
+  </data>
+  <data name="admin.nav.label" xml:space="preserve">
+    <value>Разделы админки</value>
+  </data>
+  <data name="admin.nav.dashboard" xml:space="preserve">
+    <value>Дашборд</value>
+  </data>
+  <data name="admin.nav.to_site" xml:space="preserve">
+    <value>На сайт</value>
+  </data>
+  <data name="admin.dashboard.title" xml:space="preserve">
+    <value>Дашборд</value>
+  </data>
+  <data name="admin.dashboard.live_matches" xml:space="preserve">
+    <value>Матчей в эфире</value>
+  </data>
+  <data name="admin.dashboard.teams_awaiting" xml:space="preserve">
+    <value>Команд ждут одобрения</value>
+  </data>
+  <data name="admin.dashboard.users" xml:space="preserve">
+    <value>Пользователей</value>
+  </data>
+  <data name="admin.dashboard.active_subscriptions" xml:space="preserve">
+    <value>Активных подписок</value>
+  </data>
+  <data name="admin.dashboard.revenue_30" xml:space="preserve">
+    <value>Выручка за 30 дней</value>
+  </data>
+  <data name="admin.dashboard.revenue_total" xml:space="preserve">
+    <value>Выручка всего</value>
+  </data>
+  <data name="admin.dashboard.orders_to_ship" xml:space="preserve">
+    <value>Заказов к отправке</value>
+  </data>
+  <data name="admin.dashboard.upcoming" xml:space="preserve">
+    <value>Ближайшие матчи</value>
+  </data>
+  <data name="admin.dashboard.no_matches" xml:space="preserve">
+    <value>Идущих и запланированных матчей нет.</value>
+  </data>
+  <data name="admin.dashboard.recent_orders" xml:space="preserve">
+    <value>Последние заказы</value>
+  </data>
+  <data name="admin.dashboard.no_orders" xml:space="preserve">
+    <value>Заказов пока нет.</value>
+  </data>
+  <data name="admin.match.scheduled_at" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="admin.match.tournament" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
+  <data name="admin.match.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="admin.match.score" xml:space="preserve">
+    <value>Счёт</value>
+  </data>
+  <data name="admin.common.status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="table.sort_ascending" xml:space="preserve">
+    <value> — сортировать по возрастанию</value>
+  </data>
+  <data name="table.sort_descending" xml:space="preserve">
+    <value> — сортировать по убыванию</value>
+  </data>
+  <data name="admin.nav.tournaments" xml:space="preserve">
+    <value>Турниры</value>
+  </data>
+  <data name="admin.common.name" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="admin.common.region" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="admin.common.actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="admin.back_to_list" xml:space="preserve">
+    <value>К списку</value>
+  </data>
+  <data name="admin.create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="admin.save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="admin.add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="admin.saved" xml:space="preserve">
+    <value>Изменения сохранены.</value>
+  </data>
+  <data name="admin.delete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="admin.delete_confirm" xml:space="preserve">
+    <value>Удалить безвозвратно?</value>
+  </data>
+  <data name="admin.delete_yes" xml:space="preserve">
+    <value>Да, удалить</value>
+  </data>
+  <data name="admin.open_on_site" xml:space="preserve">
+    <value>Открыть на сайте</value>
+  </data>
+  <data name="admin.tournament.create" xml:space="preserve">
+    <value>Создать турнир</value>
+  </data>
+  <data name="admin.tournament.created" xml:space="preserve">
+    <value>Турнир создан.</value>
+  </data>
+  <data name="admin.tournament.status_changed" xml:space="preserve">
+    <value>Статус турнира изменён.</value>
+  </data>
+  <data name="admin.tournament.team_added" xml:space="preserve">
+    <value>Команда добавлена в турнир.</value>
+  </data>
+  <data name="admin.tournament.team_removed" xml:space="preserve">
+    <value>Команда убрана из турнира.</value>
+  </data>
+  <data name="admin.tournament.deleted" xml:space="preserve">
+    <value>Турнир удалён.</value>
+  </data>
+  <data name="admin.tournament.dates" xml:space="preserve">
+    <value>Даты</value>
+  </data>
+  <data name="admin.tournament.prize" xml:space="preserve">
+    <value>Призовой фонд</value>
+  </data>
+  <data name="admin.tournament.teams" xml:space="preserve">
+    <value>Команд</value>
+  </data>
+  <data name="admin.tournament.matches" xml:space="preserve">
+    <value>Матчей</value>
+  </data>
+  <data name="admin.tournament.featured" xml:space="preserve">
+    <value>Избранный</value>
+  </data>
+  <data name="admin.tournament.rules_hint" xml:space="preserve">
+    <value>Разрешены заголовки, абзацы, списки, выделение, ссылки и таблицы. Остальная разметка удаляется при сохранении.</value>
+  </data>
+  <data name="admin.tournament.transition.start" xml:space="preserve">
+    <value>Начать турнир</value>
+  </data>
+  <data name="admin.tournament.transition.finish" xml:space="preserve">
+    <value>Завершить турнир</value>
+  </data>
+  <data name="admin.tournament.transition.cancel" xml:space="preserve">
+    <value>Отменить турнир</value>
+  </data>
+  <data name="admin.tournament.details" xml:space="preserve">
+    <value>Карточка турнира</value>
+  </data>
+  <data name="admin.tournament.participants" xml:space="preserve">
+    <value>Участники</value>
+  </data>
+  <data name="admin.tournament.no_participants" xml:space="preserve">
+    <value>Участников пока нет.</value>
+  </data>
+  <data name="admin.tournament.team" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="admin.tournament.seed_and_placement" xml:space="preserve">
+    <value>Посев и место</value>
+  </data>
+  <data name="admin.tournament.seed" xml:space="preserve">
+    <value>Посев</value>
+  </data>
+  <data name="admin.tournament.placement" xml:space="preserve">
+    <value>Место</value>
+  </data>
+  <data name="admin.tournament.remove_team" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="admin.tournament.add_team" xml:space="preserve">
+    <value>Добавить команду</value>
+  </data>
+  <data name="admin.tournament.roster_closed" xml:space="preserve">
+    <value>Состав закрыт: турнир завершён или отменён.</value>
+  </data>
+  <data name="admin.tournament.delete" xml:space="preserve">
+    <value>Удалить турнир</value>
+  </data>
+  <data name="admin.tournament.cannot_delete" xml:space="preserve">
+    <value>Матчей у турнира: {0}. Удалить его нельзя — можно только отменить.</value>
+  </data>
+  <data name="tournament.not_found" xml:space="preserve">
+    <value>Турнир не найден.</value>
+  </data>
+  <data name="tournament.has_matches" xml:space="preserve">
+    <value>У турнира есть матчи — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="tournament.participant_has_matches" xml:space="preserve">
+    <value>У команды есть матчи в этом турнире — убрать её нельзя.</value>
+  </data>
+  <data name="tournament.team_not_approved" xml:space="preserve">
+    <value>Команда ещё не одобрена и не может участвовать в турнирах.</value>
+  </data>
+  <data name="tournament.ends_before_starts" xml:space="preserve">
+    <value>Турнир не может закончиться раньше, чем начнётся.</value>
+  </data>
+  <data name="tournament.cannot_start" xml:space="preserve">
+    <value>Начать можно только анонсированный турнир.</value>
+  </data>
+  <data name="tournament.cannot_finish" xml:space="preserve">
+    <value>Завершить можно только идущий турнир.</value>
+  </data>
+  <data name="tournament.finished_is_read_only" xml:space="preserve">
+    <value>Завершённый турнир отменить нельзя.</value>
+  </data>
+  <data name="tournament.roster_is_closed" xml:space="preserve">
+    <value>Состав участников закрыт: турнир уже завершён или отменён.</value>
+  </data>
+  <data name="tournament.team_already_participates" xml:space="preserve">
+    <value>Команда уже участвует в этом турнире.</value>
+  </data>
+  <data name="tournament.team_not_found" xml:space="preserve">
+    <value>Команда не участвует в этом турнире.</value>
+  </data>
+  <data name="tournament_team.invalid_seed" xml:space="preserve">
+    <value>Посев начинается с единицы.</value>
+  </data>
+  <data name="tournament_team.invalid_placement" xml:space="preserve">
+    <value>Место начинается с первого.</value>
+  </data>
+  <data name="admin.nav.matches" xml:space="preserve">
+    <value>Матчи</value>
+  </data>
+  <data name="admin.match.create" xml:space="preserve">
+    <value>Назначить матч</value>
+  </data>
+  <data name="admin.match.created" xml:space="preserve">
+    <value>Матч назначен.</value>
+  </data>
+  <data name="admin.match.console" xml:space="preserve">
+    <value>Пульт счёта</value>
+  </data>
+  <data name="admin.match.settings" xml:space="preserve">
+    <value>Время и трансляция</value>
+  </data>
+  <data name="admin.match.score_saved" xml:space="preserve">
+    <value>Счёт изменён.</value>
+  </data>
+  <data name="admin.match.status_changed" xml:space="preserve">
+    <value>Статус матча изменён.</value>
+  </data>
+  <data name="admin.match.deleted" xml:space="preserve">
+    <value>Матч удалён.</value>
+  </data>
+  <data name="admin.match.delete" xml:space="preserve">
+    <value>Удалить матч</value>
+  </data>
+  <data name="admin.match.cannot_delete" xml:space="preserve">
+    <value>Матч уже начинался или у него есть статистика — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="admin.match.series" xml:space="preserve">
+    <value>Формат серии: Bo{0}. До победы — {1}.</value>
+  </data>
+  <data name="admin.match.transition.start" xml:space="preserve">
+    <value>Начать матч</value>
+  </data>
+  <data name="admin.match.transition.finish" xml:space="preserve">
+    <value>Завершить матч</value>
+  </data>
+  <data name="admin.match.transition.cancel" xml:space="preserve">
+    <value>Отменить матч</value>
+  </data>
+  <data name="admin.match.choose_tournament" xml:space="preserve">
+    <value>Выберите турнир</value>
+  </data>
+  <data name="admin.match.choose" xml:space="preserve">
+    <value>Выбрать</value>
+  </data>
+  <data name="admin.match.choose_tournament_first" xml:space="preserve">
+    <value>Сначала выберите турнир: играть могут только его участники.</value>
+  </data>
+  <data name="admin.match.not_enough_teams" xml:space="preserve">
+    <value>В турнире меньше двух участников — сначала добавьте команды в его состав.</value>
+  </data>
+  <data name="match.not_found" xml:space="preserve">
+    <value>Матч не найден.</value>
+  </data>
+  <data name="match.has_history" xml:space="preserve">
+    <value>Матч уже начинался — удалить его нельзя, можно отменить.</value>
+  </data>
+  <data name="match.team_not_in_tournament" xml:space="preserve">
+    <value>Обе команды должны участвовать в турнире.</value>
+  </data>
+  <data name="match.cannot_start" xml:space="preserve">
+    <value>Начать можно только запланированный матч.</value>
+  </data>
+  <data name="match.not_live" xml:space="preserve">
+    <value>Действие доступно только для идущего матча.</value>
+  </data>
+  <data name="match.finished_is_read_only" xml:space="preserve">
+    <value>Завершённый матч не редактируется.</value>
+  </data>
+  <data name="match.no_winner_yet" xml:space="preserve">
+    <value>Ни одна команда ещё не набрала нужного числа побед.</value>
+  </data>
+  <data name="match.negative_score" xml:space="preserve">
+    <value>Счёт не может быть отрицательным.</value>
+  </data>
+  <data name="match.score_exceeds_wins_required" xml:space="preserve">
+    <value>Счёт выходит за формат серии.</value>
+  </data>
+  <data name="match.score_exceeds_best_of" xml:space="preserve">
+    <value>Сумма счетов выходит за формат серии.</value>
+  </data>
+  <data name="match.cannot_postpone" xml:space="preserve">
+    <value>Перенести можно только запланированный матч.</value>
+  </data>
+  <data name="match.cannot_reschedule" xml:space="preserve">
+    <value>Изменить время можно только у запланированного матча.</value>
+  </data>
+  <data name="match.same_team" xml:space="preserve">
+    <value>Команда не может играть сама с собой.</value>
+  </data>
+  <data name="match.even_best_of" xml:space="preserve">
+    <value>Формат серии должен быть нечётным.</value>
+  </data>
+  <data name="admin.nav.teams" xml:space="preserve">
+    <value>Команды</value>
+  </data>
+  <data name="admin.team.create" xml:space="preserve">
+    <value>Создать команду</value>
+  </data>
+  <data name="admin.team.created" xml:space="preserve">
+    <value>Команда создана.</value>
+  </data>
+  <data name="admin.team.create_notice" xml:space="preserve">
+    <value>Команда, заведённая администрацией, одобрена сразу и не принадлежит подписчику.</value>
+  </data>
+  <data name="admin.team.profile" xml:space="preserve">
+    <value>Профиль команды</value>
+  </data>
+  <data name="admin.team.moderation" xml:space="preserve">
+    <value>Модерация</value>
+  </data>
+  <data name="admin.team.awaiting" xml:space="preserve">
+    <value>Ждёт одобрения</value>
+  </data>
+  <data name="admin.team.approved_filter" xml:space="preserve">
+    <value>Одобрена</value>
+  </data>
+  <data name="admin.team.approve" xml:space="preserve">
+    <value>Одобрить</value>
+  </data>
+  <data name="admin.team.revoke" xml:space="preserve">
+    <value>Снять одобрение</value>
+  </data>
+  <data name="admin.team.approved" xml:space="preserve">
+    <value>Команда одобрена.</value>
+  </data>
+  <data name="admin.team.revoked" xml:space="preserve">
+    <value>Одобрение снято: команда скрыта с сайта.</value>
+  </data>
+  <data name="admin.team.user_owned" xml:space="preserve">
+    <value>Создана подписчиком</value>
+  </data>
+  <data name="admin.team.user_owned_notice" xml:space="preserve">
+    <value>Команду создал подписчик. Пока она не одобрена, её не видно на сайте и она не может участвовать в турнирах.</value>
+  </data>
+  <data name="admin.team.official_notice" xml:space="preserve">
+    <value>Команда заведена администрацией.</value>
+  </data>
+  <data name="admin.team.rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="admin.team.roster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
+  <data name="admin.team.empty_roster" xml:space="preserve">
+    <value>В составе пока никого нет.</value>
+  </data>
+  <data name="admin.team.player" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="admin.team.role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="admin.team.joined_at" xml:space="preserve">
+    <value>В составе с</value>
+  </data>
+  <data name="admin.team.add_player" xml:space="preserve">
+    <value>Добавить игрока</value>
+  </data>
+  <data name="admin.team.remove_player" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="admin.team.player_added" xml:space="preserve">
+    <value>Игрок добавлен в состав.</value>
+  </data>
+  <data name="admin.team.player_removed" xml:space="preserve">
+    <value>Игрок убран из состава.</value>
+  </data>
+  <data name="admin.team.no_free_agents" xml:space="preserve">
+    <value>Свободных игроков нет: все состоят в командах.</value>
+  </data>
+  <data name="admin.team.delete" xml:space="preserve">
+    <value>Удалить команду</value>
+  </data>
+  <data name="admin.team.deleted" xml:space="preserve">
+    <value>Команда удалена.</value>
+  </data>
+  <data name="admin.team.cannot_delete" xml:space="preserve">
+    <value>У команды есть матчи, турниры или история состава — удалить её нельзя. Снимите одобрение, чтобы скрыть её с сайта.</value>
+  </data>
+  <data name="team.has_history" xml:space="preserve">
+    <value>У команды есть матчи, турниры или история состава — удалить её нельзя.</value>
+  </data>
+  <data name="team.negative_rating" xml:space="preserve">
+    <value>Рейтинг команды не может быть отрицательным.</value>
+  </data>
+  <data name="team.player_already_in_roster" xml:space="preserve">
+    <value>Игрок уже в составе этой команды.</value>
+  </data>
+  <data name="team.player_not_in_roster" xml:space="preserve">
+    <value>Игрока нет в составе этой команды.</value>
+  </data>
+  <data name="admin.nav.players" xml:space="preserve">
+    <value>Игроки</value>
+  </data>
+  <data name="admin.player.create" xml:space="preserve">
+    <value>Создать игрока</value>
+  </data>
+  <data name="admin.player.created" xml:space="preserve">
+    <value>Игрок создан.</value>
+  </data>
+  <data name="admin.player.profile" xml:space="preserve">
+    <value>Профиль игрока</value>
+  </data>
+  <data name="admin.player.nickname" xml:space="preserve">
+    <value>Ник</value>
+  </data>
+  <data name="admin.player.name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="admin.player.country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="admin.player.team" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="admin.player.free_agents" xml:space="preserve">
+    <value>Свободные</value>
+  </data>
+  <data name="admin.player.signed" xml:space="preserve">
+    <value>В команде</value>
+  </data>
+  <data name="admin.player.delete" xml:space="preserve">
+    <value>Удалить игрока</value>
+  </data>
+  <data name="admin.player.deleted" xml:space="preserve">
+    <value>Игрок удалён.</value>
+  </data>
+  <data name="admin.player.cannot_delete" xml:space="preserve">
+    <value>Игрок состоял в командах или имеет статистику — удалить его нельзя.</value>
+  </data>
+  <data name="player.has_history" xml:space="preserve">
+    <value>Игрок состоял в командах или имеет статистику — удалить его нельзя.</value>
+  </data>
+  <data name="admin.nav.plans" xml:space="preserve">
+    <value>Тарифы</value>
+  </data>
+  <data name="admin.nav.features" xml:space="preserve">
+    <value>Платные функции</value>
+  </data>
+  <data name="admin.plan.create" xml:space="preserve">
+    <value>Создать тариф</value>
+  </data>
+  <data name="admin.plan.created" xml:space="preserve">
+    <value>Тариф создан.</value>
+  </data>
+  <data name="admin.plan.details" xml:space="preserve">
+    <value>Карточка тарифа</value>
+  </data>
+  <data name="admin.plan.code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="admin.plan.code_hint" xml:space="preserve">
+    <value>Латиница, цифры и дефисы. Код не меняется после создания.</value>
+  </data>
+  <data name="admin.plan.price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="admin.plan.duration" xml:space="preserve">
+    <value>Срок, дней</value>
+  </data>
+  <data name="admin.plan.duration_hint" xml:space="preserve">
+    <value>Ноль — бессрочный бесплатный тариф.</value>
+  </data>
+  <data name="admin.plan.no_duration" xml:space="preserve">
+    <value>бессрочно</value>
+  </data>
+  <data name="admin.plan.features" xml:space="preserve">
+    <value>Состав функций</value>
+  </data>
+  <data name="admin.plan.no_features" xml:space="preserve">
+    <value>Платных функций пока нет — заведите их на странице «Платные функции».</value>
+  </data>
+  <data name="admin.plan.feature_included" xml:space="preserve">
+    <value>Входит</value>
+  </data>
+  <data name="admin.plan.feature_value" xml:space="preserve">
+    <value>Параметр</value>
+  </data>
+  <data name="admin.plan.save_features" xml:space="preserve">
+    <value>Сохранить состав</value>
+  </data>
+  <data name="admin.plan.features_saved" xml:space="preserve">
+    <value>Состав функций тарифа сохранён, права подписчиков обновлены.</value>
+  </data>
+  <data name="admin.plan.subscriptions" xml:space="preserve">
+    <value>Подписок</value>
+  </data>
+  <data name="admin.plan.on_sale" xml:space="preserve">
+    <value>В продаже</value>
+  </data>
+  <data name="admin.plan.off_sale" xml:space="preserve">
+    <value>Снят с продажи</value>
+  </data>
+  <data name="admin.plan.delete" xml:space="preserve">
+    <value>Удалить тариф</value>
+  </data>
+  <data name="admin.plan.deleted" xml:space="preserve">
+    <value>Тариф удалён.</value>
+  </data>
+  <data name="admin.plan.cannot_delete" xml:space="preserve">
+    <value>Подписок на тариф: {0}. Удалить его нельзя — снимите с продажи.</value>
+  </data>
+  <data name="admin.feature.create" xml:space="preserve">
+    <value>Новая платная функция</value>
+  </data>
+  <data name="admin.feature.created" xml:space="preserve">
+    <value>Функция создана.</value>
+  </data>
+  <data name="admin.feature.code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="admin.feature.description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="admin.feature.plans" xml:space="preserve">
+    <value>Тарифов</value>
+  </data>
+  <data name="admin.feature.enabled_badge" xml:space="preserve">
+    <value>Включена</value>
+  </data>
+  <data name="admin.feature.disabled_badge" xml:space="preserve">
+    <value>Выключена</value>
+  </data>
+  <data name="admin.feature.enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="admin.feature.disable" xml:space="preserve">
+    <value>Выключить</value>
+  </data>
+  <data name="admin.feature.enabled" xml:space="preserve">
+    <value>Функция включена, права подписчиков обновлены.</value>
+  </data>
+  <data name="admin.feature.disabled" xml:space="preserve">
+    <value>Функция выключена, права подписчиков обновлены.</value>
+  </data>
+  <data name="admin.feature.deleted" xml:space="preserve">
+    <value>Функция удалена.</value>
+  </data>
+  <data name="plan.has_subscriptions" xml:space="preserve">
+    <value>У тарифа есть подписки — удалить его нельзя, можно снять с продажи.</value>
+  </data>
+  <data name="feature.in_use" xml:space="preserve">
+    <value>Функция входит в тариф — сначала уберите её из всех тарифов.</value>
+  </data>
+  <data name="feature.referenced_by_code" xml:space="preserve">
+    <value>На эту функцию ссылается код приложения — удалить её нельзя.</value>
+  </data>
+  <data name="plan.paid_without_duration" xml:space="preserve">
+    <value>У платного тарифа обязан быть срок действия.</value>
+  </data>
+  <data name="plan.negative_duration" xml:space="preserve">
+    <value>Срок действия тарифа не может быть отрицательным.</value>
+  </data>
+  <data name="admin.nav.users" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="admin.user.email" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="admin.user.role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="admin.user.roles" xml:space="preserve">
+    <value>Роли</value>
+  </data>
+  <data name="admin.user.roles_saved" xml:space="preserve">
+    <value>Роли сохранены.</value>
+  </data>
+  <data name="admin.user.security" xml:space="preserve">
+    <value>Безопасность</value>
+  </data>
+  <data name="admin.user.email_confirmed" xml:space="preserve">
+    <value>Почта подтверждена</value>
+  </data>
+  <data name="admin.user.two_factor" xml:space="preserve">
+    <value>2FA</value>
+  </data>
+  <data name="admin.user.registered" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="admin.user.last_login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="admin.user.access" xml:space="preserve">
+    <value>Доступ</value>
+  </data>
+  <data name="admin.user.active" xml:space="preserve">
+    <value>Активные</value>
+  </data>
+  <data name="admin.user.blocked_filter" xml:space="preserve">
+    <value>Заблокирован</value>
+  </data>
+  <data name="admin.user.block" xml:space="preserve">
+    <value>Заблокировать</value>
+  </data>
+  <data name="admin.user.unblock" xml:space="preserve">
+    <value>Разблокировать</value>
+  </data>
+  <data name="admin.user.blocked" xml:space="preserve">
+    <value>Пользователь заблокирован, его сессии закрыты.</value>
+  </data>
+  <data name="admin.user.unblocked" xml:space="preserve">
+    <value>Пользователь разблокирован.</value>
+  </data>
+  <data name="admin.user.sort.email" xml:space="preserve">
+    <value>По адресу</value>
+  </data>
+  <data name="admin.user.sort.newest" xml:space="preserve">
+    <value>Сначала новые</value>
+  </data>
+  <data name="account.cannot_block_self" xml:space="preserve">
+    <value>Нельзя заблокировать самого себя.</value>
+  </data>
+  <data name="account.cannot_demote_self" xml:space="preserve">
+    <value>Нельзя снять роль администратора с самого себя.</value>
+  </data>
+  <data name="account.last_administrator" xml:space="preserve">
+    <value>Это последний администратор — снять роль нельзя.</value>
+  </data>
+  <data name="account.role_not_assignable" xml:space="preserve">
+    <value>Такую роль назначить нельзя.</value>
+  </data>
+  <data name="admin.nav.products" xml:space="preserve">
+    <value>Товары</value>
+  </data>
+  <data name="admin.nav.orders" xml:space="preserve">
+    <value>Заказы</value>
+  </data>
+  <data name="admin.product.create" xml:space="preserve">
+    <value>Создать товар</value>
+  </data>
+  <data name="admin.product.created" xml:space="preserve">
+    <value>Товар создан.</value>
+  </data>
+  <data name="admin.product.card" xml:space="preserve">
+    <value>Карточка товара</value>
+  </data>
+  <data name="admin.product.category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="admin.product.stock" xml:space="preserve">
+    <value>Остаток</value>
+  </data>
+  <data name="admin.product.in_stock" xml:space="preserve">
+    <value>В наличии</value>
+  </data>
+  <data name="admin.product.out_of_stock" xml:space="preserve">
+    <value>Нет в наличии</value>
+  </data>
+  <data name="admin.product.on_sale" xml:space="preserve">
+    <value>В продаже</value>
+  </data>
+  <data name="admin.product.off_sale" xml:space="preserve">
+    <value>Снят с продажи</value>
+  </data>
+  <data name="admin.product.delete" xml:space="preserve">
+    <value>Удалить товар</value>
+  </data>
+  <data name="admin.product.deleted" xml:space="preserve">
+    <value>Товар удалён.</value>
+  </data>
+  <data name="admin.product.cannot_delete" xml:space="preserve">
+    <value>Товар покупали {0} раз(а) — удалить его нельзя, снимите с продажи.</value>
+  </data>
+  <data name="admin.product.no_categories" xml:space="preserve">
+    <value>Сначала заведите хотя бы одну категорию.</value>
+  </data>
+  <data name="admin.category.title" xml:space="preserve">
+    <value>Категории</value>
+  </data>
+  <data name="admin.category.create" xml:space="preserve">
+    <value>Новая категория</value>
+  </data>
+  <data name="admin.category.created" xml:space="preserve">
+    <value>Категория создана.</value>
+  </data>
+  <data name="admin.category.deleted" xml:space="preserve">
+    <value>Категория удалена.</value>
+  </data>
+  <data name="admin.category.products" xml:space="preserve">
+    <value>Товаров</value>
+  </data>
+  <data name="admin.order.search" xml:space="preserve">
+    <value>Номер или получатель</value>
+  </data>
+  <data name="admin.order.recipient" xml:space="preserve">
+    <value>Получатель</value>
+  </data>
+  <data name="admin.order.phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="admin.order.address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="admin.order.email" xml:space="preserve">
+    <value>Почта для чека</value>
+  </data>
+  <data name="admin.order.paid_at" xml:space="preserve">
+    <value>Оплачен</value>
+  </data>
+  <data name="admin.order.created_at" xml:space="preserve">
+    <value>Создан</value>
+  </data>
+  <data name="admin.order.amount" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="admin.order.card" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="admin.order.unit_price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="admin.order.quantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="admin.order.delivery" xml:space="preserve">
+    <value>Доставка</value>
+  </data>
+  <data name="admin.order.payments" xml:space="preserve">
+    <value>Платежи</value>
+  </data>
+  <data name="admin.order.no_payments" xml:space="preserve">
+    <value>Платежей по заказу нет.</value>
+  </data>
+  <data name="admin.order.actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="admin.order.no_actions" xml:space="preserve">
+    <value>С этим заказом больше ничего сделать нельзя.</value>
+  </data>
+  <data name="admin.order.ship" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="admin.order.complete" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
+  <data name="admin.order.cancel" xml:space="preserve">
+    <value>Отменить заказ</value>
+  </data>
+  <data name="admin.order.cancel_confirm" xml:space="preserve">
+    <value>Остаток вернётся на склад, оплата — покупателю.</value>
+  </data>
+  <data name="admin.order.cancel_yes" xml:space="preserve">
+    <value>Да, отменить</value>
+  </data>
+  <data name="admin.order.shipped" xml:space="preserve">
+    <value>Заказ отправлен.</value>
+  </data>
+  <data name="admin.order.completed" xml:space="preserve">
+    <value>Заказ завершён.</value>
+  </data>
+  <data name="admin.order.canceled" xml:space="preserve">
+    <value>Заказ отменён: остаток возвращён на склад, оплата возвращена покупателю.</value>
+  </data>
+  <data name="category.not_found" xml:space="preserve">
+    <value>Категория не найдена.</value>
+  </data>
+  <data name="category.name_taken" xml:space="preserve">
+    <value>Категория с таким названием уже есть.</value>
+  </data>
+  <data name="category.not_empty" xml:space="preserve">
+    <value>В категории есть товары — сначала перенесите их в другую.</value>
+  </data>
+  <data name="product.sku_taken" xml:space="preserve">
+    <value>Товар с таким артикулом уже есть.</value>
+  </data>
+  <data name="product.has_orders" xml:space="preserve">
+    <value>Товар уже покупали — удалить его нельзя, можно снять с продажи.</value>
+  </data>
+  <data name="product.category_required" xml:space="preserve">
+    <value>У товара обязана быть категория.</value>
+  </data>
+  <data name="product.negative_stock" xml:space="preserve">
+    <value>Остаток не может быть отрицательным.</value>
+  </data>
+  <data name="payment.cannot_refund" xml:space="preserve">
+    <value>Вернуть можно только успешный платёж.</value>
+  </data>
+  <data name="enum.payment_status.pending" xml:space="preserve">
+    <value>Ожидает оплаты</value>
+  </data>
+  <data name="enum.payment_status.succeeded" xml:space="preserve">
+    <value>Оплачен</value>
+  </data>
+  <data name="enum.payment_status.failed" xml:space="preserve">
+    <value>Не прошёл</value>
+  </data>
+  <data name="enum.payment_status.canceled" xml:space="preserve">
+    <value>Отменён</value>
+  </data>
+  <data name="enum.payment_status.refunded" xml:space="preserve">
+    <value>Возвращён</value>
+  </data>
 </root>

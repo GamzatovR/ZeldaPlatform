@@ -13,7 +13,11 @@ public static class PolicyNames
 
     public const string ModeratorOrAdmin = "ModeratorOrAdmin";
 
-    /// <summary>Турниры, матчи, команды, игроки, товары.</summary>
+    /// <summary>
+    /// Киберспортивные справочники: турниры, матчи, команды, игроки. Магазин сюда
+    /// не входит: в правах модератора по §8.1 его нет, а заказ связан с платежами,
+    /// поэтому товары и заказы закрыты <see cref="AdminOnly"/> (docs/adr/ADR-0010).
+    /// </summary>
     public const string CanManageCatalog = "CanManageCatalog";
 
     /// <summary>Тарифы, фичи, подписки, платежи — только администратор.</summary>

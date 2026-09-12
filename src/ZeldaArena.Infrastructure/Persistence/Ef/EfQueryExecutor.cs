@@ -60,6 +60,17 @@ public sealed class EfQueryExecutor : IQueryExecutor
             : query.Any();
     }
 
+    public async Task<decimal> SumAsync(
+        IQueryable<decimal> query,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(query);
+
+        return IsAsync(query)
+            ? await query.SumAsync(cancellationToken).ConfigureAwait(false)
+            : query.Sum();
+    }
+
     public async Task<PagedResult<T>> ToPagedResultAsync<T>(
         IQueryable<T> query,
         int page,

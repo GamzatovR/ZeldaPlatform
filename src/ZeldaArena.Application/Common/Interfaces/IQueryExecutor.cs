@@ -31,6 +31,14 @@ public interface IQueryExecutor
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Сумма, посчитанная базой. На пустой выборке — ноль: выручка за период без
+    /// платежей — это ноль рублей, а не отсутствие ответа.
+    /// </summary>
+    Task<decimal> SumAsync(
+        IQueryable<decimal> query,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Считает общее число записей и берёт одну страницу. Два обращения к базе вместо
     /// одного — сознательная плата за <c>TotalCount</c>, без которого не построить
     /// пагинацию из §10.3.

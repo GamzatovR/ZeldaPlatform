@@ -1,4 +1,4 @@
-namespace ZeldaArena.Application.Features.Orders;
+﻿namespace ZeldaArena.Application.Features.Orders;
 
 /// <summary>
 /// Типы сущностей для записей аудита по сценариям магазина (docs/SPEC.md §13).
@@ -7,4 +7,8 @@ namespace ZeldaArena.Application.Features.Orders;
 public static class ShopAudit
 {
     public const string Order = nameof(Domain.Shop.Order);
+
+    public const string Product = nameof(Domain.Shop.Product);
+
+    public const string Category = nameof(Domain.Shop.ProductCategory);
 }
