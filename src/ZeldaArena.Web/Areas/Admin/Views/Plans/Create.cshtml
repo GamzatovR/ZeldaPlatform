@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Billing.PlanFormViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.plan.create"].Value;
+    ViewData["IsNew"] = true;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.plan.create"]</h1>
+    <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+</div>
+
+<div class="form-card admin-form">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_PlanFields" model="Model" view-data="ViewData" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.create"]</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

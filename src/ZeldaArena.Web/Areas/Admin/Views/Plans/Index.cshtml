@@ -1,0 +1,51 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Billing.Queries.GetPlansForAdmin
+@model IReadOnlyList<AdminPlanDto>
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.nav.plans"].Value;
+}
+
+@*
+    Тарифов единицы, поэтому таблица без фильтра и пагинации: механизм §10.2 нужен
+    там, где строк много, а здесь он был бы обузой на пустом месте.
+*@
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.nav.plans"]</h1>
+    <a class="btn-solid btn-solid--sm" asp-action="Create">@T["admin.plan.create"]</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-token admin-table">
+        <caption class="visually-hidden">@T["admin.nav.plans"]</caption>
+        <thead>
+            <tr>
+                <th scope="col">@T["admin.common.name"]</th>
+                <th scope="col">@T["admin.plan.code"]</th>
+                <th scope="col">@T["admin.plan.price"]</th>
+                <th scope="col">@T["admin.plan.duration"]</th>
+                <th scope="col">@T["admin.plan.features"]</th>
+                <th scope="col">@T["admin.plan.subscriptions"]</th>
+                <th scope="col">@T["admin.common.status"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in Model)
+            {
+                <tr>
+                    <td><a asp-action="Edit" asp-route-id="@plan.Id">@plan.Name</a></td>
+                    <td class="admin-table__muted">@plan.Code</td>
+                    <td>@MoneyText.Format(plan.Price, plan.Currency)</td>
+                    <td>@(plan.DurationDays == 0 ? T["admin.plan.no_duration"].Value : plan.DurationDays.ToString())</td>
+                    <td>@plan.FeatureIds.Count</td>
+                    <td>@plan.ActiveSubscriptions</td>
+                    <td>
+                        <span class="badge-token @(plan.IsActive ? "badge-token--success" : string.Empty)">
+                            @(plan.IsActive ? T["admin.plan.on_sale"] : T["admin.plan.off_sale"])
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

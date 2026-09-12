@@ -1,0 +1,121 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ZeldaArena.Web.Areas.Admin.Models.Billing.PlanEditViewModel
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    var plan = Model.Plan;
+    ViewData["Title"] = plan.Name;
+}
+
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@plan.Name</h1>
+    <div class="row-actions">
+        <span class="badge-token @(plan.IsActive ? "badge-token--success" : string.Empty)">
+            @(plan.IsActive ? T["admin.plan.on_sale"] : T["admin.plan.off_sale"])
+        </span>
+        <span class="admin-table__muted">@plan.Code</span>
+        <a class="link-underline" asp-action="Index">@T["admin.back_to_list"]</a>
+    </div>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="plan-details-title">
+    <h2 class="admin-panel__title" id="plan-details-title">@T["admin.plan.details"]</h2>
+
+    <form method="post" asp-action="Edit" asp-route-id="@plan.Id">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+        <partial name="_PlanFields" for="Form" />
+
+        <div class="admin-form__actions">
+            <button class="btn-solid" type="submit">@T["admin.save"]</button>
+        </div>
+    </form>
+</section>
+
+@*
+    Состав фич тарифа — точки расширения EP-3 и EP-4 (docs/SPEC.md §5.4, §19):
+    снять здесь галочку значит закрыть функцию у всех подписчиков этого тарифа,
+    и права меняются сразу — кэш прав сбрасывает сам сценарий.
+*@
+<section class="admin-panel admin-section" id="features" aria-labelledby="plan-features-title">
+    <h2 class="admin-panel__title" id="plan-features-title">@T["admin.plan.features"]</h2>
+
+    @if (plan.Features.Count == 0)
+    {
+        <p class="admin-panel__empty">@T["admin.plan.no_features"]</p>
+    }
+    else
+    {
+        <form method="post" asp-action="SetFeatures" asp-route-id="@plan.Id">
+            <div class="table-responsive">
+                <table class="table table-token admin-table">
+                    <caption class="visually-hidden">@T["admin.plan.features"]</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">@T["admin.plan.feature_included"]</th>
+                            <th scope="col">@T["admin.common.name"]</th>
+                            <th scope="col">@T["admin.feature.code"]</th>
+                            <th scope="col">@T["admin.plan.feature_value"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var index = 0; index < plan.Features.Count; index++)
+                        {
+                            var feature = plan.Features[index];
+                            var rowId = "feature-" + feature.Id.ToString("N");
+                            <tr>
+                                <td>
+                                    <input type="hidden" name="features[@index].FeatureId" value="@feature.Id" />
+                                    <input class="form-check-input" type="checkbox" id="@rowId"
+                                           name="features[@index].IsGranted" value="true" checked="@feature.IsGranted" />
+                                    <label class="visually-hidden" for="@rowId">@feature.Name</label>
+                                </td>
+                                <td>
+                                    @feature.Name
+                                    @if (!feature.IsActive)
+                                    {
+                                        <span class="badge-token">@T["admin.feature.disabled_badge"]</span>
+                                    }
+                                </td>
+                                <td class="admin-table__muted">@feature.Code</td>
+                                <td>
+                                    <label class="visually-hidden" for="@(rowId)-value">@T["admin.plan.feature_value"]</label>
+                                    <input class="form-control admin-input-narrow" id="@(rowId)-value"
+                                           name="features[@index].Value" value="@feature.Value" maxlength="200" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="admin-form__actions">
+                <button class="btn-solid" type="submit">@T["admin.plan.save_features"]</button>
+            </div>
+        </form>
+    }
+</section>
+
+<section class="admin-panel admin-section" aria-labelledby="plan-danger-title">
+    <h2 class="admin-panel__title" id="plan-danger-title">@T["admin.delete"]</h2>
+
+    @if (plan.CanDelete)
+    {
+        <details class="confirm-inline">
+            <summary class="btn-ghost btn-ghost--sm">@T["admin.plan.delete"]</summary>
+            <div class="confirm-inline__panel">
+                <span>@T["admin.delete_confirm"]</span>
+                <form method="post" asp-action="Delete" asp-route-id="@plan.Id">
+                    <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                </form>
+            </div>
+        </details>
+    }
+    else
+    {
+        <p class="admin-panel__empty">@T["admin.plan.cannot_delete", plan.ActiveSubscriptions]</p>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

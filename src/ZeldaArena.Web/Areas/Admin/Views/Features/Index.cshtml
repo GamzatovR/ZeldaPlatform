@@ -1,0 +1,98 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@using ZeldaArena.Application.Features.Admin.Billing.Queries.GetFeatures
+@model IReadOnlyList<FeatureDto>
+@inject IHtmlLocalizer<SharedResource> T
+@{
+    ViewData["Title"] = T["admin.nav.features"].Value;
+}
+
+@*
+    Платные функции (docs/SPEC.md §9.4, п. 9). Новая функция заводится здесь строкой
+    в базе — это EP-3: дальше её достаточно повесить атрибутом на действие, ядро
+    не меняется.
+*@
+<div class="admin-toolbar">
+    <h1 class="admin-heading">@T["admin.nav.features"]</h1>
+</div>
+
+<section class="admin-panel admin-section" aria-labelledby="feature-new-title">
+    <h2 class="admin-panel__title" id="feature-new-title">@T["admin.feature.create"]</h2>
+
+    <form class="row g-3" method="post" asp-action="Create">
+        <div class="col-12 col-md-3">
+            <label class="form-label" for="Code">@T["admin.feature.code"]</label>
+            <input class="form-control" id="Code" name="Code" required maxlength="64"
+                   pattern="@ZeldaArena.Web.Areas.Admin.Models.Billing.FeatureFormViewModel.CodePattern" />
+        </div>
+        <div class="col-12 col-md-3">
+            <label class="form-label" for="Name">@T["admin.common.name"]</label>
+            <input class="form-control" id="Name" name="Name" required maxlength="128" />
+        </div>
+        <div class="col-12 col-md-4">
+            <label class="form-label" for="Description">@T["admin.feature.description"]</label>
+            <input class="form-control" id="Description" name="Description" maxlength="512" />
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-end">
+            <button class="btn-solid btn-solid--sm btn-block" type="submit">@T["admin.add"]</button>
+        </div>
+    </form>
+</section>
+
+<div class="table-responsive">
+    <table class="table table-token admin-table">
+        <caption class="visually-hidden">@T["admin.nav.features"]</caption>
+        <thead>
+            <tr>
+                <th scope="col">@T["admin.feature.code"]</th>
+                <th scope="col">@T["admin.common.name"]</th>
+                <th scope="col">@T["admin.feature.plans"]</th>
+                <th scope="col">@T["admin.common.status"]</th>
+                <th scope="col"><span class="visually-hidden">@T["admin.common.actions"]</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var feature in Model)
+            {
+                var rowId = "feature-" + feature.Id.ToString("N");
+                <tr>
+                    <td class="admin-table__muted">@feature.Code</td>
+                    <td>
+                        <form class="inline-form" method="post" asp-action="Update" asp-route-id="@feature.Id">
+                            <label class="visually-hidden" for="@(rowId)-name">@T["admin.common.name"]</label>
+                            <input class="form-control" id="@(rowId)-name" name="Name" value="@feature.Name" required maxlength="128" />
+                            <label class="visually-hidden" for="@(rowId)-description">@T["admin.feature.description"]</label>
+                            <input class="form-control" id="@(rowId)-description" name="Description" value="@feature.Description" maxlength="512" />
+                            <button class="btn-ghost btn-ghost--sm" type="submit">@T["admin.save"]</button>
+                        </form>
+                    </td>
+                    <td>@feature.PlanCount</td>
+                    <td>
+                        <span class="badge-token @(feature.IsActive ? "badge-token--success" : string.Empty)">
+                            @(feature.IsActive ? T["admin.feature.enabled_badge"] : T["admin.feature.disabled_badge"])
+                        </span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <form method="post" asp-action="Toggle" asp-route-id="@feature.Id">
+                                <input type="hidden" name="isActive" value="@(!feature.IsActive)" />
+                                <button class="btn-ghost btn-ghost--sm" type="submit">
+                                    @(feature.IsActive ? T["admin.feature.disable"] : T["admin.feature.enable"])
+                                </button>
+                            </form>
+
+                            <details class="confirm-inline">
+                                <summary class="btn-ghost btn-ghost--sm">@T["admin.delete"]</summary>
+                                <div class="confirm-inline__panel">
+                                    <span>@T["admin.delete_confirm"]</span>
+                                    <form method="post" asp-action="Delete" asp-route-id="@feature.Id">
+                                        <button class="btn-solid btn-solid--sm" type="submit">@T["admin.delete_yes"]</button>
+                                    </form>
+                                </div>
+                            </details>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
