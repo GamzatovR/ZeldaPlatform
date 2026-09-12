@@ -6,14 +6,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournamentBySlug;
 
-/// <summary>
-/// Один запрос на турнир вместе с участниками: состав участников — вложенная проекция,
-/// и EF Core разворачивает её в JOIN, а не в запрос на каждую команду (docs/SPEC.md §16,
-/// обязательная проверка на N+1 на странице турнира).
-///
-/// Слаг сравнивается как объект-значение, а не строкой: у столбца стоит конвертер,
-/// и сравнение по <c>Slug.Value</c> EF Core в SQL не переведёт.
-/// </summary>
 public sealed class GetTournamentBySlugQueryHandler(
     IReadRepository<Tournament> tournaments,
     IQueryExecutor queryExecutor)

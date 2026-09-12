@@ -25,17 +25,6 @@ using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Кабинет капитана <c>/account/my-team</c> (docs/SPEC.md §9.3, п. 8).
-///
-/// Страница открыта любому вошедшему: после истечения подписки команда остаётся
-/// и её видно, но изменяющие действия закрыты функцией <c>team.create</c> — атрибутом
-/// здесь и проверкой в каждом сценарии (docs/CONVENTIONS.md, «При неопределённости»; §7.3).
-///
-/// На странице несколько форм, поэтому каждое действие отвечает по схеме PRG:
-/// исход — сообщением в TempData, возврат — на кабинет. Серверная валидация от этого
-/// не слабеет: форма без JavaScript отвергается с тем же сообщением (§15, §19).
-/// </summary>
 [Authorize]
 [Route("account/my-team")]
 public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
@@ -203,10 +192,6 @@ public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedReso
         return Back(teamId, result, "my_team.player_removed");
     }
 
-    /// <summary>
-    /// Исход действия — в TempData и обратно в кабинет. Ошибка помечается ведущим «!»,
-    /// как заведено в <c>_StatusMessage</c> с Фазы 3.
-    /// </summary>
     private RedirectToActionResult Back(Guid teamId, Result result, string successKey)
     {
         TempData[StatusKey] = result.IsSuccess
@@ -216,11 +201,6 @@ public sealed class MyTeamController(ISender sender, IStringLocalizer<SharedReso
         return RedirectToAction(nameof(Index), new { team = teamId });
     }
 
-    /// <summary>
-    /// Форма, не прошедшая проверку модели, — без JavaScript или в обход клиентской
-    /// валидации. В кабинет возвращается первое сообщение: страница с несколькими формами
-    /// не может перерисовать одну из них с ошибками, не потеряв остальные.
-    /// </summary>
     private RedirectToActionResult BackWithInvalidInput(Guid teamId)
     {
         var message = ModelState.Values

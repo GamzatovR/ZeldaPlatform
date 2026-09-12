@@ -8,11 +8,6 @@ using ZeldaArena.Web.Models.Shop;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Каталог магазина (docs/SPEC.md §9.3, п. 12). Тот же механизм фильтрации, что
-/// у турниров, команд и игроков (§10.2): GET-форма, состояние в адресе, partial-список,
-/// который отдаёт и <c>GET /api/shop/products</c>.
-/// </summary>
 [Route("shop")]
 public sealed class ShopController(ISender sender) : Controller
 {

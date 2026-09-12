@@ -1,14 +1,5 @@
 namespace ZeldaArena.Web.Constants;
 
-/// <summary>
-/// Имена символов спрайта <c>wwwroot/img/icons.svg</c>. Константы, а не строковые
-/// литералы по разметке (docs/CONVENTIONS.md, «Стиль кода»): опечатка в <c>&lt;icon name&gt;</c>
-/// не даёт ни ошибки сборки, ни исключения в рантайме — иконка просто не рисуется.
-///
-/// Соответствие именам классов макета — docs/design/design-system.md §12.
-/// Тест <c>IconSpriteTests</c> следит, чтобы каждая константа отсюда была в спрайте,
-/// а каждый символ спрайта — здесь.
-/// </summary>
 public static class IconNames
 {
     /// <summary>Путь к спрайту от корня приложения.</summary>

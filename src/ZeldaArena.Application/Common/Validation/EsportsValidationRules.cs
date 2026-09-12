@@ -7,12 +7,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Common.Validation;
 
-/// <summary>
-/// Правила полей команды и игрока — общие для создания команды, правки профиля
-/// и добавления игрока. Длины совпадают с ограничениями столбцов
-/// (<c>TeamConfiguration</c>, <c>PlayerConfiguration</c>), тег — с инвариантом
-/// <c>Team</c>: форма не должна принимать то, что потом отвергнет база или домен.
-/// </summary>
 public static partial class EsportsValidationRules
 {
     public const int MaxTeamNameLength = 120;
@@ -53,10 +47,6 @@ public static partial class EsportsValidationRules
             .MaximumLength(MaxNicknameLength)
             .WithMessage($"Ник не длиннее {MaxNicknameLength} символов.");
 
-    /// <summary>
-    /// Заявленные расширение и размер. Содержимое по сигнатуре проверяет сценарий
-    /// и перепроверяет хранилище: валидатор потока не читает.
-    /// </summary>
     public static IRuleBuilderOptions<T, FileUpload?> ValidImageUpload<T>(this IRuleBuilder<T, FileUpload?> rule) =>
         rule.Must(file => file is null || (file.Length > 0 && file.Length <= ImageUploadRules.MaxSizeBytes))
             .WithMessage($"Изображение не больше {ImageUploadRules.MaxSizeBytes / 1024 / 1024} МБ.")

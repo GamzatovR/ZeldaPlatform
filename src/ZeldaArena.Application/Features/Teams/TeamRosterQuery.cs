@@ -3,11 +3,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams;
 
-/// <summary>
-/// Текущий состав команды — одна выборка на страницу команды и на кабинет капитана.
-/// Игроки подтягиваются явным соединением, а не навигацией: тот же запрос исполняется
-/// и в памяти, так что unit-тесты видят настоящие ники, а не пустые навигации.
-/// </summary>
 public static class TeamRosterQuery
 {
     public static IQueryable<RosterPlayerDto> Active(

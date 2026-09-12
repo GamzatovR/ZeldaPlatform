@@ -61,7 +61,7 @@ public class MoneyTests
     [Fact]
     public void Subtraction_below_zero_is_rejected()
     {
-        // Скидка не может превысить сумму заказа (docs/SPEC.md §15).
+        // Скидка не может превысить сумму заказа.
         Should.Throw<InvariantViolationException>(() => new Money(100m, "RUB") - new Money(101m, "RUB"))
             .Code.ShouldBe("money.negative_amount");
     }

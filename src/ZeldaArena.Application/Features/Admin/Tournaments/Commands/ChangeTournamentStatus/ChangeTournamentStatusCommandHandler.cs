@@ -8,10 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.ChangeTournamentStatus;
 
-/// <summary>
-/// Недопустимый переход (завершить ещё не начатый, отменить завершённый) отвергает
-/// сама сущность; здесь её отказ становится ответом сценария, а не ошибкой сервера.
-/// </summary>
 public sealed class ChangeTournamentStatusCommandHandler(
     IRepository<Tournament> tournamentRepository,
     IUnitOfWork unitOfWork)

@@ -1,13 +1,6 @@
 namespace ZeldaArena.Infrastructure.Email;
 
-/// <summary>
-/// Настройки SMTP из раздела <c>Email</c> конфигурации. В разработке это MailHog:
-/// localhost:1025 без шифрования и без пароля, письма видны на localhost:8025
-/// (docs/SPEC.md §7.6).
-///
-/// Пароль читается из конфигурации, но в репозиторий не попадает: секреты живут
-/// в User Secrets и переменных окружения (§16, docs/CONVENTIONS.md «Безопасность»).
-/// </summary>
+/// <summary>Настройки SMTP из раздела Email конфигурации.</summary>
 public sealed class EmailOptions
 {
     public const string SectionName = "Email";
@@ -20,10 +13,6 @@ public sealed class EmailOptions
 
     public string FromDisplayName { get; set; } = "ZeldaArena";
 
-    /// <summary>
-    /// У MailHog шифрования нет вовсе, поэтому по умолчанию выключено.
-    /// На боевом сервере включается вместе с логином и паролем.
-    /// </summary>
     public bool UseStartTls { get; set; }
 
     public string? UserName { get; set; }

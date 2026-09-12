@@ -7,24 +7,10 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Payments;
 
-/// <summary>
-/// Исход ввода кода: следующий шаг и сообщение для покупателя (<c>null</c> — сообщать
-/// нечего). Правило одно на два входа — форму <c>PaymentController</c> и
-/// <c>POST /api/payments/{id}/confirm</c>, иначе исход из docs/adr/ADR-0009 раздвоился бы.
-/// </summary>
 public sealed record PaymentConfirmationOutcome(PaymentNextStep Step, string? Message, bool IsError)
 {
     private static readonly PaymentConfirmationOutcome StayOnForm = new(PaymentNextStep.StayOnForm, null, false);
 
-    /// <summary>
-    /// <paramref name="state"/> — состояние платежа после попытки, <paramref name="result"/> —
-    /// исход команды подтверждения (<c>null</c>, если форма не прошла проверку модели).
-    ///
-    /// «Товары снова в корзине» говорится, только когда этот самый запрос провалил оплату
-    /// (истёкший код, последняя попытка) и тем отменил заказ. Повторная отправка уже
-    /// обработанного кода — кнопкой «Назад» после оплаты или после отмены — ведёт
-    /// на страницу заказа, где виден его настоящий статус.
-    /// </summary>
     public static PaymentConfirmationOutcome Resolve(PaymentStateDto state, Result? result, IStringLocalizer localizer)
     {
         ArgumentNullException.ThrowIfNull(state);

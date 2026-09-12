@@ -3,10 +3,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Показатели игрока в конкретном матче. Источник расширенной статистики,
-/// закрытой фичей stats.advanced (docs/SPEC.md §8.2).
-/// </summary>
+/// <summary>Показатели игрока в конкретном матче.</summary>
 public class PlayerMatchStats : BaseEntity
 {
     private PlayerMatchStats()

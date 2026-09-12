@@ -4,11 +4,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Запись в составе команды: с какого по какое число игрок в ней выступал.
-/// Уход из команды не удаляет запись, а закрывает её — иначе история матчей
-/// потеряет смысл (docs/SPEC.md §6, «состав историчен»).
-/// </summary>
+/// <summary>Запись в составе команды.</summary>
 public class RosterEntry : BaseEntity
 {
     private RosterEntry()
@@ -25,10 +21,7 @@ public class RosterEntry : BaseEntity
 
     public DateTimeOffset? LeftAt { get; private set; }
 
-    /// <summary>
-    /// Вычисляется из <see cref="LeftAt"/> и в БД не хранится: дублирующий столбец
-    /// нарушил бы нормализацию и мог бы разойтись с датой ухода (docs/erd.md).
-    /// </summary>
+    /// <summary>Вычисляется из LeftAt и в БД не хранится.</summary>
     public bool IsActive => LeftAt is null;
 
     public Team? Team { get; private set; }

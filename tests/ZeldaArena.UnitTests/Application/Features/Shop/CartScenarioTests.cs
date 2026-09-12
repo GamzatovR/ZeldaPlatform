@@ -13,10 +13,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Shop;
 
-/// <summary>
-/// Корзина гостя и пользователя (docs/SPEC.md §9.3, п. 13; §14.1). Владелец задаётся
-/// только контекстом — вход и проверенная гостевая кука; в командах его нет.
-/// </summary>
 public class CartScenarioTests
 {
     private static readonly Guid Guest = Guid.CreateVersion7();
@@ -59,7 +55,7 @@ public class CartScenarioTests
         _world.CartOf(anonymousId: Guest)!.Items.ShouldHaveSingleItem().Quantity.ShouldBe(3);
     }
 
-    /// <summary>Остаток проверяется по сумме «в корзине + добавляемое» (§15).</summary>
+    /// <summary>Остаток проверяется по сумме «в корзине + добавляемое».</summary>
     [Fact]
     public async Task Stock_is_checked_against_what_is_already_in_the_cart()
     {
@@ -126,10 +122,6 @@ public class CartScenarioTests
         _world.CartOf(anonymousId: Guest)!.IsEmpty.ShouldBeTrue();
     }
 
-    /// <summary>
-    /// IDOR (§15): у команды нет ни идентификатора корзины, ни идентификатора гостя —
-    /// другой гость работает со своей корзиной и до чужой не дотягивается.
-    /// </summary>
     [Fact]
     public async Task Another_guest_never_sees_or_touches_this_cart()
     {
@@ -142,7 +134,7 @@ public class CartScenarioTests
         _world.CartOf(anonymousId: Guest)!.Items.Single().Quantity.ShouldBe(2);
     }
 
-    /// <summary>Итог — из текущих цен на сервере, а не из снапшота и не с клиента (§15, §20 п. 7).</summary>
+    /// <summary>Итог — из текущих цен на сервере, а не из снапшота и не с клиента.</summary>
     [Fact]
     public async Task Cart_totals_use_the_current_server_price()
     {
@@ -188,7 +180,7 @@ public class CartScenarioTests
         (await MiniCartAsync()).ItemCount.ShouldBe(0);
     }
 
-    /// <summary>§19: «корзина гостя сливается с пользовательской при входе».</summary>
+    /// <summary>: «корзина гостя сливается с пользовательской при входе».</summary>
     [Fact]
     public async Task Signing_in_merges_the_guest_cart_into_the_user_cart()
     {

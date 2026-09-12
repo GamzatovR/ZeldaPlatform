@@ -5,21 +5,9 @@ using ZeldaArena.Application.Common.Messaging;
 
 namespace ZeldaArena.Application.Common.Behaviors;
 
-/// <summary>
-/// Готовит содержимое команды для записи в аудит. Сериализуется не сам объект,
-/// а словарь его публичных свойств, из которого предварительно вычеркнуты секреты
-/// по <see cref="SensitiveProperties"/>.
-///
-/// Отдельный проход по свойствам, а не атрибут <c>[JsonIgnore]</c> на командах:
-/// атрибут нужно не забыть поставить, а забытый атрибут — это номер карты в аудите
-/// (docs/SPEC.md §20 пункт 6). Умолчание должно быть безопасным.
-/// </summary>
+/// <summary>Готовит содержимое команды для записи в аудит.</summary>
 internal static class RequestPayloadSerializer
 {
-    /// <summary>
-    /// Служебные свойства контракта аудита: у записи для них есть отдельные поля,
-    /// дублировать их в содержимом команды незачем.
-    /// </summary>
     private static readonly HashSet<string> ContractProperties = new(StringComparer.Ordinal)
     {
         nameof(IAuditableRequest.AuditEntityType),

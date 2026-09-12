@@ -1,10 +1,5 @@
 namespace ZeldaArena.Application.Common.Models;
 
-/// <summary>
-/// Сообщение чата матча (docs/SPEC.md §12, коллекция <c>chat_messages</c>).
-/// Имя и признак подписки хранятся снапшотом: история чата должна читаться и после
-/// того, как пользователь сменил ник или подписка истекла (§11).
-/// </summary>
 public sealed record ChatMessageRecord
 {
     public string? Id { get; init; }
@@ -19,7 +14,7 @@ public sealed record ChatMessageRecord
 
     public required DateTimeOffset SentAt { get; init; }
 
-    /// <summary>Роль автора на момент отправки — для бейджа в разметке (§11).</summary>
+    /// <summary>Роль автора на момент отправки — для бейджа в разметке.</summary>
     public string? UserRole { get; init; }
 
     public bool IsPremium { get; init; }

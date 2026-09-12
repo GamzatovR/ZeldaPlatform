@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Configurations;
 
-/// <summary>
-/// Общая часть конфигурации любой сущности: первичный ключ и отсечение накопителя
-/// доменных событий, который в базе не хранится. Ключ генерируется в конструкторе
-/// сущности (Guid v7), поэтому база его не подставляет.
-/// </summary>
 public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
     where TEntity : BaseEntity
 {

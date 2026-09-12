@@ -4,10 +4,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Комментарий к новости или матчу. Удаление мягкое: модератор скрывает текст,
-/// но ветка обсуждения и авторство остаются для аудита (docs/SPEC.md §9.4).
-/// </summary>
+/// <summary>Комментарий к новости или матчу.</summary>
 public class Comment : BaseEntity, IAuditableEntity, ISoftDeletable
 {
     public const int MaxLength = 2000;

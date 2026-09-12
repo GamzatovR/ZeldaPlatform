@@ -6,19 +6,10 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Текущий пользователь из <c>HttpContext</c>. До Фазы 3, пока Identity не подключён,
-/// честно отдаёт неаутентифицированного пользователя — это не заглушка, а верный ответ
-/// для приложения без входа.
-/// </summary>
+/// <summary>Текущий пользователь из HttpContext.</summary>
 public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor)
     : ICurrentUserService
 {
-    /// <summary>
-    /// Ключ, под которым CorrelationIdMiddleware Фазы 11 кладёт идентификатор запроса
-    /// (docs/SPEC.md §14.1). До её появления используется TraceIdentifier — он тоже
-    /// уникален в пределах запроса, просто не сквозной.
-    /// </summary>
     public const string CorrelationIdItemKey = "CorrelationId";
 
     public Guid? UserId =>

@@ -5,14 +5,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentForEdit;
 
-/// <summary>
-/// Три запроса на страницу независимо от числа участников (проверка на N+1, §16):
-/// карточка, участники с названиями команд и числом их матчей (JOIN и скалярный
-/// подзапрос), свободные команды для формы добавления.
-///
-/// Команды соединяются явным JOIN, а не навигацией участника: навигацию заполняет
-/// только EF Core, а тот же запрос исполняется в памяти unit-тестами.
-/// </summary>
 public sealed class GetTournamentForEditQueryHandler(
     IReadRepository<Tournament> tournaments,
     IReadRepository<Team> teams,

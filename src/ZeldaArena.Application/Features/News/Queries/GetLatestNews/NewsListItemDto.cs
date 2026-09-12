@@ -1,10 +1,5 @@
 namespace ZeldaArena.Application.Features.News.Queries.GetLatestNews;
 
-/// <summary>
-/// Карточка новости в ленте. <c>BodyHtml</c> сюда не попадает сознательно:
-/// в списке он не нужен, а любой его вывод требует Html.Raw и санитизации
-/// на входе (docs/SPEC.md §15).
-/// </summary>
 public sealed record NewsListItemDto
 {
     public Guid Id { get; init; }

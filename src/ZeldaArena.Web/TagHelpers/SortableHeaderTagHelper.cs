@@ -10,22 +10,7 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Заголовок столбца с сортировкой по клику (docs/SPEC.md §9.2, <c>&lt;sortable-header&gt;</c>;
-/// §9.4: «сортировка по клику на заголовок»):
-///
-/// <code>
-/// &lt;sortable-header asc="name_asc" desc="name_desc" current="@sort" default="@Map.DefaultKey"&gt;Название&lt;/sortable-header&gt;
-/// </code>
-///
-/// Ключи — те же, что в <c>SortMap</c> сценария: имя поля из адреса в выражение
-/// сортировки не попадает никогда, неизвестный ключ сервер молча заменит умолчанием
-/// (§10.2, whitelist). Столбец без одного из направлений задаёт только его.
-///
-/// Ссылка — текущий адрес с заменённым <c>sort</c> и сброшенной страницей: после
-/// пересортировки третья страница — это уже другие строки. Без JavaScript это обычная
-/// ссылка, с ним <c>ajax-list.js</c> перехватывает её по <c>data-sort</c>.
-/// </summary>
+/// <summary>Заголовок столбца с сортировкой по клику.</summary>
 [HtmlTargetElement("sortable-header")]
 public sealed class SortableHeaderTagHelper(IStringLocalizer<SharedResource> localizer) : TagHelper
 {
@@ -77,7 +62,7 @@ public sealed class SortableHeaderTagHelper(IStringLocalizer<SharedResource> loc
 
         if (direction is not null)
         {
-            // Состояние сортировки слышно и в скринридере, а не только видно по стрелке (§9.1).
+            // Состояние сортировки слышно и в скринридере, а не только видно по стрелке.
             output.Attributes.SetAttribute("aria-sort", direction);
         }
 

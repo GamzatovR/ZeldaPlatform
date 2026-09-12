@@ -3,12 +3,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Исполнитель запросов над коллекцией в памяти. Позволяет проверить фильтр,
-/// сортировку и постраничную выборку хендлера по-настоящему, а не по факту вызова
-/// подменённого порта: логика сборки запроса живёт в Application и обязана быть
-/// покрыта здесь.
-/// </summary>
 internal sealed class InMemoryQueryExecutor : IQueryExecutor
 {
     public Task<IReadOnlyList<T>> ToListAsync<T>(

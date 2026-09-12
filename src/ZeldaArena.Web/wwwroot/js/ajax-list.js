@@ -1,24 +1,4 @@
-// Фильтры, пагинация и вкладки без перезагрузки (docs/SPEC.md §9.1, §10.1–10.3).
-//
-// Источник истины — адрес страницы. Любое действие со списком сначала меняет
-// query-string через history.pushState, а потом запрашивает у Areas/Api тот же
-// partial, которым страница рисует список, с теми же параметрами. Поэтому F5,
-// пересланная ссылка и «Назад» (popstate) восстанавливают ровно то же состояние,
-// а без JavaScript всё работает обычной GET-формой и обычными ссылками.
-//
-// Разметка-контракт:
-//   [data-list][data-api="/api/…"]  — контейнер списка и адрес его эндпоинта;
-//   [data-filter-form]              — GET-форма фильтра (необязательна);
-//   [data-filter-reset]             — «Сбросить всё»;
-//   [data-pagination] a, a[data-tab] — ссылки, которые перехватываются;
-//   a[data-sort]                    — заголовок столбца с сортировкой (<sortable-header>);
-//   select[data-default]            — значение по умолчанию, в адрес не пишется;
-//   input[type=hidden][data-list-state] — часть состояния, которую меняют ссылки
-//                                     (сортировка по заголовку): форма фильтра несёт её
-//                                     дальше, иначе смена фильтра сбрасывала бы сортировку.
-//
-// Событие list:refresh на document перезапрашивает текущее состояние — после
-// действия в строке таблицы (одобрить, заблокировать) список рисуется заново.
+// Фильтры, пагинация и вкладки без перезагрузки.
 
 import { request, isAbort, reportError } from './http.js';
 import { renderChips } from './filter-chips.js';
@@ -76,7 +56,7 @@ function syncForm(form, params) {
     if (field.type === 'checkbox' || field.type === 'radio') {
       field.checked = values.includes(field.value);
     } else if (field.tagName === 'SELECT') {
-      // Параметры адреса регистронезависимы (status=ongoing из примера §10.2).
+      // Параметры адреса регистронезависимы.
       const wanted = (values[0] ?? field.dataset.default ?? '').toLowerCase();
       const option = [...field.options].find((item) => item.value.toLowerCase() === wanted);
       field.value = option ? option.value : '';
@@ -129,9 +109,7 @@ export function initAjaxList() {
   let current = pathAndQuery(location);
 
   async function load(url, { push = true, scroll = false, force = false } = {}) {
-    // Тот же адрес — тот же список: change после input на числовом поле
-    // и hash-переходы не должны гонять лишний запрос. Исключение — list:refresh:
-    // адрес тот же, а строки на сервере изменились.
+    // Тот же адрес — тот же список.
     if (pathAndQuery(url) === current && !force) {
       return;
     }

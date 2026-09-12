@@ -53,10 +53,6 @@ public class ValidationBehaviorTests
         result.IsSuccess.ShouldBeTrue();
     }
 
-    /// <summary>
-    /// Пользователь должен увидеть все ошибки формы сразу, а не по одной за отправку
-    /// (docs/SPEC.md §15).
-    /// </summary>
     [Fact]
     public async Task All_validators_run_and_all_errors_are_collected()
     {

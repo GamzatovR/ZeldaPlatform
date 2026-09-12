@@ -7,10 +7,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Мнимая оплата подписки целиком (docs/SPEC.md §7.6) — то, что показывается
-/// на защите: реквизиты, письмо с кодом, подтверждение, активная подписка.
-/// </summary>
 public class PaymentFlowTests
 {
     private readonly PaymentScenarioFixture _fixture = new();
@@ -32,10 +28,6 @@ public class PaymentFlowTests
         _fixture.SentCode.ShouldBe(_fixture.Codes.Code);
     }
 
-    /// <summary>
-    /// Главное требование §7.6 и §20 пункта 6: от карты в базе остаются только
-    /// последние четыре цифры и платёжная система.
-    /// </summary>
     [Fact]
     public async Task Only_the_last_four_digits_and_the_brand_survive_authorisation()
     {
@@ -54,7 +46,7 @@ public class PaymentFlowTests
             .ShouldAllBe(value => !value!.Contains(PaymentScenarioFixture.ValidCardNumber, StringComparison.Ordinal));
     }
 
-    /// <summary>Код хранится хешем — сам код известен только письму (§7.6).</summary>
+    /// <summary>Код хранится хешем — сам код известен только письму.</summary>
     [Fact]
     public async Task The_code_is_stored_hashed_and_never_in_clear_text()
     {
@@ -66,7 +58,7 @@ public class PaymentFlowTests
         payment.ConfirmationCodeHash.ShouldNotBe(_fixture.SentCode);
     }
 
-    /// <summary>Цену определяет тариф, а не форма: значения с клиента не принимаются (§15).</summary>
+    /// <summary>Цену определяет тариф, а не форма: значения с клиента не принимаются.</summary>
     [Fact]
     public async Task The_amount_comes_from_the_plan()
     {
@@ -95,7 +87,7 @@ public class PaymentFlowTests
         _fixture.Email.Count(RecordingBillingEmailSender.LetterKind.Receipt).ShouldBe(1);
     }
 
-    /// <summary>Успешный платёж поднимает событие для роли Premium и сброса кэша прав (§7.5, п. 3).</summary>
+    /// <summary>Успешный платёж поднимает событие для роли Premium и сброса кэша прав.</summary>
     [Fact]
     public async Task Successful_payment_raises_the_domain_events()
     {
@@ -109,11 +101,6 @@ public class PaymentFlowTests
             .ShouldNotBeEmpty();
     }
 
-    /// <summary>
-    /// Cookie хранит снимок ролей на момент входа, поэтому без перевыпуска бейдж
-    /// Premium появился бы только через пять минут — а человек смотрит на результат
-    /// оплаты прямо сейчас. Поймано сквозной проверкой на живом приложении.
-    /// </summary>
     [Fact]
     public async Task Successful_payment_refreshes_the_sign_in_cookie()
     {
@@ -147,10 +134,6 @@ public class PaymentFlowTests
         payment.ConfirmationAttemptsLeft.ShouldBe(Payment.MaxAttempts - 1);
     }
 
-    /// <summary>
-    /// Израсходованная попытка обязана сохраниться. Иначе счётчик не убывал бы
-    /// и код подбирался бы бесконечно.
-    /// </summary>
     [Fact]
     public async Task A_wrong_code_is_persisted_so_the_attempt_is_really_spent()
     {
@@ -192,10 +175,6 @@ public class PaymentFlowTests
         _fixture.SinglePayment.Status.ShouldBe(PaymentStatus.Failed);
     }
 
-    /// <summary>
-    /// Заявка на подписку была носителем выбранного тарифа. Оплата не состоялась —
-    /// она не должна остаться в базе мусором.
-    /// </summary>
     [Fact]
     public async Task A_failed_payment_discards_the_reserved_subscription()
     {
@@ -262,10 +241,6 @@ public class PaymentFlowTests
         result.Error.ShouldBe(BillingErrors.PlanInactive);
     }
 
-    /// <summary>
-    /// Идемпотентность из §7.6: обновлённая страница и второй клик не заводят
-    /// второй платёж и не шлют второе письмо.
-    /// </summary>
     [Fact]
     public async Task The_same_idempotency_key_returns_the_same_payment()
     {
@@ -277,13 +252,6 @@ public class PaymentFlowTests
         _fixture.Email.Count(RecordingBillingEmailSender.LetterKind.PaymentCode).ShouldBe(1);
     }
 
-    /// <summary>
-    /// Ключ приходит скрытым полем формы, то есть подконтролен клиенту, а уникальный
-    /// индекс на нём — общий на всю таблицу (§6). Пока владелец не был частью ключа,
-    /// чужое значение роняло вставку на нарушении уникальности: поиск шёл по паре
-    /// «пользователь + ключ» и существующий платёж не находил. Поймано пробой
-    /// на живом приложении — приходил 500.
-    /// </summary>
     [Fact]
     public async Task Two_users_may_submit_the_same_idempotency_key()
     {
@@ -310,7 +278,7 @@ public class PaymentFlowTests
         _fixture.Payments.Entities.Count.ShouldBe(2);
     }
 
-    /// <summary>Чужой платёж отвечает так же, как несуществующий (§15, защита от IDOR).</summary>
+    /// <summary>Чужой платёж отвечает так же, как несуществующий.</summary>
     [Fact]
     public async Task Another_user_cannot_confirm_someone_elses_payment()
     {

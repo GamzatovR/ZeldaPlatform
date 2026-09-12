@@ -6,11 +6,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Matches.Queries.GetMatchesForAdmin;
 
-/// <summary>
-/// Названия турнира и команд разворачиваются внутри проекции: EF переводит их в JOIN,
-/// а не в запрос на строку (обязательная проверка на N+1, §16). Проверка на null —
-/// ради того же выражения в памяти, как в <c>MatchCardProjection</c>.
-/// </summary>
 public sealed class GetMatchesForAdminQueryHandler(
     IReadRepository<Match> matches,
     IQueryExecutor queryExecutor)

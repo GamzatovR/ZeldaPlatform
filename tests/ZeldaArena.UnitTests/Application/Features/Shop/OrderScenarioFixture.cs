@@ -20,11 +20,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Shop;
 
-/// <summary>
-/// Обвязка сценариев заказа: магазин (<see cref="ShopWorld"/>), платежи, подменённые
-/// провайдер, коды и почта, часы, которые сдвигаются между шагами. Хендлеры
-/// собираются настоящие — те же, что в приложении.
-/// </summary>
 internal sealed class OrderScenarioFixture
 {
     public const string ValidCardNumber = "4242424242424242";

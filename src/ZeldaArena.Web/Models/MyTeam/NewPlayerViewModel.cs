@@ -5,7 +5,7 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Web.Models.MyTeam;
 
-/// <summary>Новый игрок в состав: клиентский уровень валидации (docs/SPEC.md §15).</summary>
+/// <summary>Новый игрок в состав: клиентский уровень валидации.</summary>
 public sealed class NewPlayerViewModel
 {
     [Required(ErrorMessage = "Укажите ник игрока.")]

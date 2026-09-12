@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Common.Entities;
 
-/// <summary>
-/// Настройка приложения, редактируемая из админки. Ключ — естественный первичный
-/// ключ, поэтому BaseEntity не наследуется: суррогатный Id здесь ничего не добавит.
-/// </summary>
+/// <summary>Настройка приложения, редактируемая из админки.</summary>
 public class AppSetting
 {
     private AppSetting()

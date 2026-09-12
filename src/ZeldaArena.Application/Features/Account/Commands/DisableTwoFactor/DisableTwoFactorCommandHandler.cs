@@ -7,14 +7,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Application.Features.Account.Commands.DisableTwoFactor;
 
-/// <summary>
-/// Отключает второй фактор.
-///
-/// Администратору отключить нельзя: по docs/SPEC.md §8.2 для роли Admin второй фактор
-/// обязателен, и без этой проверки администратор выключал бы его сам себе, обходя
-/// требование. Проверка стоит здесь, а не только в разметке: спрятанная кнопка
-/// не защищает эндпоинт (§20, пункт 3).
-/// </summary>
 public sealed class DisableTwoFactorCommandHandler(
     ICurrentUserService currentUser,
     IUserAccountService userAccounts,

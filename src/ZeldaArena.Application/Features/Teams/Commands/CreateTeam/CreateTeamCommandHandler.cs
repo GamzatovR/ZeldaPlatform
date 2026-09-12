@@ -13,18 +13,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.CreateTeam;
 
-/// <summary>
-/// Порядок проверок — от дешёвых к дорогим и от прав к данным: кто, есть ли у него
-/// функция, не исчерпан ли лимит, свободно ли название, годен ли файл. Файл пишется
-/// на диск последним, когда все отказы уже позади.
-///
-/// Функция проверяется здесь, а не только атрибутом на действии: тот же сценарий
-/// вызовут Areas/Api и мобильный клиент (EP-2), и платная функция не должна
-/// открываться со второго входа (docs/SPEC.md §7.3).
-///
-/// Лимит команд — параметр фичи <c>team.create</c> (<c>PlanFeature.Value</c>, EP-5, §15):
-/// меняется в админке без правки кода. Нет значения — одна команда.
-/// </summary>
 public sealed class CreateTeamCommandHandler(
     IRepository<Team> teamRepository,
     IReadRepository<Team> teams,

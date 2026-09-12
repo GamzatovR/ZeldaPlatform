@@ -9,11 +9,7 @@ using ZeldaArena.Infrastructure.Persistence.Ef;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Реализация <see cref="IUserAdministrationService"/>. Как и
-/// <see cref="IdentityUserAccountService"/>, решений не принимает: кого можно
-/// блокировать и какие роли назначаются вручную, решают хендлеры Application.
-/// </summary>
+/// <summary>Реализация IUserAdministrationService.</summary>
 public sealed class IdentityUserAdministrationService(
     UserManager<ApplicationUser> userManager,
     AppDbContext dbContext)

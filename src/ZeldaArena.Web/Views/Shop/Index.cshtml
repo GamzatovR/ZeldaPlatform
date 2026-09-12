@@ -12,11 +12,6 @@
     var sort = ProductSorting.Map.Resolve(filter.Sort);
 }
 
-@*
-    Каталог (docs/SPEC.md §9.3, п. 12), по docs/design/pages/shop.html. Тот же механизм,
-    что у турниров, команд и игроков: GET-форма, состояние в адресе, partial-список
-    под Фазу 8 (§10.2). Размер страницы — из whitelist 12/24/48 (§10.3).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">
@@ -69,7 +64,7 @@
                 </div>
                 <div class="col-12 col-md-3 d-flex align-items-end">
                     <div class="form-check">
-                        @* Значение true, а не on: адрес читается и совпадает с примером §10.2. *@
+                        @* Значение true, а не on: адрес читается и совпадает с примером *@
                         <input class="form-check-input" id="inStock" name="inStock" type="checkbox" value="true"
                                checked="@(filter.InStock == true)" />
                         <label class="form-check-label" for="inStock">@T["shop.in_stock_only"]</label>

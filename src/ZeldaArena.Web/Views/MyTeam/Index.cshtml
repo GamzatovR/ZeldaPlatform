@@ -11,14 +11,7 @@
     var pageTitle = new PageTitleViewModel(T["my_team.title"].Value, team?.Name);
 }
 
-@*
-    Кабинет капитана (docs/SPEC.md §9.3, п. 8). Макета нет — собран из карточки формы
-    и компонентов страницы команды (docs/design/README.md).
-
-    Без функции team.create страница только для чтения: команда остаётся, править её
-    нельзя (docs/CONVENTIONS.md). Формы в разметке для такого пользователя не выводятся вовсе,
-    а сервер откажет и тому, кто отправит их руками.
-*@
+@* Кабинет капитана. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

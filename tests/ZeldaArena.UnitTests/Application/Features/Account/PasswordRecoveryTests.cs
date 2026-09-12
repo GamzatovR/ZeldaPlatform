@@ -29,10 +29,6 @@ public class PasswordRecoveryTests
             .Token.ShouldBe(_accounts.IssuedTokens[user.Id]);
     }
 
-    /// <summary>
-    /// Прямое требование docs/SPEC.md §8.2: ответ формы одинаков независимо от того,
-    /// заведён адрес или нет. Иначе форму используют для перебора адресов.
-    /// </summary>
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
@@ -49,10 +45,6 @@ public class PasswordRecoveryTests
         _email.Sent.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Сброс пароля не должен обходить подтверждение почты: иначе на чужой
-    /// неподтверждённый адрес можно было бы завести учётную запись и тут же захватить её.
-    /// </summary>
     [Fact]
     public async Task Unconfirmed_address_gets_no_reset_link()
     {
@@ -91,10 +83,6 @@ public class PasswordRecoveryTests
         _accounts.InvalidatedSessions.ShouldBeEmpty();
     }
 
-    /// <summary>
-    /// Несуществующий пользователь отвечает так же, как испорченный токен: по ответу
-    /// нельзя проверить, есть ли учётная запись с таким идентификатором.
-    /// </summary>
     [Fact]
     public async Task Reset_for_an_unknown_user_looks_like_a_bad_token()
     {
@@ -115,10 +103,6 @@ public class PasswordRecoveryTests
         _accounts.PasswordOf(user.Id).ShouldBe(OldPassword);
     }
 
-    /// <summary>
-    /// После смены пароля остальные сессии закрываются, а текущая переподписывается:
-    /// иначе человек разлогинил бы сам себя (docs/SPEC.md §8.2).
-    /// </summary>
     [Fact]
     public async Task Change_password_ends_other_sessions_but_keeps_the_current_one()
     {

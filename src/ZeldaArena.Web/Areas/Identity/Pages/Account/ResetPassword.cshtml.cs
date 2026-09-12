@@ -13,10 +13,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Установка нового пароля по ссылке из письма. Токен живёт 30 минут
-/// (docs/SPEC.md §8.2); просроченная ссылка даёт понятный отказ, а не пустую форму.
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.PasswordRecovery)]
 public sealed class ResetPasswordModel(ISender sender, IStringLocalizer<SharedResource> localizer)

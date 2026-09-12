@@ -6,14 +6,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetTeams;
 
-/// <summary>
-/// Только одобренные команды: команда подписчика до одобрения модератором в списке
-/// не показывается (решение Фазы 6, docs/adr/ADR-0008). Владелец видит её в своём
-/// кабинете и по прямой ссылке.
-///
-/// Размер состава — <c>Count()</c> с условием внутри проекции: EF Core переводит его
-/// в скалярный подзапрос, а не тянет записи состава каждой команды (§16, урок Фазы 2).
-/// </summary>
 public sealed class GetTeamsQueryHandler(
     IReadRepository<Team> teams,
     IQueryExecutor queryExecutor)

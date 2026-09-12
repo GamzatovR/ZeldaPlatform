@@ -4,10 +4,6 @@ using ZeldaArena.Application.Features.Admin.Billing.Commands.UpdateFeature;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Billing;
 
-/// <summary>
-/// Новая платная функция (EP-3): строка в базе плюс <c>[RequireFeature]</c> на действии.
-/// Код повторяет правило сценария: строчная латиница с точками, как <c>team.create</c>.
-/// </summary>
 public sealed class FeatureFormViewModel
 {
     public const string CodePattern = "^[a-z][a-z0-9]*(\\.[a-z0-9]+)*$";

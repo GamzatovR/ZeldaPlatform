@@ -4,16 +4,7 @@ using MediatR;
 
 namespace ZeldaArena.Application.Common.Behaviors;
 
-/// <summary>
-/// Серверная половина двухуровневой валидации (docs/SPEC.md §15). Работает до хендлера,
-/// поэтому бизнес-правила проверяются даже тогда, когда клиентская валидация отключена
-/// вместе с JavaScript.
-///
-/// Валидаторы запускаются все сразу: пользователь должен увидеть полный список ошибок
-/// формы, а не по одной за отправку. Ошибки уходят исключением
-/// <see cref="ValidationException"/>, которое в Фазе 11 превращается в ModelState
-/// для MVC и в ProblemDetails для API (§14.1).
-/// </summary>
+/// <summary>Серверная половина двухуровневой валидации.</summary>
 public sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
@@ -33,9 +24,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(
             return await next(cancellationToken).ConfigureAwait(false);
         }
 
-        // Контекст создаётся свой на каждый валидатор. Общий контекст копит ошибки
-        // внутри себя, и результат второго валидатора возвращал бы заодно чужие
-        // failures — пользователь увидел бы каждую ошибку дважды.
+        // Контекст создаётся свой на каждый валидатор.
         var results = await Task.WhenAll(
             applicable.Select(validator => validator.ValidateAsync(
                 new ValidationContext<TRequest>(request),

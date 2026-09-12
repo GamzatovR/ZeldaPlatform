@@ -7,13 +7,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Queries.GetPaymentState;
 
-/// <summary>
-/// Отдаёт состояние платежа его владельцу и никому больше (docs/SPEC.md §15,
-/// защита от IDOR): чужой платёж отвечает так же, как несуществующий.
-///
-/// Ни кода, ни его хеша, ни номера карты в ответе нет — только маскированный адрес
-/// и счётчики, нужные форме.
-/// </summary>
 public sealed class GetPaymentStateQueryHandler(
     ICurrentUserService currentUser,
     IReadRepository<Payment> payments,

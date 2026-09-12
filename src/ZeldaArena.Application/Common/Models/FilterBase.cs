@@ -1,10 +1,5 @@
 namespace ZeldaArena.Application.Common.Models;
 
-/// <summary>
-/// Общая часть любого фильтруемого запроса: страница, размер страницы и ключ сортировки
-/// (docs/SPEC.md §10.2). Значения приходят из query-string, поэтому наружу отдаются
-/// нормализованными — хендлер не должен помнить про проверку каждый раз.
-/// </summary>
 public abstract record FilterBase
 {
     public int Page { get; init; } = 1;

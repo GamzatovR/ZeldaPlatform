@@ -5,18 +5,10 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Повторная отправка кода (docs/SPEC.md §7.6, шаг 3): письмо не дошло, попало
-/// в спам или код истёк.
-/// </summary>
 public class PaymentCodeResendTests
 {
     private readonly PaymentScenarioFixture _fixture = new();
 
-    /// <summary>
-    /// Пауза привязана к платежу, а не к адресу клиента, поэтому её не обойти
-    /// вторым окном браузера.
-    /// </summary>
     [Fact]
     public async Task A_second_code_cannot_be_requested_within_a_minute()
     {
@@ -77,10 +69,6 @@ public class PaymentCodeResendTests
             PaymentScenarioFixture.Start + PaymentPolicy.ResendCooldown + PaymentPolicy.CodeLifetime);
     }
 
-    /// <summary>
-    /// Код высылается только по платежу в ожидании: оплаченный подтверждать нечем,
-    /// а по неудавшемуся оплату начинают заново.
-    /// </summary>
     [Fact]
     public async Task A_settled_payment_gets_no_new_code()
     {

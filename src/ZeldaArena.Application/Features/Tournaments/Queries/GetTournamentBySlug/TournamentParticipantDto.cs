@@ -1,6 +1,6 @@
 namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournamentBySlug;
 
-/// <summary>Команда-участница с рейтингом (docs/SPEC.md §9.3, п. 4).</summary>
+/// <summary>Команда-участница с рейтингом.</summary>
 public sealed record TournamentParticipantDto
 {
     public Guid TeamId { get; init; }

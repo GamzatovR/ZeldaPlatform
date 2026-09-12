@@ -15,15 +15,6 @@ using ZeldaArena.Web.Models.Carts;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Корзина (docs/SPEC.md §9.3, п. 13). Работает для гостя и для пользователя: владельца
-/// определяет сценарий, а не запрос, поэтому ни идентификатора корзины, ни цены
-/// в формах нет.
-///
-/// Сейчас это обычные POST-формы с переходом обратно (PRG) — прогрессивное улучшение
-/// §9.1: корзина обязана работать без JavaScript. AJAX-эндпоинты
-/// <c>POST/PATCH/DELETE /api/cart/items</c> работают поверх тех же команд.
-/// </summary>
 [Route("cart")]
 public sealed class CartController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
@@ -87,17 +78,9 @@ public sealed class CartController(ISender sender, IStringLocalizer<SharedResour
         return RedirectToAction(nameof(Index));
     }
 
-    /// <summary>
-    /// Исход действия — в TempData и обратно. Ошибка помечается ведущим «!»,
-    /// как заведено в <c>_StatusMessage</c> с Фазы 3.
-    /// </summary>
     private string Message(Result<CartSummaryDto> result, string successKey) =>
         result.IsSuccess ? localizer[successKey].Value : "!" + localizer.ForError(result.Error);
 
-    /// <summary>
-    /// Форма, не прошедшая проверку модели, — без JavaScript или в обход клиентской
-    /// валидации. Сообщение уже переведено локализатором DataAnnotations.
-    /// </summary>
     private string FirstModelError() =>
         ModelState.Values
             .SelectMany(entry => entry.Errors)

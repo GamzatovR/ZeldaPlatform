@@ -4,10 +4,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.UnitTests.Application.Features.Account;
 
-/// <summary>
-/// Серверный уровень двухуровневой валидации (docs/SPEC.md §15). Проверяется именно он,
-/// потому что клиентский можно обойти, выключив JavaScript, — отдельный пункт §19.
-/// </summary>
 public class AccountValidatorTests
 {
     private static readonly RegisterUserCommandValidator Register = new();
@@ -24,7 +20,7 @@ public class AccountValidatorTests
     public void Malformed_email_is_rejected(string email) =>
         Register.Validate(Registration(email: email)).IsValid.ShouldBeFalse();
 
-    /// <summary>Требования §8.2: не короче десяти символов, цифра, регистры и спецсимвол.</summary>
+    /// <summary>Требования: не короче десяти символов, цифра, регистры и спецсимвол.</summary>
     [Theory]
     [InlineData("Short-1a")]
     [InlineData("password-1234")]
@@ -62,10 +58,6 @@ public class AccountValidatorTests
     public void Unsupported_culture_is_rejected() =>
         Register.Validate(Registration(culture: "de")).IsValid.ShouldBeFalse();
 
-    /// <summary>
-    /// На входе требования к паролю не проверяются: пароль мог быть заведён до того,
-    /// как правила ужесточили, и такому пользователю нужно дать войти и сменить его.
-    /// </summary>
     [Fact]
     public void Sign_in_accepts_a_password_that_registration_would_reject() =>
         SignIn.Validate(new SignInCommand("player@zeldaarena.test", "old", RememberMe: false))

@@ -2,10 +2,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Запоминает отправленные письма. Тесты проверяют не текст — он в Web, — а сам факт:
-/// ушло ли письмо, на какой адрес и с каким токеном.
-/// </summary>
 internal sealed class RecordingAccountEmailSender : IAccountEmailSender
 {
     public List<SentLetter> Sent { get; } = [];

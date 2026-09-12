@@ -5,9 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Migrations;
 
 /// <summary>
-/// Игрок не может состоять в двух командах одновременно (docs/SPEC.md §15):
-/// частичный уникальный индекс по открытым записям состава. Закрытые записи —
-/// история, и одна и та же пара «игрок — прошлые команды» в ней встречается сколько угодно.
+/// Игрок не может состоять в двух командах одновременно: частичный уникальный
+/// индекс по открытым записям состава.
 /// </summary>
 public partial class RosterSingleActiveTeam : Migration
 {

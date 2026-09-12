@@ -3,10 +3,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Порт записи над обычным списком. Реализация, а не мок: сценариям оплаты важно,
-/// что добавленная сущность потом находится по идентификатору, а удалённая — нет.
-/// </summary>
 internal sealed class InMemoryRepository<TEntity>(params TEntity[] entities) : IRepository<TEntity>
     where TEntity : BaseEntity
 {

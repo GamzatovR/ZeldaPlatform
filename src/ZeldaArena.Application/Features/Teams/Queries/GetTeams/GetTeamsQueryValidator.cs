@@ -2,10 +2,6 @@ using FluentValidation;
 
 namespace ZeldaArena.Application.Features.Teams.Queries.GetTeams;
 
-/// <summary>
-/// Как у турниров: настоящие ошибки отвергаются, размер страницы и сортировка
-/// нормализуются молча (§10.2).
-/// </summary>
 public sealed class GetTeamsQueryValidator : AbstractValidator<GetTeamsQuery>
 {
     public const int MaxSearchLength = 100;

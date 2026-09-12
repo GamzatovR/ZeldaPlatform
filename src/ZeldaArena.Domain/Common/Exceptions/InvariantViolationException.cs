@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Common.Exceptions;
 
-/// <summary>
-/// Попытка привести сущность в состояние, запрещённое её инвариантами:
-/// счёт больше формата матча, отрицательная сумма, правка завершённого матча.
-/// </summary>
+/// <summary>Попытка привести сущность в состояние, запрещённое её инвариантами.</summary>
 public sealed class InvariantViolationException(string code, string message)
     : DomainException(code, message)
 {

@@ -10,17 +10,7 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Infrastructure.Email;
 
-/// <summary>
-/// Отправка письма по SMTP через MailKit. В разработке адресатом выступает MailHog,
-/// и письмо с кодом подтверждения оплаты видно вживую на localhost:8025 —
-/// это часть демонстрации по docs/SPEC.md §7.6.
-///
-/// Соединение открывается на каждое письмо и сразу закрывается: писем в проекте
-/// единицы, а держать пул ради них — усложнение без выигрыша.
-///
-/// В лог уходит только адрес и тема. Тело не логируется никогда: в нём лежат ссылки
-/// с токенами сброса пароля и коды подтверждения оплаты (§13).
-/// </summary>
+/// <summary>Отправка письма по SMTP через MailKit.</summary>
 public sealed class SmtpEmailSender(
     IOptions<EmailOptions> options,
     ILogger<SmtpEmailSender> logger)

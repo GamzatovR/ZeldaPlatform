@@ -10,16 +10,7 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.Infrastructure.Files;
 
-/// <summary>
-/// Хранилище на локальном диске (docs/SPEC.md §15): файл переименовывается в GUID,
-/// лежит вне <c>wwwroot</c> и отдаётся только через контроллер.
-///
-/// Сценарий загрузки уже проверил сигнатуру и размер и ответил пользователю понятной
-/// ошибкой. Хранилище перепроверяет всё то же самое само: оно — последний рубеж
-/// перед диском, и сценарий, забывший о проверке, не должен суметь записать
-/// исполняемый файл. Нарушение здесь — ошибка программиста, поэтому исключение,
-/// а не <c>Result</c>.
-/// </summary>
+/// <summary>Хранилище на локальном диске.</summary>
 public sealed partial class LocalFileStorage : IFileStorage
 {
     private const int CopyBufferSize = 81920;
@@ -98,11 +89,6 @@ public sealed partial class LocalFileStorage : IFileStorage
         return Task.CompletedTask;
     }
 
-    /// <summary>
-    /// Путь внутри хранилища или <c>null</c>. Имя обязано иметь ровно тот вид,
-    /// который выдаёт <see cref="SaveAsync"/>, и полный путь обязан остаться
-    /// внутри каталога — вторая проверка страхует первую.
-    /// </summary>
     private string? Resolve(string? storedPath)
     {
         if (string.IsNullOrEmpty(storedPath) || !StoredName().IsMatch(storedPath))
@@ -117,10 +103,6 @@ public sealed partial class LocalFileStorage : IFileStorage
             : null;
     }
 
-    /// <summary>
-    /// Копирует не больше лимита плюс один байт: заявленной длине файла верить нельзя,
-    /// а читать до конца поток, который уже превысил лимит, незачем.
-    /// </summary>
     private static async Task<long> CopyWithLimitAsync(Stream source, Stream target, CancellationToken cancellationToken)
     {
         var buffer = new byte[CopyBufferSize];

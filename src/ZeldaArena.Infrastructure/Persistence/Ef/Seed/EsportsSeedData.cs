@@ -4,14 +4,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Seed;
 
-/// <summary>
-/// Киберспортивная часть сида: 12 команд, 60 игроков с составами, 4 турнира
-/// (один идёт, один прошёл, два предстоящих) и 40 матчей во всех статусах,
-/// минимум два из них Live (docs/SPEC.md §6).
-///
-/// Числа берутся из генератора с фиксированным зерном, поэтому сид воспроизводим:
-/// одинаковые данные на машине разработчика, в CI и у проверяющего.
-/// </summary>
 public static class EsportsSeedData
 {
     private const int PlayersPerTeam = 5;
@@ -55,10 +47,6 @@ public static class EsportsSeedData
             description: $"Команда {definition.Name} выступает в регионе {definition.Region}."))];
     }
 
-    /// <summary>
-    /// Создаёт по пять игроков на команду и сразу заводит записи состава.
-    /// Метод меняет переданные команды — это и есть построение исходного ростера.
-    /// </summary>
     public static IReadOnlyList<Player> PlayersWithRosters(
         IReadOnlyList<Team> teams,
         DateTimeOffset now)
@@ -92,11 +80,6 @@ public static class EsportsSeedData
         return players;
     }
 
-    /// <summary>
-    /// Четыре турнира вместе с составом участников. Участники добавляются, пока турнир
-    /// ещё анонсирован: завершённый турнир состав не принимает, и это правильно —
-    /// инвариант Tournament.AddTeam поймал ошибку порядка в самом сиде.
-    /// </summary>
     public static IReadOnlyList<Tournament> Tournaments(DateTimeOffset now, IReadOnlyList<Team> teams)
     {
         ArgumentNullException.ThrowIfNull(teams);
@@ -165,10 +148,6 @@ public static class EsportsSeedData
         }
     }
 
-    /// <summary>
-    /// Распределяет по шесть команд на турнир. Составы участников пересекаются,
-    /// чтобы у каждой команды была видимая история выступлений.
-    /// </summary>
     public static IReadOnlyList<int[]> ParticipantSlots() =>
     [
         [0, 1, 2, 3, 4, 5],
@@ -177,10 +156,6 @@ public static class EsportsSeedData
         [0, 2, 4, 6, 8, 10],
     ];
 
-    /// <summary>
-    /// 40 матчей: 12 в прошедшем турнире, 14 в идущем (в том числе два Live),
-    /// 8 и 6 в предстоящих, с одним перенесённым и одним отменённым.
-    /// </summary>
     public static IReadOnlyList<Match> Matches(
         DateTimeOffset now,
         IReadOnlyList<Tournament> tournaments,

@@ -8,11 +8,7 @@
     var image = Url.ProductImage(product.ImagePath);
 }
 
-@*
-    Карточка товара — .single-products-box макета (docs/design/pages/shop.html,
-    design-system.md §11). Страницы товара в проекте нет (§9.3), поэтому название
-    не ссылка. Бейджи .sale/.hot макета отданы под наличие: скидок в магазине нет.
-*@
+@* Карточка товара — .single-products-box макета. *@
 <article class="product-card" data-product-id="@product.Id">
     <div class="product-card__image">
         @if (image is not null)
@@ -42,11 +38,7 @@
         <div class="product-card__actions">
             @if (product.IsInStock)
             {
-                @*
-                    Обычная POST-форма: без JavaScript товар кладётся в корзину переходом
-                    обратно (§9.1). С JavaScript cart.js перехватывает отправку по
-                    data-add-to-cart и обновляет мини-корзину без перезагрузки (§10.1, сценарий 5).
-                *@
+                @* Обычная POST-форма. *@
                 <form method="post" asp-area="" asp-controller="Cart" asp-action="Add"
                       data-add-to-cart="@Url.Action("Add", "CartApi", new { area = "Api" })">
                     <input type="hidden" name="ProductId" value="@product.Id" />

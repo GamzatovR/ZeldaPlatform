@@ -4,7 +4,7 @@ namespace ZeldaArena.Application.Features.Admin.Billing.Commands.SetPlanFeatures
 
 public sealed class SetPlanFeaturesCommandValidator : AbstractValidator<SetPlanFeaturesCommand>
 {
-    /// <summary>Столько же отведено под значение в базе (docs/SPEC.md §6).</summary>
+    /// <summary>Столько же отведено под значение в базе.</summary>
     public const int MaxValueLength = 200;
 
     public SetPlanFeaturesCommandValidator()

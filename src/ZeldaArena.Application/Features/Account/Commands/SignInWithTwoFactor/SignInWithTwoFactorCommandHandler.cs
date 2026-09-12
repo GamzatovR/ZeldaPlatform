@@ -6,12 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.SignInWithTwoFactor;
 
-/// <summary>
-/// Завершает вход по коду из аутентификатора.
-///
-/// Пропавшая промежуточная сессия и неверный код — разные исходы: в первом случае
-/// вход нужно начинать с пароля, во втором достаточно ввести код заново.
-/// </summary>
 public sealed class SignInWithTwoFactorCommandHandler(
     ISignInService signInService,
     IUserAccountService userAccounts)

@@ -6,7 +6,7 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Shop;
 
-/// <summary>Каталог тем же механизмом, что турниры и команды (docs/SPEC.md §10.2).</summary>
+/// <summary>Каталог тем же механизмом, что турниры и команды.</summary>
 public class GetProductsQueryHandlerTests
 {
     private readonly ShopWorld _world = new();
@@ -85,7 +85,7 @@ public class GetProductsQueryHandlerTests
         descending.Items.First().Name.ShouldBe("Goron Heavy");
     }
 
-    /// <summary>Сортировка — только ключи whitelist; неизвестный ключ уходит на умолчание (§15).</summary>
+    /// <summary>Сортировка — только ключи whitelist; неизвестный ключ уходит на умолчание.</summary>
     [Fact]
     public async Task Unknown_sort_key_falls_back_to_the_default()
     {

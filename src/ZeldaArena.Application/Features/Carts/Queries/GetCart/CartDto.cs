@@ -2,10 +2,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Carts.Queries.GetCart;
 
-/// <summary>
-/// Корзина для страницы <c>/cart</c> и оформления (docs/SPEC.md §9.3, п. 13–14).
-/// Итог считается здесь, на сервере, из текущих цен; вьюха его только печатает.
-/// </summary>
 public sealed record CartDto
 {
     public static CartDto Empty { get; } = new();

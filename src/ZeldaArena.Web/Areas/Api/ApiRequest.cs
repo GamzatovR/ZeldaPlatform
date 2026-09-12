@@ -4,11 +4,6 @@ using ZeldaArena.Web.Areas.Api.Controllers;
 
 namespace ZeldaArena.Web.Areas.Api;
 
-/// <summary>
-/// Запрос к <c>Areas/Api</c> отвечает кодом, а не страницей. Редирект на форму входа
-/// для <c>fetch</c> — это 200 с HTML, который клиент примет за ответ сервиса
-/// (docs/SPEC.md §10.1: «обработка 401/403/429 понятным тостом»).
-/// </summary>
 public static class ApiRequest
 {
     public static bool Is(HttpRequest request)
@@ -18,10 +13,6 @@ public static class ApiRequest
         return request.Path.StartsWithSegments(ApiControllerBase.PathPrefix, StringComparison.OrdinalIgnoreCase);
     }
 
-    /// <summary>
-    /// Неаутентифицированный запрос к API — 401, недостаточно прав — 403. Страницам
-    /// оставлен прежний редирект на вход и на отказ в доступе.
-    /// </summary>
     public static void AnswerApiWithStatusCodes(this CookieAuthenticationOptions options)
     {
         ArgumentNullException.ThrowIfNull(options);

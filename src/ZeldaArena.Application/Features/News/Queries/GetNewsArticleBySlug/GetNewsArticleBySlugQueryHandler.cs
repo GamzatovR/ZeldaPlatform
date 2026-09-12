@@ -4,10 +4,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Application.Features.News.Queries.GetNewsArticleBySlug;
 
-/// <summary>
-/// Через <see cref="INewsRepository"/>, а не <c>IReadRepository</c>: у новостей два
-/// хранилища, и страница новости обязана работать на обоих (EP-1, docs/SPEC.md §5.4).
-/// </summary>
 public sealed class GetNewsArticleBySlugQueryHandler(INewsRepository news)
     : IRequestHandler<GetNewsArticleBySlugQuery, NewsArticleDto?>
 {

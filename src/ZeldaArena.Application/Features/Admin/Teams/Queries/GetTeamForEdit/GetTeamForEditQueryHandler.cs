@@ -6,10 +6,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Teams.Queries.GetTeamForEdit;
 
-/// <summary>
-/// Состав берётся тем же <see cref="TeamRosterQuery"/>, что и на публичной странице
-/// команды и в кабинете капитана: одно определение «кто сейчас в составе» на три места.
-/// </summary>
 public sealed class GetTeamForEditQueryHandler(
     IReadRepository<Team> teams,
     IReadRepository<RosterEntry> rosterEntries,

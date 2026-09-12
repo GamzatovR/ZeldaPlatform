@@ -8,18 +8,7 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Третий уровень проверки платных функций — разметка (docs/SPEC.md §7.3):
-///
-/// <code>
-/// &lt;feature-gate feature="@FeatureCodes.StatsAdvanced"&gt;графики формы&lt;/feature-gate&gt;
-/// &lt;feature-gate feature="@FeatureCodes.StatsAdvanced" when-missing&gt;оформить подписку&lt;/feature-gate&gt;
-/// </code>
-///
-/// Это украшение, а не защита: спрятанный блок скрывает ссылку, но не закрывает
-/// действие. Сервер обязан перепроверить то же самое атрибутом
-/// <c>[RequireFeature]</c> — иначе адрес, набранный руками, откроет платную функцию.
-/// </summary>
+/// <summary>Третий уровень проверки платных функций — разметка.</summary>
 [HtmlTargetElement("feature-gate", Attributes = FeatureAttributeName)]
 public sealed class FeatureGateTagHelper(IEntitlementService entitlements) : TagHelper
 {
@@ -28,10 +17,6 @@ public sealed class FeatureGateTagHelper(IEntitlementService entitlements) : Tag
     [HtmlAttributeName(FeatureAttributeName)]
     public string Feature { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Перевернуть условие: содержимое показывается тем, у кого функции нет.
-    /// Так делается призыв оформить подписку рядом со скрытым блоком.
-    /// </summary>
     [HtmlAttributeName("when-missing")]
     public bool WhenMissing { get; set; }
 

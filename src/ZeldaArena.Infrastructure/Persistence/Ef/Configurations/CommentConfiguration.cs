@@ -15,7 +15,7 @@ public sealed class CommentConfiguration : EntityConfiguration<Comment>
         builder.Property(comment => comment.Text).IsRequired().HasMaxLength(Comment.MaxLength);
 
         // Мягкое удаление: удалённые комментарии не попадают ни в один запрос,
-        // но остаются в базе для аудита (docs/SPEC.md §6).
+        // но остаются в базе для аудита.
         builder.HasQueryFilter(comment => !comment.IsDeleted);
 
         builder.HasIndex(comment => new { comment.TargetType, comment.TargetId, comment.CreatedAt });

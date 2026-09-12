@@ -13,7 +13,7 @@ public sealed class PaymentConfiguration : EntityConfiguration<Payment>
     {
         builder.ToTable("Payments");
 
-        // Столбцов под полный номер карты и CVV в схеме нет и не будет (docs/SPEC.md §7.6).
+        // Столбцов под полный номер карты и CVV в схеме нет и не будет.
         builder.Property(payment => payment.CardLast4).IsRequired().HasMaxLength(4).IsFixedLength();
         builder.Property(payment => payment.CardBrand).IsRequired().HasMaxLength(20);
         builder.Property(payment => payment.ConfirmationEmail).IsRequired().HasMaxLength(256);

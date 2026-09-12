@@ -1,9 +1,5 @@
 namespace ZeldaArena.Application.Features.News.Queries.GetNewsArticleBySlug;
 
-/// <summary>
-/// Новость для её страницы. <see cref="BodyHtml"/> — второе из двух полей, выводимых
-/// через <c>Html.Raw</c>: он проходит HtmlSanitizer на входе (docs/SPEC.md §15).
-/// </summary>
 public sealed record NewsArticleDto
 {
     public Guid Id { get; init; }

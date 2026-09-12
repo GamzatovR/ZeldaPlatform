@@ -10,11 +10,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Teams;
 
-/// <summary>
-/// Главная платная функция (docs/SPEC.md §4). Проверяется то, что атрибут на действии
-/// не закрыл бы: сценарий сам отказывает без функции, соблюдает лимит тарифа и не пишет
-/// на диск то, что не является изображением.
-/// </summary>
 public class CreateTeamCommandHandlerTests
 {
     private static readonly Guid Subscriber = Guid.CreateVersion7();
@@ -65,7 +60,7 @@ public class CreateTeamCommandHandlerTests
         result.Error.ShouldBe(AccountErrors.UserNotFound);
     }
 
-    /// <summary>Лимит по умолчанию — одна команда (§15).</summary>
+    /// <summary>Лимит по умолчанию — одна команда.</summary>
     [Fact]
     public async Task Second_team_exceeds_the_default_limit()
     {

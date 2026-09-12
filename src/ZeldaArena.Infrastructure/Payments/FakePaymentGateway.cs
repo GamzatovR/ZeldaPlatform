@@ -6,20 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Payments;
 
-/// <summary>
-/// Мнимый платёжный провайдер (docs/SPEC.md §7.6). Денег он не списывает: платёж
-/// подтверждается кодом из письма, а «авторизация» сводится к проверке номера
-/// по алгоритму Луна и определению платёжной системы по BIN.
-///
-/// Главное здесь — граница. Полный номер карты и CVV существуют только внутри
-/// этого вызова: наружу уходит <see cref="CardAuthorization"/> с брендом и последними
-/// четырьмя цифрами, и именно они попадают в <c>Payments</c>. Ни в базу, ни в логи,
-/// ни в аудит, ни в ответ клиенту номер и CVV не выходят (§7.6, §20 пункт 6).
-///
-/// Настоящий приём платежей потребовал бы PCI DSS и токенизации на стороне провайдера.
-/// Порт <c>IPaymentGateway</c> для того и заведён: заменяется реализация, ядро не
-/// трогается (EP-6, docs/adr/ADR-0007).
-/// </summary>
 public sealed class FakePaymentGateway : IPaymentGateway
 {
     public const string ProviderKey = "fake";
@@ -38,9 +24,6 @@ public sealed class FakePaymentGateway : IPaymentGateway
 
         var digits = CardNumber.OnlyDigits(request.CardNumber);
 
-        // Форму уже проверил валидатор; здесь проверка повторяется, потому что порт
-        // могут вызвать и не из него. Причину отказа наружу не раскрываем — что именно
-        // не так с картой, знает валидатор, а не отказ авторизации.
         if (!IsPlausibleCardNumber(digits) || !IsNotExpired(request))
         {
             return Task.FromResult(Result.Failure<CardAuthorization>(BillingErrors.CardDeclined));
@@ -51,7 +34,7 @@ public sealed class FakePaymentGateway : IPaymentGateway
         return Task.FromResult(Result.Success(authorization));
     }
 
-    /// <summary>Платёжная система по первой цифре BIN, как описано в §7.6.</summary>
+    /// <summary>Платёжная система по первой цифре BIN, как описано в</summary>
     public static string BrandOf(string digits)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(digits);
@@ -78,8 +61,6 @@ public sealed class FakePaymentGateway : IPaymentGateway
         }
 
         // Карта действительна до последнего дня указанного месяца включительно.
-        // Момент берётся у системных часов, а не у IDateTimeProvider: это внешний
-        // провайдер, и он сверяется со своим временем, а не с временем приложения.
         var expiresAfter = new DateOnly(request.ExpiryYear, request.ExpiryMonth, 1).AddMonths(1);
 
         return expiresAfter > DateOnly.FromDateTime(DateTime.UtcNow);

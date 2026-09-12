@@ -4,10 +4,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Хранилище над словарём. Повторяет контракт настоящего: имя — GUID и расширение
-/// распознанного формата, содержимое не изображения отвергается исключением.
-/// </summary>
 internal sealed class InMemoryFileStorage : IFileStorage
 {
     private readonly Dictionary<string, byte[]> _files = new(StringComparer.Ordinal);

@@ -5,17 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Web.Extensions;
 
-/// <summary>
-/// Перенос неудачного <see cref="Result"/> в <see cref="ModelStateDictionary"/>.
-///
-/// Хендлеры возвращают <see cref="Error"/> с ключом ресурса, а не с готовой фразой
-/// (docs/SPEC.md §9.5), поэтому текст подставляется здесь — на слое представления,
-/// где уже есть текущая культура.
-///
-/// Ошибка кладётся в общую сводку, а не на конкретное поле: «неверный адрес или
-/// пароль» не относится ни к одному из них по отдельности, и подсветка только поля
-/// пароля подсказала бы, что адрес угадан верно.
-/// </summary>
 public static class ModelStateResultExtensions
 {
     public static void AddResultError(

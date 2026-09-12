@@ -4,16 +4,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Common.Models.Esports;
 
-/// <summary>
-/// Единственная проекция матча в карточку. Выражение, а не метод: EF Core переводит
-/// его в SQL целиком, и названия команд с турниром приходят JOIN'ом в том же запросе,
-/// а не отдельным запросом на строку — обязательная проверка на N+1 из docs/SPEC.md §16.
-///
-/// Навигационные свойства разворачиваются с проверкой на null. В SQL это безразлично:
-/// внешние ключи обязательны. Но то же выражение исполняется в памяти unit-тестами,
-/// и без проверки падает с <c>NullReferenceException</c> — ровно эта ошибка была поймана
-/// в Фазе 5, когда проекцию строил Mapster (docs/PROGRESS.md).
-/// </summary>
 public static class MatchCardProjection
 {
     public static readonly Expression<Func<Match, MatchCardDto>> Expression = match => new MatchCardDto

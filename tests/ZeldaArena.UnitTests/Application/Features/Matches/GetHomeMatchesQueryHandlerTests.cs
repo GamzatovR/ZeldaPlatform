@@ -6,20 +6,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Matches;
 
-/// <summary>
-/// Хендлер проверяется на настоящей коллекции: собранное им выражение исполняется
-/// LINQ-провайдером в памяти, поэтому порядок и отбор проверяются по результату,
-/// а не по факту вызова подменённого порта — так же, как у списка турниров.
-///
-/// Названия и логотипы команд остаются пустыми: <c>Match.TeamA</c> и <c>Match.TeamB</c> —
-/// навигационные свойства без публичного сеттера, их заполняет EF Core при загрузке,
-/// а подставить их здесь можно было бы только рефлексией — то есть проверялась бы
-/// рефлексия, а не хендлер. Зато сам факт, что выражение исполняется вне EF Core
-/// и не падает, — это и есть проверка: первая версия проекции разворачивала
-/// <c>TeamA.Name</c> без защиты от null и роняла все четыре теста.
-/// Что проекция действительно уходит в JOIN, проверяется на живой базе
-/// (запись Фазы 5 в docs/PROGRESS.md).
-/// </summary>
 public class GetHomeMatchesQueryHandlerTests
 {
     private static readonly Guid Tournament = Guid.NewGuid();
@@ -35,11 +21,6 @@ public class GetHomeMatchesQueryHandlerTests
         result.First().IsLive.ShouldBeTrue();
     }
 
-    /// <summary>
-    /// Идущий матч запланирован позже всех остальных, поэтому одной сортировкой
-    /// по времени он оказался бы последним. Проверка именно про это: приоритет
-    /// статуса сильнее времени.
-    /// </summary>
     [Fact]
     public async Task Within_a_group_matches_are_ordered_by_schedule()
     {

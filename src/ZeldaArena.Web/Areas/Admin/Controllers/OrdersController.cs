@@ -12,10 +12,6 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Заказы — <c>/admin/orders</c> (docs/SPEC.md §9.4, п. 7): фильтры, смена статуса,
-/// детали. Только администратор: заказ связан с платежами (§8.1).
-/// </summary>
 [Route("admin/orders")]
 [Authorize(Policy = PolicyNames.AdminOnly)]
 public sealed class OrdersController(ISender sender, IStringLocalizer<SharedResource> localizer)

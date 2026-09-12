@@ -4,11 +4,6 @@ using ZeldaArena.Application.Features.Admin.Tournaments.Commands.AddTournamentTe
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Tournaments;
 
-/// <summary>
-/// Участник турнира: команда, посев, место. Пределы те же, что у валидаторов сценариев
-/// (<see cref="AddTournamentTeamCommandValidator.MaxSeed"/>), и в разметке стоят
-/// атрибутами min/max — браузер не отправит лишнего даже без JavaScript.
-/// </summary>
 public sealed class ParticipantInputModel
 {
     public Guid TeamId { get; set; }

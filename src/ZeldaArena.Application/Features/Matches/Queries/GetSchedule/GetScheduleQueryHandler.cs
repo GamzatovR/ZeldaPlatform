@@ -8,14 +8,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Matches.Queries.GetSchedule;
 
-/// <summary>
-/// Страница матчей уходит в базу одним запросом с пагинацией, группировка по дням —
-/// над уже выбранной страницей в памяти: в SQL она ничего не экономит, а выражение
-/// с группировкой провайдерозависимо.
-///
-/// Направление времени зависит от того, что показано. Будущее — по возрастанию:
-/// ближайшее первым. Прошедшее — по убыванию: свежий результат первым.
-/// </summary>
 public sealed class GetScheduleQueryHandler(
     IReadRepository<Match> matches,
     IReadRepository<Tournament> tournaments,

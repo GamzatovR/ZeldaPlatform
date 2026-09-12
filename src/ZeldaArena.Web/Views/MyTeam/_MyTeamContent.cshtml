@@ -7,10 +7,7 @@
     var team = Model.Team!;
 }
 
-@*
-    Профиль и состав своей команды. Управление составом (роль, удаление) встроено в строки
-    таблицы и выводится только тому, кто может править: без функции таблица — только чтение.
-*@
+@* Профиль и состав своей команды. *@
 <div class="details-desc">
     <div class="details-desc__head">
         <avatar image="@Url.StoredFile(team.LogoPath)" name="@team.Name" class="details-desc__avatar" />

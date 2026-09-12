@@ -50,7 +50,7 @@ public sealed class OrderConfiguration : EntityConfiguration<Order>
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .AutoInclude();
 
-        // Индекс под фильтр истории заказов (docs/SPEC.md §10.2).
+        // Индекс под фильтр истории заказов.
         builder.HasIndex(order => new { order.UserId, order.Status, order.PlacedAt });
         builder.HasIndex(order => new { order.Status, order.PlacedAt });
     }

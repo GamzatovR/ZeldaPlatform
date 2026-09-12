@@ -4,11 +4,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Новость портала. Хранилище новостей подменяемо: та же сущность обслуживается
-/// EfNewsRepository или MongoNewsRepository по настройке Persistence:NewsProvider
-/// (docs/SPEC.md §5.4, EP-1).
-/// </summary>
+/// <summary>Новость портала.</summary>
 public class NewsArticle : BaseEntity, IAuditableEntity
 {
     private NewsArticle()
@@ -21,7 +17,7 @@ public class NewsArticle : BaseEntity, IAuditableEntity
 
     public string? Summary { get; private set; }
 
-    /// <summary>Текст в HTML. Очищается HtmlSanitizer на входе (docs/SPEC.md §15).</summary>
+    /// <summary>Текст в HTML. Очищается HtmlSanitizer на входе.</summary>
     public string BodyHtml { get; private set; } = null!;
 
     public string? CoverPath { get; private set; }

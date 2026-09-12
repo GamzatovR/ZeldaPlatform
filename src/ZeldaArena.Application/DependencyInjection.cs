@@ -13,10 +13,6 @@ using ZeldaArena.Application.Features.Payments;
 
 namespace ZeldaArena.Application;
 
-/// <summary>
-/// Composition root слоя сценариев. Web вызывает его в Program.cs; типы Application
-/// в Web разрешены — правило 3 docs/SPEC.md §5.2 запрещает только типы Infrastructure.
-/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
@@ -29,9 +25,7 @@ public static class DependencyInjection
         {
             configuration.RegisterServicesFromAssembly(assembly);
 
-            // Порядок регистрации = порядок выполнения. Логирование снаружи всего,
-            // чтобы видеть и отвергнутые валидатором запросы; транзакция внутри всего,
-            // чтобы аудит не оказался её частью (docs/adr/ADR-0004).
+            // Порядок регистрации = порядок выполнения.
             configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             configuration.AddOpenBehavior(typeof(AuditBehavior<,>));

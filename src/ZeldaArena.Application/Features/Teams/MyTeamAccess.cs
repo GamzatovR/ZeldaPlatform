@@ -8,15 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams;
 
-/// <summary>
-/// Общий вход всех сценариев правки своей команды: кто работает, есть ли у него
-/// функция <c>team.create</c> и его ли это команда.
-///
-/// Чужая команда и несуществующая дают один и тот же ответ «команды нет»: иначе по
-/// ответу можно было бы перебирать чужие идентификаторы (защита от IDOR, docs/SPEC.md §15).
-/// Функция проверяется здесь, а не только атрибутом действия: после истечения
-/// подписки править команду нельзя ни с какого входа (docs/CONVENTIONS.md, «При неопределённости»).
-/// </summary>
 internal static class MyTeamAccess
 {
     public static async Task<Result<Team>> LoadEditableAsync(

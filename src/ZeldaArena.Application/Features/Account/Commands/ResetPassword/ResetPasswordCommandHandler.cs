@@ -6,14 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.ResetPassword;
 
-/// <summary>
-/// Установка нового пароля по одноразовому токену из письма.
-///
-/// После успешной установки прочие сессии закрываются: пароль меняют в том числе
-/// потому, что старый мог утечь, и оставлять открытые сессии в этот момент нельзя
-/// (docs/SPEC.md §8.2). Уведомление на почту — вторая часть того же требования:
-/// владелец должен узнать о смене, даже если её сделал не он.
-/// </summary>
 public sealed class ResetPasswordCommandHandler(
     IUserAccountService userAccounts,
     IAccountEmailSender emailSender)

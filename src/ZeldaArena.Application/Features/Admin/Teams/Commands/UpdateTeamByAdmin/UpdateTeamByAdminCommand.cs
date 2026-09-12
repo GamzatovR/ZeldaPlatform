@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Teams.Commands.UpdateTeamByAdmin;
 
-/// <summary>
-/// Правка команды администрацией — в том числе команды подписчика: модерация правит
-/// то, что нарушает правила, не забирая команду у владельца. Слаг не меняется:
-/// это адрес страницы (docs/adr/ADR-0008).
-/// </summary>
 public sealed record UpdateTeamByAdminCommand : ICommand, IAuditableRequest, ITeamFields
 {
     public Guid Id { get; init; }

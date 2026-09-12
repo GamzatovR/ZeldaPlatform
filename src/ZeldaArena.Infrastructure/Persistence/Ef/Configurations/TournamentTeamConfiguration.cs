@@ -5,7 +5,7 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef.Configurations;
 
-/// <summary>Связь «турнир — команда» с составным первичным ключом (docs/SPEC.md §6).</summary>
+/// <summary>Связь «турнир — команда» с составным первичным ключом.</summary>
 public sealed class TournamentTeamConfiguration : IEntityTypeConfiguration<TournamentTeam>
 {
     public void Configure(EntityTypeBuilder<TournamentTeam> builder)

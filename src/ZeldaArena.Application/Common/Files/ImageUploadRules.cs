@@ -2,29 +2,13 @@ using System.Text.RegularExpressions;
 
 namespace ZeldaArena.Application.Common.Files;
 
-/// <summary>
-/// Правила загрузки изображений (docs/SPEC.md §15): whitelist расширений и лимит размера.
-/// Одно место на валидатор сценария, клиентскую проверку формы и хранилище — три копии
-/// разъехались бы, и форма начала бы принимать файлы, которые сервер отвергает.
-/// </summary>
 public static class ImageUploadRules
 {
     /// <summary>2 МБ: логотипу и аватару больше не нужно, а сервер не должен принимать что попало.</summary>
     public const long MaxSizeBytes = 2 * 1024 * 1024;
 
-    /// <summary>
-    /// Предел всего запроса с загрузкой — намеренно выше лимита файла. Файл в 3–5 МБ
-    /// (обычное фото с телефона) должен дойти до проверки и вернуться на форму понятным
-    /// сообщением, а не оборваться на входе пустой страницей 400. Выше этого предела
-    /// запрос отвергается ещё до чтения тела — это защита сервера, а не правило формы.
-    /// </summary>
     public const long MaxRequestBytes = 10 * 1024 * 1024;
 
-    /// <summary>
-    /// Вид имени, которое выдаёт хранилище: GUID без разделителей и расширение формата.
-    /// По нему проверяется всё, что приходит обратно из URL, — иначе имя файла стало бы
-    /// путём и из него сложился бы выход за каталог хранилища.
-    /// </summary>
     public const string StoredNamePattern = @"^[0-9a-f]{32}\.(png|jpg|webp)$";
 
     /// <summary>Строка для атрибута <c>accept</c> поля выбора файла.</summary>
@@ -39,10 +23,6 @@ public static class ImageUploadRules
     public static bool HasAllowedExtension(string? fileName) =>
         !string.IsNullOrWhiteSpace(fileName) && AllowedExtensions.Contains(Path.GetExtension(fileName));
 
-    /// <summary>
-    /// Расширение сохранённого файла берётся из распознанного формата, а не из имени,
-    /// присланного клиентом.
-    /// </summary>
     public static string ExtensionOf(ImageFormat format) => format switch
     {
         ImageFormat.Png => ".png",

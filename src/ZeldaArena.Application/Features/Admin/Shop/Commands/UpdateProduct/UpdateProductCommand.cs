@@ -4,10 +4,6 @@ using ZeldaArena.Application.Features.Orders;
 
 namespace ZeldaArena.Application.Features.Admin.Shop.Commands.UpdateProduct;
 
-/// <summary>
-/// Правка товара: название, категория, описание, цена, остаток, наличие в продаже.
-/// Артикул не меняется — по нему товар ищут в учёте.
-/// </summary>
 public sealed record UpdateProductCommand : ICommand, IAuditableRequest, IProductFields
 {
     public Guid Id { get; init; }

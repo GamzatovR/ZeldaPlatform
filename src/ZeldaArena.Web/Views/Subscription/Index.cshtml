@@ -9,11 +9,6 @@
     var pageTitle = new PageTitleViewModel(Localizer["subscription.title"].Value);
 }
 
-@*
-    Макета у страницы тарифов нет (docs/SPEC.md §9.3 п. 17), поэтому она собрана
-    из тех же токенов и компонентов, что и остальные экраны: .plan-card, .panel,
-    заголовок секции (docs/design/design-system.md §11).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">
@@ -22,7 +17,7 @@
 
         @if (Model.RequiredFeature is not null)
         {
-            @* Пришли по редиректу фича-гейта: нужный тариф подсвечен ниже (§7.3). *@
+            @* Пришли по редиректу фича-гейта: нужный тариф подсвечен ниже. *@
             <div class="alert-token alert-token--warning" role="alert">
                 <icon name="@IconNames.Lock" />
                 <span>@Localizer["subscription.feature_required"]</span>

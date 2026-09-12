@@ -36,10 +36,6 @@ public class LoggingBehaviorTests
         logger.Messages.ShouldContain(message => message.Contains("упал"));
     }
 
-    /// <summary>
-    /// Содержимое запроса в лог не пишется вообще: это самая простая гарантия того,
-    /// что туда не попадёт номер карты (docs/SPEC.md §13).
-    /// </summary>
     [Fact]
     public async Task Request_content_never_reaches_the_log()
     {

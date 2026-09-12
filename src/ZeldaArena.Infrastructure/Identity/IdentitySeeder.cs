@@ -7,13 +7,7 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Создаёт роли и учётные записи, без которых портал не работает (docs/SPEC.md §6).
-///
-/// Идемпотентен, как и остальной сид: всё ищется по естественному ключу — имени роли
-/// и адресу почты, — добавляется только недостающее. Повторный запуск ничего
-/// не меняет и, что важнее, не сбрасывает пароль администратору, который его уже сменил.
-/// </summary>
+/// <summary>Создаёт роли и учётные записи, без которых портал не работает.</summary>
 public sealed class IdentitySeeder(
     UserManager<ApplicationUser> userManager,
     RoleManager<ApplicationRole> roleManager,
@@ -134,7 +128,7 @@ public sealed class IdentitySeeder(
             await userManager.AddToRoleAsync(user, role).ConfigureAwait(false);
         }
 
-        // Роль User есть у всех: политики §8.1 опираются на неё как на признак
+        // Роль User есть у всех: политики опираются на неё как на признак
         // зарегистрированного пользователя.
         if (role != RoleNames.User
             && !await userManager.IsInRoleAsync(user, RoleNames.User).ConfigureAwait(false))

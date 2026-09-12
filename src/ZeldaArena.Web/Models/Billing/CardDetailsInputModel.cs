@@ -5,16 +5,6 @@ using ZeldaArena.Application.Features.Payments;
 
 namespace ZeldaArena.Web.Models.Billing;
 
-/// <summary>
-/// Реквизиты карты — клиентский уровень двухуровневой валидации (docs/SPEC.md §15),
-/// общий для оплаты подписки и оформления заказа: одна модель и один partial
-/// <c>_CardFields</c>, чтобы формы не разъехались. Серверная проверка выполняется
-/// всегда — <c>CardPaymentRules</c> в FluentValidation, и без JavaScript форма
-/// отвергается точно так же (§19).
-///
-/// Модель живёт один запрос: номер и CVV уходят в команду, оттуда в платёжный
-/// провайдер и нигде не сохраняются (§7.6).
-/// </summary>
 public sealed class CardDetailsInputModel : IValidatableObject
 {
     [Required(ErrorMessage = "Укажите номер карты.")]
@@ -45,12 +35,6 @@ public sealed class CardDetailsInputModel : IValidatableObject
     [Display(Name = "Адрес для чека и кода подтверждения")]
     public string ConfirmationEmail { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Истёкшая карта — ошибка, которую форма допускает без подделки запроса: месяц
-    /// и год по отдельности проходят свои диапазоны. Правило то же, что у серверного
-    /// валидатора (<see cref="CardPaymentRules.IsExpired"/>). Вызывается, только когда
-    /// поля по отдельности уже прошли проверку.
-    /// </summary>
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (CardPaymentRules.IsExpired(ExpiryMonth, ExpiryYear))

@@ -3,7 +3,7 @@ using ZeldaArena.Application.Features.Orders;
 
 namespace ZeldaArena.Application.Features.Admin.Shop.Commands.DeleteCategory;
 
-/// <summary>Удаление пустой категории: у товара категория обязательна (docs/SPEC.md §6).</summary>
+/// <summary>Удаление пустой категории: у товара категория обязательна.</summary>
 public sealed record DeleteCategoryCommand(Guid Id) : ICommand, IAuditableRequest
 {
     public string AuditEntityType => ShopAudit.Category;

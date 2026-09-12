@@ -9,15 +9,6 @@
     var pageTitle = new PageTitleViewModel(T["checkout.title"].Value, T["checkout.sub"].Value);
 }
 
-@*
-    Оформление (docs/SPEC.md §9.3, п. 14), по docs/design/pages/checkout.html:
-    слева адрес доставки (.billing-details), справа состав заказа и оплата
-    (.order-details). Поле кода из письма — на следующем шаге, общем с оплатой
-    подписки (§7.6, шаг 3; README макета: «форму оплаты дополнить полем ввода кода»).
-
-    Суммы здесь только для сверки: заказ собирается из корзины на сервере,
-    из формы не принимается ни цена, ни состав (§15).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section checkout">

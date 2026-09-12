@@ -4,10 +4,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Matches;
 
-/// <summary>
-/// Страница матча. Главное здесь — состав на момент матча: состав историчен,
-/// и прошлый матч показывает тех, кто тогда играл, а не нынешних игроков.
-/// </summary>
 public class GetMatchDetailsQueryHandlerTests
 {
     private static readonly DateTimeOffset MatchDay = EsportsWorld.Now.AddDays(-10);

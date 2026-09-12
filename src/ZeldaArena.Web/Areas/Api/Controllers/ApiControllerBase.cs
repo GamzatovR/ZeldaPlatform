@@ -7,19 +7,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>
-/// Основа всех эндпоинтов <c>Areas/Api</c> (docs/SPEC.md §10.1). Здесь только транспорт:
-/// сценарии те же, что у страниц, и API-контроллер, как и обычный, лишь отправляет
-/// запрос и выбирает форму ответа (§5.2, правило 4).
-///
-/// Для списков ответ — partial HTML, тот же файл, что рисует страница; для операций —
-/// JSON. Отказ сценария — <see cref="ProblemDetails"/> с переведённым текстом и кодом
-/// ошибки, чтобы клиент мог и показать сообщение, и отличить один отказ от другого.
-///
-/// Антифоржери проверяется на каждом изменяющем запросе автоматически (§15): атрибут
-/// висит здесь, и архитектурный тест требует, чтобы каждый контроллер области
-/// наследовал этот класс, — забыть его на новом эндпоинте нельзя.
-/// </summary>
 [Area(AreaName)]
 [ApiController]
 [AutoValidateAntiforgeryToken]
@@ -34,10 +21,6 @@ public abstract class ApiControllerBase(IStringLocalizer<SharedResource> localiz
 
     protected IStringLocalizer<SharedResource> Localizer => localizer;
 
-    /// <summary>
-    /// Partial списка. <paramref name="pagePath"/> — адрес страницы, которой принадлежит
-    /// список: на него ведут ссылки пагинации (<see cref="ListViewData.PagePath"/>).
-    /// </summary>
     protected PartialViewResult ListPartial(string viewName, object model, string? pagePath)
     {
         ViewData[ListViewData.PagePath] = pagePath;
@@ -45,10 +28,6 @@ public abstract class ApiControllerBase(IStringLocalizer<SharedResource> localiz
         return PartialView(viewName, model);
     }
 
-    /// <summary>
-    /// Адрес страницы сайта, куда клиент перейдёт после операции. Область указана явно:
-    /// из Areas/Api без неё адрес строился бы в области Api и не находился.
-    /// </summary>
     protected string PageUrl(string action, string controller, object? values = null)
     {
         var routeValues = new RouteValueDictionary(values) { ["area"] = string.Empty };

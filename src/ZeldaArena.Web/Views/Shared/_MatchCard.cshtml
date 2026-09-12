@@ -4,14 +4,7 @@
 @model MatchCardDto
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Карточка матча по .single-matches-box макета (docs/design/design-system.md §11).
-    Одна на все списки: главная, вкладки турнира, расписание, история команды и игрока.
-
-    data-match-id и aria-live на счёте — под Фазу 10: счёт начнёт приходить по SignalR (§11),
-    клиент найдёт все карточки матча на странице по идентификатору, а смену числа
-    услышит скринридер.
-*@
+@* Карточка матча по .single-matches-box макета. *@
 <article class="match-card" data-match-id="@Model.Id">
     <div class="row align-items-center">
         <div class="col-lg-5">

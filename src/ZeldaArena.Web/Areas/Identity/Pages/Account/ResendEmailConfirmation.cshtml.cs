@@ -14,10 +14,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Повторная отправка письма с подтверждением. Ответ одинаков для любого адреса,
-/// поэтому по нему нельзя узнать, заведён ли он на портале (docs/SPEC.md §8.2).
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.EmailDelivery)]
 public sealed class ResendEmailConfirmationModel(

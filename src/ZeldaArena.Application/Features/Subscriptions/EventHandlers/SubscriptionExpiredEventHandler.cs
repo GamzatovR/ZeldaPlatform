@@ -11,19 +11,6 @@ using ZeldaArena.Domain.Events;
 
 namespace ZeldaArena.Application.Features.Subscriptions.EventHandlers;
 
-/// <summary>
-/// Подписка истекла или отозвана (docs/SPEC.md §7.5, п. 4): снимаем роль Premium
-/// и сбрасываем кэш прав.
-///
-/// Роль снимается не безусловно. У пользователя может остаться вторая действующая
-/// подписка — например, купленная отдельно фича из выделенного тарифа (EP-4), —
-/// и тогда бейдж должен сохраниться. Проверка идёт по базе, а не по событию:
-/// событие знает только о своей подписке.
-///
-/// Команда пользователя при этом остаётся в целости, но её редактирование
-/// закрывается отсутствием фичи <c>team.create</c> — решение зафиксировано
-/// в docs/CONVENTIONS.md, раздел «При неопределённости».
-/// </summary>
 public sealed class SubscriptionExpiredEventHandler(
     IUserAccountService userAccounts,
     IEntitlementCacheInvalidator entitlementCache,
@@ -54,9 +41,7 @@ public sealed class SubscriptionExpiredEventHandler(
             .RemoveFromRoleAsync(userId, RoleNames.Premium, cancellationToken)
             .ConfigureAwait(false);
 
-        // Оставшийся бейдж — косметическая беда: доступа он не даёт, права уже
-        // пересчитаны сбросом кэша выше. Ронять фоновую службу из-за него нельзя,
-        // иначе остальные истёкшие подписки так и не обработаются.
+        // Оставшийся бейдж — косметическая беда.
         if (removed.IsFailure)
         {
             logger.LogWarning(

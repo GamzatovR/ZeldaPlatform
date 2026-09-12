@@ -8,13 +8,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Роль Premium выдаётся и снимается обработчиками событий подписки и годится
-/// только для отображения (docs/SPEC.md §7.4, docs/adr/ADR-0005).
-///
-/// Здесь же проверяется сброс кэша прав: без него доступ отставал бы от оплаты
-/// на пять минут TTL.
-/// </summary>
 public class PremiumRoleTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 9, 12, 0, 0, TimeSpan.Zero);
@@ -43,10 +36,6 @@ public class PremiumRoleTests
         _cache.InvalidatedUsers.ShouldBe([user.Id]);
     }
 
-    /// <summary>
-    /// Невыданный бейдж не повод ронять оплату: подписка уже оплачена, а права
-    /// даёт не роль, а фичи. Сбой обязан попасть в журнал и не дальше.
-    /// </summary>
     [Fact]
     public async Task A_missing_account_does_not_break_the_activation()
     {
@@ -74,10 +63,6 @@ public class PremiumRoleTests
         updated.ShouldNotBeNull().Roles.ShouldNotContain(RoleNames.Premium);
     }
 
-    /// <summary>
-    /// У пользователя может остаться вторая действующая подписка — например,
-    /// купленная отдельно фича из выделенного тарифа (EP-4). Бейдж тогда сохраняется.
-    /// </summary>
     [Fact]
     public async Task The_badge_survives_while_another_subscription_is_still_running()
     {

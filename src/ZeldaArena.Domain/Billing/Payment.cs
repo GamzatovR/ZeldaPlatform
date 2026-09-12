@@ -9,13 +9,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Billing;
 
-/// <summary>
-/// Платёж — общий механизм для подписок и заказов магазина (docs/SPEC.md §7.6).
-///
-/// Полного номера карты и CVV в этой сущности нет и не появится: хранятся только
-/// последние четыре цифры и платёжная система. Код подтверждения хранится хешем;
-/// исходный код известен только письму, ушедшему пользователю.
-/// </summary>
+/// <summary>Платёж — общий механизм для подписок и заказов магазина.</summary>
 public class Payment : BaseEntity, IAuditableEntity
 {
     public const int MaxAttempts = 5;
@@ -121,11 +115,7 @@ public class Payment : BaseEntity, IAuditableEntity
         };
     }
 
-    /// <summary>
-    /// Сверяет хеш введённого кода. Сравнение постоянного времени, чтобы по задержке
-    /// ответа нельзя было подбирать код посимвольно. Неверная попытка уменьшает счётчик;
-    /// когда попытки кончились или срок истёк, платёж переходит в Failed (docs/SPEC.md §7.6).
-    /// </summary>
+    /// <summary>Сверяет хеш введённого кода.</summary>
     public PaymentConfirmationResult Confirm(string providedCodeHash, DateTimeOffset moment)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(providedCodeHash);
@@ -176,10 +166,7 @@ public class Payment : BaseEntity, IAuditableEntity
         return PaymentConfirmationResult.Succeeded;
     }
 
-    /// <summary>
-    /// Новый код взамен истёкшего: срок и счётчик попыток начинаются заново.
-    /// Частоту повторной отправки ограничивает rate limiting на эндпоинте, а не сущность.
-    /// </summary>
+    /// <summary>Новый код взамен истёкшего.</summary>
     public void ReissueCode(string confirmationCodeHash, DateTimeOffset expiresAt)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(confirmationCodeHash);
@@ -227,10 +214,7 @@ public class Payment : BaseEntity, IAuditableEntity
         FailureReason = reason;
     }
 
-    /// <summary>
-    /// Возврат денег: администратор отменил оплаченный заказ (docs/adr/ADR-0010).
-    /// Возвращается только успешный платёж — вернуть можно лишь то, что получено.
-    /// </summary>
+    /// <summary>Возврат денег.</summary>
     public void Refund(DateTimeOffset refundedAt)
     {
         InvariantViolationException.ThrowIf(

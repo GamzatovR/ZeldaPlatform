@@ -4,11 +4,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Второй фактор в памяти. Настоящий TOTP не воспроизводится: годным считается
-/// заранее оговорённый код. Тестам хендлеров важна не арифметика алгоритма,
-/// а то, что происходит при верном и неверном коде.
-/// </summary>
 internal sealed class StubTwoFactorService : ITwoFactorService
 {
     public const string ValidCode = "123456";

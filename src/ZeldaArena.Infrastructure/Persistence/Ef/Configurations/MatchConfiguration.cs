@@ -17,10 +17,10 @@ public sealed class MatchConfiguration : EntityConfiguration<Match>
         builder.Ignore(match => match.IsFinished);
 
         // Два модератора могут править счёт одного матча одновременно —
-        // токен конкурентности обязателен (docs/SPEC.md §15).
+        // токен конкурентности обязателен.
         builder.UseXminAsConcurrencyToken();
 
-        // Restrict: история матчей переживает удаление команды (docs/SPEC.md §6).
+        // Restrict: история матчей переживает удаление команды.
         builder.HasOne(match => match.TeamA)
             .WithMany()
             .HasForeignKey(match => match.TeamAId)
@@ -39,7 +39,7 @@ public sealed class MatchConfiguration : EntityConfiguration<Match>
         builder.Navigation(match => match.PlayerStats)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-        // Индексы под расписание, вкладки матчей турнира и ленту live (docs/SPEC.md §10.2).
+        // Индексы под расписание, вкладки матчей турнира и ленту live.
         builder.HasIndex(match => new { match.TournamentId, match.Status, match.ScheduledAt });
         builder.HasIndex(match => new { match.Status, match.ScheduledAt });
         builder.HasIndex(match => match.TeamAId);

@@ -7,18 +7,6 @@ using ZeldaArena.Web.Areas.Api;
 
 namespace ZeldaArena.Web.Authorization;
 
-/// <summary>
-/// Отказ из-за отсутствующей платной функции — это не «вам сюда нельзя», а «нужна
-/// подписка», и отвечать на него голым 403 неправильно: docs/SPEC.md §7.3 требует
-/// увести на тарифы и объяснить, какой из них открывает функцию.
-///
-/// Отличить один случай от другого можно только здесь: к моменту, когда сработала бы
-/// страница отказа в доступе, известен лишь код ответа, а какое требование не прошло —
-/// уже нет.
-///
-/// Всё остальное — обычные политики §8.1, неаутентифицированный пользователь, запросы
-/// к API — отдаётся обработчику по умолчанию.
-/// </summary>
 public sealed class FeatureAccessDeniedHandler : IAuthorizationMiddlewareResultHandler
 {
     private readonly AuthorizationMiddlewareResultHandler _default = new();
@@ -65,10 +53,6 @@ public sealed class FeatureAccessDeniedHandler : IAuthorizationMiddlewareResultH
                 .FirstOrDefault()
                 ?.FeatureCode;
 
-    /// <summary>
-    /// Клиент, ждущий JSON, и любой запрос к Areas/Api получают код ответа: редирект
-    /// на HTML-страницу тарифов сломал бы вызывающий их fetch (§10.1).
-    /// </summary>
     private static bool PrefersJson(HttpRequest request) =>
         request.Headers.Accept.Any(value =>
             value?.Contains("application/json", StringComparison.OrdinalIgnoreCase) == true);

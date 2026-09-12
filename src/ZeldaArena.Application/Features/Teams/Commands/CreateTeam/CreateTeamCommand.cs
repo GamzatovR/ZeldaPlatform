@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.CreateTeam;
 
-/// <summary>
-/// Создание своей команды подписчиком — главная платная функция (docs/SPEC.md §4, §9.3 п. 8).
-/// Возвращает слаг созданной команды. Пишется в аудит: создание команды — обязательное
-/// событие по §8.2.
-/// </summary>
 public sealed record CreateTeamCommand : ICommand<string>, IAuditableRequest
 {
     public required string Name { get; init; }

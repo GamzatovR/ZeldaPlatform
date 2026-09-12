@@ -6,22 +6,7 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Иконка из спрайта <c>wwwroot/img/icons.svg</c>:
-///
-/// <code>
-/// &lt;icon name="@IconNames.Search" /&gt;
-/// &lt;icon name="@IconNames.Cart" label="Корзина" /&gt;
-/// </code>
-///
-/// Шрифты иконок макета непригодны: <c>boxicons.min.css</c> и <c>flaticon.css</c>
-/// в выданном шаблоне отсутствуют, а без них <c>.woff2</c> не связать с именами
-/// классов (docs/design/design-system.md §1, §12).
-///
-/// Без <c>label</c> иконка декоративна и прячется от скринридера: рядом с ней
-/// всегда есть текст. Если иконка — единственное содержимое кнопки или ссылки,
-/// <c>label</c> обязателен, иначе управление останется безымянным.
-/// </summary>
+/// <summary>Иконка из спрайта wwwroot/img/icons.svg.</summary>
 [HtmlTargetElement("icon", Attributes = NameAttributeName, TagStructure = TagStructure.WithoutEndTag)]
 public sealed class IconTagHelper : TagHelper
 {
@@ -30,9 +15,6 @@ public sealed class IconTagHelper : TagHelper
     [HtmlAttributeName(NameAttributeName)]
     public string Name { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Доступное имя иконки. Задаётся только тогда, когда текста рядом нет.
-    /// </summary>
     [HtmlAttributeName("label")]
     public string? Label { get; set; }
 
@@ -60,9 +42,7 @@ public sealed class IconTagHelper : TagHelper
             output.Attributes.SetAttribute("aria-label", Label);
         }
 
-        // Спрайт адресуется от корня приложения, поэтому ссылка одинакова
-        // на любой глубине маршрута. PathBase учитывается на случай развёртывания
-        // в подкаталоге за nginx (§16).
+        // Спрайт адресуется от корня приложения, поэтому ссылка одинакова на любой глубине маршрута.
         var use = new TagBuilder("use") { TagRenderMode = TagRenderMode.SelfClosing };
         use.Attributes["href"] = ViewContext.HttpContext.Request.PathBase + IconNames.SpritePath + "#" + Name;
 

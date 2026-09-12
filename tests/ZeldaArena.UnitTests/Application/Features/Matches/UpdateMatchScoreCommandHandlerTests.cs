@@ -32,10 +32,6 @@ public class UpdateMatchScoreCommandHandlerTests
         unitOfWork.SaveChangesCalls.ShouldBe(1);
     }
 
-    /// <summary>
-    /// Рассылку зрителям делает обработчик события, а не хендлер: его дело — только
-    /// поднять событие через сущность (docs/SPEC.md §5.5, SRP).
-    /// </summary>
     [Fact]
     public async Task Successful_update_raises_the_domain_event()
     {
@@ -69,11 +65,6 @@ public class UpdateMatchScoreCommandHandlerTests
         unitOfWork.SaveChangesCalls.ShouldBe(0);
     }
 
-    /// <summary>
-    /// Правило формата серии остаётся за сущностью; хендлер его не повторяет,
-    /// а превращает отказ домена в отказ сценария — пульт показывает сообщение,
-    /// а не ошибку сервера.
-    /// </summary>
     [Fact]
     public async Task Score_beyond_the_series_format_is_rejected_by_the_entity()
     {
@@ -102,9 +93,6 @@ public class UpdateMatchScoreCommandHandlerTests
         result.Error.Code.ShouldBe("match.finished_is_read_only");
     }
 
-    /// <summary>
-    /// Пульт, открытый до чужой правки, не должен затирать её счёт (docs/SPEC.md §15).
-    /// </summary>
     [Fact]
     public async Task Stale_console_conflicts_instead_of_overwriting()
     {

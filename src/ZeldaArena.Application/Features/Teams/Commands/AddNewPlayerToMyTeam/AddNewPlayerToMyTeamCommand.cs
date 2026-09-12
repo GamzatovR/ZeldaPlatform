@@ -4,11 +4,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.AddNewPlayerToMyTeam;
 
-/// <summary>
-/// Капитан заводит новый профиль игрока, и тот сразу попадает в состав (решение Фазы 6,
-/// docs/adr/ADR-0008). Игроки не связаны с учётными записями, поэтому «пригласить
-/// пользователя» здесь нечего — профиль ведёт капитан.
-/// </summary>
 public sealed record AddNewPlayerToMyTeamCommand : ICommand, IAuditableRequest
 {
     public Guid TeamId { get; init; }

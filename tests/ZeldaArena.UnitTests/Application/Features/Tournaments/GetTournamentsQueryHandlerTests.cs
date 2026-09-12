@@ -12,11 +12,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Tournaments;
 
-/// <summary>
-/// Хендлер проверяется на настоящей коллекции: собранное им выражение исполняется
-/// LINQ-провайдером в памяти, поэтому фильтр, сортировка и постраничная выборка
-/// проверяются по результату, а не по факту вызова подменённого порта.
-/// </summary>
 public class GetTournamentsQueryHandlerTests
 {
     private static readonly DateTimeOffset Season = new(2026, 6, 1, 0, 0, 0, TimeSpan.Zero);
@@ -49,10 +44,6 @@ public class GetTournamentsQueryHandlerTests
         result.Items.ShouldHaveSingleItem().Name.ShouldBe("Asia Invitational");
     }
 
-    /// <summary>
-    /// Граница включающая: турнир, стартующий ровно в указанный день, из списка
-    /// не выпадает. Здесь это Summer Major.
-    /// </summary>
     [Fact]
     public async Task From_filter_keeps_tournaments_starting_on_that_day_and_later()
     {
@@ -107,10 +98,6 @@ public class GetTournamentsQueryHandlerTests
             .ShouldBe(["Winter Clash", "Autumn Open", "Summer Major"]);
     }
 
-    /// <summary>
-    /// Перевёрнутый диапазон выбирается обычной формой, поэтому это не ошибка валидации,
-    /// а пустой результат: отказ валидатора до Фазы 11 обернулся бы ошибкой сервера.
-    /// </summary>
     [Fact]
     public async Task Reversed_date_range_gives_an_empty_list_not_an_error()
     {
@@ -158,10 +145,6 @@ public class GetTournamentsQueryHandlerTests
         result.Items.Last().Name.ShouldBe("Spring Cup");
     }
 
-    /// <summary>
-    /// Сортировать можно только тем, что перечислено в whitelist. Чужой ключ не роняет
-    /// список и не уезжает в запрос — он заменяется сортировкой по умолчанию (§15).
-    /// </summary>
     [Fact]
     public async Task Unknown_sort_key_falls_back_to_the_default_order()
     {

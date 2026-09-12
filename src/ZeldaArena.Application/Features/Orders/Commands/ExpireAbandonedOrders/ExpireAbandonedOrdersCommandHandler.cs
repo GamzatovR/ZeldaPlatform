@@ -8,11 +8,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders.Commands.ExpireAbandonedOrders;
 
-/// <summary>
-/// Платёж проваливается с той же причиной, что и при вводе истёкшего кода, а заказ
-/// отменяется тем же путём (<see cref="OrderCancellation"/>): остаток на склад,
-/// позиции — обратно в корзину покупателя, как при любом провале оплаты.
-/// </summary>
 public sealed class ExpireAbandonedOrdersCommandHandler(
     IReadRepository<Payment> paymentsForRead,
     IRepository<Payment> payments,
@@ -60,10 +55,7 @@ public sealed class ExpireAbandonedOrdersCommandHandler(
                 canceled++;
             }
 
-            // Сохранение на каждый заказ, а не одно в конце: у одного покупателя может
-            // быть два брошенных заказа, и второй должен найти корзину, которую завёл
-            // первый, а не заводить вторую (одна корзина на пользователя — уникальный индекс).
-            // Транзакция всё равно одна — её держит TransactionBehavior.
+            // Сохранение на каждый заказ, а не одно в конце.
             await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 

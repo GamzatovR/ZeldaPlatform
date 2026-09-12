@@ -14,13 +14,6 @@ using ZeldaArena.Web.Models.Orders;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// История заказов и детали (docs/SPEC.md §9.3, п. 15). Фильтр и пагинация — общий
-/// механизм §10.2: GET-форма, состояние в адресе, partial-список под Фазу 8.
-///
-/// Чужой заказ отвечает 404, как несуществующий: владельца проверяет сценарий,
-/// а номер в адресе не даёт ничего узнать о чужих заказах (§15, IDOR).
-/// </summary>
 [Authorize]
 [Route("orders")]
 public sealed class OrdersController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
@@ -72,10 +65,6 @@ public sealed class OrdersController(ISender sender, IStringLocalizer<SharedReso
         return RedirectToAction(nameof(Details), new { number });
     }
 
-    /// <summary>
-    /// Заведомо не номер — сразу 404: валидатор запроса отверг бы его исключением,
-    /// а до Фазы 11 это ошибка сервера вместо «не найдено».
-    /// </summary>
     private static bool IsPlausibleNumber(string number) =>
         !string.IsNullOrWhiteSpace(number) && number.Length <= OrderRules.MaxNumberLength;
 }

@@ -25,10 +25,6 @@ public sealed record TeamDetailsDto
 
     public string? Description { get; init; }
 
-    /// <summary>
-    /// Команда подписчика до одобрения модератором. Такую страницу видит только
-    /// владелец — с плашкой «на модерации» (docs/adr/ADR-0008).
-    /// </summary>
     public bool IsApproved { get; init; }
 
     public bool IsOwnedByViewer { get; init; }

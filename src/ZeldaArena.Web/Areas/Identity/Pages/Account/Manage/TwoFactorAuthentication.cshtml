@@ -22,7 +22,7 @@ else if (Model.Status.IsEnabled)
         @if (Model.Status.IsRequired)
         {
             @* Для роли Admin второй фактор обязателен: кнопки отключения нет,
-               и хендлер отвергает попытку независимо от разметки (docs/SPEC.md §8.2). *@
+               и хендлер отвергает попытку независимо от разметки. *@
             <div class="alert-token mb-0" role="alert">@T["manage.two_factor.admin_required"]</div>
         }
         else

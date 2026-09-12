@@ -8,10 +8,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Teams.Commands.AddNewPlayerToMyTeam;
 
-/// <summary>
-/// Новый игрок свободен по построению, поэтому проверки «уже в другой команде» здесь нет:
-/// создание профиля и запись в состав уходят одной транзакцией команды.
-/// </summary>
 public sealed class AddNewPlayerToMyTeamCommandHandler(
     IRepository<Team> teamRepository,
     IRepository<Player> playerRepository,

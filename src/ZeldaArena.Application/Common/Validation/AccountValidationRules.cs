@@ -4,18 +4,11 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Application.Common.Validation;
 
-/// <summary>
-/// Правила, общие для всех сценариев аккаунта: адрес, пароль, язык интерфейса.
-///
-/// Вынесены в одно место, потому что пароль проверяется в четырёх командах —
-/// регистрация, сброс, смена, сид администратора. Разложенные по валидаторам копии
-/// разъехались бы при первом же изменении требований §8.2.
-/// </summary>
 public static class AccountValidationRules
 {
     public const int MaxEmailLength = 256;
 
-    /// <summary>Длина кода TOTP: шесть цифр (docs/SPEC.md §8.2).</summary>
+    /// <summary>Длина кода TOTP: шесть цифр.</summary>
     public const int TwoFactorCodeLength = 6;
 
     /// <summary>Коды восстановления Identity выдаёт в виде xxxxx-xxxxx.</summary>
@@ -31,11 +24,6 @@ public static class AccountValidationRules
             .EmailAddress()
             .WithMessage("Адрес электронной почты указан неверно.");
 
-    /// <summary>
-    /// Требования §8.2 проверяются по одному, чтобы сообщение говорило, чего именно
-    /// не хватает. Ответ «пароль не подходит» без объяснения — это несколько попыток
-    /// вслепую вместо одной осмысленной.
-    /// </summary>
     public static IRuleBuilderOptions<T, string> ValidPassword<T>(
         this IRuleBuilder<T, string> ruleBuilder)
     {
@@ -73,10 +61,6 @@ public static class AccountValidationRules
         return rules;
     }
 
-    /// <summary>
-    /// Код TOTP: шесть цифр. Пробелы и дефисы допускаются — из аутентификатора код
-    /// часто переносят вручную и группами; нормализует его реализация порта.
-    /// </summary>
     public static IRuleBuilderOptions<T, string> ValidTwoFactorCode<T>(
         this IRuleBuilder<T, string> ruleBuilder) =>
         ruleBuilder

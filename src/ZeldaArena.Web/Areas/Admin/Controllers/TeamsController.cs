@@ -20,10 +20,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Команды — <c>/admin/teams</c> (docs/SPEC.md §9.4, п. 4): таблица со всеми командами,
-/// одобрение команд подписчиков, профиль и составы.
-/// </summary>
 [Route("admin/teams")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -149,10 +145,6 @@ public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResou
         return View(new TeamEditViewModel { Team = team, Form = model });
     }
 
-    /// <summary>
-    /// Одобрение и снятие одобрения. Та же форма уходит в <c>/api/admin/teams</c>,
-    /// когда есть JavaScript, — тогда таблица перерисовывается без перезагрузки.
-    /// </summary>
     [HttpPost("{id:guid}/approval")]
     public async Task<IActionResult> SetApproval(Guid id, bool isApproved, string? returnUrl, CancellationToken cancellationToken)
     {

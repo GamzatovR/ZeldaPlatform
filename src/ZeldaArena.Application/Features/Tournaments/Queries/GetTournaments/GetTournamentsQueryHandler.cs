@@ -10,15 +10,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments;
 
-/// <summary>
-/// Собирает запрос из фильтра, сортировки по whitelist и проекции сразу в DTO,
-/// после чего отдаёт его на исполнение порту. Ни одной записи в память сверх
-/// одной страницы не поднимается (docs/SPEC.md §16).
-///
-/// Никаких методов EF Core здесь нет и быть не может: выражение остаётся обычным LINQ,
-/// поэтому поиск написан через ToLower, а не через провайдерозависимый ILIKE —
-/// такие вещи живут в репозиториях Infrastructure (docs/adr/ADR-0004).
-/// </summary>
 public sealed class GetTournamentsQueryHandler(
     IReadRepository<Tournament> tournaments,
     IQueryExecutor queryExecutor,

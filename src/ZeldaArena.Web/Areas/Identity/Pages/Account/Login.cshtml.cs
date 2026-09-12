@@ -14,14 +14,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Вход по паролю (docs/SPEC.md §8.2).
-///
-/// Страница ничего не решает сама: отправляет команду, разбирает <c>Result</c>
-/// и выбирает, куда перейти. Ни <c>SignInManager</c>, ни <c>ApplicationUser</c> здесь
-/// нет и быть не может — это типы Infrastructure, а правило 3 §5.2 держит их
-/// за пределами Web.
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.SignIn)]
 public sealed class LoginModel(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -66,10 +58,6 @@ public sealed class LoginModel(ISender sender, IStringLocalizer<SharedResource> 
             : LocalRedirect(ReturnUrl);
     }
 
-    /// <summary>
-    /// Открытый редирект закрывается здесь: адрес, пришедший из query-string, годится,
-    /// только если он локальный (docs/SPEC.md §15).
-    /// </summary>
     private string LocalOrHome(string? returnUrl) =>
         !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)
             ? returnUrl

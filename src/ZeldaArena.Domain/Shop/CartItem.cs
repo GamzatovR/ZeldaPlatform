@@ -3,11 +3,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Позиция корзины. Цена — снапшот на момент добавления, но итог корзины всё равно
-/// пересчитывается на сервере: значения с клиента не принимаются (docs/SPEC.md §15).
-/// Валюта отдельным столбцом не хранится — магазин работает в одной валюте (docs/adr/ADR-0003).
-/// </summary>
+/// <summary>Позиция корзины.</summary>
 public class CartItem : BaseEntity
 {
     private CartItem()

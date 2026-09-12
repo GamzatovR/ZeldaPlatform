@@ -8,9 +8,6 @@ using ZeldaArena.Web.Models.Schedule;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Расписание матчей (docs/SPEC.md §9.3, п. 2). Фильтр — GET-форма, состояние в адресе (§10.2).
-/// </summary>
 [Route("schedule")]
 public sealed class ScheduleController(ISender sender) : Controller
 {

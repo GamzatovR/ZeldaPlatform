@@ -4,12 +4,6 @@ using ZeldaArena.Application.Features.Payments;
 
 namespace ZeldaArena.Application.Features.Orders.Commands.PlaceOrder;
 
-/// <summary>
-/// Адрес плюс общие правила реквизитов (<see cref="CardPaymentRules"/>) — те же, что
-/// у оплаты подписки. Длины совпадают со столбцами <c>Orders</c>
-/// (<c>OrderConfiguration</c>), минимальная длина телефона — с инвариантом
-/// <c>ShippingAddress</c>: форма не должна принимать то, что потом отвергнет база или домен.
-/// </summary>
 public sealed class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
 {
     public const int MaxRecipientLength = 150;

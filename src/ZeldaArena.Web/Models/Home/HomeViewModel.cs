@@ -5,14 +5,6 @@ using ZeldaArena.Application.Features.Teams.Queries.GetTeams;
 
 namespace ZeldaArena.Web.Models.Home;
 
-/// <summary>
-/// Главная страница (docs/SPEC.md §9.3, страница 1). Собирается контроллером
-/// из четырёх запросов; вьюха ничего не вычисляет.
-///
-/// Бегущая строка live-матчей из §9.3 придёт в Фазе 10 вместе со своим сценарием.
-/// Пустого поля под неё здесь нет сознательно: заглушка, притворяющаяся данными,
-/// хуже отсутствующей секции.
-/// </summary>
 public sealed class HomeViewModel
 {
     public required IReadOnlyList<MatchCardDto> Matches { get; init; }

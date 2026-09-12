@@ -2,10 +2,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.Application.Common.Interfaces;
 
-/// <summary>
-/// История чата матча (docs/SPEC.md §12, коллекция <c>chat_messages</c> в MongoDB).
-/// Реализация — Фаза 10.
-/// </summary>
 public interface IChatMessageStore
 {
     Task<ChatMessageRecord> AddAsync(

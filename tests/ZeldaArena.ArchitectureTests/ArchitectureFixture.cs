@@ -6,9 +6,6 @@ using ZeldaArena.Domain;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Сборки слоёв и общие помощники для проверок правила зависимостей (docs/SPEC.md §5.2).
-/// </summary>
 internal static class ArchitectureFixture
 {
     public const string DomainNamespace = "ZeldaArena.Domain";
@@ -27,22 +24,11 @@ internal static class ArchitectureFixture
 
     public static Assembly Web => typeof(Program).Assembly;
 
-    /// <summary>
-    /// Имена сборок, на которые ссылается указанная сборка. Проверка по ссылкам дополняет
-    /// проверку по типам: она срабатывает даже тогда, когда запрещённый пакет уже подключён,
-    /// но им ещё никто не воспользовался.
-    /// </summary>
     public static IReadOnlyCollection<string> ReferencedAssemblyNames(Assembly assembly) =>
         assembly.GetReferencedAssemblies()
             .Select(reference => reference.Name ?? string.Empty)
             .ToArray();
 
-    /// <summary>
-    /// Корень решения. Нужен проверкам, которые читают исходники и файлы проектов,
-    /// а не собранные сборки. Лежит здесь, а не в каждой такой проверке: до Фазы 5
-    /// метод был скопирован в двух файлах, и третья копия появилась бы вместе
-    /// с проверкой спрайта иконок.
-    /// </summary>
     public static string SolutionRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
@@ -61,10 +47,6 @@ internal static class ArchitectureFixture
         type.IsDefined(typeof(CompilerGeneratedAttribute), inherit: false)
         || type.Name.StartsWith('<');
 
-    /// <summary>
-    /// Имя корневого типа: для вложенных и сгенерированных компилятором типов
-    /// (замыкания при точке входа) возвращает объемлющий тип.
-    /// </summary>
     public static string RootTypeName(Type type)
     {
         var root = type;

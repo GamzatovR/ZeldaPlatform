@@ -12,7 +12,7 @@ using ZeldaArena.Web.Authorization;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers.Admin;
 
-/// <summary>Таблицы товаров и заказов без перезагрузки (docs/SPEC.md §10.1, сценарий 12).</summary>
+/// <summary>Таблицы товаров и заказов без перезагрузки.</summary>
 [Route("api/admin")]
 [Authorize(Policy = PolicyNames.AdminOnly)]
 public sealed class AdminShopApiController(ISender sender, IStringLocalizer<SharedResource> localizer)

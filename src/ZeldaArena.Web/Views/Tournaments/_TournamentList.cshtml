@@ -4,11 +4,7 @@
 @model PagedResult<TournamentListItemDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Результат фильтра: итог, сетка и пагинация. Отдельный partial, потому что
-    его же возвращает GET /api/tournaments (docs/SPEC.md §10.1, сценарий 1),
-    и страница подменяет только этот блок.
-*@
+@* Результат фильтра. *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["filter.empty"]</p>

@@ -8,11 +8,6 @@ using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Players;
 
-/// <summary>
-/// Профиль игрока. Каждое правило <see cref="PlayerFieldsValidator"/> продублировано
-/// атрибутом: отказ FluentValidation до Фазы 11 отвечает 500, а форма должна вернуть
-/// сообщение (урок Фаз 6–8).
-/// </summary>
 public sealed class PlayerFormViewModel : IValidatableObject
 {
     [Required(ErrorMessage = "Укажите ник игрока.")]

@@ -5,17 +5,7 @@ using ZeldaArena.Application.Common.Models.Identity;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Реализация <see cref="ISignInService"/> поверх <see cref="SignInManager{TUser}"/>.
-///
-/// Почему именно SignInManager, а не ручная проверка хеша: только он ведёт счётчик
-/// неудачных попыток для lockout, умеет промежуточную cookie второго фактора и
-/// «запомнить устройство» на 30 дней — всё это прямые требования docs/SPEC.md §8.2.
-///
-/// Замечание о транзакции. Cookie выписывается в ответ немедленно и откату вместе
-/// с транзакцией команды не подлежит. Это безопасно, потому что неудачный вход
-/// возвращается как Result, а не исключением: отката в этом сценарии не бывает.
-/// </summary>
+/// <summary>Реализация ISignInService поверх.</summary>
 public sealed class IdentitySignInService(
     SignInManager<ApplicationUser> signInManager,
     UserManager<ApplicationUser> userManager,
@@ -120,10 +110,6 @@ public sealed class IdentitySignInService(
         }
     }
 
-    /// <summary>
-    /// Порядок проверок важен: заблокированный пользователь с включённой 2FA обязан
-    /// получить LockedOut, а не приглашение ввести код.
-    /// </summary>
     private static SignInOutcome Translate(SignInResult result) => result switch
     {
         { IsLockedOut: true } => SignInOutcome.LockedOut,

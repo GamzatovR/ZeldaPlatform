@@ -16,11 +16,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Тарифы — <c>/admin/plans</c> (docs/SPEC.md §9.4, п. 8). Деньги: только администратор
-/// (§8.1). Здесь же живёт демонстрация EP-4 — фича снимается с одного тарифа
-/// и переносится в другой, без правки кода и перезапуска (§19).
-/// </summary>
 [Route("admin/plans")]
 [Authorize(Policy = PolicyNames.CanManageBilling)]
 public sealed class PlansController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -113,10 +108,6 @@ public sealed class PlansController(ISender sender, IStringLocalizer<SharedResou
             : View(new PlanEditViewModel { Plan = plan, Form = model });
     }
 
-    /// <summary>
-    /// Состав фич тарифа (EP-3, EP-4). Приходят все фичи, уезжают в команду только
-    /// отмеченные — снятая галочка снимает привязку.
-    /// </summary>
     [HttpPost("{id:guid}/features")]
     public async Task<IActionResult> SetFeatures(
         Guid id,

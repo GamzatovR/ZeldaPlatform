@@ -10,14 +10,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Orders.Commands.CancelOrder;
 
-/// <summary>
-/// Домен разрешает отменить и оплаченный заказ (<c>Order.Cancel</c>), но покупателю
-/// это не дано: вернуть деньги за мнимую оплату нечем, и такой возврат — решение
-/// магазина, а не кнопка в кабинете. Ограничение живёт здесь, в сценарии покупателя;
-/// сценарий администратора в Фазе 9 его не наследует.
-///
-/// Позиции в корзину не возвращаются: покупатель сам решил, что заказ ему не нужен.
-/// </summary>
 public sealed class CancelOrderCommandHandler(
     ICurrentUserService currentUser,
     IReadRepository<Order> ordersForRead,

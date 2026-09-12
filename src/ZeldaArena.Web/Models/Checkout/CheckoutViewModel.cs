@@ -9,15 +9,6 @@ using ZeldaArena.Web.Models.Billing;
 
 namespace ZeldaArena.Web.Models.Checkout;
 
-/// <summary>
-/// Оформление заказа (docs/SPEC.md §9.3, п. 14): адрес доставки, реквизиты карты
-/// и состав корзины для сверки. Ограничения полей повторяют
-/// <see cref="PlaceOrderCommandValidator"/> — иначе поле, отвергнутое FluentValidation,
-/// до Фазы 11 превращалось бы в ошибку сервера (урок Фазы 6).
-///
-/// Состав корзины из формы не принимается: он только показывается, а в заказ
-/// попадает то, что лежит в корзине на сервере (§15).
-/// </summary>
 public sealed class CheckoutViewModel
 {
     [Required(ErrorMessage = "Укажите получателя.")]
@@ -60,7 +51,7 @@ public sealed class CheckoutViewModel
 
     public CardDetailsInputModel Card { get; set; } = new();
 
-    /// <summary>Выдаётся формой: повторная отправка не заводит второй заказ и второй платёж (§7.6).</summary>
+    /// <summary>Выдаётся формой: повторная отправка не заводит второй заказ и второй платёж.</summary>
     [Required]
     public string IdempotencyKey { get; set; } = string.Empty;
 

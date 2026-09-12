@@ -4,11 +4,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Подмена <see cref="INewsRepository"/>, повторяющая семантику рабочих реализаций:
-/// наружу отдаются только опубликованные статьи, свежие впереди. Это не мок:
-/// хендлер проверяется по результату выборки, а не по факту вызова.
-/// </summary>
 internal sealed class InMemoryNewsRepository(IEnumerable<NewsArticle> articles) : INewsRepository
 {
     private readonly List<NewsArticle> _articles = [.. articles];

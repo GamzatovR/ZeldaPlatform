@@ -7,14 +7,7 @@
 @inject IHtmlLocalizer<SharedResource> T
 @inject IAuthorizationService Authorization
 
-@*
-    Шапка. Мобильное меню и меню аккаунта раскрывает wwwroot/js/nav.js:
-    плагин meanmenu и выпадающие меню Bootstrap из шаблона недоступны
-    (docs/design/design-system.md §1).
-
-    Без JavaScript кнопки просто ничего не делают, поэтому меню в разметке
-    идёт до них и остаётся достижимым: на узком экране оно раскрыто.
-*@
+@* Шапка. *@
 <header class="site-header">
     <div class="container">
         <div class="site-header__inner">
@@ -35,22 +28,17 @@
                     }
                 </ul>
 
-                @*
-                    Поиска в шапке нет — решение пользователя в Фазе 8: искать можно в фильтрах
-                    турниров, команд и игроков (§10.1, сценарий 1).
-                    Поле, молча теряющее запрос, — та же сломанная ссылка, только хуже:
-                    ссылку видно, что она никуда не ведёт, а форму — нет.
-                *@
+                @* Поиска в шапке нет — решение пользователя в Фазе 8. *@
             </nav>
 
             <div class="site-header__actions">
                 @if (Model.ShowPremiumBadge)
                 {
-                    @* Бейдж подписчика — только отображение (docs/SPEC.md §7.4). *@
+                    @* Бейдж подписчика — только отображение. *@
                     <span class="badge-token badge-token--premium">@T["nav.premium"]</span>
                 }
 
-                @* Корзина есть и у гостя: она живёт по подписанной куке (§14.1). *@
+                @* Корзина есть и у гостя: она живёт по подписанной куке. *@
                 @await Component.InvokeAsync("MiniCart")
 
                 @if (Model.IsAuthenticated)
@@ -75,10 +63,7 @@
                             <li class="site-menu__item">
                                 <a class="site-menu__link" asp-area="" asp-controller="Orders" asp-action="Index">@T["nav.orders"]</a>
                             </li>
-                            @*
-                                Ссылка на админку — по той же политике, что охраняет область (§8.1),
-                                а не по роли: правило «кто входит в админку» живёт в одном месте.
-                            *@
+                            @* Ссылка на админку — по той же политике, что охраняет область, а не по роли. *@
                             @if ((await Authorization.AuthorizeAsync(User, PolicyNames.ModeratorOrAdmin)).Succeeded)
                             {
                                 <li class="site-menu__item">
@@ -86,7 +71,7 @@
                                 </li>
                             }
                             <li class="site-menu__item">
-                                @* Выход изменяет состояние, поэтому POST с антифоржери-токеном (§15). *@
+                                @* Выход изменяет состояние, поэтому POST с антифоржери-токеном. *@
                                 <form asp-area="Identity" asp-page="/Account/Logout"
                                       asp-route-returnUrl="@Url.Content("~/")" method="post">
                                     <button class="site-menu__link site-menu__submit" type="submit">@T["nav.logout"]</button>

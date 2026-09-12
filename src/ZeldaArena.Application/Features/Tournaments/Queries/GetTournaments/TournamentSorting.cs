@@ -3,10 +3,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Tournaments.Queries.GetTournaments;
 
-/// <summary>
-/// Разрешённые сортировки списка турниров. Ключи те же, что в URL из docs/SPEC.md §10.2.
-/// Всё, чего здесь нет, отсортировать нельзя — это и есть whitelist из §15.
-/// </summary>
 public static class TournamentSorting
 {
     public const string DateDescending = "date_desc";

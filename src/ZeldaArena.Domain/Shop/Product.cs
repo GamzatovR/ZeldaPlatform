@@ -4,10 +4,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Товар магазина игровой периферии. Остаток и цена меняются только методами:
-/// корзина и заказ обязаны опираться на серверные значения (docs/SPEC.md §15).
-/// </summary>
+/// <summary>Товар магазина игровой периферии.</summary>
 public class Product : BaseEntity, IAuditableEntity
 {
     private Product()
@@ -98,10 +95,7 @@ public class Product : BaseEntity, IAuditableEntity
 
     public void SetStock(int stockQuantity) => StockQuantity = RequireStock(stockQuantity);
 
-    /// <summary>
-    /// Списывает остаток при оформлении заказа. Уход в минус запрещён:
-    /// продать больше, чем есть на складе, нельзя (docs/SPEC.md §15).
-    /// </summary>
+    /// <summary>Списывает остаток при оформлении заказа.</summary>
     public void DecreaseStock(int quantity)
     {
         InvariantViolationException.ThrowIf(

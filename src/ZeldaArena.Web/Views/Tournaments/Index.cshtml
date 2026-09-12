@@ -13,14 +13,7 @@
     var sort = TournamentSorting.Map.Resolve(filter.Sort);
 }
 
-@*
-    Список турниров (docs/SPEC.md §9.3, п. 3). Макета у списков нет — он собран
-    из сетки карточек и полей формы дизайн-системы (docs/design/README.md).
-
-    Фильтр — обычная GET-форма: адрес и есть состояние (§10.2). С JavaScript
-    ajax-list.js перехватывает её по data-filter-form и подменяет только
-    #tournament-list тем же partial из Areas/Api (data-api).
-*@
+@* Список турниров. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

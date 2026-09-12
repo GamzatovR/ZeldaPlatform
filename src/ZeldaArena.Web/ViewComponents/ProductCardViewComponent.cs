@@ -6,23 +6,12 @@ using ZeldaArena.Web.Models.Shop;
 
 namespace ZeldaArena.Web.ViewComponents;
 
-/// <summary>
-/// Карточка товара (docs/SPEC.md §10.2) — одна на каталог и витрину главной.
-/// Данные приходят готовыми от вызывающей страницы: компонент ничего не запрашивает,
-/// он держит разметку в одном месте и знает, куда вернуть покупателя после «в корзину».
-/// </summary>
+/// <summary>Карточка товара — одна на каталог и витрину главной.</summary>
 public sealed class ProductCardViewComponent : ViewComponent
 {
-    /// <param name="product">Карточка из каталога или витрины.</param>
-    /// <param name="returnFragment">
-    /// Якорь секции, куда вернуться: на главной витрина далеко внизу, и без якоря
-    /// сообщение «товар добавлен» осталось бы за пределами экрана.
-    /// </param>
     public IViewComponentResult Invoke(ProductListItemDto product, string? returnFragment = null)
     {
-        // Вернуться туда же, откуда добавляли: каталог с тем же фильтром и страницей.
-        // Список из Areas/Api рисуется в ответ на /api/…, и путь страницы тогда
-        // приходит в ViewData — иначе без JavaScript вернуло бы на голый фрагмент.
+        // Вернуться туда же, откуда добавляли.
         var path = ViewData[ListViewData.PagePath] as string ?? Request.Path.Value;
         var returnUrl = path + Request.QueryString
             + (string.IsNullOrEmpty(returnFragment) ? string.Empty : "#" + returnFragment);

@@ -5,14 +5,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Маленький магазин для тестов сценариев: категории и товары, собранные настоящими
-/// доменными методами. Репозитории отдают одни и те же объекты, поэтому изменение
-/// остатка, сделанное сценарием, видно следующему запросу — как в базе.
-///
-/// Навигационные свойства здесь пустые — их заполняет EF Core; проекции обязаны
-/// это переживать, и тесты это заодно проверяют.
-/// </summary>
 internal sealed class ShopWorld
 {
     public static readonly DateTimeOffset Now = new(2026, 9, 11, 12, 0, 0, TimeSpan.Zero);

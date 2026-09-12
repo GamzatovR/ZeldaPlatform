@@ -12,11 +12,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.CancelPayment;
 
-/// <summary>
-/// Отменяет неоплаченный платёж (docs/SPEC.md §7.6) вместе с тем, ради чего он заводился:
-/// заявка на подписку удаляется — она была только носителем выбранного тарифа, —
-/// заказ отменяется и возвращает остаток (docs/adr/ADR-0009).
-/// </summary>
 public sealed class CancelPaymentCommandHandler(
     ICurrentUserService currentUser,
     IRepository<Payment> payments,

@@ -21,11 +21,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Турниры — <c>/admin/tournaments</c> (docs/SPEC.md §9.4, п. 2): таблица, карточка,
-/// статус и состав участников. Открыт модератору (§8.1: турниры — его работа).
-/// Контроллер только отправляет сценарии и выбирает ответ (§5.2, правило 4).
-/// </summary>
 [Route("admin/tournaments")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class TournamentsController(ISender sender, IStringLocalizer<SharedResource> localizer)

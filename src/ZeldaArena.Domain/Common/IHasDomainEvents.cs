@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Common;
 
-/// <summary>
-/// Источник доменных событий. Диспетчер Фазы 2 собирает события по этому интерфейсу,
-/// не зная о конкретных сущностях.
-/// </summary>
+/// <summary>Источник доменных событий.</summary>
 public interface IHasDomainEvents
 {
     IReadOnlyCollection<DomainEvent> DomainEvents { get; }

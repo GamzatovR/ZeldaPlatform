@@ -2,10 +2,6 @@ using FluentValidation;
 
 namespace ZeldaArena.Application.Features.Admin.Billing;
 
-/// <summary>
-/// Правила полей тарифа. Код — латиница и дефисы: он попадает в адреса и в конфигурацию,
-/// как <c>pro-month</c> из §7.2.
-/// </summary>
 public static class PlanFieldsValidator
 {
     public const int MaxCodeLength = 64;

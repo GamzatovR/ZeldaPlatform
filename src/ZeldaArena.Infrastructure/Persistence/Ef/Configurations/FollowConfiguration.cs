@@ -12,7 +12,7 @@ public sealed class FollowConfiguration : EntityConfiguration<Follow>
     {
         builder.ToTable("Follows");
 
-        // Повторный Follow не должен создавать дубль (docs/SPEC.md §6).
+        // Повторный Follow не должен создавать дубль.
         builder.HasIndex(follow => new { follow.UserId, follow.TargetType, follow.TargetId })
             .IsUnique();
 

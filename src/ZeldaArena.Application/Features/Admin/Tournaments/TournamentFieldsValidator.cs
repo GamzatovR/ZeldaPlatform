@@ -4,11 +4,6 @@ using ZeldaArena.Application.Common.Validation;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments;
 
-/// <summary>
-/// Правила полей турнира. Длины совпадают со столбцами <c>TournamentConfiguration</c>,
-/// порядок дат — с инвариантом <c>Tournament</c>: форма не должна принимать то,
-/// что потом отвергнет база или домен.
-/// </summary>
 public sealed class TournamentFieldsValidator : AbstractValidator<ITournamentFields>
 {
     public const int MaxNameLength = 200;

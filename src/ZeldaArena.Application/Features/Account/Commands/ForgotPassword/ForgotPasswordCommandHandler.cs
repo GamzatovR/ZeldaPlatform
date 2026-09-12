@@ -5,14 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.ForgotPassword;
 
-/// <summary>
-/// Отправляет ссылку для сброса пароля. Токен живёт 30 минут (docs/SPEC.md §8.2),
-/// срок задан провайдером токенов в Infrastructure.
-///
-/// Ответ всегда один и тот же — это прямое требование §8.2 «нет user enumeration».
-/// Письмо уходит только существующему пользователю с подтверждённым адресом,
-/// но снаружи эти три случая неразличимы.
-/// </summary>
 public sealed class ForgotPasswordCommandHandler(
     IUserAccountService userAccounts,
     IAccountEmailSender emailSender)

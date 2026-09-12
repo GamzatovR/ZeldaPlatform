@@ -7,10 +7,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Matches;
 
-/// <summary>
-/// Вкладки матчей турнира (docs/SPEC.md §9.3, п. 4). Порядок внутри вкладки —
-/// часть её смысла: live первыми среди предстоящих, свежие первыми среди прошедших.
-/// </summary>
 public class GetTournamentMatchesQueryHandlerTests
 {
     private static readonly Guid Tournament = Guid.CreateVersion7();

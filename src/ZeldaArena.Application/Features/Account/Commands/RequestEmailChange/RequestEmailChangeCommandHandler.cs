@@ -6,14 +6,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.RequestEmailChange;
 
-/// <summary>
-/// Запрос смены адреса. Сам адрес пока не меняется — уходят два письма
-/// (docs/SPEC.md §8.2):
-///
-/// на новый адрес — ссылка подтверждения, потому что подтвердить смену может
-/// только тот, кто этим адресом владеет; на старый — уведомление, чтобы захват
-/// учётной записи не прошёл незамеченным.
-/// </summary>
 public sealed class RequestEmailChangeCommandHandler(
     ICurrentUserService currentUser,
     IUserAccountService userAccounts,

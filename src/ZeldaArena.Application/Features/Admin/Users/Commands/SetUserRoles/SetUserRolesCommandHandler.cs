@@ -7,13 +7,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Application.Features.Admin.Users.Commands.SetUserRoles;
 
-/// <summary>
-/// Роль <c>Premium</c> вручную не назначается: её выдают и снимают обработчики событий
-/// подписки, и она существует только ради бейджа (docs/SPEC.md §7.4, §20 п. 2).
-/// Выданная руками, она разошлась бы с действительным состоянием подписки.
-///
-/// Последнего администратора разжаловать нельзя — иначе в админку не войдёт никто.
-/// </summary>
 public sealed class SetUserRolesCommandHandler(
     IUserAdministrationService users,
     IUserAccountService accounts,

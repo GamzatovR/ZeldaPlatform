@@ -14,14 +14,6 @@ using ZeldaArena.Web.Models.Carts;
 
 namespace ZeldaArena.Web.Areas.Api.Controllers;
 
-/// <summary>
-/// Корзина без перезагрузки (docs/SPEC.md §10.1, сценарии 5 и 6). Команды те же,
-/// что у формы <c>CartController</c>: владельца корзины определяет сценарий, в запросе
-/// нет ни идентификатора корзины, ни цены (§15, IDOR и пересчёт на сервере).
-///
-/// Операции отвечают JSON со счётчиком мини-корзины; таблица с пересчитанным итогом —
-/// отдельный <c>GET /api/cart</c>, тот же partial, что рисует страница.
-/// </summary>
 [Route("api/cart")]
 public sealed class CartApiController(ISender sender, IStringLocalizer<SharedResource> localizer)
     : ApiControllerBase(localizer)

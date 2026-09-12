@@ -5,15 +5,8 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Граница транзакции поверх <see cref="AppDbContext"/>.
-/// </summary>
 public sealed class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    /// <summary>
-    /// Конфликт токена конкурентности (xmin) переводится в исключение Application:
-    /// сценарий должен уметь ответить на гонку, не зная про EF Core.
-    /// </summary>
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -32,9 +25,7 @@ public sealed class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
         ArgumentNullException.ThrowIfNull(operation);
 
-        // Транзакция уже открыта выше по стеку — присоединяемся к ней. Вторая
-        // транзакция на том же контексте невозможна, а хендлер, вызванный из другого
-        // хендлера, должен работать.
+        // Транзакция уже открыта выше по стеку — присоединяемся к ней.
         if (context.Database.CurrentTransaction is not null)
         {
             return await operation(cancellationToken).ConfigureAwait(false);

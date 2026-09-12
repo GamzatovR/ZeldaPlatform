@@ -8,11 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.AddTournamentTeam;
 
-/// <summary>
-/// Участвовать может только одобренная команда: неодобренная скрыта со всех публичных
-/// страниц (docs/adr/ADR-0008), и в сетке турнира она появилась бы в обход модерации.
-/// Повтор и закрытый состав отвергает сущность.
-/// </summary>
 public sealed class AddTournamentTeamCommandHandler(
     IRepository<Tournament> tournamentRepository,
     IReadRepository<Team> teams,

@@ -7,12 +7,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Реализация хранилища новостей на PostgreSQL — та, что работает при
-/// <c>Persistence:NewsProvider=Ef</c>. Вторая, на MongoDB, появляется в Фазе 10
-/// и доказывает EP-1 (docs/SPEC.md §5.4): ни Application, ни Web при переключении
-/// не меняются.
-/// </summary>
 public sealed class EfNewsRepository(AppDbContext context) : INewsRepository
 {
     public async Task<PagedResult<NewsArticle>> GetPublishedAsync(
@@ -55,9 +49,7 @@ public sealed class EfNewsRepository(AppDbContext context) : INewsRepository
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(slug);
 
-        // Сравнение объектом-значением, а не строкой: у столбца стоит конвертер,
-        // и обращение к Slug.Value EF Core в SQL не переводит — запрос падал
-        // на первом же открытии новости (найдено в Фазе 6).
+        // Сравнение объектом-значением, а не строкой.
         if (!Slug.TryFrom(slug, out var value) || value is null)
         {
             return Task.FromResult<NewsArticle?>(null);
@@ -73,11 +65,6 @@ public sealed class EfNewsRepository(AppDbContext context) : INewsRepository
     public async Task AddAsync(NewsArticle article, CancellationToken cancellationToken = default) =>
         await context.NewsArticles.AddAsync(article, cancellationToken).ConfigureAwait(false);
 
-    /// <summary>
-    /// Сущность отслеживается контекстом, поэтому достаточно вернуть завершённую задачу.
-    /// Асинхронность здесь ради второй реализации: MongoDB обновляет документ
-    /// обращением к серверу.
-    /// </summary>
     public Task UpdateAsync(NewsArticle article, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(article);

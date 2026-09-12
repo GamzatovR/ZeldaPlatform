@@ -16,15 +16,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Teams;
 
-/// <summary>
-/// Кабинет капитана (docs/SPEC.md §9.3, п. 8). Три правила, которые нельзя доверить
-/// одному атрибуту на действии:
-/// <list type="bullet">
-///   <item>чужую команду не правит никто (IDOR, §15);</item>
-///   <item>после истечения подписки команда видна, но не правится (docs/CONVENTIONS.md);</item>
-///   <item>игрок не состоит в двух командах одновременно (§15).</item>
-/// </list>
-/// </summary>
 public class MyTeamScenarioTests
 {
     private static readonly Guid Captain = Guid.CreateVersion7();
@@ -64,7 +55,7 @@ public class MyTeamScenarioTests
         _unitOfWork.SaveChangesCalls.ShouldBe(1);
     }
 
-    /// <summary>Переманить игрока из чужой команды нельзя (§15, ADR-0008).</summary>
+    /// <summary>Переманить игрока из чужой команды нельзя.</summary>
     [Fact]
     public async Task Player_of_another_team_cannot_be_taken()
     {
@@ -133,7 +124,7 @@ public class MyTeamScenarioTests
         _mine.ActiveRoster.ShouldContain(entry => entry.PlayerId == player.Id);
     }
 
-    /// <summary>Состав историчен: уход закрывает запись датой, а не удаляет её (docs/CONVENTIONS.md).</summary>
+    /// <summary>Состав историчен: уход закрывает запись датой, а не удаляет её.</summary>
     [Fact]
     public async Task Removing_a_player_closes_the_roster_entry()
     {

@@ -9,14 +9,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Subscriptions.Commands.CancelSubscription;
 
-/// <summary>
-/// Выключает автопродление у действующей подписки (docs/SPEC.md §7.5, п. 5).
-///
-/// Права при этом не трогаются и кэш не сбрасывается намеренно: набор фич
-/// не изменился, подписка продолжает действовать до <c>EndsAt</c>. Доступ пропадёт
-/// сам, когда срок кончится, — это увидит и <c>EntitlementResolver</c> по дате,
-/// и фоновая служба истечения.
-/// </summary>
 public sealed class CancelSubscriptionCommandHandler(
     ICurrentUserService currentUser,
     IRepository<Subscription> subscriptions,

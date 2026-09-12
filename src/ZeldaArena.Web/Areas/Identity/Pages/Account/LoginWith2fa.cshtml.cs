@@ -14,10 +14,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Второй шаг входа (docs/SPEC.md §8.2). Кто входит, известно из промежуточной cookie,
-/// выписанной страницей входа, — из формы идентификатор не принимается.
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.SignIn)]
 public sealed class LoginWith2faModel(ISender sender, IStringLocalizer<SharedResource> localizer)

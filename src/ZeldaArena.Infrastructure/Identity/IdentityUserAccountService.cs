@@ -7,14 +7,7 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Реализация <see cref="IUserAccountService"/> поверх <see cref="UserManager{TUser}"/>.
-///
-/// Класс сознательно тонкий: он переводит вызовы и результаты, но не принимает решений.
-/// Правила «блокированного не пускать», «письмо отправить после регистрации», «после
-/// смены пароля разлогинить остальных» живут в хендлерах Application, иначе
-/// бизнес-логика расползлась бы по инфраструктуре (docs/CONVENTIONS.md).
-/// </summary>
+/// <summary>Реализация IUserAccountService поверх.</summary>
 public sealed class IdentityUserAccountService(
     UserManager<ApplicationUser> userManager,
     IDateTimeProvider dateTimeProvider)
@@ -72,7 +65,7 @@ public sealed class IdentityUserAccountService(
         }
 
         // Базовая роль выдаётся сразу: без неё у пользователя не было бы ни одной,
-        // а политики §8.1 построены на ролях.
+        // а политики построены на ролях.
         var assigned = await userManager.AddToRoleAsync(user, RoleNames.User).ConfigureAwait(false);
 
         return assigned.Succeeded
@@ -80,16 +73,6 @@ public sealed class IdentityUserAccountService(
             : Result.Failure<Guid>(IdentityErrorTranslator.ToError(assigned));
     }
 
-    /// <summary>
-    /// Идемпотентна: если роль уже есть, это успех, а не ошибка.
-    ///
-    /// <c>UserManager.AddToRoleAsync</c> в такой ситуации возвращает
-    /// <c>UserAlreadyInRole</c>, и обработчик <c>SubscriptionActivatedEvent</c> писал
-    /// предупреждение при каждом продлении подписки — то есть на совершенно штатном
-    /// пути. Смысл порта — «убедиться, что роль у пользователя есть»; ровно этого
-    /// хотят и обработчики событий подписки, и сидер, поэтому проверка стоит здесь,
-    /// а не повторяется у каждого вызывающего.
-    /// </summary>
     public Task<Result> AddToRoleAsync(
         Guid userId,
         string role,
@@ -112,12 +95,6 @@ public sealed class IdentityUserAccountService(
             cancellationToken);
     }
 
-    /// <summary>
-    /// Идемпотентна по той же причине, что и <see cref="AddToRoleAsync"/>: снятие
-    /// отсутствующей роли — успех. Иначе <c>SubscriptionExpirationService</c>, которая
-    /// ходит раз в час, писала бы предупреждение на каждой подписке, роль по которой
-    /// уже снята.
-    /// </summary>
     public Task<Result> RemoveFromRoleAsync(
         Guid userId,
         string role,
@@ -298,11 +275,6 @@ public sealed class IdentityUserAccountService(
         return UserAccountMapper.ToDto(user, [.. roles], dateTimeProvider);
     }
 
-    /// <summary>
-    /// Находит пользователя и выполняет над ним операцию. Отсутствие пользователя —
-    /// ожидаемый исход: ссылку из письма могли открыть после удаления учётной записи.
-    /// Поэтому Result, а не исключение.
-    /// </summary>
     private async Task<Result> WithUserAsync(
         Guid userId,
         Func<ApplicationUser, Task<Result>> operation,

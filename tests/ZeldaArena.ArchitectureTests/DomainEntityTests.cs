@@ -3,10 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Правило 5 из docs/SPEC.md §5.2: у доменных сущностей нет публичных сеттеров —
-/// состояние меняют только методы, защищающие инварианты (Match.UpdateScore и прочие).
-/// </summary>
 public class DomainEntityTests
 {
     [Fact]
@@ -29,10 +25,6 @@ public class DomainEntityTests
         type is { IsClass: true, IsPublic: true, IsAbstract: false }
         && !ArchitectureFixture.IsCompilerGenerated(type);
 
-    /// <summary>
-    /// init-сеттер разрешён: он работает только при конструировании и инвариант,
-    /// проверенный фабричным методом, сломать не может. Обычный set — запрещён.
-    /// </summary>
     private static bool HasPublicSetter(PropertyInfo property)
     {
         if (property.SetMethod is not { IsPublic: true } setter)

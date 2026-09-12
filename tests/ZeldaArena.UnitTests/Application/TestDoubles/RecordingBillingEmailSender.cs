@@ -2,11 +2,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Запоминает письма биллинга вместо отправки. Код подтверждения сохраняется
-/// намеренно: только так проверяется, что пользователю ушёл тот самый код,
-/// хеш которого лёг в платёж.
-/// </summary>
 internal sealed class RecordingBillingEmailSender : IBillingEmailSender
 {
     public enum LetterKind

@@ -14,9 +14,6 @@ using ZeldaArena.Web.RateLimiting;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account;
 
-/// <summary>
-/// Вход по коду восстановления, когда аутентификатор недоступен. Код одноразовый.
-/// </summary>
 [AllowAnonymous]
 [EnableRateLimiting(RateLimitPolicies.SignIn)]
 public sealed class LoginWithRecoveryCodeModel(

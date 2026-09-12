@@ -5,15 +5,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Маленький киберспортивный мир для тестов сценариев: команды, игроки, составы,
-/// матчи и статистика, собранные настоящими доменными методами. Репозитории отдают
-/// одни и те же объекты, поэтому явные соединения в хендлерах (состав ↔ игрок,
-/// статистика ↔ игрок) исполняются в памяти так же, как в SQL.
-///
-/// Навигационные свойства здесь пустые — их заполняет EF Core; проекции обязаны
-/// это переживать, и тесты это заодно проверяют.
-/// </summary>
 internal sealed class EsportsWorld
 {
     public static readonly DateTimeOffset Now = new(2026, 6, 15, 12, 0, 0, TimeSpan.Zero);

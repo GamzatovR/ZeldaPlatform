@@ -5,13 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Application.Features.Account.Commands.ResendEmailConfirmation;
 
-/// <summary>
-/// Повторная отправка письма с подтверждением.
-///
-/// Всегда отвечает успехом — и на незнакомый адрес, и на уже подтверждённый.
-/// Иначе форма превратилась бы в средство проверки, заведён ли адрес на портале:
-/// то же требование, что и у восстановления пароля (docs/SPEC.md §8.2).
-/// </summary>
 public sealed class ResendEmailConfirmationCommandHandler(
     IUserAccountService userAccounts,
     IAccountEmailSender emailSender)

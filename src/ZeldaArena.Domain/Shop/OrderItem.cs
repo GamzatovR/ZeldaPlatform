@@ -3,10 +3,7 @@ using ZeldaArena.Domain.Common.Exceptions;
 
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Позиция заказа. Название и цена сохраняются снапшотом: заказ обязан выглядеть
-/// одинаково и через год, даже если товар переименовали, подорожал или удалён (docs/CONVENTIONS.md).
-/// </summary>
+/// <summary>Позиция заказа.</summary>
 public class OrderItem : BaseEntity
 {
     private OrderItem()

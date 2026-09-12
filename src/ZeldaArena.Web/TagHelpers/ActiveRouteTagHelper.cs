@@ -5,20 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Подсветка текущего пункта меню (docs/SPEC.md §10.2, <c>&lt;active-route&gt;</c>):
-///
-/// <code>
-/// &lt;a asp-controller="Shop" asp-action="Index" active-controller="Shop"&gt;Магазин&lt;/a&gt;
-/// </code>
-///
-/// Совпадение добавляет класс <c>is-active</c> и, что важнее, атрибут
-/// <c>aria-current="page"</c>: подсветка цветом видна только зрячим, а §9.1
-/// требует, чтобы текущий раздел был различим и в скринридере.
-///
-/// Сравнение идёт по данным маршрута, а не по строке адреса: путь ломается
-/// от лишнего слэша, query-string фильтра и языкового префикса из Фазы 11.
-/// </summary>
+/// <summary>Подсветка текущего пункта меню.</summary>
 [HtmlTargetElement(Attributes = ControllerAttributeName)]
 [HtmlTargetElement(Attributes = PageAttributeName)]
 public sealed class ActiveRouteTagHelper : TagHelper
@@ -32,10 +19,6 @@ public sealed class ActiveRouteTagHelper : TagHelper
     [HtmlAttributeName(ControllerAttributeName)]
     public string? Controller { get; set; }
 
-    /// <summary>
-    /// Действие. Не задано — подсвечивается весь раздел: страница товара
-    /// обязана подсвечивать «Магазин».
-    /// </summary>
     [HtmlAttributeName(ActionAttributeName)]
     public string? Action { get; set; }
 

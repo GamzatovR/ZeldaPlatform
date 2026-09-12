@@ -13,14 +13,6 @@
     var pageTitle = new PageTitleViewModel(title, card.TournamentName, Compact: true);
 }
 
-@*
-    Страница матча (docs/SPEC.md §9.3, п. 5), по docs/design/pages/match.html:
-    карточка счёта .single-matches-box, ниже — составы и статистика игроков.
-
-    Лента событий и чат матча придут в Фазе 10 вместе с MongoDB и SignalR, комментарии —
-    Приоритет B (§17), срезаны. Пустых блоков под них здесь нет: заглушка, притворяющаяся данными, хуже
-    отсутствующей секции (правило Фазы 5).
-*@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

@@ -4,10 +4,7 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Domain.Esports;
 
-/// <summary>
-/// Профессиональный игрок. Существует независимо от команд: состав историчен,
-/// поэтому игрок переживает переходы между командами (docs/SPEC.md §6).
-/// </summary>
+/// <summary>Профессиональный игрок.</summary>
 public class Player : BaseEntity
 {
     private readonly List<RosterEntry> _rosterEntries = [];

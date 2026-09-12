@@ -1,15 +1,6 @@
 namespace ZeldaArena.Domain.Constants;
 
-/// <summary>
-/// Собственные типы claim'ов, которые кладутся в cookie при входе.
-///
-/// Нужны, чтобы политики авторизации в Web могли спрашивать о свойствах учётной записи,
-/// не обращаясь к UserManager: тот живёт в Infrastructure, а правило 3 docs/SPEC.md §5.2
-/// запрещает его типы в слое представления.
-///
-/// Значения обновляются при перевыпуске cookie. Все сценарии, меняющие эти свойства,
-/// вызывают RefreshSignIn — иначе claim отстал бы от базы до следующего входа.
-/// </summary>
+/// <summary>Собственные типы claim'ов, которые кладутся в cookie при входе.</summary>
 public static class AppClaimTypes
 {
     public const string EmailConfirmed = "zelda:email_confirmed";

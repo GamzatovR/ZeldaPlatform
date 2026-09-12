@@ -8,12 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Matches.Commands.ScheduleMatch;
 
-/// <summary>
-/// Матч ставится только между участниками турнира и только в открытый турнир: сетка,
-/// в которой играет команда вне состава, противоречит самой себе, а доигранный турнир —
-/// это история (docs/adr/ADR-0010). «Команда сама с собой» и чётный формат серии
-/// отвергает <c>Match.Schedule</c>.
-/// </summary>
 public sealed class ScheduleMatchCommandHandler(
     IRepository<Match> matchRepository,
     IReadRepository<Tournament> tournaments,

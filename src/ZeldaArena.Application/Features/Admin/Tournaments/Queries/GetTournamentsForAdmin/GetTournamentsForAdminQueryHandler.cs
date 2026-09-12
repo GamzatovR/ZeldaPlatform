@@ -6,11 +6,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin;
 
-/// <summary>
-/// Турниры в любом статусе, включая отменённые. Число участников и матчей считается
-/// в SQL скалярным подзапросом (<c>Count()</c> методом, а не свойством — урок Фазы 2:
-/// свойство <c>Count</c> EF поднимал бы в память всю коллекцию ради одного числа).
-/// </summary>
 public sealed class GetTournamentsForAdminQueryHandler(
     IReadRepository<Tournament> tournaments,
     IQueryExecutor queryExecutor)

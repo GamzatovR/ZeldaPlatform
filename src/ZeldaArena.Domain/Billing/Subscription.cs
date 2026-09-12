@@ -5,10 +5,7 @@ using ZeldaArena.Domain.Events;
 
 namespace ZeldaArena.Domain.Billing;
 
-/// <summary>
-/// Подписка пользователя на тариф. Цена фиксируется снапшотом: подорожание тарифа
-/// не должно менять историю уже оплаченных подписок (docs/SPEC.md §6).
-/// </summary>
+/// <summary>Подписка пользователя на тариф.</summary>
 public class Subscription : BaseEntity, IAuditableEntity
 {
     private Subscription()
@@ -37,17 +34,11 @@ public class Subscription : BaseEntity, IAuditableEntity
 
     public Plan? Plan { get; private set; }
 
-    /// <summary>
-    /// Единственный критерий доступа к платным функциям вместе с набором фич тарифа:
-    /// активный статус и незакончившийся срок (docs/SPEC.md §7.3).
-    /// </summary>
+    /// <summary>Единственный критерий доступа к платным функциям вместе с набором фич тарифа.</summary>
     public bool IsActiveAt(DateTimeOffset moment) =>
         Status == SubscriptionStatus.Active && EndsAt > moment;
 
-    /// <summary>
-    /// Создаёт активную подписку после подтверждённой оплаты. Срок берётся у тарифа,
-    /// а не приходит из запроса.
-    /// </summary>
+    /// <summary>Создаёт активную подписку после подтверждённой оплаты.</summary>
     public static Subscription Activate(Guid userId, Plan plan, DateTimeOffset startsAt, bool autoRenew = false)
     {
         ArgumentNullException.ThrowIfNull(plan);
@@ -82,19 +73,7 @@ public class Subscription : BaseEntity, IAuditableEntity
         return subscription;
     }
 
-    /// <summary>
-    /// Заявка на подписку: пользователь выбрал тариф, но ещё не оплатил
-    /// (docs/SPEC.md §7.5, п. 1).
-    ///
-    /// Нужна затем, что платёж хранит сумму и ссылку на подписку, но не тариф (§6),
-    /// а при подтверждении кода тариф необходим: у него берутся срок и цена. Выбор
-    /// пользователя должен пережить уход со страницы и подтверждение с другого
-    /// устройства, поэтому он лежит в базе, а не в сессии.
-    ///
-    /// Срок нулевой и начнётся только с оплаты: <see cref="Extend"/> отсчитает его
-    /// от даты платежа, потому что <see cref="EndsAt"/> к тому моменту уже в прошлом.
-    /// Прав такая запись не даёт — <see cref="IsActiveAt"/> требует статус Active.
-    /// </summary>
+    /// <summary>Заявка на подписку.</summary>
     public static Subscription Reserve(Guid userId, Plan plan, DateTimeOffset reservedAt)
     {
         ArgumentNullException.ThrowIfNull(plan);
@@ -121,10 +100,7 @@ public class Subscription : BaseEntity, IAuditableEntity
         };
     }
 
-    /// <summary>
-    /// Продление действующей подписки: срок прибавляется к текущему концу, а не к «сейчас»,
-    /// иначе пользователь терял бы оплаченные дни. Истёкшая подписка продлевается от даты оплаты.
-    /// </summary>
+    /// <summary>Продление действующей подписки.</summary>
     public void Extend(Plan plan, DateTimeOffset paidAt)
     {
         ArgumentNullException.ThrowIfNull(plan);
@@ -150,10 +126,7 @@ public class Subscription : BaseEntity, IAuditableEntity
         Raise(new SubscriptionActivatedEvent(Id, UserId, PlanId, EndsAt));
     }
 
-    /// <summary>
-    /// Отказ от автопродления. Доступ сохраняется до конца оплаченного срока —
-    /// решение зафиксировано в docs/SPEC.md §7.5, п. 5.
-    /// </summary>
+    /// <summary>Отказ от автопродления.</summary>
     public void Cancel(DateTimeOffset canceledAt)
     {
         InvariantViolationException.ThrowIf(
@@ -165,10 +138,7 @@ public class Subscription : BaseEntity, IAuditableEntity
         CanceledAt = canceledAt;
     }
 
-    /// <summary>
-    /// Немедленный отзыв подписки администратором: доступ пропадает сразу.
-    /// В отличие от <see cref="Cancel"/> оплаченные дни не сохраняются.
-    /// </summary>
+    /// <summary>Немедленный отзыв подписки администратором.</summary>
     public void Terminate(DateTimeOffset terminatedAt)
     {
         InvariantViolationException.ThrowIf(
@@ -184,9 +154,7 @@ public class Subscription : BaseEntity, IAuditableEntity
         Raise(new SubscriptionExpiredEvent(Id, UserId, PlanId));
     }
 
-    /// <summary>
-    /// Помечает подписку истёкшей. Вызывается фоновой службой раз в час (docs/SPEC.md §7.5, п. 4).
-    /// </summary>
+    /// <summary>Помечает подписку истёкшей.</summary>
     public void Expire(DateTimeOffset moment)
     {
         InvariantViolationException.ThrowIf(

@@ -13,19 +13,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 
-/// <summary>
-/// Сверяет код и, если он верен, доводит покупку до конца — в одной транзакции,
-/// как требует docs/SPEC.md §7.5, п. 3: подписка активируется или продлевается,
-/// заказ помечается оплаченным (§7.6, шаг 4).
-///
-/// Неудачная попытка тоже сохраняется. Это не мелочь: <c>Payment.Confirm</c>
-/// уменьшает счётчик попыток, и если бы неуспех откатывал транзакцию, счётчик
-/// не убывал бы и код можно было бы подбирать бесконечно. Транзакция коммитится
-/// при <c>Result.Failure</c> и откатывается только исключением — на это здесь и расчёт.
-///
-/// Выдачу роли Premium, сброс кэша прав и уведомление делают обработчики
-/// <c>SubscriptionActivatedEvent</c>: хендлер занимается деньгами и сроком (§5.5, SRP).
-/// </summary>
 public sealed class ConfirmPaymentCommandHandler(
     ICurrentUserService currentUser,
     IRepository<Payment> payments,
@@ -70,9 +57,7 @@ public sealed class ConfirmPaymentCommandHandler(
         }
         catch (ConcurrencyConflictException)
         {
-            // Заказ, остаток или подписку изменили параллельно: вторая вкладка, отмена
-            // заказа, фоновая служба. Сохранение откатилось целиком, попытка не израсходована,
-            // письма не ушли — покупатель повторит ввод, а не увидит ошибку сервера.
+            // Заказ, остаток или подписку изменили параллельно.
             return Result.Failure(BillingErrors.ConcurrentChange);
         }
     }
@@ -106,11 +91,7 @@ public sealed class ConfirmPaymentCommandHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        // Роль Premium выдана обработчиком события, но в cookie её ещё нет: та хранит
-        // снимок ролей на момент входа и обновилась бы сама только через пять минут
-        // (SecurityStampValidationInterval). Пользователь смотрит на результат оплаты
-        // прямо сейчас, поэтому cookie перевыписывается здесь — как после смены пароля
-        // в Фазе 3.
+        // Роль Premium выдана обработчиком события, но в cookie её ещё нет.
         await signInService.RefreshSignInAsync(userId, cancellationToken).ConfigureAwait(false);
 
         await emailSender
@@ -127,13 +108,6 @@ public sealed class ConfirmPaymentCommandHandler(
         return Result.Success();
     }
 
-    /// <summary>
-    /// Заказ оплачивается, только пока ждёт оплаты. Если его успели отменить в соседней
-    /// вкладке, код не принимается вовсе: иначе деньги списались бы за отменённый заказ.
-    ///
-    /// Истёкший код и исчерпанные попытки сразу отменяют заказ и возвращают остаток —
-    /// правило ADR-0009: повторная оплата — только новым оформлением.
-    /// </summary>
     private async Task<Result> ConfirmOrderPaymentAsync(
         Payment payment,
         string confirmationCode,
@@ -207,14 +181,6 @@ public sealed class ConfirmPaymentCommandHandler(
         });
     }
 
-    /// <summary>
-    /// Один путь на оба случая из §7.5, п. 3. Если действующая подписка уже есть,
-    /// продлевается она, а заявка удаляется: двух подписок у одного человека быть
-    /// не должно. Если нет — активируется сама заявка.
-    ///
-    /// Продление считает срок от текущего конца, а не от «сегодня», поэтому
-    /// оплаченные дни не сгорают при переходе на другой тариф (docs/adr/ADR-0005).
-    /// </summary>
     private async Task<Result<ActivatedSubscription>> ActivateSubscriptionAsync(
         Payment payment,
         Guid userId,
@@ -272,10 +238,6 @@ public sealed class ConfirmPaymentCommandHandler(
         return Result.Success(new ActivatedSubscription(plan.Name, existing.EndsAt));
     }
 
-    /// <summary>
-    /// Провал оплаты лишает смысла заявку на подписку — она была только носителем
-    /// выбранного тарифа.
-    /// </summary>
     private async Task DiscardReservationAsync(Payment payment, CancellationToken cancellationToken)
     {
         if (payment.SubscriptionId is not { } reservationId)

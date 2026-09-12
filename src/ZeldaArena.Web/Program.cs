@@ -16,34 +16,28 @@ using ZeldaArena.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Каркас локализации: ресурсы лежат в Resources/, нейтральный файл заполнен по-русски.
-// AddViewLocalization даёт вьюхам IHtmlLocalizer, AddDataAnnotationsLocalization —
-// переводимые сообщения валидации. UseRequestLocalization, en.resx и переключатель
-// языка — Фаза 11 (docs/SPEC.md §9.5).
+// Каркас локализации.
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// Razor по умолчанию экранирует всё, что вне латиницы: «Подписка» превращается
-// в «&#x41F;&#x43E;...» и страница на русском раздувается в несколько раз. Экранирование
-// защищает от подстановки разметки, а не от кириллицы, поэтому разрешаем весь Unicode —
-// иначе требование §16 по скорости загрузки не выполнить.
+// Razor по умолчанию экранирует всё, что вне латиницы.
 builder.Services.Configure<WebEncoderOptions>(options =>
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
-// Доступ ко всей админке — одно соглашение, а не атрибут на каждом контроллере (§8.1).
+// Доступ ко всей админке — одно соглашение, а не атрибут на каждом контроллере.
 builder.Services.AddControllersWithViews(options => options.Conventions.Add(new AdminAreaConvention()))
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 
-// Страницы аккаунта — Razor Pages в области Identity (docs/SPEC.md §5.3, §9.3 п. 16).
+// Страницы аккаунта — Razor Pages в области Identity.
 builder.Services.AddRazorPages()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
 
 // Сценарии и конвейер MediatR. Типы Application в Web разрешены:
-// правило 3 §5.2 закрывает только типы Infrastructure.
+// правило 3 закрывает только типы Infrastructure.
 builder.Services.AddApplication();
 
-// Единственное место во всём Web, где допустимы типы Infrastructure (docs/SPEC.md §5.2, правило 3).
+// Единственное место во всём Web, где допустимы типы Infrastructure.
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Письма аккаунта собираются здесь, а не в Infrastructure: текст берётся из тех же
@@ -52,15 +46,13 @@ builder.Services.AddScoped<IAccountEmailSender, AccountEmailSender>();
 builder.Services.AddScoped<IBillingEmailSender, BillingEmailSender>();
 
 // Гостевая корзина опознаётся по подписанной куке — это знание слоя представления,
-// сценарии получают уже проверенный идентификатор (docs/SPEC.md §14.1).
+// сценарии получают уже проверенный идентификатор.
 builder.Services.AddScoped<IGuestCartIdentity, CookieGuestCartIdentity>();
 
-// Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure:
-// адреса страниц — знание слоя представления.
-// Статические политики §8.1 плюс динамические Feature:{code} (§7.3).
+// Маршруты страниц входа и отказа в доступе задаются здесь, а не в AddInfrastructure.
 builder.Services.AddPlatformAuthorization();
 
-// Ограничение частоты на формах аккаунта (§8.2).
+// Ограничение частоты на формах аккаунта.
 builder.Services.AddPlatformRateLimiter();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -69,7 +61,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Identity/Account/Logout";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 
-    // fetch к Areas/Api получает 401/403, а не HTML страницы входа (§10.1).
+    // fetch к Areas/Api получает 401/403, а не HTML страницы входа.
     options.AnswerApiWithStatusCodes();
 });
 
@@ -82,11 +74,8 @@ if (app.Environment.IsDevelopment())
     await app.Services.MigrateAndSeedAsync();
 }
 
-// Порядок middleware зафиксирован в docs/SPEC.md §14.1:
-// Exception → HSTS/HTTPS → SecurityHeaders → CorrelationId → StaticFiles + Compression →
-// Routing → RateLimiter → Localization → Authentication → Authorization → CartCookie → Endpoints.
-// Собственные middleware добавляются строго в этих позициях: CartCookie — с Фазы 7,
-// остальные — в Фазе 11.
+// Порядок middleware: Exception → HSTS → SecurityHeaders → CorrelationId → StaticFiles →
+// Compression → Routing → RateLimiter → Localization → Auth → CartCookie → Endpoints.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -116,8 +105,4 @@ app.MapRazorPages();
 
 app.Run();
 
-/// <summary>
-/// Точка входа объявлена явно, чтобы тестовые проекты видели сборку Web
-/// (архитектурные тесты сейчас, WebApplicationFactory в дальнейшем).
-/// </summary>
 public partial class Program;

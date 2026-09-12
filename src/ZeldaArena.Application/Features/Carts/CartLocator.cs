@@ -3,14 +3,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts;
 
-/// <summary>
-/// Находит корзину текущего владельца. Владелец определяется только здесь и только
-/// по серверным данным — входу и проверенной гостевой куке, — поэтому ни одна команда
-/// корзины не может дотянуться до чужой корзины (docs/SPEC.md §15, IDOR).
-///
-/// Вошедший пользователь всегда работает со своей корзиной, даже если гостевая кука
-/// ещё не снята: её содержимое вливает <c>MergeGuestCartCommand</c>.
-/// </summary>
 public sealed class CartLocator(
     ICurrentUserService currentUser,
     IGuestCartIdentity guest,
@@ -23,10 +15,6 @@ public sealed class CartLocator(
         : guest.AnonymousId is { } anonymousId ? CartOwner.ForGuest(anonymousId)
         : null;
 
-    /// <summary>
-    /// Корзина владельца как выборка — чтобы запросы на чтение подставляли её
-    /// подзапросом, а не отдельным походом в базу за идентификатором.
-    /// </summary>
     public IQueryable<Cart> OwnedBy(CartOwner owner)
     {
         ArgumentNullException.ThrowIfNull(owner);
@@ -47,10 +35,6 @@ public sealed class CartLocator(
         return id is null ? null : await carts.GetByIdAsync(id.Value, cancellationToken).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Корзина заводится при первом добавлении товара, а не при первом визите:
-    /// строка на каждого заглянувшего гостя была бы мусором в таблице.
-    /// </summary>
     public async Task<Cart> GetOrCreateAsync(CartOwner owner, CancellationToken cancellationToken)
     {
         var existing = await FindAsync(owner, cancellationToken).ConfigureAwait(false);

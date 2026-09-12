@@ -8,12 +8,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Teams.Commands.AddTeamPlayer;
 
-/// <summary>
-/// «Игрок не может состоять в двух командах одновременно» (docs/SPEC.md §15) — правило
-/// между агрегатами: команда не видит чужие составы. Здесь оно даёт понятный отказ,
-/// а гонку двух запросов закрывает частичный уникальный индекс по открытым записям
-/// (миграция <c>RosterSingleActiveTeam</c>, Фаза 6).
-/// </summary>
 public sealed class AddTeamPlayerCommandHandler(
     IRepository<Team> teams,
     IReadRepository<Player> players,

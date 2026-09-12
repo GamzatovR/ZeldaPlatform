@@ -1,9 +1,5 @@
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Минимальные образцы содержимого: сигнатура формата и немного данных после неё.
-/// Для проверок по magic bytes настоящая картинка не нужна — нужна её сигнатура.
-/// </summary>
 internal static class SampleImages
 {
     public static byte[] Png { get; } = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52];

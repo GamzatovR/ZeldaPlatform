@@ -13,10 +13,6 @@ using ZeldaArena.Web.Models.Account;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Смена адреса. Сам адрес здесь не меняется: на новый уходит ссылка подтверждения,
-/// на старый — уведомление (docs/SPEC.md §8.2).
-/// </summary>
 [Authorize]
 public sealed class EmailModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel

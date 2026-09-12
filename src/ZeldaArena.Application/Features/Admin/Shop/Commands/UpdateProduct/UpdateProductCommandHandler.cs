@@ -10,11 +10,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Admin.Shop.Commands.UpdateProduct;
 
-/// <summary>
-/// Остаток выставляется целиком (<c>SetStock</c>), а не прибавляется: администратор
-/// вводит то, что видит на складе. Гонку с оформлением заказа ловит токен
-/// конкурентности товара (xmin) — сохранение упадёт конфликтом, а не затрёт списание.
-/// </summary>
 public sealed class UpdateProductCommandHandler(
     IRepository<Product> products,
     IReadRepository<ProductCategory> categories,

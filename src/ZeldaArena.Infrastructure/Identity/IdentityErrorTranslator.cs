@@ -5,18 +5,7 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Переводит <see cref="IdentityResult"/> в общий для решения <see cref="Result"/>.
-///
-/// Зачем это нужно. IdentityError несёт код и уже готовую английскую фразу, а по
-/// docs/SPEC.md §9.5 текст обязан приходить из ресурсов и переводиться на ru/en.
-/// Поэтому наружу уходит наш ключ ресурса, а описание Identity сохраняется в
-/// Error.Message — оно попадёт в лог и пригодится при разборе, но пользователю
-/// не покажется.
-///
-/// Из нескольких ошибок берётся первая: форма показывает одно сообщение, а полный
-/// список всё равно уезжает в лог вместе с записью аудита.
-/// </summary>
+/// <summary>Переводит IdentityResult в общий для решения Result.</summary>
 internal static class IdentityErrorTranslator
 {
     public static Result ToResult(IdentityResult identityResult) =>

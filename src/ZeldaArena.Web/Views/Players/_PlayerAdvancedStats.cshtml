@@ -3,7 +3,7 @@
 @model IReadOnlyList<PlayerTournamentStatsDto>
 @inject IHtmlLocalizer<SharedResource> T
 
-@* Расширенная статистика игрока по турнирам (stats.advanced); таблица вместо графиков — Приоритет B (§17). *@
+@* Расширенная статистика игрока по турнирам (stats.advanced); таблица вместо графиков — Приоритет B. *@
 @if (Model.Count == 0)
 {
     <p class="empty-state">@T["player.matches_empty"]</p>

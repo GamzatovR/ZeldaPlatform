@@ -14,21 +14,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Orders.Commands.PlaceOrder;
 
-/// <summary>
-/// Корзина → заказ в ожидании оплаты → платёж с кодом на почту, одной транзакцией
-/// (docs/SPEC.md §7.6, §9.3 п. 14; решения — docs/adr/ADR-0009):
-///
-/// <list type="number">
-///   <item>цены и названия берутся у товаров на сервере и ложатся в заказ снапшотом (§6);</item>
-///   <item>карта проверяется до любых изменений — отклонённая карта не оставляет заказа;</item>
-///   <item>остаток списывается сразу: дошедший до ввода кода покупатель гарантированно
-///   получит товар, а провал оплаты вернёт остаток обратно (<see cref="OrderCancellation"/>);</item>
-///   <item>корзина очищается — её содержимое теперь в заказе.</item>
-/// </list>
-///
-/// Два покупателя последней единицы: остаток защищён токеном конкурентности, второй
-/// получит понятный отказ, а не ошибку сервера (§15).
-/// </summary>
 public sealed class PlaceOrderCommandHandler(
     ICurrentUserService currentUser,
     CartLocator carts,

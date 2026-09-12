@@ -1,9 +1,5 @@
 namespace ZeldaArena.Application.Features.Carts.Queries.GetCart;
 
-/// <summary>
-/// Позиция корзины. Цена — текущая цена товара, а не снапшот в позиции: итог корзины
-/// обязан совпасть с тем, что сервер насчитает при оформлении (docs/SPEC.md §15).
-/// </summary>
 public sealed record CartLineDto
 {
     public Guid ProductId { get; init; }

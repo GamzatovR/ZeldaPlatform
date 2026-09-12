@@ -11,14 +11,6 @@ using ZeldaArena.Domain.ValueObjects;
 
 namespace ZeldaArena.Application.Features.Admin.Dashboard.Queries.GetAdminDashboard;
 
-/// <summary>
-/// Собирает дашборд. Каждый показатель — один скалярный запрос, считает база: ни одна
-/// коллекция ради числа в память не поднимается (урок Фазы 2, docs/PROGRESS.md).
-///
-/// Деловая часть собирается, только если смотрит администратор. Проверка здесь, а не во
-/// вьюхе: модератору эти данные не должны уходить вовсе (docs/SPEC.md §8.1), и тот же
-/// сценарий вызовет мобильный клиент (EP-2), у которого вьюхи нет.
-/// </summary>
 public sealed class GetAdminDashboardQueryHandler(
     IReadRepository<Match> matches,
     IReadRepository<Team> teams,

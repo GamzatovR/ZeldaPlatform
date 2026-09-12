@@ -2,10 +2,6 @@ using Microsoft.Extensions.Logging;
 
 namespace ZeldaArena.UnitTests.Application.TestDoubles;
 
-/// <summary>
-/// Логгер, запоминающий записи. Нужен, чтобы проверить, что в лог не утекают
-/// содержимое команды и секреты (docs/SPEC.md §13).
-/// </summary>
 internal sealed class RecordingLogger<TCategory> : ILogger<TCategory>
 {
     private readonly List<string> _messages = [];

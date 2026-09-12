@@ -22,11 +22,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Admin;
 
-/// <summary>
-/// Правила админских сценариев Фазы 9, которые нельзя проверить одним взглядом
-/// на код: что удаляется, кого нельзя разжаловать и что происходит с деньгами
-/// при отмене оплаченного заказа (docs/adr/ADR-0010).
-/// </summary>
 public class AdminSlicesTests
 {
     private static readonly DateTimeOffset Now = ShopWorld.Now;

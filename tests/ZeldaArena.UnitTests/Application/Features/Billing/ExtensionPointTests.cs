@@ -11,15 +11,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Billing;
 
-/// <summary>
-/// Точки расширения подписок (docs/SPEC.md §5.4) — то, что прямо оценивается
-/// на защите: EP-3 (новая платная функция), EP-4 (вынос функции в отдельную
-/// услугу) и EP-5 (параметр функции).
-///
-/// Проверяется не только запись в базу, но и сброс кэша прав: без него доступ
-/// у пользователей менялся бы «когда-нибудь в течение пяти минут», и демонстрация
-/// «без деплоя» не состоялась бы.
-/// </summary>
 public class ExtensionPointTests
 {
     private static readonly DateTimeOffset Now = new(2026, 9, 9, 12, 0, 0, TimeSpan.Zero);
@@ -29,11 +20,6 @@ public class ExtensionPointTests
     private readonly Feature _teamCreate = Feature.Create(FeatureCodes.TeamCreate, "Своя команда");
     private readonly Feature _statsAdvanced = Feature.Create(FeatureCodes.StatsAdvanced, "Статистика");
 
-    /// <summary>
-    /// Полная демонстрация EP-4 из чек-листа §19: администратор снимает
-    /// <c>stats.advanced</c> с тарифа Pro и заводит для неё отдельный тариф —
-    /// доступ у пользователей меняется без единой строки кода.
-    /// </summary>
     [Fact]
     public async Task A_feature_can_be_taken_out_of_a_plan_and_sold_separately()
     {
@@ -104,14 +90,6 @@ public class ExtensionPointTests
         pro.PlanFeatures.ShouldHaveSingleItem().Value.ShouldBe("5");
     }
 
-    /// <summary>
-    /// Повторная выдача той же фичи не должна плодить вторую привязку: у PlanFeatures
-    /// составной первичный ключ, и вторая строка — это падение на дубле ключа.
-    ///
-    /// На живом приложении так и случилось: репозиторий отдавал тариф с пустым составом,
-    /// потому что коллекция — навигация, а GetByIdAsync её не грузил. Лечится
-    /// AutoInclude в PlanConfiguration; здесь проверяется само правило домена.
-    /// </summary>
     [Fact]
     public async Task Granting_the_same_feature_twice_does_not_duplicate_the_row()
     {
@@ -181,10 +159,6 @@ public class ExtensionPointTests
         features.Entities.ShouldHaveSingleItem();
     }
 
-    /// <summary>
-    /// Выключение фичи — самый быстрый способ закрыть функцию всем сразу,
-    /// не разбирая тарифы.
-    /// </summary>
     [Fact]
     public async Task Switching_a_feature_off_closes_it_for_everyone_at_once()
     {
@@ -235,10 +209,6 @@ public class ExtensionPointTests
             _cache,
             new RecordingUnitOfWork());
 
-    /// <summary>
-    /// Права считаются тем же кодом, что и в рабочем приложении: смысл проверки
-    /// в том, что правка тарифа доходит до реального разрешения доступа.
-    /// </summary>
     private EntitlementSet Entitlements(Subscription subscription, Plan[] plans) =>
         Entitlements([subscription], plans);
 

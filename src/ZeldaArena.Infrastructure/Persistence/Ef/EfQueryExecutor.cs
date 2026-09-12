@@ -6,14 +6,6 @@ using ZeldaArena.Application.Common.Models;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Реализация <see cref="IQueryExecutor"/>: здесь и только здесь живут асинхронные
-/// операторы EF Core, недоступные слою сценариев (docs/adr/ADR-0004).
-///
-/// Провайдер запроса проверяется перед вызовом: асинхронные операторы EF Core падают
-/// на обычной коллекции в памяти, а такой запрос сюда попадает в тестах. Для него
-/// материализация выполняется синхронно — результат тот же, ждать нечего.
-/// </summary>
 public sealed class EfQueryExecutor : IQueryExecutor
 {
     public async Task<IReadOnlyList<T>> ToListAsync<T>(

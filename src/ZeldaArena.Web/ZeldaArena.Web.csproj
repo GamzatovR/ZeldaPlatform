@@ -4,17 +4,13 @@
     <RootNamespace>ZeldaArena.Web</RootNamespace>
   </PropertyGroup>
 
-  <!--
-    Ссылка на Infrastructure нужна единственно ради AddInfrastructure() в Program.cs
-    (docs/SPEC.md §5.2, правило 3) — остальной код Web о ней не знает.
-  -->
+  <!-- Ссылка на Infrastructure нужна ради AddInfrastructure() в Program.cs, больше нигде. -->
   <ItemGroup>
     <ProjectReference Include="..\ZeldaArena.Application\ZeldaArena.Application.csproj" />
     <ProjectReference Include="..\ZeldaArena.Infrastructure\ZeldaArena.Infrastructure.csproj" />
   </ItemGroup>
 
-  <!-- QR-код настройки аутентификатора рисуется на сервере (docs/SPEC.md §8.2):
-       так он работает и без JavaScript, и без вендорской библиотеки в wwwroot. -->
+  <!-- QR-код аутентификатора рисуется на сервере: без JavaScript и без вендорской библиотеки. -->
   <ItemGroup>
     <PackageReference Include="QRCoder" />
   </ItemGroup>
@@ -24,19 +20,14 @@
     <PackageReference Include="AspNetCore.SassCompiler" />
   </ItemGroup>
 
-  <!--
-    Путь wwwroot/scss задан спецификацией (docs/SPEC.md §9.1), но исходники стилей —
-    не статика: наружу должен уходить только собранный CSS. Поэтому каталог исключён
-    из Content и не попадает ни в манифест MapStaticAssets, ни в публикацию.
-    Здесь же лежат исходники Bootstrap (wwwroot/scss/vendor, восстанавливаются
-    по libman.json) — из них через @use берутся только нужные части.
-  -->
+  <!-- wwwroot/scss не статика: наружу уходит только собранный CSS, поэтому каталог
+       исключён из Content, из манифеста MapStaticAssets и из публикации. -->
   <ItemGroup>
     <Content Remove="wwwroot\scss\**" />
     <None Include="wwwroot\scss\**" />
   </ItemGroup>
 
-  <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web (docs/CONVENTIONS.md, «Команды»). -->
+  <!-- Инструменты dotnet ef: миграции создаются с проектом запуска Web. -->
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>

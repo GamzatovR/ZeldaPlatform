@@ -6,13 +6,7 @@
 @model CartDto
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Каждое действие — своя маленькая POST-форма: «−» и «+» отправляют готовое
-    новое количество, поэтому корзина работает и без JavaScript (§9.1). С JavaScript
-    cart.js перехватывает формы по data-cart-quantity / data-cart-remove, шлёт
-    PATCH/DELETE в Areas/Api и перерисовывает этот partial. Итог и признаки проблем
-    пришли с сервера; здесь ничего не вычисляется.
-*@
+@* Каждое действие — своя маленькая POST-форма. *@
 @if (Model.IsEmpty)
 {
     <div class="empty-state">
@@ -128,7 +122,7 @@ else
 
             @if (Model.CanCheckout)
             {
-                @* Гостя вход вернёт сюда же, а корзина к тому времени вольётся в его (§14.1). *@
+                @* Гостя вход вернёт сюда же, а корзина к тому времени вольётся в его. *@
                 <a class="btn-solid" asp-area="" asp-controller="Checkout" asp-action="Index">@T["cart.checkout"]</a>
             }
             else

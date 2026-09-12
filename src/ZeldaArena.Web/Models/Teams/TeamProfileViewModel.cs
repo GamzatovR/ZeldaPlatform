@@ -6,11 +6,6 @@ using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Models.Teams;
 
-/// <summary>
-/// Поля профиля команды — клиентский уровень двухуровневой валидации (docs/SPEC.md §15).
-/// Длины и шаблоны взяты из <see cref="EsportsValidationRules"/>, тех же, что читают
-/// FluentValidation-валидаторы создания и правки: два уровня проверяют одно и то же.
-/// </summary>
 public class TeamProfileViewModel
 {
     [Required(ErrorMessage = "Укажите название команды.")]

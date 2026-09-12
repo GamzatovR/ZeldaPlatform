@@ -5,10 +5,6 @@ using ZeldaArena.Application.Features.Admin.Billing.Queries.GetPlanForEdit;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Billing;
 
-/// <summary>
-/// Форма тарифа. Код задаётся только при создании: по нему тариф ищут в коде
-/// и конфигурации.
-/// </summary>
 public sealed class PlanFormViewModel
 {
     [Required(ErrorMessage = "Укажите код тарифа.")]

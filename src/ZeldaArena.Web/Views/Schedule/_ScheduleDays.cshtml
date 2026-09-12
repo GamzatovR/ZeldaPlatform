@@ -5,12 +5,7 @@
 @model ScheduleDto
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Дни расписания. Строка матча — .single-stream-schedule-box макета: слева время,
-    в центре пара команд и турнир, вся строка — ссылка на страницу матча.
-    Отменённый матч зачёркнут, как «Not Streaming» в макете, но статус написан
-    и словами: цвет и зачёркивание — не единственные признаки (§9.1).
-*@
+@* Дни расписания. *@
 @if (Model.TotalCount == 0)
 {
     <p class="empty-state">@T["filter.empty"]</p>

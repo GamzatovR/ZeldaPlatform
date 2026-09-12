@@ -9,11 +9,7 @@
     var filter = Model.Filter;
 }
 
-@*
-    Таблица турниров (docs/SPEC.md §9.4, п. 2): тот же механизм списков, что на сайте
-    (§10.2) — GET-форма, состояние в адресе, partial под AJAX. Сортировка — по клику
-    на заголовок; её держит скрытое поле формы, чтобы смена фильтра не сбрасывала её.
-*@
+@* Таблица турниров. *@
 <div class="admin-toolbar">
     <h1 class="admin-heading">@T["admin.nav.tournaments"]</h1>
     <a class="btn-solid btn-solid--sm" asp-action="Create">@T["admin.tournament.create"]</a>

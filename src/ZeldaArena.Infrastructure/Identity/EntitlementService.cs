@@ -7,14 +7,7 @@ using ZeldaArena.Infrastructure.Persistence.Ef;
 
 namespace ZeldaArena.Infrastructure.Identity;
 
-/// <summary>
-/// Единственный источник истины о правах на платные функции (docs/SPEC.md §7.3).
-///
-/// Здесь только загрузка и кэш. Правила отбора — какая подписка действует, как
-/// объединяются фичи двух тарифов, чей параметр побеждает — живут в
-/// <see cref="EntitlementResolver"/> в Application, где их покрывают unit-тесты:
-/// ZeldaArena.UnitTests по §5.1 на Infrastructure не ссылается.
-/// </summary>
+/// <summary>Единственный источник истины о правах на платные функции.</summary>
 public sealed class EntitlementService(
     AppDbContext context,
     EntitlementCache cache,
@@ -58,13 +51,6 @@ public sealed class EntitlementService(
         return entitlements.ValueOf(featureCode);
     }
 
-    /// <summary>
-    /// Три коротких запроса вместо одного соединения: подписок у пользователя единицы,
-    /// тарифов и фич во всей базе — десятки, а результат живёт пять минут. Отбор по
-    /// сроку и статусу нарочно не переносится в SQL — он объявлен в домене
-    /// (<c>Subscription.IsActiveAt</c>), и второй его копии в виде where-условия быть
-    /// не должно.
-    /// </summary>
     private async Task<EntitlementSet> LoadAsync(Guid userId, CancellationToken cancellationToken)
     {
         var subscriptions = await context.Subscriptions

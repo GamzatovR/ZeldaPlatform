@@ -6,15 +6,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Subscriptions.Queries.GetMySubscription;
 
-/// <summary>
-/// Отдаёт подписку текущего пользователя вместе с набором его прав.
-///
-/// Права берутся у <see cref="IEntitlementService"/>, а не собираются здесь заново
-/// по тарифу: источник истины о доступе один (§7.3, §20 пункт 2). Разойдясь, эти два
-/// пути показали бы в кабинете одно, а на деле дали другое.
-///
-/// Заявки в ожидании оплаты пропускаются: неоплаченная подписка — ещё не подписка.
-/// </summary>
 public sealed class GetMySubscriptionQueryHandler(
     ICurrentUserService currentUser,
     IReadRepository<Subscription> subscriptions,

@@ -20,7 +20,7 @@ public sealed record AdminTeamRowDto
 
     public bool IsApproved { get; init; }
 
-    /// <summary>Команда, созданная подписчиком: у неё есть владелец (docs/SPEC.md §6).</summary>
+    /// <summary>Команда, созданная подписчиком: у неё есть владелец.</summary>
     public bool IsUserOwned { get; init; }
 
     public int RosterCount { get; init; }

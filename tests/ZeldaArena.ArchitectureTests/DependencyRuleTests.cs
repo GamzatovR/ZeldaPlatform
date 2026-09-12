@@ -4,10 +4,6 @@ using NetArchTest.Rules;
 
 namespace ZeldaArena.ArchitectureTests;
 
-/// <summary>
-/// Правила 1-3 из docs/SPEC.md §5.2. Красный тест здесь = красная сборка:
-/// это доказательство критерия 1 «Архитектура» из §3.
-/// </summary>
 public class DependencyRuleTests
 {
     [Fact]
@@ -81,9 +77,7 @@ public class DependencyRuleTests
     [Fact]
     public void Web_should_not_use_infrastructure_types_outside_composition_root()
     {
-        // Единственное разрешённое место — Program.cs (docs/SPEC.md §5.2, правило 3).
-        // Замыкания и прочие типы, сгенерированные компилятором для точки входа,
-        // отсеиваются по имени корневого типа.
+        // Единственное разрешённое место — Program.cs.
         var offenders = Types.InAssembly(ArchitectureFixture.Web)
             .ShouldNot()
             .HaveDependencyOn(ArchitectureFixture.InfrastructureNamespace)

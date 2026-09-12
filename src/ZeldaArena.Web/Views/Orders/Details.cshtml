@@ -14,13 +14,7 @@
     var pageTitle = new PageTitleViewModel(title, Compact: true);
 }
 
-@*
-    Детали заказа (docs/SPEC.md §9.3, п. 15). Названия и цены — снапшоты на момент
-    оформления (§6): каталог мог измениться, заказ — нет.
-
-    Действия зависят от статуса, и решает это сервер (CanCancel, CanContinuePayment):
-    покупатель отменяет только неоплаченный заказ (docs/adr/ADR-0009).
-*@
+@* Детали заказа. *@
 <partial name="_PageTitle" model="pageTitle" />
 
 <section class="section">

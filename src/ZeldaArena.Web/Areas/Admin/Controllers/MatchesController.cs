@@ -19,13 +19,6 @@ using ZeldaArena.Web.Extensions;
 
 namespace ZeldaArena.Web.Areas.Admin.Controllers;
 
-/// <summary>
-/// Матчи и пульт счёта — <c>/admin/matches</c> (docs/SPEC.md §9.4, п. 3). Работа
-/// модератора, поэтому политика та же, что у турниров (§8.1).
-///
-/// Пульт работает и без JavaScript: каждая кнопка — обычная форма с переходом обратно.
-/// С JavaScript те же формы уходят в <c>/api/admin/matches</c> и обновляют счёт на месте.
-/// </summary>
 [Route("admin/matches")]
 [Authorize(Policy = PolicyNames.CanManageCatalog)]
 public sealed class MatchesController(ISender sender, IStringLocalizer<SharedResource> localizer)
@@ -52,10 +45,6 @@ public sealed class MatchesController(ISender sender, IStringLocalizer<SharedRes
         });
     }
 
-    /// <summary>
-    /// Турнир выбирается первым: команды матча — только его участники. Без JavaScript
-    /// выбор турнира просто перезагружает форму с ним в адресе.
-    /// </summary>
     [HttpGet("create")]
     public async Task<IActionResult> Create(Guid? tournamentId, CancellationToken cancellationToken)
     {

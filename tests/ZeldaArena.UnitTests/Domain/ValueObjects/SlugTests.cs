@@ -19,7 +19,7 @@ public class SlugTests
     [Fact]
     public void Empty_result_is_rejected()
     {
-        // Кириллица не транслитерируется: слаг обязан быть латинским (docs/SPEC.md §6).
+        // Кириллица не транслитерируется: слаг обязан быть латинским.
         Should.Throw<InvariantViolationException>(() => Slug.From("Ссылка"))
             .Code.ShouldBe("slug.empty");
     }

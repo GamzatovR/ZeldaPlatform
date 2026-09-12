@@ -4,11 +4,7 @@
 @model ZeldaArena.Web.Areas.Admin.Models.Tournaments.TournamentFormViewModel
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Поля карточки турнира — общие для создания и правки. На странице правки partial
-    подключается с for="Form", поэтому имена полей получают префикс и биндятся
-    в TournamentFormViewModel с [Bind(Prefix = "Form")].
-*@
+@* Поля карточки турнира — общие для создания и правки. *@
 <div class="row g-3">
     <div class="col-12">
         <label asp-for="Name" class="form-label"></label>

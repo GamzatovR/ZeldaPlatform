@@ -7,10 +7,6 @@
     Layout = "_ErrorLayout";
 }
 
-@*
-    Свёрстано по docs/design/pages/404.html — это образец для всех страниц ошибок
-    (docs/SPEC.md §14.2). Остальные коды и ErrorController приходят в Фазе 11.
-*@
 <section class="error-page">
     <div class="container">
         <div class="error-page__image">
@@ -24,7 +20,7 @@
         @if (Model.ShowRequestId)
         {
             @* Идентификатор для обращения в поддержку. Стек и подробности
-               исключения наружу не отдаются (§14.2). *@
+               исключения наружу не отдаются. *@
             <p class="error-page__trace">@T["error.trace_id"]: <code>@Model.RequestId</code></p>
         }
 

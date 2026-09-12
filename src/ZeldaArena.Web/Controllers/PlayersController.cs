@@ -10,7 +10,7 @@ using ZeldaArena.Web.Models.Players;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>Игроки: список с фильтром и страница игрока (docs/SPEC.md §9.3, п. 9–10).</summary>
+/// <summary>Игроки: список с фильтром и страница игрока.</summary>
 [Route("players")]
 public sealed class PlayersController(ISender sender) : Controller
 {

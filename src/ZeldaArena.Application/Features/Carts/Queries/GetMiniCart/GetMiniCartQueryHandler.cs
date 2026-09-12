@@ -5,10 +5,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Carts.Queries.GetMiniCart;
 
-/// <summary>
-/// Шапка рисуется на каждой странице, поэтому здесь ровно один запрос: количества
-/// позиций корзины владельца, корзина — подзапросом.
-/// </summary>
 public sealed class GetMiniCartQueryHandler(
     CartLocator locator,
     IReadRepository<CartItem> cartItems,

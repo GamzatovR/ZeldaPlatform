@@ -12,9 +12,6 @@ using ZeldaArena.Web.Constants;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Состояние второго фактора и действия над ним (docs/SPEC.md §8.2).
-/// </summary>
 [Authorize]
 public sealed class TwoFactorAuthenticationModel(
     ISender sender,

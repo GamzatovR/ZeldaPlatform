@@ -6,11 +6,6 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Players.Queries.GetPlayersForAdmin;
 
-/// <summary>
-/// Действующая команда берётся подзапросом по открытой записи состава: у игрока она
-/// одна (частичный уникальный индекс, Фаза 6), и это одно обращение к базе на всю
-/// страницу, а не на строку (§16).
-/// </summary>
 public sealed class GetPlayersForAdminQueryHandler(
     IReadRepository<Player> players,
     IReadRepository<RosterEntry> rosterEntries,

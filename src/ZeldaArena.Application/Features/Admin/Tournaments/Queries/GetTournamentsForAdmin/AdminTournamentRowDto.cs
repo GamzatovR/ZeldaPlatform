@@ -2,10 +2,6 @@ using ZeldaArena.Domain.Enums;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Queries.GetTournamentsForAdmin;
 
-/// <summary>
-/// Строка таблицы турниров. Число матчей показано не для красоты: по нему видно,
-/// можно ли турнир удалить (удаляется только турнир без матчей, docs/adr/ADR-0010).
-/// </summary>
 public sealed record AdminTournamentRowDto
 {
     public Guid Id { get; init; }

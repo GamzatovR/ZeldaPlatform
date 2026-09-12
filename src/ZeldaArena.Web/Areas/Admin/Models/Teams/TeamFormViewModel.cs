@@ -8,11 +8,6 @@ using ZeldaArena.Web.Validation;
 
 namespace ZeldaArena.Web.Areas.Admin.Models.Teams;
 
-/// <summary>
-/// Профиль команды в админке. Правила совпадают с формой капитана
-/// (<c>TeamProfileViewModel</c>) и с <see cref="TeamFieldsValidator"/>; сверх них —
-/// рейтинг, который правит только администрация.
-/// </summary>
 public sealed class TeamFormViewModel
 {
     [Required(ErrorMessage = "Укажите название команды.")]

@@ -15,11 +15,6 @@ using ZeldaArena.Web.Models.Account;
 
 namespace ZeldaArena.Web.Areas.Identity.Pages.Account.Manage;
 
-/// <summary>
-/// Профиль пользователя. Чей профиль показывать, решает запрос по текущему
-/// пользователю — идентификатора в адресе нет, поэтому чужой профиль не открыть
-/// (docs/SPEC.md §15, IDOR).
-/// </summary>
 [Authorize]
 public sealed class IndexModel(ISender sender, IStringLocalizer<SharedResource> localizer)
     : PageModel
@@ -85,10 +80,6 @@ public sealed class IndexModel(ISender sender, IStringLocalizer<SharedResource> 
         return RedirectToPage();
     }
 
-    /// <summary>
-    /// При неудачной отправке страница показывается заново, но введённое пользователем
-    /// не затирается: перезагружаются только справочные поля — адрес, роли, даты.
-    /// </summary>
     private async Task<IActionResult> OnGetKeepingInputAsync(CancellationToken cancellationToken)
     {
         var input = Input;

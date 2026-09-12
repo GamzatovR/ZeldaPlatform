@@ -6,10 +6,7 @@
     ViewData["Title"] = T["admin.nav.plans"].Value;
 }
 
-@*
-    Тарифов единицы, поэтому таблица без фильтра и пагинации: механизм §10.2 нужен
-    там, где строк много, а здесь он был бы обузой на пустом месте.
-*@
+@* Тарифов единицы, поэтому таблица без фильтра и пагинации. *@
 <div class="admin-toolbar">
     <h1 class="admin-heading">@T["admin.nav.plans"]</h1>
     <a class="btn-solid btn-solid--sm" asp-action="Create">@T["admin.plan.create"]</a>

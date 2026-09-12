@@ -6,18 +6,6 @@ using ZeldaArena.Application.Common.Interfaces;
 
 namespace ZeldaArena.Web.Services;
 
-/// <summary>
-/// Собирает письма биллинга и отдаёт их транспорту <see cref="IEmailSender"/>
-/// (docs/SPEC.md §7.6).
-///
-/// Живёт в Web по той же причине, что и <see cref="AccountEmailSender"/>: текст берётся
-/// из ресурсов, а суммы и даты форматируются по текущей культуре (§9.5). Application
-/// видит один лишь порт <see cref="IBillingEmailSender"/>, поэтому правило зависимостей
-/// §5.2 не нарушено.
-///
-/// Код подтверждения попадает в тело письма и больше никуда: в лог уходят только
-/// адресат и тема, об этом заботится <c>SmtpEmailSender</c> (§13).
-/// </summary>
 public sealed class BillingEmailSender(
     IEmailSender emailSender,
     IStringLocalizer<SharedResource> localizer)
@@ -81,11 +69,6 @@ public sealed class BillingEmailSender(
             Format("email.subscription_expired.body", planName),
             cancellationToken);
 
-    /// <summary>
-    /// Ссылки в письмах биллинга нет намеренно. Код вводится на той же странице,
-    /// с которой началась оплата, а ссылка «подтвердить» в письме про деньги —
-    /// это ровно то, чему учат не доверять.
-    /// </summary>
     private Task SendAsync(
         string to,
         string? displayName,

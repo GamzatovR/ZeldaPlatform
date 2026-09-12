@@ -6,10 +6,6 @@ using ZeldaArena.Domain.Shop;
 
 namespace ZeldaArena.Application.Features.Admin.Orders.Queries.GetOrdersForAdmin;
 
-/// <summary>
-/// Все заказы платформы, а не только свои: это витрина работы магазина. Поиск идёт
-/// по номеру и получателю — по ним заказ ищут, когда покупатель звонит.
-/// </summary>
 public sealed class GetOrdersForAdminQueryHandler(
     IReadRepository<Order> orders,
     IQueryExecutor queryExecutor)

@@ -4,10 +4,6 @@ using ZeldaArena.Domain.Constants;
 
 namespace ZeldaArena.Application.Features.Payments.Commands.ConfirmPayment;
 
-/// <summary>
-/// Длина кода проверяется до обращения к базе: заведомо негодный ввод не должен
-/// расходовать попытку (docs/SPEC.md §7.6).
-/// </summary>
 public sealed class ConfirmPaymentCommandValidator : AbstractValidator<ConfirmPaymentCommand>
 {
     public ConfirmPaymentCommandValidator()

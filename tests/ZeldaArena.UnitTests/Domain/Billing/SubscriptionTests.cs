@@ -68,7 +68,7 @@ public class SubscriptionTests
     [Fact]
     public void Cancellation_only_disables_auto_renew_and_keeps_access()
     {
-        // docs/SPEC.md §7.5, п. 5: доступ сохраняется до конца оплаченного срока.
+        //.5, п. 5: доступ сохраняется до конца оплаченного срока.
         var subscription = Subscription.Activate(Guid.CreateVersion7(), ProMonth(), Now, autoRenew: true);
 
         subscription.Cancel(Now.AddDays(3));

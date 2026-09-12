@@ -33,7 +33,7 @@ public sealed record TeamEditDto
 
     public int TournamentCount { get; init; }
 
-    /// <summary>Все записи состава, включая закрытые: состав историчен (docs/SPEC.md §6).</summary>
+    /// <summary>Все записи состава, включая закрытые: состав историчен.</summary>
     public int RosterEntryCount { get; init; }
 
     public IReadOnlyList<RosterPlayerDto> Roster { get; init; } = [];
@@ -41,9 +41,5 @@ public sealed record TeamEditDto
     /// <summary>Игроки, не состоящие сейчас ни в одной команде.</summary>
     public IReadOnlyList<FreeAgentDto> FreeAgents { get; init; } = [];
 
-    /// <summary>
-    /// Удалить можно команду без истории: без матчей, без участия в турнирах
-    /// и без записей состава (docs/adr/ADR-0010).
-    /// </summary>
     public bool CanDelete => MatchCount == 0 && TournamentCount == 0 && RosterEntryCount == 0;
 }

@@ -1,9 +1,6 @@
 namespace ZeldaArena.Domain.Shop;
 
-/// <summary>
-/// Строка будущего заказа: то, что хендлер оформления собрал из корзины,
-/// подставив серверные цену и название товара.
-/// </summary>
+/// <summary>Строка будущего заказа.</summary>
 public readonly record struct OrderLine(
     Guid ProductId,
     string ProductName,

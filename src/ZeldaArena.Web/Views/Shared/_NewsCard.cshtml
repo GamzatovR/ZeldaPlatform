@@ -1,13 +1,7 @@
 @using ZeldaArena.Application.Features.News.Queries.GetLatestNews
 @model NewsListItemDto
 
-@*
-    Карточка новости по .single-blog-post-item макета. Заголовок — ссылка на /news/{slug}
-    (Фаза 6); вся карточка кликабельна через растянутую ссылку, как у карточек команд.
-
-    У новостей из сида обложки нет: поле CoverPath пустое, поэтому блок картинки
-    выводится только при её наличии, а карточка обязана оставаться целой без неё.
-*@
+@* Карточка новости по .single-blog-post-item макета. *@
 <article class="news-card">
     @if (Model.CoverPath is not null)
     {

@@ -17,10 +17,6 @@ using ZeldaArena.Web.Models.Teams;
 
 namespace ZeldaArena.Web.Controllers;
 
-/// <summary>
-/// Команды: список с фильтром и страница команды (docs/SPEC.md §9.3, п. 6–7).
-/// Создание своей команды по подписке — здесь же, <c>/teams/create</c> (п. 8).
-/// </summary>
 [Route("teams")]
 public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResource> localizer) : Controller
 {
@@ -37,10 +33,6 @@ public sealed class TeamsController(ISender sender, IStringLocalizer<SharedResou
         return View(new TeamListViewModel { Filter = filter, Result = result });
     }
 
-    /// <summary>
-    /// Литеральный сегмент «create» сильнее параметра {slug}, поэтому маршрут не спорит
-    /// со страницей команды; слаг «create» генератор к тому же не выдаёт.
-    /// </summary>
     [HttpGet("create")]
     [Authorize]
     [RequireFeature(FeatureCodes.TeamCreate)]

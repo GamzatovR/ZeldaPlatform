@@ -1,5 +1,5 @@
-// Бейджи (design-system.md §11). Отдельного класса в макете нет — собраны
-// из круглых .sale / .hot и подписей .sub-title.
+// Бейджи. Отдельного класса в макете нет — собраны
+// из круглых .sale /.hot и подписей .sub-title.
 
 .badge-token {
   display: inline-block;
@@ -26,7 +26,7 @@
 }
 
 // Бейдж подписчика. Роль Premium здесь — исключительно отображение,
-// доступ дают фичи (docs/SPEC.md §7.4).
+// доступ дают фичи.
 .badge-token--premium {
   background-color: var(--color-warning);
   color: var(--color-bg);

@@ -5,20 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ZeldaArena.Web.TagHelpers;
 
-/// <summary>
-/// Логотип команды или аватар игрока, а без картинки — инициалы:
-///
-/// <code>
-/// &lt;avatar image="@Url.StoredFile(Model.LogoPath)" name="@Model.Name" /&gt;
-/// </code>
-///
-/// У команд и игроков из сида картинок нет, а у созданных пользователями
-/// логотип необязателен. Пустой круг читался бы как недогруженное изображение,
-/// а решать это в каждой вьюхе — значит тащить в разметку ветвление, которого
-/// там быть не должно (docs/CONVENTIONS.md, «Во вьюхах логики нет»).
-///
-/// Картинка декоративна (<c>alt=""</c>): имя сущности всегда стоит рядом текстом.
-/// </summary>
+/// <summary>Логотип команды или аватар игрока, а без картинки — инициалы.</summary>
 [HtmlTargetElement("avatar", TagStructure = TagStructure.WithoutEndTag)]
 public sealed class AvatarTagHelper : TagHelper
 {

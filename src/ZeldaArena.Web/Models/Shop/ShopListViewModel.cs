@@ -4,7 +4,7 @@ using ZeldaArena.Application.Features.Shop.Queries.GetShopFilterOptions;
 
 namespace ZeldaArena.Web.Models.Shop;
 
-/// <summary>Каталог (docs/SPEC.md §9.3, п. 12): фильтр из адреса, категории и страница результата.</summary>
+/// <summary>Каталог: фильтр из адреса, категории и страница результата.</summary>
 public sealed class ShopListViewModel
 {
     public required GetProductsQuery Filter { get; init; }

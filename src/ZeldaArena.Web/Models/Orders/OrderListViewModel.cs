@@ -3,7 +3,7 @@ using ZeldaArena.Application.Features.Orders.Queries.GetMyOrders;
 
 namespace ZeldaArena.Web.Models.Orders;
 
-/// <summary>История заказов (docs/SPEC.md §9.3, п. 15): фильтр из адреса и страница результата.</summary>
+/// <summary>История заказов: фильтр из адреса и страница результата.</summary>
 public sealed class OrderListViewModel
 {
     public required GetMyOrdersQuery Filter { get; init; }

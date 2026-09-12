@@ -5,11 +5,6 @@ using ZeldaArena.Domain.Common;
 
 namespace ZeldaArena.Infrastructure.Persistence.Ef;
 
-/// <summary>
-/// Записи поверх <see cref="AppDbContext"/>. Сущность возвращается отслеживаемой,
-/// поэтому изменения, сделанные её методами, попадут в базу при сохранении —
-/// отдельный вызов Update не нужен и намеренно не предусмотрен портом.
-/// </summary>
 public sealed class EfRepository<TEntity>(AppDbContext context) : IRepository<TEntity>
     where TEntity : BaseEntity
 {

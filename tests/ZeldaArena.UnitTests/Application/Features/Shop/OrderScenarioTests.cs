@@ -15,12 +15,6 @@ using ZeldaArena.UnitTests.Application.TestDoubles;
 
 namespace ZeldaArena.UnitTests.Application.Features.Shop;
 
-/// <summary>
-/// Оформление, оплата по коду и отмена заказа (docs/SPEC.md §7.6, §9.3 п. 14–15;
-/// правила — docs/adr/ADR-0009): остаток списывается при оформлении, провал оплаты
-/// сразу отменяет заказ и возвращает товары в корзину, покупатель отменяет только
-/// неоплаченный заказ.
-/// </summary>
 public class OrderScenarioTests
 {
     private readonly OrderScenarioFixture _shop = new();
@@ -63,7 +57,7 @@ public class OrderScenarioTests
         result.Value.MaskedEmail.ShouldNotContain("link@");
     }
 
-    /// <summary>§6: в позиции заказа — снапшоты названия и цены, а не ссылки на изменчивый каталог.</summary>
+    /// <summary>: в позиции заказа — снапшоты названия и цены, а не ссылки на изменчивый каталог.</summary>
     [Fact]
     public async Task Order_lines_are_snapshots_of_the_current_server_price()
     {
@@ -90,7 +84,7 @@ public class OrderScenarioTests
         Regex.IsMatch(_shop.SingleOrder.Number, $"^{OrderNumberGenerator.Prefix}-2026-[0-9]{{6}}$").ShouldBeTrue(_shop.SingleOrder.Number);
     }
 
-    /// <summary>Повторная отправка формы не заводит второй заказ и второй платёж (§7.6).</summary>
+    /// <summary>Повторная отправка формы не заводит второй заказ и второй платёж.</summary>
     [Fact]
     public async Task Resubmitting_the_same_form_returns_the_same_payment()
     {
@@ -136,7 +130,7 @@ public class OrderScenarioTests
         _shop.World.CartOf(userId: _shop.Buyer)!.TotalQuantity.ShouldBe(2);
     }
 
-    /// <summary>Двое купили последнюю единицу: второй получает понятный отказ, а не ошибку сервера (§15).</summary>
+    /// <summary>Двое купили последнюю единицу: второй получает понятный отказ, а не ошибку сервера.</summary>
     [Fact]
     public async Task A_concurrent_stock_change_is_answered_politely()
     {
@@ -266,10 +260,6 @@ public class OrderScenarioTests
         order.Status.ShouldBe(OrderStatus.Paid);
     }
 
-    /// <summary>
-    /// Заказ, отменённый в обход покупателя (администратором в Фазе 9), не оплачивается
-    /// даже верным кодом, хотя платёж ещё ждёт ввода.
-    /// </summary>
     [Fact]
     public async Task A_canceled_order_cannot_be_paid()
     {
@@ -284,7 +274,7 @@ public class OrderScenarioTests
         (await _shop.DetailsAsync(number))!.CanContinuePayment.ShouldBeFalse();
     }
 
-    /// <summary>IDOR (§15): чужой заказ неотличим от несуществующего.</summary>
+    /// <summary>IDOR: чужой заказ неотличим от несуществующего.</summary>
     [Fact]
     public async Task Another_buyer_can_neither_see_nor_cancel_the_order()
     {
@@ -330,10 +320,6 @@ public class OrderScenarioTests
         onlyPaid.Items.ShouldHaveSingleItem().Number.ShouldBe(paid.Number);
     }
 
-    /// <summary>
-    /// Брошенный заказ: код истёк больше льготного срока назад. Отменяется тем же путём,
-    /// что и провал оплаты; свежий заказ с живым кодом не трогается.
-    /// </summary>
     [Fact]
     public async Task Abandoned_orders_are_canceled_by_the_background_sweep()
     {
@@ -367,10 +353,6 @@ public class OrderScenarioTests
         _shop.SingleOrder.Status.ShouldBe(OrderStatus.Pending);
     }
 
-    /// <summary>
-    /// «Назад» после оплаты и повторная отправка того же кода: заказ остаётся оплаченным,
-    /// ответ — «уже обработан», а не отмена и не второй чек.
-    /// </summary>
     [Fact]
     public async Task Resubmitting_the_code_after_payment_changes_nothing()
     {
@@ -395,10 +377,6 @@ public class OrderScenarioTests
         _shop.Email.Count(RecordingBillingEmailSender.LetterKind.OrderReceipt).ShouldBe(0);
     }
 
-    /// <summary>
-    /// Отдельными тестами: в памяти нет отката транзакции, и после первой неудачной
-    /// отмены сущности уже изменены — второй вызов увидел бы закрытый платёж.
-    /// </summary>
     [Fact]
     public async Task A_concurrent_change_while_canceling_the_order_is_answered_politely()
     {

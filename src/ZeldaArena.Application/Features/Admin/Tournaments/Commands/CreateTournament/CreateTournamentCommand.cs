@@ -5,7 +5,7 @@ using ZeldaArena.Domain.Esports;
 
 namespace ZeldaArena.Application.Features.Admin.Tournaments.Commands.CreateTournament;
 
-/// <summary>Анонс нового турнира из админки (docs/SPEC.md §9.4, п. 2). Возвращает его идентификатор.</summary>
+/// <summary>Анонс нового турнира из админки. Возвращает его идентификатор.</summary>
 public sealed record CreateTournamentCommand : ICommand<Guid>, IAuditableRequest, ITournamentFields
 {
     public required string Name { get; init; }

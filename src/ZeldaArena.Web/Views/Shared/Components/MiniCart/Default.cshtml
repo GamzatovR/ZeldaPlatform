@@ -4,10 +4,7 @@
 @model CartSummaryDto
 @inject IHtmlLocalizer<SharedResource> T
 
-@*
-    Счётчик и подпись помечены data-атрибутами: cart.js обновляет их из AJAX-ответа (§10.1, сценарий 5).
-    Подпись для скринридера говорит число словами, а не голой цифрой в кружке.
-*@
+@* Счётчик и подпись помечены data-атрибутами. *@
 <a class="site-header__action mini-cart" asp-area="" asp-controller="Cart" asp-action="Index"
    data-mini-cart active-controller="Cart">
     <icon name="@IconNames.Cart" />
